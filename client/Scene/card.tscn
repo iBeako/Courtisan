@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bq3favtvip0wd"]
 
-[ext_resource type="Script" path="res://card.gd" id="1_rh58d"]
-[ext_resource type="Texture2D" uid="uid://1655i3v40oy1" path="res://courtisans-FRONT-jeu_de_societe_news-_enhanced.png" id="1_uvdk8"]
+[ext_resource type="Script" path="res://Script/card.gd" id="1_rh58d"]
+[ext_resource type="Texture2D" uid="uid://1655i3v40oy1" path="res://Assets/courtisans-FRONT-jeu_de_societe_news-_enhanced.png" id="1_uvdk8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_x788j"]
 size = Vector2(181, 265)

@@ -5,19 +5,24 @@ const CARD_SCENE_PATH = "res://Scene/card.tscn"
 var player_hand = []
 var center_screen_x
 var CARD_WIDTH = 200
-var HAND_Y_POSITION = 890
+var HAND_Y_POSITION = 950
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	center_screen_x = get_viewport().size.x / 2
-	var card_scene = preload(CARD_SCENE_PATH)  # Préchargez la scène de la carte
+	var card_scene = preload(CARD_SCENE_PATH)
+	center_screen_x =(get_viewport().size.x / 4)+40
+	var card_types = ["blanc", "vert", "rouge", "jaune", "marron", "bleu"]  # Liste des types
 
 	for i in range(Hand_Count):
-		var new_card = card_scene.instantiate()  # Créez une instance de la scène
-		$"../CardManager".add_child(new_card)  # Ajoutez la carte au gestionnaire de cartes
-		new_card.name = "Card"  # Donnez un nom à la carte
-		add_card_to_hand(new_card)  # Ajoutez la carte à la main du joueur
-	pass
+		var new_card = card_scene.instantiate()
+		$"../CardManager".add_child(new_card)
+
+		new_card.name = "Card" + str(i)
+		new_card.card_type = card_types[randi() % card_types.size()]  # Choisir un type aléatoire
+		new_card.apply_card_color()  # Appliquer la couleur
+
+		add_card_to_hand(new_card)
+
 
 func add_card_to_hand(card):
 	if(card not in player_hand):
@@ -47,5 +52,3 @@ func remove_card_from_hand(card):
 	if card in player_hand:
 		player_hand.erase(card)
 		update_hand_position()
-
-	

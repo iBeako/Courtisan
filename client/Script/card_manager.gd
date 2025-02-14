@@ -32,12 +32,15 @@ func start_drag(card):
 func end_drag():
 	card_is_dragged.scale = Vector2(1.05, 1.05)
 	var card_slot_found = check_card_slot()
+
 	if card_slot_found and not card_is_dragged in card_slot_found.cards_in_slot:
 		card_slot_found.add_card(card_is_dragged)
-		player_hand_reference.remove_card_from_hand(card_is_dragged)
+		player_hand_reference.remove_card_from_hand(card_is_dragged)  # Retire la carte de la main
 	else:
-		player_hand_reference.add_card_to_hand(card_is_dragged)
+		player_hand_reference.add_card_to_hand(card_is_dragged)  # Sinon, remet la carte en main
+
 	card_is_dragged = null
+
 	
 func connect_card_signals(card):
 	card.connect("hovered", on_hovered_over_card)
@@ -89,8 +92,9 @@ func check_card():
 func get_card_with_highest_index(cards):
 	var highest_z_card = cards[0].collider.get_parent()
 	var highest_z_index = highest_z_card.z_index
-	for i in range(1,cards.size()):
-		var current_card = cards[i].collider.get_parent
-		if current_card.z_index > current_card:
+	for i in range(1, cards.size()):
+		var current_card = cards[i].collider.get_parent()
+		if current_card.z_index > highest_z_index:
 			highest_z_index = current_card.z_index
+			highest_z_card = current_card
 	return highest_z_card
