@@ -4,9 +4,11 @@ const COLLISION_MASK_CARD = 1
 const COLLISION_MASK_CARD_SLOT = 2
 var card_is_dragged
 var is_hovered
+var player_hand_reference
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _ready() -> void:
 	screen_size = get_viewport_rect().size
+	player_hand_reference = $"../PlayerHand"
 func _process(delta: float) -> void:
 	if card_is_dragged:
 		var mouse_pos = get_global_mouse_position()
@@ -32,6 +34,8 @@ func end_drag():
 	var card_slot_found = check_card_slot()
 	if card_slot_found and not card_is_dragged in card_slot_found.cards_in_slot:
 		card_slot_found.add_card(card_is_dragged)
+	else:
+		player_hand_reference.add_card_to_hand(card_is_dragged)
 	card_is_dragged = null
 	
 func connect_card_signals(card):
