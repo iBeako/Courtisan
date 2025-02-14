@@ -17,7 +17,7 @@ size = Vector2(179, 265)
 script = ExtResource("1_yrk5g")
 
 [node name="Jeudice-catch-up-games-courtisansPlateau-1" type="Sprite2D" parent="."]
-position = Vector2(906, 517)
+position = Vector2(970, 521)
 texture = ExtResource("8_ffjsa")
 
 [node name="CardManager" type="Node2D" parent="."]
@@ -28,11 +28,11 @@ position = Vector2(131, 927)
 script = ExtResource("4_erkcq")
 
 [node name="CardSlot2" parent="." instance=ExtResource("3_k3exv")]
-position = Vector2(927, 285)
+position = Vector2(982, 287)
 script = ExtResource("4_erkcq")
 
 [node name="CardSlot3" parent="." instance=ExtResource("3_k3exv")]
-position = Vector2(926, 719)
+position = Vector2(985, 713)
 script = ExtResource("4_erkcq")
 
 [node name="PlayerHand" type="Node2D" parent="."]

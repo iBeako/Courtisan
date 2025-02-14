@@ -34,17 +34,17 @@ func add_card(card):
 func calculate_card_position_based_on_type(card_type):
 	match card_type:
 		"blanc":
-			return 324  # Position en pixels
+			return 344  # Position en pixels
 		"vert":
-			return 520  # Position en pixels
+			return 550  # Position en pixels
 		"rouge":
-			return 730  # Position en pixels
+			return 760  # Position en pixels
 		"jaune":
-			return 1120  # Position en pixels
+			return 1160  # Position en pixels
 		"marron":
-			return 1300  # Position en pixels
+			return 1340  # Position en pixels
 		"bleu":
-			return 1500  # Position en pixels
+			return 1550  # Position en pixels
 		_:
 			return 324  # Par défaut, positionner à 324 px
 

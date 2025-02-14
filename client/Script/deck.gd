@@ -15,16 +15,14 @@ func _ready() -> void:
 func draw_cards():
 	print("draw card")
 	var card_scene = preload(CARD_SCENE_PATH)
-	
-	for i in range(Hand_Count):
-		var new_card = card_scene.instantiate()  # Instancier la carte
-		var card_color = get_random_card_color()  # Attribuer une couleur aléatoire
-		new_card.card_type = card_color  # Assigner la couleur à la carte
-		
-		$"../CardManager".add_child(new_card)  # Ajouter la carte au CardManager
-		new_card.name = "carte"  # Nom de la carte
-		
-		$"../PlayerHand".add_card_to_hand(new_card)  # Ajouter la carte à la main du joueur
+	if player_hand.is_hand_empty():
+		for i in range(Hand_Count):
+			var new_card = card_scene.instantiate()  # Instancier la carte
+			var card_color = get_random_card_color()  # Attribuer une couleur aléatoire
+			new_card.card_type = card_color  # Assigner la couleur à la carte
+			$"../CardManager".add_child(new_card)  # Ajouter la carte au CardManager
+			new_card.name = "carte"  # Nom de la carte
+			$"../PlayerHand".add_card_to_hand(new_card)  # Ajouter la carte à la main du joueur
 
 # Fonction pour récupérer une couleur aléatoire parmi les types de cartes
 func get_random_card_color() -> String:
