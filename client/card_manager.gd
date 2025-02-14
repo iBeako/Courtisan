@@ -34,6 +34,7 @@ func end_drag():
 	var card_slot_found = check_card_slot()
 	if card_slot_found and not card_is_dragged in card_slot_found.cards_in_slot:
 		card_slot_found.add_card(card_is_dragged)
+		player_hand_reference.remove_card_from_hand(card_is_dragged)
 	else:
 		player_hand_reference.add_card_to_hand(card_is_dragged)
 	card_is_dragged = null
