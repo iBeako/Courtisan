@@ -9,22 +9,14 @@ var player_hand_reference
 func _ready() -> void:
 	screen_size = get_viewport_rect().size
 	player_hand_reference = $"../PlayerHand"
+	$"../inputManager".connect("left_mouse_button_released",on_left_mouse_button_released)
 func _process(delta: float) -> void:
 	if card_is_dragged:
 		var mouse_pos = get_global_mouse_position()
 		card_is_dragged.position = Vector2(clamp(mouse_pos.x,0,screen_size.x),clamp(mouse_pos.y,0,screen_size.y))
 		card_is_dragged.position = mouse_pos
 
-func _input(event):
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		if event.pressed:
-			var card = check_card()
-			if card :
-				start_drag(card)
-		else:
-			if card_is_dragged:
-				end_drag()
-			
+
 func start_drag(card):
 	card_is_dragged = card
 	card.scale = Vector2(1.0,1.0)
@@ -98,3 +90,7 @@ func get_card_with_highest_index(cards):
 			highest_z_index = current_card.z_index
 			highest_z_card = current_card
 	return highest_z_card
+
+func on_left_mouse_button_released():
+	if card_is_dragged:
+		end_drag()
