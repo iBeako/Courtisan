@@ -25,10 +25,10 @@ func _input(event):
 			
 func start_drag(card):
 	card_is_dragged = card
-	card.scale = Vector2(0.6,0.6)
+	card.scale = Vector2(1.0,1.0)
 	
 func end_drag():
-	card_is_dragged.scale = Vector2(0.65, 0.65)
+	card_is_dragged.scale = Vector2(1.05, 1.05)
 	var card_slot_found = check_card_slot()
 	if card_slot_found and not card_is_dragged in card_slot_found.cards_in_slot:
 		card_slot_found.add_card(card_is_dragged)
@@ -54,10 +54,10 @@ func on_hovered_off_card(card):
 	
 func highlight_card(card,hovered):
 	if (hovered):
-		card.scale = Vector2(0.65,0.65)
+		card.scale = Vector2(1.05,1.05)
 		card.z_index=2
 	else:
-		card.scale = Vector2(0.6,0.6)
+		card.scale = Vector2(1.0,1.0)
 		card.z_index=1
 		
 func check_card_slot():
