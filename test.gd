@@ -1,0 +1,32 @@
+extends Node
+
+const CLIENT_COUNT = 5
+var server: Node
+var clients: Array
+
+func _ready():
+	# Initialize server
+	server = load("res://server/server.gd").new()
+	add_child(server)
+	
+	# Initialize clients
+	clients = []
+	for i in range(CLIENT_COUNT):
+		var client = load("res://client/client.gd").new()
+		add_child(client)
+		clients.append(client)
+	
+	# Wait a moment for connections to establish
+	await get_tree().create_timer(1.0).timeout
+	
+	# Send test messages from clients
+	for i in range(CLIENT_COUNT):
+		var message = {"client_id": i, "content": "Hello from client %d" % i}
+		var message_converted_in_json = JSON.stringify(message)
+		clients[i].send_message(message_converted_in_json)
+	
+	# Wait a moment to process messages
+	await get_tree().create_timer(1.0).timeout
+	
+	# Print responses (handled in client.gd)
+	print("Test interaction completed")
