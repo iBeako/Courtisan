@@ -24,6 +24,35 @@ offset_right = 1917.0
 offset_bottom = 376.0
 color = Color(0.571057, 0.323192, 0.329674, 1)
 
+[node name="Blanc_Adversaire" parent="EnnemyZone" instance=ExtResource("3_k3exv")]
+visible = false
+position = Vector2(111, 146)
+
+[node name="Marron_Adversaire" parent="EnnemyZone" instance=ExtResource("3_k3exv")]
+visible = false
+position = Vector2(271, 147)
+
+[node name="Rouge_Adversaire" parent="EnnemyZone" instance=ExtResource("3_k3exv")]
+visible = false
+position = Vector2(436, 146)
+
+[node name="Jaune_Adversaire" parent="EnnemyZone" instance=ExtResource("3_k3exv")]
+visible = false
+position = Vector2(596, 149)
+
+[node name="Vert_Adversaire" parent="EnnemyZone" instance=ExtResource("3_k3exv")]
+visible = false
+position = Vector2(755, 149)
+
+[node name="Bleu_Adversaire" parent="EnnemyZone" instance=ExtResource("3_k3exv")]
+visible = false
+position = Vector2(914, 147)
+
+[node name="CardSlot_Adversaire" parent="EnnemyZone" instance=ExtResource("3_k3exv")]
+position = Vector2(1809, 177)
+script = ExtResource("4_erkcq")
+slot_type = 3
+
 [node name="NeutralZone" type="Node2D" parent="."]
 
 [node name="ColorRect" type="ColorRect" parent="NeutralZone"]
@@ -136,50 +165,51 @@ offset_right = 40.0
 offset_bottom = 23.0
 
 [node name="CardSlotHaut" parent="NeutralZone" groups=["SlotBas", "SlotHaut"] instance=ExtResource("3_k3exv")]
-position = Vector2(982, 398)
+position = Vector2(982, 421)
 script = ExtResource("4_erkcq")
 
 [node name="CardSlotBas" parent="NeutralZone" groups=["SlotBas"] instance=ExtResource("3_k3exv")]
-position = Vector2(982, 660)
+position = Vector2(982, 681)
 script = ExtResource("4_erkcq")
 slot_type = 1
 
 [node name="PlayerZone" type="Node2D" parent="."]
 
 [node name="ColorRect" type="ColorRect" parent="PlayerZone"]
+visible = false
 offset_top = 790.0
 offset_right = 1909.0
 offset_bottom = 1076.0
 color = Color(0.0185693, 0.657099, 0.410049, 1)
 
 [node name="CardSlot_Joueur" parent="PlayerZone" instance=ExtResource("3_k3exv")]
-position = Vector2(131, 927)
+position = Vector2(121, 936)
 script = ExtResource("4_erkcq")
 slot_type = 2
 
 [node name="Blanc_Joueur" parent="PlayerZone" instance=ExtResource("3_k3exv")]
 visible = false
-position = Vector2(923, 934)
+position = Vector2(1100, 936)
 
 [node name="Marron_Joueur" parent="PlayerZone" instance=ExtResource("3_k3exv")]
 visible = false
-position = Vector2(1080, 933)
+position = Vector2(1248, 936)
 
 [node name="Rouge_Joueur" parent="PlayerZone" instance=ExtResource("3_k3exv")]
 visible = false
-position = Vector2(1235, 934)
+position = Vector2(1399, 936)
 
 [node name="Jaune_Joueur" parent="PlayerZone" instance=ExtResource("3_k3exv")]
 visible = false
-position = Vector2(1391, 933)
+position = Vector2(1551, 934)
 
 [node name="Vert_Joueur" parent="PlayerZone" instance=ExtResource("3_k3exv")]
 visible = false
-position = Vector2(1550, 931)
+position = Vector2(1699, 935)
 
 [node name="Bleu_Joueur" parent="PlayerZone" instance=ExtResource("3_k3exv")]
 visible = false
-position = Vector2(1725, 933)
+position = Vector2(1848, 934)
 
 [node name="CardManager" type="Node2D" parent="."]
 script = ExtResource("2_rmro5")
