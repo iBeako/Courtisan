@@ -42,49 +42,98 @@ visible = false
 position = Vector2(345, 383)
 script = ExtResource("4_qgd1y")
 
+[node name="Label" type="Label" parent="NeutralZone/Blanc_Haut"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "0"
+
 [node name="Blanc_Bas" parent="NeutralZone" groups=["SlotBas"] instance=ExtResource("3_k3exv")]
 visible = false
 position = Vector2(345, 649)
+
+[node name="Label" type="Label" parent="NeutralZone/Blanc_Bas"]
+offset_right = 40.0
+offset_bottom = 23.0
 
 [node name="Marron_Haut" parent="NeutralZone" groups=["SlotHaut"] instance=ExtResource("3_k3exv")]
 visible = false
 position = Vector2(557, 387)
 
+[node name="Label" type="Label" parent="NeutralZone/Marron_Haut"]
+offset_right = 40.0
+offset_bottom = 23.0
+
 [node name="Marron_Bas" parent="NeutralZone" groups=["SlotBas"] instance=ExtResource("3_k3exv")]
 visible = false
 position = Vector2(557, 650)
+
+[node name="Label" type="Label" parent="NeutralZone/Marron_Bas"]
+offset_right = 40.0
+offset_bottom = 23.0
 
 [node name="Rouge_Haut" parent="NeutralZone" groups=["SlotHaut"] instance=ExtResource("3_k3exv")]
 visible = false
 position = Vector2(765, 386)
 
+[node name="Label" type="Label" parent="NeutralZone/Rouge_Haut"]
+offset_right = 40.0
+offset_bottom = 23.0
+
 [node name="Rouge_Bas" parent="NeutralZone" groups=["SlotBas"] instance=ExtResource("3_k3exv")]
 visible = false
 position = Vector2(766, 650)
+
+[node name="Label" type="Label" parent="NeutralZone/Rouge_Bas"]
+offset_right = 40.0
+offset_bottom = 23.0
 
 [node name="Jaune_Haut" parent="NeutralZone" groups=["SlotHaut"] instance=ExtResource("3_k3exv")]
 visible = false
 position = Vector2(1208, 402)
 
+[node name="Label" type="Label" parent="NeutralZone/Jaune_Haut"]
+offset_right = 40.0
+offset_bottom = 23.0
+
 [node name="Jaune_Bas" parent="NeutralZone" groups=["SlotBas"] instance=ExtResource("3_k3exv")]
 visible = false
 position = Vector2(1208, 668)
+
+[node name="Label" type="Label" parent="NeutralZone/Jaune_Bas"]
+offset_right = 40.0
+offset_bottom = 23.0
 
 [node name="Vert_Haut" parent="NeutralZone" groups=["SlotHaut"] instance=ExtResource("3_k3exv")]
 visible = false
 position = Vector2(1416, 393)
 
+[node name="Label" type="Label" parent="NeutralZone/Vert_Haut"]
+offset_right = 40.0
+offset_bottom = 23.0
+
 [node name="Vert_Bas" parent="NeutralZone" groups=["SlotBas"] instance=ExtResource("3_k3exv")]
 visible = false
 position = Vector2(1416, 659)
+
+[node name="Label" type="Label" parent="NeutralZone/Vert_Bas"]
+offset_right = 40.0
+offset_bottom = 23.0
 
 [node name="Bleu_Haut" parent="NeutralZone" groups=["SlotHaut"] instance=ExtResource("3_k3exv")]
 visible = false
 position = Vector2(1614, 392)
 
+[node name="Label" type="Label" parent="NeutralZone/Bleu_Haut"]
+offset_right = 40.0
+offset_bottom = 23.0
+
 [node name="Bleu_Bas" parent="NeutralZone" groups=["SlotBas"] instance=ExtResource("3_k3exv")]
 visible = false
 position = Vector2(1614, 658)
+
+[node name="Label" type="Label" parent="NeutralZone/Bleu_Bas"]
+offset_right = 40.0
+offset_bottom = 23.0
 
 [node name="CardSlotHaut" parent="NeutralZone" groups=["SlotBas", "SlotHaut"] instance=ExtResource("3_k3exv")]
 position = Vector2(982, 398)
@@ -103,12 +152,37 @@ offset_right = 1909.0
 offset_bottom = 1076.0
 color = Color(0.0185693, 0.657099, 0.410049, 1)
 
-[node name="CardManager" type="Node2D" parent="."]
-script = ExtResource("2_rmro5")
-
-[node name="CardSlot" parent="." instance=ExtResource("3_k3exv")]
+[node name="CardSlot_Joueur" parent="PlayerZone" instance=ExtResource("3_k3exv")]
 position = Vector2(131, 927)
 script = ExtResource("4_erkcq")
+slot_type = 2
+
+[node name="Blanc_Joueur" parent="PlayerZone" instance=ExtResource("3_k3exv")]
+visible = false
+position = Vector2(923, 934)
+
+[node name="Marron_Joueur" parent="PlayerZone" instance=ExtResource("3_k3exv")]
+visible = false
+position = Vector2(1080, 933)
+
+[node name="Rouge_Joueur" parent="PlayerZone" instance=ExtResource("3_k3exv")]
+visible = false
+position = Vector2(1235, 934)
+
+[node name="Jaune_Joueur" parent="PlayerZone" instance=ExtResource("3_k3exv")]
+visible = false
+position = Vector2(1391, 933)
+
+[node name="Vert_Joueur" parent="PlayerZone" instance=ExtResource("3_k3exv")]
+visible = false
+position = Vector2(1550, 931)
+
+[node name="Bleu_Joueur" parent="PlayerZone" instance=ExtResource("3_k3exv")]
+visible = false
+position = Vector2(1725, 933)
+
+[node name="CardManager" type="Node2D" parent="."]
+script = ExtResource("2_rmro5")
 
 [node name="PlayerHand" type="Node2D" parent="."]
 script = ExtResource("5_e645g")

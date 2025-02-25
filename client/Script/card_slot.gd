@@ -6,7 +6,7 @@ var cards_in_slot: Array = []  # Liste des cartes dans le slot
 const CARD_SPACING: int = 10  # Espacement entre les cartes
 
 # Énumération pour les types de slot
-enum SlotType { Haut, Bas }
+enum SlotType { Haut, Bas ,Joueur,Adversaire}
 
 # Propriété exportée pour identifier le type de slot
 @export var slot_type: SlotType = SlotType.Haut
@@ -33,7 +33,6 @@ func add_card(card: Node2D) -> void:
 	# Ajouter la carte à la liste des cartes dans le slot
 	cards_in_slot.append(card)
 
-# Calculer la position de la carte en fonction de son type
 func calculate_card_position_based_on_type(card_type: String) -> Vector2:
 	print("Calculating position for card type: ", card_type)
 
@@ -57,13 +56,26 @@ func calculate_card_position_based_on_type(card_type: String) -> Vector2:
 			print("Unknown card type: ", card_type)
 			return Vector2(0, 0)
 
-	# Trouver le slot dans NeutralZone
+	# Recherche du slot dans NeutralZone, PlayerZone et EnnemyZone
 	var neutral_zone: Node = get_node("/root/Main/NeutralZone")
-	if not neutral_zone:
-		print("Error: NeutralZone not found!")
+	var player_zone: Node = get_node("/root/Main/PlayerZone")
+	var ennemy_zone: Node = get_node("/root/Main/EnnemyZone")
+	
+	if not neutral_zone and not player_zone and not ennemy_zone:
+		print("Error: No valid zone found!")
 		return Vector2(0, 0)
 
-	var slot_node: Node2D = neutral_zone.get_node(node_name)
+	# Tentatives successives pour trouver le slot dans les trois zones
+	var slot_node: Node2D = null
+
+	if neutral_zone:
+		slot_node = neutral_zone.get_node(node_name)
+	if not slot_node and player_zone:
+		slot_node = player_zone.get_node(node_name)
+	if not slot_node and ennemy_zone:
+		slot_node = ennemy_zone.get_node(node_name)
+
+	# Si le slot est trouvé, retourner sa position
 	if slot_node:
 		print("Node found: ", slot_node.name, " at position ", slot_node.position)
 		return slot_node.position
@@ -78,7 +90,7 @@ func update_card_positions() -> void:
 		card.position = position + Vector2(i * CARD_SPACING, 0)  # Décalage horizontal
 		card.get_node("Area2D/CollisionShape2D").disabled = true  # Désactiver la collision
 
-# Retirer une carte du slot
+# Retirer une carte du slotNe
 func remove_card(card: Node2D) -> void:
 	if card in cards_in_slot:
 		cards_in_slot.erase(card)
