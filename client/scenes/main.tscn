@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://k7nrepl8jm6f"]
+
+[node name="Main" type="Node2D"]
+
+[node name="InputManager" type="Node2D" parent="."]
+
+[node name="CardManager" type="Node2D" parent="."]
+
+[node name="PlayerHand" type="Node2D" parent="."]
+
+[node name="ConnectServer" type="Node2D" parent="."]
