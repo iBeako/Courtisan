@@ -1,0 +1,68 @@
+[gd_scene load_steps=11 format=3 uid="uid://bw6ntenrqw1vi"]
+
+[ext_resource type="Script" path="res://Script/main.gd" id="1_yrk5g"]
+[ext_resource type="Texture2D" uid="uid://bwnofn63mn3mp" path="res://Assets/Board_2Players.png" id="2_iyv7j"]
+[ext_resource type="Script" path="res://Script/card_manager.gd" id="2_rmro5"]
+[ext_resource type="Script" path="res://Script/player_hand.gd" id="5_e645g"]
+[ext_resource type="Script" path="res://Script/deck.gd" id="6_6k3ci"]
+[ext_resource type="Texture2D" uid="uid://fcet1dxa144u" path="res://Assets/Deck.png" id="6_a45a8"]
+[ext_resource type="PackedScene" uid="uid://dam3quia7fus1" path="res://Scene/play_zone.tscn" id="8_0gqd0"]
+[ext_resource type="Texture2D" uid="uid://cmrdrrth5bhfq" path="res://Assets/jeudice-catch-up-games-courtisans_plateau-1.jpg" id="8_ffjsa"]
+[ext_resource type="Script" path="res://Script/input_manager.gd" id="9_327nj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v7si8"]
+size = Vector2(80, 120)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_yrk5g")
+
+[node name="Board2Players" type="Sprite2D" parent="."]
+position = Vector2(960, 540)
+texture = ExtResource("2_iyv7j")
+
+[node name="PlayZone_Ennemie" parent="." instance=ExtResource("8_0gqd0")]
+position = Vector2(330, 67)
+Play_ZoneType = 3
+
+[node name="PlayZone_Disgrace" parent="." instance=ExtResource("8_0gqd0")]
+position = Vector2(463, 544)
+Play_ZoneType = 2
+
+[node name="PlayZone_Grace" parent="." instance=ExtResource("8_0gqd0")]
+position = Vector2(461, 389)
+scale = Vector2(0.998534, 1)
+Play_ZoneType = 1
+
+[node name="PlayZone_Joueur" parent="." instance=ExtResource("8_0gqd0")]
+position = Vector2(775, 867)
+
+[node name="CardManager" type="Node2D" parent="."]
+script = ExtResource("2_rmro5")
+
+[node name="PlayerHand" type="Node2D" parent="."]
+script = ExtResource("5_e645g")
+
+[node name="Deck" type="Node2D" parent="."]
+script = ExtResource("6_6k3ci")
+
+[node name="Sprite2D" type="Sprite2D" parent="Deck"]
+position = Vector2(360, 540)
+scale = Vector2(0.444444, 0.45283)
+texture = ExtResource("6_a45a8")
+
+[node name="Area2D" type="Area2D" parent="Deck"]
+position = Vector2(141, 181)
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Deck/Area2D"]
+position = Vector2(219, 359)
+shape = SubResource("RectangleShape2D_v7si8")
+
+[node name="inputManager" type="Node2D" parent="."]
+script = ExtResource("9_327nj")
+
+[node name="Jeudice-catch-up-games-courtisansPlateau-1" type="Sprite2D" parent="."]
+position = Vector2(960, 540)
+scale = Vector2(0.664667, 0.815218)
+texture = ExtResource("8_ffjsa")
