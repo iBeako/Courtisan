@@ -14,7 +14,7 @@ func _ready():
 func _on_peer_connected(peer_id:int) -> void:
 	number_of_client += 1
 	print("New client connected with id: %d" % peer_id)
-	var welcome = {"your_id": peer_id}
+	var welcome = {"message_type":"id","your_id":peer_id}
 	var json = JSON.stringify(welcome)
 	peer.set_target_peer(peer_id)
 	peer.put_packet(json.to_utf8_buffer())
@@ -30,16 +30,41 @@ func _process(_delta):
 		_process_packet(sender_id, packet)
 
 func _process_packet(sender_id: int, packet: String):
-	if _validate_message(packet):
-		_broadcast_message(packet)
-	else:
-		_send_error(sender_id, "Invalid message")
+	var json = JSON.new()
+	var parse_result = json.parse(packet)
+	if parse_result == OK :
+		var data_dict = json.data
+		if data_dict.has("message_type") and data_dict["message_type"] == "message":
+			if _validate_message(packet):
+				_broadcast_message(packet)
+			else:
+				peer.set_target_peer(sender_id)
+				var error_message = {"message_type":"error","error_type":"message"}
+				packet = JSON.stringify(error_message)
+				peer.put_packet(packet.to_utf8_buffer())
+		elif data_dict.has("message_type") and data_dict["message_type"] == "action":
+			if _validate_action(packet):
+				_broadcast_action(packet)
+			else:
+				peer.set_target_peer(sender_id)
+				var error_message = {"message_type":"error","error_type":"action"}
+				packet = JSON.stringify(error_message)
+				peer.put_packet(packet.to_utf8_buffer())
 
 func _validate_message(_message: String) -> bool:
 	# Always return true for this example
 	return true
+	
+func _validate_action(_message: String) -> bool:
+	# Always return true for this example
+	return true
 
 func _broadcast_message(message: String):
+	peer.set_target_peer(MultiplayerPeer.TARGET_PEER_BROADCAST)
+	peer.put_packet(message.to_utf8_buffer())
+	
+func _broadcast_action(message: String):
+	# will change with spy
 	peer.set_target_peer(MultiplayerPeer.TARGET_PEER_BROADCAST)
 	peer.put_packet(message.to_utf8_buffer())
 

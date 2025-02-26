@@ -1,8 +1,23 @@
 extends Node
 
+#action :
+#{"message_type":"action","player":1,"card":78,"area":"queen_table","position":1} card in the light
+#{"message_type":"action","player":1,"card":78,"area":"queen_table","position":-1} card out of favor
+#{"message_type":"action","player":1,"card":78,"area":"our_domain"}
+#{"message_type":"action","player":1,"card":78,"area":"adversary_domain","id_adversary":"2"}
+#message:
+#{"message_type":"message","player":1,"message":1}
+#id:
+#{"message_type":"id","your_id":}
+#error:
+#{"message_type":"error","error_type":"action"} -> unknown action : ask to redo action
+#{"message_type":"error","error_type":"message"} ->  unknown message: do nothing
+#{"message_type":"error","error_type":"connection"} -> connection not down: no connection
+#{"message_type":"error","error_type":"command"} -> unknown command : do nothing
+
 var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
 var port: int = 12345
-var address: String = "ws://localhost:%d" % port  # Change 'localhost' to the actual address when needed
+var address: String = "ws://localhost:%d" % port  # Change 'localhost' to the future address when needed
 var id: int
 func _ready():
 	peer.create_client(address)
@@ -20,15 +35,35 @@ func send_message(message: String):
 
 func _process_packet(packet: String):
 	var json = JSON.new()
-	var error = json.parse(packet)
-	if error == OK:
+	var error_json = json.parse(packet)
+	if error_json == OK:
 		var message = json.data
-		if message.has("error"):
-			print("Error from server: %s" % message.error)
-		elif message.has("your_id"):
+		#error message
+		if message.has("message_type") and message["message_type"] == "error":
+			print("Error from server: %s" % message["error_type"])
+			_process_error(message)
+		#id message
+		elif message.has("message_type")  and message["message_type"] == "id":
 			id = message.your_id
+		#action message
+		elif message.has("message_type")  and message["message_type"] == "action":
+			var writting_message = "player %d "  % message["player"] + " has put %s" % message["card"] + " in %s" % message["area"]
+			if message.has("position"):
+				if message["position"] > 0:
+					writting_message = writting_message + " in the light"
+				else:
+					writting_message = writting_message + " out of favor"
+			if message.has("id_adversary"):
+					writting_message = writting_message + message["id_adversary"]
+			print(writting_message)
+		elif message.has("message_type") and message["message_type"] == "message":
+			print("player %s "  % message["player"] + " has said message %d" % message["message"] )
 		else:
-
-			print("client %d " % id + ";Message from server: %s" % message)
+			print("invalid message")	
 	else:
 		print("Invalid JSON received")
+
+func _process_error(message: Dictionary):
+	if message["error_type"] == "action":
+		print("redo an action")
+	
