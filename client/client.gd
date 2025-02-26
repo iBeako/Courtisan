@@ -25,7 +25,10 @@ func _process_packet(packet: String):
 		var message = json.data
 		if message.has("error"):
 			print("Error from server: %s" % message.error)
+		elif message.has("your_id"):
+			id = message.your_id
 		else:
-			print("Message from server: %s" % message)
+
+			print("client %d " % id + ";Message from server: %s" % message)
 	else:
 		print("Invalid JSON received")

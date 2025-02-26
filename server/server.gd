@@ -13,14 +13,15 @@ func _ready():
 
 func _on_peer_connected(peer_id:int) -> void:
 	number_of_client += 1
-	if number_of_client >= 5:
-		peer.refuse_new_connections = true
 	print("New client connected with id: %d" % peer_id)
 	var welcome = {"your_id": peer_id}
 	var json = JSON.stringify(welcome)
 	peer.set_target_peer(peer_id)
 	peer.put_packet(json.to_utf8_buffer())
-
+	if number_of_client >= MAX_CLIENT:
+		peer.refuse_new_connections = true
+		print("cannot connect more people in the room")
+		
 func _process(_delta):
 	peer.poll()
 	while peer.get_available_packet_count() > 0:

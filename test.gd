@@ -1,6 +1,6 @@
 extends Node
 
-const CLIENT_COUNT = 5
+const CLIENT_COUNT = 10
 var server: Node
 var clients: Array
 
