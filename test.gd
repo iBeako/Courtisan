@@ -1,6 +1,6 @@
 extends Node
 
-const CLIENT_COUNT = 10
+const CLIENT_COUNT = 5
 var server: Node
 var clients: Array
 
@@ -20,12 +20,11 @@ func _ready():
 	await get_tree().create_timer(1.0).timeout
 	
 	# Send test messages from clients
-	var j = 0
 	for i in range(CLIENT_COUNT):
-		var message = {"message_type":"action","player":i,"card":j,"area":"queen_table","position":1}
-		j += 1
+		var message = {"message_type":"card_played","player":i,"card_type":"normal","family":"deer","area":"queen_table","position":1}
 		var message_converted_in_json = JSON.stringify(message)
 		clients[i].send_message(message_converted_in_json)
+		
 	
 	# Wait a moment to process messages
 	await get_tree().create_timer(1.0).timeout

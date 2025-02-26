@@ -1,5 +1,8 @@
 extends Node
 
+#client receive only the action done during a turn and in the beginning 
+#of every new turn send all the table
+
 var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
 var port: int = 12345  # Change this for an internet address in the future
 const MAX_CLIENT:int = 5
@@ -18,7 +21,7 @@ func _on_peer_connected(peer_id:int) -> void:
 	var json = JSON.stringify(welcome)
 	peer.set_target_peer(peer_id)
 	peer.put_packet(json.to_utf8_buffer())
-	if number_of_client >= MAX_CLIENT:
+	if number_of_client > MAX_CLIENT:
 		peer.refuse_new_connections = true
 		print("cannot connect more people in the room")
 		
@@ -42,28 +45,35 @@ func _process_packet(sender_id: int, packet: String):
 				var error_message = {"message_type":"error","error_type":"message"}
 				packet = JSON.stringify(error_message)
 				peer.put_packet(packet.to_utf8_buffer())
-		elif data_dict.has("message_type") and data_dict["message_type"] == "action":
-			if _validate_action(packet):
-				_broadcast_action(packet)
+		elif data_dict.has("message_type") and data_dict["message_type"] == "card_played":
+			if _validate_card_played(packet):
+				_broadcast_card_played(packet)
 			else:
 				peer.set_target_peer(sender_id)
 				var error_message = {"message_type":"error","error_type":"action"}
 				packet = JSON.stringify(error_message)
 				peer.put_packet(packet.to_utf8_buffer())
+		else:
+			print("problem")
 
 func _validate_message(_message: String) -> bool:
-	# Always return true for this example
+	# massage has the good format
+	# message number exist (for nom between 1 and 5)
 	return true
 	
-func _validate_action(_message: String) -> bool:
-	# Always return true for this example
+func _validate_card_played(_message: String) -> bool:
+	# message has the good format
+	# validate action if it is the good player that have played the card (same client id and same id)
+	# the player has the card is the hand
+	# he did not put a card in the same area in the turn
+	# he had a card in hand
 	return true
 
 func _broadcast_message(message: String):
 	peer.set_target_peer(MultiplayerPeer.TARGET_PEER_BROADCAST)
 	peer.put_packet(message.to_utf8_buffer())
 	
-func _broadcast_action(message: String):
+func _broadcast_card_played(message: String):
 	# will change with spy
 	peer.set_target_peer(MultiplayerPeer.TARGET_PEER_BROADCAST)
 	peer.put_packet(message.to_utf8_buffer())

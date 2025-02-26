@@ -1,10 +1,26 @@
 extends Node
 
-#action :
-#{"message_type":"action","player":1,"card":78,"area":"queen_table","position":1} card in the light
-#{"message_type":"action","player":1,"card":78,"area":"queen_table","position":-1} card out of favor
-#{"message_type":"action","player":1,"card":78,"area":"our_domain"}
-#{"message_type":"action","player":1,"card":78,"area":"adversary_domain","id_adversary":"2"}
+enum family {
+	butterfly = 0,
+	frog = 1,
+	bird = 2,
+	bunny = 3,
+	deer = 4,
+	fish = 5
+}
+
+#card_played:
+#{"message_type":"card_played","player":1,"card_type":"normal","family":"deer","area":"queen_table","position":1} card in the light
+#{"message_type":"card_played","player":1,"card_type":"normal","family":"deer","area":"queen_table","position":-1} card out of favor
+#{"message_type":"card_played","player":1,"card_type":"normal","family":"deer","area":"our_domain"}
+#{"message_type":"card_played","player":1,"card_type":"normal","family":"deer","area":"domain","id_player_domain":"2"}
+#action:
+#{"message_type":"action","player":1,"card_type":"assassin","family":"deer",area":"queen_table","card_killed_type":"normal","card_killed_family":"deer"}
+#{"message_type":"action","player":1,"card_type":"spy","family":"deer",area":"our_domain"}
+#{"message_type":"action","player":1,"card":78,"card_type":"spy","family":"deer","area":"adversary_domain","id_adversary":"2""}
+#table:
+#{"message_type":"table","area":"queen_table","position":1,"card_type":"normal","family":"deer"}
+#{"message_type":"table","area":"domain","player":1,"card_type":"normal","family":"deer"}
 #message:
 #{"message_type":"message","player":1,"message":1}
 #id:
@@ -46,8 +62,8 @@ func _process_packet(packet: String):
 		elif message.has("message_type")  and message["message_type"] == "id":
 			id = message.your_id
 		#action message
-		elif message.has("message_type")  and message["message_type"] == "action":
-			var writting_message = "player %d "  % message["player"] + " has put %s" % message["card"] + " in %s" % message["area"]
+		elif message.has("message_type")  and message["message_type"] == "card_played":
+			var writting_message = "player %d "  % message["player"] + " has put %s" % message["card_type"] + " family %s" % message["family"]+ " in %s" % message["area"]
 			if message.has("position"):
 				if message["position"] > 0:
 					writting_message = writting_message + " in the light"
@@ -64,6 +80,6 @@ func _process_packet(packet: String):
 		print("Invalid JSON received")
 
 func _process_error(message: Dictionary):
-	if message["error_type"] == "action":
+	if message["error_type"] == "card_played":
 		print("redo an action")
 	
