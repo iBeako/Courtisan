@@ -1,0 +1,71 @@
+[gd_scene load_steps=4 format=3 uid="uid://fuasgdc4eiki"]
+
+[ext_resource type="Script" path="res://menu/main_menu.gd" id="1_x2gk5"]
+[ext_resource type="Texture2D" uid="uid://cuqonhmi7ircd" path="res://menu/asset/bgbg 1.png" id="2_rdqc8"]
+
+[sub_resource type="SystemFont" id="SystemFont_cq8gc"]
+
+[node name="Main_menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_x2gk5")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_rdqc8")
+
+[node name="MarginContainer" type="MarginContainer" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 120
+
+[node name="seperator" type="Control" parent="TextureRect/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TextureRect/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_cq8gc")
+theme_override_font_sizes/font_size = 64
+text = "Game title"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TextureRect/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="seperator" type="Control" parent="TextureRect/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TextureRect/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Boutton 1
+"
+
+[node name="Label2" type="Label" parent="TextureRect/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Boutton 1
+"
