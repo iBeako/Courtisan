@@ -5,11 +5,8 @@ var card_in_slot = false
 var cards_in_slot: Array = []  # Liste des cartes dans le slot
 const CARD_SPACING: int = 10  # Espacement entre les cartes
 
-# Énumération pour les types de slot
-enum SlotType { Haut, Bas ,Joueur,Adversaire}
-
-# Propriété exportée pour identifier le type de slot
-@export var slot_type: SlotType = SlotType.Haut
+# Référence à la scène principale (à définir dans l'éditeur ou via un script)
+@onready var main_node: Node2D = get_node("/root/Main")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -20,8 +17,12 @@ func add_card(card: Node2D) -> void:
 	if card in cards_in_slot:
 		return  # Évite d'ajouter la même carte plusieurs fois
 
-	# Déterminer la position en fonction du type de carte
-	var target_position: Vector2 = calculate_card_position_based_on_type(card.card_type)
+	# Déterminer dynamiquement le type de zone en fonction du parent
+	var zone_type: String = determine_zone_type()
+	print("Zone type determined: ", zone_type)  # Affiche le type de zone déterminé
+
+	# Déterminer la position en fonction du type de carte et du type de zone
+	var target_position: Vector2 = calculate_card_position_based_on_type(card.card_type, zone_type)
 
 	# Animation pour un placement fluide
 	var tween: Tween = get_tree().create_tween()
@@ -33,55 +34,68 @@ func add_card(card: Node2D) -> void:
 	# Ajouter la carte à la liste des cartes dans le slot
 	cards_in_slot.append(card)
 
-func calculate_card_position_based_on_type(card_type: String) -> Vector2:
-	print("Calculating position for card type: ", card_type)
+# Déterminer le type de zone en fonction du parent
+func determine_zone_type() -> String:
+	var parent_name: String = get_parent().name  # Récupère le nom du nœud parent
+	print("Parent name: ", parent_name)  # Affiche le nom du parent
 
-	var node_name: String = ""
+	# Extraire le type de zone du nom du parent
+	if "Joueur" in parent_name:
+		return "Joueur"
+	elif "Grace" in parent_name:
+		return "Grace"
+	elif "Disgrace" in parent_name:
+		return "Disgrace"
+	elif "Ennemie" in parent_name:
+		return "Ennemie"
+	else:
+		print("Unknown zone type for parent: ", parent_name)
+		return "Joueur"  # Valeur par défaut
 
-	# Associer chaque type de carte à son slot haut ou bas
-	match card_type:
-		"blanc":
-			node_name = "Blanc_" + SlotType.keys()[slot_type]
-		"vert":
-			node_name = "Vert_" + SlotType.keys()[slot_type]
-		"rouge":
-			node_name = "Rouge_" + SlotType.keys()[slot_type]
-		"jaune":
-			node_name = "Jaune_" + SlotType.keys()[slot_type]
-		"marron":
-			node_name = "Marron_" + SlotType.keys()[slot_type]
-		"bleu":
-			node_name = "Bleu_" + SlotType.keys()[slot_type]
-		_:
-			print("Unknown card type: ", card_type)
-			return Vector2(0, 0)
+# Calculer la position de la carte en fonction du type de carte et du type de zone
+func calculate_card_position_based_on_type(card_type: String, zone_type: String) -> Vector2:
+	print("Calculating position for card type: ", card_type, " in zone: ", zone_type)
 
-	# Recherche du slot dans NeutralZone, PlayerZone et EnnemyZone
-	var neutral_zone: Node = get_node("/root/Main/NeutralZone")
-	var player_zone: Node = get_node("/root/Main/PlayerZone")
-	var ennemy_zone: Node = get_node("/root/Main/EnnemyZone")
-	
-	if not neutral_zone and not player_zone and not ennemy_zone:
-		print("Error: No valid zone found!")
+	# Construire le nom du nœud en fonction de la couleur de la carte et du type de zone
+	var node_name: String = card_type.capitalize() + "_" + zone_type
+	print("Node name to find: ", node_name)  # Affiche le nom du nœud recherché
+
+	# Récupérer la zone correspondante
+	var target_zone: Node = get_target_zone(zone_type)
+
+	# Vérifier si la zone existe
+	if not target_zone:
+		print("Error: Target zone not found for type: ", zone_type)
 		return Vector2(0, 0)
 
-	# Tentatives successives pour trouver le slot dans les trois zones
-	var slot_node: Node2D = null
+	# Trouver le nœud dans la zone
+	var slot_node: Node2D = target_zone.get_node_or_null(node_name)
 
-	if neutral_zone:
-		slot_node = neutral_zone.get_node(node_name)
-	if not slot_node and player_zone:
-		slot_node = player_zone.get_node(node_name)
-	if not slot_node and ennemy_zone:
-		slot_node = ennemy_zone.get_node(node_name)
-
-	# Si le slot est trouvé, retourner sa position
+	# Si le nœud est trouvé, retourner sa position globale
 	if slot_node:
-		print("Node found: ", slot_node.name, " at position ", slot_node.position)
-		return slot_node.position
+		print("Node found: ", slot_node.name, " at global position ", slot_node.global_position)
+		var local_pos = main_node.to_local(slot_node.global_position)  # Convertit en coordonnées locales par rapport à la scène principale
+		print("Node local position in Main: ", local_pos)
+		return local_pos
 	else:
 		print("Node not found: ", node_name)
 		return Vector2(0, 0)
+
+# Récupérer la zone cible en fonction du type de zone
+func get_target_zone(zone_type: String) -> Node:
+	print("Getting target zone for type: ", zone_type)  # Affiche le type de zone recherché
+	match zone_type:
+		"Joueur":
+			return get_node_or_null("/root/Main/PlayZone_Joueur")
+		"Grace":
+			return get_node_or_null("/root/Main/PlayZone_Grace")
+		"Disgrace":
+			return get_node_or_null("/root/Main/PlayZone_Disgrace")
+		"Ennemie":
+			return get_node_or_null("/root/Main/PlayZone_Ennemie")
+		_:
+			print("Unknown zone type: ", zone_type)
+			return null
 
 # Mettre à jour les positions des cartes
 func update_card_positions() -> void:
@@ -90,7 +104,7 @@ func update_card_positions() -> void:
 		card.position = position + Vector2(i * CARD_SPACING, 0)  # Décalage horizontal
 		card.get_node("Area2D/CollisionShape2D").disabled = true  # Désactiver la collision
 
-# Retirer une carte du slotNe
+# Retirer une carte du slot
 func remove_card(card: Node2D) -> void:
 	if card in cards_in_slot:
 		cards_in_slot.erase(card)

@@ -5,8 +5,8 @@ signal hand_emptied  # Signal émis lorsque la main est vide
 const CARD_SCENE_PATH = "res://Scene/card.tscn"
 var player_hand = []
 var center_screen_x
-var CARD_WIDTH = 190
-var HAND_Y_POSITION = 950
+var CARD_WIDTH = 95
+var HAND_Y_POSITION =940
 
 func add_card_to_hand(card):
 	if card not in player_hand:
@@ -27,7 +27,7 @@ func update_hand_position():
 
 func calculate_card_position(index):
 	var total_width = (player_hand.size() - 1) * CARD_WIDTH
-	center_screen_x = get_viewport().size.x / 4 + 30
+	center_screen_x = get_viewport().size.x / 4 + 100
 	var x_offset = center_screen_x + index * CARD_WIDTH - total_width / 2
 	return x_offset
 

@@ -1,215 +1,40 @@
-[gd_scene load_steps=12 format=3 uid="uid://bw6ntenrqw1vi"]
+[gd_scene load_steps=11 format=3 uid="uid://bw6ntenrqw1vi"]
 
 [ext_resource type="Script" path="res://Script/main.gd" id="1_yrk5g"]
+[ext_resource type="Texture2D" uid="uid://bwnofn63mn3mp" path="res://Assets/Board_2Players.png" id="2_iyv7j"]
 [ext_resource type="Script" path="res://Script/card_manager.gd" id="2_rmro5"]
-[ext_resource type="PackedScene" uid="uid://hxhhmah7l5fw" path="res://Scene/card_slot.tscn" id="3_k3exv"]
-[ext_resource type="Script" path="res://Script/card_slot.gd" id="4_erkcq"]
-[ext_resource type="Script" path="res://Scene/card_slot2.gd" id="4_qgd1y"]
 [ext_resource type="Script" path="res://Script/player_hand.gd" id="5_e645g"]
 [ext_resource type="Script" path="res://Script/deck.gd" id="6_6k3ci"]
 [ext_resource type="Texture2D" uid="uid://fcet1dxa144u" path="res://Assets/Deck.png" id="6_a45a8"]
+[ext_resource type="PackedScene" uid="uid://dam3quia7fus1" path="res://Scene/play_zone.tscn" id="8_0gqd0"]
 [ext_resource type="Texture2D" uid="uid://cmrdrrth5bhfq" path="res://Assets/jeudice-catch-up-games-courtisans_plateau-1.jpg" id="8_ffjsa"]
 [ext_resource type="Script" path="res://Script/input_manager.gd" id="9_327nj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v7si8"]
-size = Vector2(179, 265)
+size = Vector2(80, 120)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_yrk5g")
 
-[node name="EnnemyZone" type="Node2D" parent="."]
+[node name="Board2Players" type="Sprite2D" parent="."]
+position = Vector2(960, 540)
+texture = ExtResource("2_iyv7j")
 
-[node name="ColorRect" type="ColorRect" parent="EnnemyZone"]
-offset_right = 1917.0
-offset_bottom = 376.0
-color = Color(0.571057, 0.323192, 0.329674, 1)
+[node name="PlayZone_Ennemie" parent="." instance=ExtResource("8_0gqd0")]
+position = Vector2(330, 67)
+Play_ZoneType = 3
 
-[node name="Blanc_Adversaire" parent="EnnemyZone" instance=ExtResource("3_k3exv")]
-visible = false
-position = Vector2(111, 146)
+[node name="PlayZone_Disgrace" parent="." instance=ExtResource("8_0gqd0")]
+position = Vector2(463, 544)
+Play_ZoneType = 2
 
-[node name="Marron_Adversaire" parent="EnnemyZone" instance=ExtResource("3_k3exv")]
-visible = false
-position = Vector2(271, 147)
+[node name="PlayZone_Grace" parent="." instance=ExtResource("8_0gqd0")]
+position = Vector2(461, 389)
+scale = Vector2(0.998534, 1)
+Play_ZoneType = 1
 
-[node name="Rouge_Adversaire" parent="EnnemyZone" instance=ExtResource("3_k3exv")]
-visible = false
-position = Vector2(436, 146)
-
-[node name="Jaune_Adversaire" parent="EnnemyZone" instance=ExtResource("3_k3exv")]
-visible = false
-position = Vector2(596, 149)
-
-[node name="Vert_Adversaire" parent="EnnemyZone" instance=ExtResource("3_k3exv")]
-visible = false
-position = Vector2(755, 149)
-
-[node name="Bleu_Adversaire" parent="EnnemyZone" instance=ExtResource("3_k3exv")]
-visible = false
-position = Vector2(914, 147)
-
-[node name="CardSlot_Adversaire" parent="EnnemyZone" instance=ExtResource("3_k3exv")]
-position = Vector2(1809, 177)
-script = ExtResource("4_erkcq")
-slot_type = 3
-
-[node name="NeutralZone" type="Node2D" parent="."]
-
-[node name="ColorRect" type="ColorRect" parent="NeutralZone"]
-offset_left = 5.0
-offset_top = 366.0
-offset_right = 1914.0
-offset_bottom = 790.0
-color = Color(0.525101, 0.525101, 0.525101, 1)
-
-[node name="Jeudice-catch-up-games-courtisansPlateau-1" type="Sprite2D" parent="NeutralZone"]
-position = Vector2(970, 557)
-texture = ExtResource("8_ffjsa")
-
-[node name="Blanc_Haut" parent="NeutralZone" groups=["SlotHaut"] instance=ExtResource("3_k3exv")]
-visible = false
-position = Vector2(345, 383)
-script = ExtResource("4_qgd1y")
-
-[node name="Label" type="Label" parent="NeutralZone/Blanc_Haut"]
-offset_right = 40.0
-offset_bottom = 23.0
-text = "0"
-
-[node name="Blanc_Bas" parent="NeutralZone" groups=["SlotBas"] instance=ExtResource("3_k3exv")]
-visible = false
-position = Vector2(345, 649)
-
-[node name="Label" type="Label" parent="NeutralZone/Blanc_Bas"]
-offset_right = 40.0
-offset_bottom = 23.0
-
-[node name="Marron_Haut" parent="NeutralZone" groups=["SlotHaut"] instance=ExtResource("3_k3exv")]
-visible = false
-position = Vector2(557, 387)
-
-[node name="Label" type="Label" parent="NeutralZone/Marron_Haut"]
-offset_right = 40.0
-offset_bottom = 23.0
-
-[node name="Marron_Bas" parent="NeutralZone" groups=["SlotBas"] instance=ExtResource("3_k3exv")]
-visible = false
-position = Vector2(557, 650)
-
-[node name="Label" type="Label" parent="NeutralZone/Marron_Bas"]
-offset_right = 40.0
-offset_bottom = 23.0
-
-[node name="Rouge_Haut" parent="NeutralZone" groups=["SlotHaut"] instance=ExtResource("3_k3exv")]
-visible = false
-position = Vector2(765, 386)
-
-[node name="Label" type="Label" parent="NeutralZone/Rouge_Haut"]
-offset_right = 40.0
-offset_bottom = 23.0
-
-[node name="Rouge_Bas" parent="NeutralZone" groups=["SlotBas"] instance=ExtResource("3_k3exv")]
-visible = false
-position = Vector2(766, 650)
-
-[node name="Label" type="Label" parent="NeutralZone/Rouge_Bas"]
-offset_right = 40.0
-offset_bottom = 23.0
-
-[node name="Jaune_Haut" parent="NeutralZone" groups=["SlotHaut"] instance=ExtResource("3_k3exv")]
-visible = false
-position = Vector2(1208, 402)
-
-[node name="Label" type="Label" parent="NeutralZone/Jaune_Haut"]
-offset_right = 40.0
-offset_bottom = 23.0
-
-[node name="Jaune_Bas" parent="NeutralZone" groups=["SlotBas"] instance=ExtResource("3_k3exv")]
-visible = false
-position = Vector2(1208, 668)
-
-[node name="Label" type="Label" parent="NeutralZone/Jaune_Bas"]
-offset_right = 40.0
-offset_bottom = 23.0
-
-[node name="Vert_Haut" parent="NeutralZone" groups=["SlotHaut"] instance=ExtResource("3_k3exv")]
-visible = false
-position = Vector2(1416, 393)
-
-[node name="Label" type="Label" parent="NeutralZone/Vert_Haut"]
-offset_right = 40.0
-offset_bottom = 23.0
-
-[node name="Vert_Bas" parent="NeutralZone" groups=["SlotBas"] instance=ExtResource("3_k3exv")]
-visible = false
-position = Vector2(1416, 659)
-
-[node name="Label" type="Label" parent="NeutralZone/Vert_Bas"]
-offset_right = 40.0
-offset_bottom = 23.0
-
-[node name="Bleu_Haut" parent="NeutralZone" groups=["SlotHaut"] instance=ExtResource("3_k3exv")]
-visible = false
-position = Vector2(1614, 392)
-
-[node name="Label" type="Label" parent="NeutralZone/Bleu_Haut"]
-offset_right = 40.0
-offset_bottom = 23.0
-
-[node name="Bleu_Bas" parent="NeutralZone" groups=["SlotBas"] instance=ExtResource("3_k3exv")]
-visible = false
-position = Vector2(1614, 658)
-
-[node name="Label" type="Label" parent="NeutralZone/Bleu_Bas"]
-offset_right = 40.0
-offset_bottom = 23.0
-
-[node name="CardSlotHaut" parent="NeutralZone" groups=["SlotBas", "SlotHaut"] instance=ExtResource("3_k3exv")]
-position = Vector2(982, 421)
-script = ExtResource("4_erkcq")
-
-[node name="CardSlotBas" parent="NeutralZone" groups=["SlotBas"] instance=ExtResource("3_k3exv")]
-position = Vector2(982, 681)
-script = ExtResource("4_erkcq")
-slot_type = 1
-
-[node name="PlayerZone" type="Node2D" parent="."]
-
-[node name="ColorRect" type="ColorRect" parent="PlayerZone"]
-visible = false
-offset_top = 790.0
-offset_right = 1909.0
-offset_bottom = 1076.0
-color = Color(0.0185693, 0.657099, 0.410049, 1)
-
-[node name="CardSlot_Joueur" parent="PlayerZone" instance=ExtResource("3_k3exv")]
-position = Vector2(121, 936)
-script = ExtResource("4_erkcq")
-slot_type = 2
-
-[node name="Blanc_Joueur" parent="PlayerZone" instance=ExtResource("3_k3exv")]
-visible = false
-position = Vector2(1100, 936)
-
-[node name="Marron_Joueur" parent="PlayerZone" instance=ExtResource("3_k3exv")]
-visible = false
-position = Vector2(1248, 936)
-
-[node name="Rouge_Joueur" parent="PlayerZone" instance=ExtResource("3_k3exv")]
-visible = false
-position = Vector2(1399, 936)
-
-[node name="Jaune_Joueur" parent="PlayerZone" instance=ExtResource("3_k3exv")]
-visible = false
-position = Vector2(1551, 934)
-
-[node name="Vert_Joueur" parent="PlayerZone" instance=ExtResource("3_k3exv")]
-visible = false
-position = Vector2(1699, 935)
-
-[node name="Bleu_Joueur" parent="PlayerZone" instance=ExtResource("3_k3exv")]
-visible = false
-position = Vector2(1848, 934)
+[node name="PlayZone_Joueur" parent="." instance=ExtResource("8_0gqd0")]
+position = Vector2(775, 867)
 
 [node name="CardManager" type="Node2D" parent="."]
 script = ExtResource("2_rmro5")
@@ -221,19 +46,23 @@ script = ExtResource("5_e645g")
 script = ExtResource("6_6k3ci")
 
 [node name="Sprite2D" type="Sprite2D" parent="Deck"]
-position = Vector2(122, 598)
+position = Vector2(360, 540)
+scale = Vector2(0.444444, 0.45283)
 texture = ExtResource("6_a45a8")
 
 [node name="Area2D" type="Area2D" parent="Deck"]
-position = Vector2(141.227, 179.279)
-rotation = -0.261799
+position = Vector2(141, 181)
 collision_layer = 4
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Deck/Area2D"]
-position = Vector2(-127.203, 400.443)
-rotation = 0.261799
+position = Vector2(219, 359)
 shape = SubResource("RectangleShape2D_v7si8")
 
 [node name="inputManager" type="Node2D" parent="."]
 script = ExtResource("9_327nj")
+
+[node name="Jeudice-catch-up-games-courtisansPlateau-1" type="Sprite2D" parent="."]
+position = Vector2(960, 540)
+scale = Vector2(0.664667, 0.815218)
+texture = ExtResource("8_ffjsa")
