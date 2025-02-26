@@ -20,8 +20,10 @@ func _ready():
 	await get_tree().create_timer(1.0).timeout
 	
 	# Send test messages from clients
+	var j = 0
 	for i in range(CLIENT_COUNT):
-		var message = {"client_id": i, "content": "Hello from client %d" % i}
+		var message = {"message_type":"action","player":i,"card":j,"area":"queen_table","position":1}
+		j += 1
 		var message_converted_in_json = JSON.stringify(message)
 		clients[i].send_message(message_converted_in_json)
 	
