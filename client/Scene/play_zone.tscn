@@ -13,7 +13,8 @@ color = Color(0.0185693, 0.657099, 0.410049, 1)
 
 [node name="CardSlot_Joueur" parent="." instance=ExtResource("1_bpis3")]
 visible = false
-position = Vector2(121, 936)
+position = Vector2(367, 74)
+scale = Vector2(9.1517, 1.2154)
 
 [node name="Blanc_Joueur" parent="." instance=ExtResource("1_bpis3")]
 position = Vector2(665, 73)

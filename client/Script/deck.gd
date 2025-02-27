@@ -21,6 +21,7 @@ func draw_cards():
 		var new_card = card_scene.instantiate()  # Instancier la carte
 		var card_color = get_random_card_color()  # Attribuer une couleur aléatoire
 		new_card.card_type = card_color  # Assigner la couleur à la carte
+		new_card.z_index = 10
 		$"../CardManager".add_child(new_card)  # Ajouter la carte au CardManager
 		new_card.name = "carte"  # Nom de la carte
 		player_hand.add_card_to_hand(new_card)  # Ajouter la carte à la main du joueur

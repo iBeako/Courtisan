@@ -20,21 +20,36 @@ script = ExtResource("1_yrk5g")
 position = Vector2(960, 540)
 texture = ExtResource("2_iyv7j")
 
+[node name="Jeudice-catch-up-games-courtisansPlateau-1" type="Sprite2D" parent="."]
+position = Vector2(960, 540)
+scale = Vector2(0.664667, 0.815218)
+texture = ExtResource("8_ffjsa")
+
 [node name="PlayZone_Ennemie" parent="." instance=ExtResource("8_0gqd0")]
+light_mask = 2
+visibility_layer = 2
 position = Vector2(330, 67)
 Play_ZoneType = 3
 
 [node name="PlayZone_Disgrace" parent="." instance=ExtResource("8_0gqd0")]
-position = Vector2(463, 544)
+light_mask = 2
+visibility_layer = 2
+position = Vector2(1198, 536)
+scale = Vector2(-1, 1)
 Play_ZoneType = 2
 
 [node name="PlayZone_Grace" parent="." instance=ExtResource("8_0gqd0")]
-position = Vector2(461, 389)
-scale = Vector2(0.998534, 1)
+light_mask = 2
+visibility_layer = 2
+position = Vector2(1198, 398)
+scale = Vector2(-1, 1)
 Play_ZoneType = 1
 
 [node name="PlayZone_Joueur" parent="." instance=ExtResource("8_0gqd0")]
-position = Vector2(775, 867)
+light_mask = 2
+visibility_layer = 2
+position = Vector2(1506, 867)
+scale = Vector2(-1, 1)
 
 [node name="CardManager" type="Node2D" parent="."]
 script = ExtResource("2_rmro5")
@@ -61,8 +76,3 @@ shape = SubResource("RectangleShape2D_v7si8")
 
 [node name="inputManager" type="Node2D" parent="."]
 script = ExtResource("9_327nj")
-
-[node name="Jeudice-catch-up-games-courtisansPlateau-1" type="Sprite2D" parent="."]
-position = Vector2(960, 540)
-scale = Vector2(0.664667, 0.815218)
-texture = ExtResource("8_ffjsa")
