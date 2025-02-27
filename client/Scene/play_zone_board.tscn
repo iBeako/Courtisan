@@ -1,0 +1,40 @@
+[gd_scene load_steps=3 format=3 uid="uid://dpfp7ed8iupiu"]
+
+[ext_resource type="Script" path="res://Script/play_zone_board.gd" id="1_4gkkf"]
+[ext_resource type="PackedScene" uid="uid://hxhhmah7l5fw" path="res://Scene/card_slot.tscn" id="2_xa725"]
+
+[node name="PlayZone" type="Node2D"]
+script = ExtResource("1_4gkkf")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 730.0
+offset_bottom = 150.0
+scale = Vector2(1.38787, 0.906348)
+color = Color(0.0185693, 0.657099, 0.410049, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="CardSlot_Joueur" parent="." instance=ExtResource("2_xa725")]
+visible = false
+position = Vector2(506, 68)
+scale = Vector2(12.6782, 1.17315)
+
+[node name="Blanc_Joueur" parent="." instance=ExtResource("2_xa725")]
+position = Vector2(89, 70)
+
+[node name="Marron_Joueur" parent="." instance=ExtResource("2_xa725")]
+position = Vector2(233, 70)
+
+[node name="Rouge_Joueur" parent="." instance=ExtResource("2_xa725")]
+position = Vector2(369, 70)
+
+[node name="Jaune_Joueur" parent="." instance=ExtResource("2_xa725")]
+position = Vector2(641, 70)
+
+[node name="Vert_Joueur" parent="." instance=ExtResource("2_xa725")]
+position = Vector2(769, 70)
+
+[node name="Bleu_Joueur" parent="." instance=ExtResource("2_xa725")]
+position = Vector2(913, 70)
+
+[node name="Assassin_Joueur" parent="." instance=ExtResource("2_xa725")]
+position = Vector2(505, 70)

@@ -1,7 +1,7 @@
 extends Node2D
 
-enum PlayZoneType { Joueur, Ennemie }
-@export var Play_ZoneType: PlayZoneType = PlayZoneType.Joueur
+enum PlayZoneType { Grace, Disgrace }
+@export var Play_ZoneType: PlayZoneType = PlayZoneType.Grace
 
 # Référence au ColorRect
 @onready var color_rect: ColorRect = $ColorRect
@@ -22,10 +22,10 @@ func update_color_rect() -> void:
 
 	# Définir la couleur en fonction du type de zone
 	match Play_ZoneType:
-		PlayZoneType.Joueur:
-			color_rect.color = Color(0, 0, 1)  # Bleu pour Joueur
-		PlayZoneType.Ennemie:
-			color_rect.color = Color(1, 1, 0)  # Jaune pour Ennemie
+		PlayZoneType.Grace:
+			color_rect.color = Color(0, 1, 0)  # Vert pour Grace
+		PlayZoneType.Disgrace:
+			color_rect.color = Color(1, 0, 0)  # Rouge pour Disgrace
 		_:
 			color_rect.color = Color(1, 1, 1)  # Blanc par défaut
 
@@ -35,11 +35,11 @@ func rename_nodes_based_on_type() -> void:
 		var node_to_rename = get_node_or_null(node_base_name + "_Joueur")  # Nom par défaut
 		if node_to_rename:
 			match Play_ZoneType:
-				PlayZoneType.Joueur:
-					node_to_rename.name = node_base_name + "_Joueur"
+				PlayZoneType.Grace:
+					node_to_rename.name = node_base_name + "_Grace"
 					print("Renamed node to: ", node_to_rename.name)  # Affiche le nouveau nom
-				PlayZoneType.Ennemie:
-					node_to_rename.name = node_base_name + "_Ennemie"
+				PlayZoneType.Disgrace:
+					node_to_rename.name = node_base_name + "_Disgrace"
 					print("Renamed node to: ", node_to_rename.name)  # Affiche le nouveau nom
 		else:
-			print("Error: Node ", node_base_name + "_Joueur", " not found!")
+			print("Error: Node ", node_base_name + "_Grace", " not found!")

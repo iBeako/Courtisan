@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bw6ntenrqw1vi"]
+[gd_scene load_steps=12 format=3 uid="uid://bw6ntenrqw1vi"]
 
 [ext_resource type="Script" path="res://Script/main.gd" id="1_yrk5g"]
 [ext_resource type="Texture2D" uid="uid://bwnofn63mn3mp" path="res://Assets/Board_2Players.png" id="2_iyv7j"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://dam3quia7fus1" path="res://Scene/play_zone.tscn" id="8_0gqd0"]
 [ext_resource type="Texture2D" uid="uid://cmrdrrth5bhfq" path="res://Assets/jeudice-catch-up-games-courtisans_plateau-1.jpg" id="8_ffjsa"]
 [ext_resource type="Script" path="res://Script/input_manager.gd" id="9_327nj"]
+[ext_resource type="PackedScene" uid="uid://dpfp7ed8iupiu" path="res://Scene/play_zone_board.tscn" id="10_gln5c"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v7si8"]
 size = Vector2(80, 120)
@@ -29,20 +30,6 @@ texture = ExtResource("8_ffjsa")
 light_mask = 2
 visibility_layer = 2
 position = Vector2(330, 67)
-Play_ZoneType = 3
-
-[node name="PlayZone_Disgrace" parent="." instance=ExtResource("8_0gqd0")]
-light_mask = 2
-visibility_layer = 2
-position = Vector2(1198, 536)
-scale = Vector2(-1, 1)
-Play_ZoneType = 2
-
-[node name="PlayZone_Grace" parent="." instance=ExtResource("8_0gqd0")]
-light_mask = 2
-visibility_layer = 2
-position = Vector2(1198, 398)
-scale = Vector2(-1, 1)
 Play_ZoneType = 1
 
 [node name="PlayZone_Joueur" parent="." instance=ExtResource("8_0gqd0")]
@@ -50,6 +37,15 @@ light_mask = 2
 visibility_layer = 2
 position = Vector2(1506, 867)
 scale = Vector2(-1, 1)
+
+[node name="PlayZone_Grace" parent="." instance=ExtResource("10_gln5c")]
+visible = false
+position = Vector2(468, 399)
+
+[node name="PlayZone_Disgrace" parent="." instance=ExtResource("10_gln5c")]
+visible = false
+position = Vector2(467, 550)
+Play_ZoneType = 1
 
 [node name="CardManager" type="Node2D" parent="."]
 script = ExtResource("2_rmro5")

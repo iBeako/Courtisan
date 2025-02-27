@@ -10,6 +10,7 @@ script = ExtResource("1_ofgpd")
 offset_right = 730.0
 offset_bottom = 146.0
 color = Color(0.0185693, 0.657099, 0.410049, 1)
+metadata/_edit_use_anchors_ = true
 
 [node name="CardSlot_Joueur" parent="." instance=ExtResource("1_bpis3")]
 visible = false
