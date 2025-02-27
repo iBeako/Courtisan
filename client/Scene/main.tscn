@@ -36,7 +36,8 @@ Play_ZoneType = 1
 light_mask = 2
 visibility_layer = 2
 position = Vector2(1506, 867)
-scale = Vector2(-1, 1)
+rotation = -3.14159
+scale = Vector2(1, -1)
 
 [node name="PlayZone_Grace" parent="." instance=ExtResource("10_gln5c")]
 visible = false
