@@ -17,7 +17,7 @@ enum family {
 #action:
 #{"message_type":"action","player":1,"card_type":"assassin","family":"deer",area":"queen_table","card_killed_type":"normal","card_killed_family":"deer"}
 #{"message_type":"action","player":1,"card_type":"spy","family":"deer",area":"our_domain"}
-#{"message_type":"action","player":1,"card":78,"card_type":"spy","family":"deer","area":"adversary_domain","id_adversary":"2""}
+#{"message_type":"action","player":1,"card_type":"spy","family":"deer","area":"adversary_domain","id_adversary":"2""}
 #table:
 #{"message_type":"table","area":"queen_table","position":1,"card_type":"normal","family":"deer"}
 #{"message_type":"table","area":"domain","player":1,"card_type":"normal","family":"deer"}
