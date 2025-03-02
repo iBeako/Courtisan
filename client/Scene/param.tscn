@@ -1,0 +1,135 @@
+[gd_scene load_steps=6 format=3 uid="uid://bbc1fban0w0w5"]
+
+[ext_resource type="Script" path="res://Scene/param.gd" id="1_5hj5w"]
+[ext_resource type="PackedScene" uid="uid://qpalo3t402dj" path="res://Scene/VolumeSlider.tscn" id="2_2ign2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1aek2"]
+bg_color = Color(0.303233, 0.303233, 0.303233, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="Theme" id="Theme_i8ugk"]
+/font_sizes/Normal = 24
+/font_sizes/Title = 14
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kgdbm"]
+
+[node name="Param" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5hj5w")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.404511, 0.404511, 0.404511, 1)
+metadata/_edit_lock_ = true
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -369.0
+offset_top = -115.0
+offset_right = 370.0
+offset_bottom = 116.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1aek2")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+clip_contents = true
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="ParametersTitle" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Paramètres"
+
+[node name="MainContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Main" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/MainContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme = SubResource("Theme_i8ugk")
+text = "Principal"
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/MainContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_kgdbm")
+
+[node name="VolumeSlider" parent="PanelContainer/MarginContainer/VBoxContainer/MainContainer" instance=ExtResource("2_2ign2")]
+layout_mode = 2
+size_flags_horizontal = 3
+bus_name = "Master"
+
+[node name="MusicContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Music" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/MusicContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme = SubResource("Theme_i8ugk")
+text = "Musique"
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/MusicContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_kgdbm")
+
+[node name="VolumeSlider" parent="PanelContainer/MarginContainer/VBoxContainer/MusicContainer" instance=ExtResource("2_2ign2")]
+layout_mode = 2
+size_flags_horizontal = 3
+bus_name = "Music"
+
+[node name="EffectsContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Effects" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/EffectsContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme = SubResource("Theme_i8ugk")
+text = "Effets"
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/EffectsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_kgdbm")
+
+[node name="VolumeSlider" parent="PanelContainer/MarginContainer/VBoxContainer/EffectsContainer" instance=ExtResource("2_2ign2")]
+layout_mode = 2
+size_flags_horizontal = 3
+bus_name = "Effects"
+
+[node name="RetourMenu" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Retour"
+
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/RetourMenu" to="." method="_on_retour_menu_pressed"]
