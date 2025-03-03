@@ -30,13 +30,23 @@ enum family {
 #{"message_type":"error","error_type":"message"} ->  unknown message: do nothing
 #{"message_type":"error","error_type":"connection"} -> connection not down: no connection
 #{"message_type":"error","error_type":"command"} -> unknown command : do nothing
+#connection:
+#{"message_type":"connection","login":,"password":""}
+
 
 var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
-var port: int = 12345
-var address: String = "ws://localhost:%d" % port  # Change 'localhost' to the future address when needed
+var port: int = 443 
+var address: String = "wss://localhost:%d" % port  # Change 'localhost' to the future address when needed
 var id: int
+var tls_options
+
 func _ready():
-	peer.create_client(address)
+	#var tls_cert: X509Certificate = load("res://certificates/certificate.crt")
+	var client_trusted_cas = load("res://certificates/certificate.crt")
+	var client_tls_options = TLSOptions.client(client_trusted_cas,"Courtisans")
+	#tls_options = TLSOptions.client_unsafe()
+	peer.create_client(address, client_tls_options)
+	#peer.create_client(address)
 	multiplayer.multiplayer_peer = peer
 	print("Client connected to server at %s" % address)
 

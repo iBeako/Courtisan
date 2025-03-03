@@ -4,12 +4,24 @@ extends Node
 #of every new turn send all the table
 
 var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
-var port: int = 12345  # Change this for an internet address in the future
+var port: int = 443  # Change this for an internet address in the future
 const MAX_CLIENT:int = 5
 var number_of_client :int = 0
 
+var tls_cert: X509Certificate = X509Certificate.new()
+#var key = Crypto.new()
+var tls_key: CryptoKey = CryptoKey.new()
+var server_tls_options	
+
+func _onready():
+	tls_key = load("res://certificates/private.key")  
+	tls_cert = load("res://certificates/certificate.crt")
+	server_tls_options = TLSOptions.server(tls_key,tls_cert)
+
 func _ready():
-	peer.create_server(port)  # Listening on specified port
+	_onready()
+	peer.create_server(port,"*",server_tls_options)  # Listening on specified port
+	#peer.create_server(port)
 	peer.connect("peer_connected", Callable(self, "_on_peer_connected"))
 	multiplayer.multiplayer_peer = peer
 	print("Server started and listening on port %d" % port)

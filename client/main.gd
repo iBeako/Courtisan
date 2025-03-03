@@ -1,23 +1,17 @@
 extends Node
 
 const CLIENT_COUNT = 5
-var server: Node
 var clients: Array
 
-func _ready():
-	# Initialize server
-	server = load("res://server/server.gd").new()
-	add_child(server)
-	
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
 	# Initialize clients
 	clients = []
 	for i in range(CLIENT_COUNT):
-		var client = load("res://client/client.gd").new()
+		var client = load("res://client.gd").new()
 		add_child(client)
 		clients.append(client)
-	
-	# Wait a moment for connections to establish
-	await get_tree().create_timer(1.0).timeout
+		await get_tree().create_timer(1.0).timeout
 	
 	# Send test messages from clients
 	for i in range(CLIENT_COUNT):
@@ -25,9 +19,6 @@ func _ready():
 		var message_converted_in_json = JSON.stringify(message)
 		clients[i].send_message(message_converted_in_json)
 		
-	
 	# Wait a moment to process messages
 	await get_tree().create_timer(1.0).timeout
-	
-	# Print responses (handled in client.gd)
-	print("Test interaction completed")
+	print("Test interaction completed")	
