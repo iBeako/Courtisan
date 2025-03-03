@@ -5,8 +5,8 @@ var server: Node
 var clients: Array
 
 func _ready():
-	# Initialize server
-	server = load("res://server.gd").new()
+	print_tree()# Initialize server
+	server = load("res://network.gd").new()
 	add_child(server)
 	print("Test start")	
 
