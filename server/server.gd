@@ -30,9 +30,8 @@ func _on_peer_connected(peer_id:int) -> void:
 	number_of_client += 1
 	print("New client connected with id: %d" % peer_id)
 	var welcome = {"message_type":"id","your_id":peer_id}
-	var json = JSON.stringify(welcome)
 	peer.set_target_peer(peer_id)
-	peer.put_packet(json.to_utf8_buffer())
+	peer.put_packet(JSON.stringify(welcome).to_utf8_buffer())
 	if number_of_client > MAX_CLIENT:
 		peer.refuse_new_connections = true
 		print("cannot connect more people in the room")
@@ -41,7 +40,10 @@ func _process(_delta):
 	peer.poll()
 	while peer.get_available_packet_count() > 0:
 		var sender_id = peer.get_packet_peer()
-		var packet = peer.get_packet().get_string_from_utf8()
+		var packet = peer.get_packet()
+		print("Raw packet received: ", packet)
+		var packet_string = packet.get_string_from_utf8()
+		print("Decoded string: ", packet_string)
 		_process_packet(sender_id, packet)
 
 func _process_packet(sender_id: int, packet: String):
@@ -55,18 +57,18 @@ func _process_packet(sender_id: int, packet: String):
 			else:
 				peer.set_target_peer(sender_id)
 				var error_message = {"message_type":"error","error_type":"message"}
-				packet = JSON.stringify(error_message)
-				peer.put_packet(packet.to_utf8_buffer())
+				peer.put_packet(JSON.stringify(error_message).to_utf8_buffer())
 		elif data_dict.has("message_type") and data_dict["message_type"] == "card_played":
 			if _validate_card_played(packet):
 				_broadcast_card_played(packet)
 			else:
 				peer.set_target_peer(sender_id)
 				var error_message = {"message_type":"error","error_type":"action"}
-				packet = JSON.stringify(error_message)
-				peer.put_packet(packet.to_utf8_buffer())
+				peer.put_packet(JSON.stringify(error_message).to_utf8_buffer())
 		else:
 			print("problem")
+	else:
+		print("JSON problem")
 
 func _validate_message(_message: String) -> bool:
 	# massage has the good format
@@ -82,11 +84,13 @@ func _validate_card_played(_message: String) -> bool:
 	return true
 
 func _broadcast_message(message: String):
+	print(message)
 	peer.set_target_peer(MultiplayerPeer.TARGET_PEER_BROADCAST)
 	peer.put_packet(message.to_utf8_buffer())
 	
 func _broadcast_card_played(message: String):
 	# will change with spy
+	print(message)
 	peer.set_target_peer(MultiplayerPeer.TARGET_PEER_BROADCAST)
 	peer.put_packet(message.to_utf8_buffer())
 

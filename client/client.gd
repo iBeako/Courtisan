@@ -53,8 +53,13 @@ func _ready():
 func _process(_delta):
 	peer.poll()
 	while peer.get_available_packet_count() > 0:
-		var packet = peer.get_packet().get_string_from_utf8()
-		_process_packet(packet)
+		var packet = peer.get_packet()
+		print("Raw packet received: ", packet)
+		var packet_string = packet.get_string_from_utf8()
+		if not packet.is_valid_utf8():
+			print("Invalid UTF-8 data received")
+		print("Decoded string: ", packet_string)
+		_process_packet(packet_string)
 
 func send_message(message: String):
 	peer.put_packet(message.to_utf8_buffer())
@@ -62,8 +67,9 @@ func send_message(message: String):
 func _process_packet(packet: String):
 	var json = JSON.new()
 	var error_json = json.parse(packet)
+	var message = json.data
 	if error_json == OK:
-		var message = json.data
+		
 		#error message
 		if message.has("message_type") and message["message_type"] == "error":
 			print("Error from server: %s" % message["error_type"])
@@ -87,8 +93,10 @@ func _process_packet(packet: String):
 		else:
 			print("invalid message")	
 	else:
+		print(json.get_error_line())
+		print(json.get_error_message())
 		print("Invalid JSON received")
-
+		
 func _process_error(message: Dictionary):
 	if message["error_type"] == "card_played":
 		print("redo an action")
