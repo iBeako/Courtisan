@@ -10,14 +10,13 @@ func _ready() -> void:
 
 	var client = load("res://network.gd").new()
 	add_child(client)
-
+	
 	await get_tree().create_timer(1.0).timeout
 	
 	# Send test messages from clients
 	var message = {"message_type":"card_played","player":0,"card_type":"normal","family":"deer","area":"queen_table","position":1}
-	var message_converted_in_json = JSON.stringify(message)
-	client.send_message(message_converted_in_json)
-	client.send_message(message_converted_in_json)
+	client.send_message_to_server.rpc_id(1,message)
+	client.send_message_to_server.rpc_id(1,message)
 
 	await get_tree().create_timer(1.0).timeout
 	# Wait a moment to process messages

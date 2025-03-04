@@ -4,3 +4,12 @@
 
 [node name="Node" type="Node"]
 script = ExtResource("1_dfsaf")
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Button" type="Button" parent="Panel"]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0

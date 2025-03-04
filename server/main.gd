@@ -2,7 +2,6 @@ extends Node
 
 
 var server: Node
-var clients: Array
 
 func _ready():
 	print_tree()# Initialize server
