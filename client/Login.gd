@@ -1,0 +1,27 @@
+extends Node
+class_name Account
+
+static func createAccount(login:String,password:String):
+	var strip_edges_password = password.strip_edges(true, true)
+	var message = {
+		"message_type":"createAccount",
+		"login": login.strip_edges(true,true),
+		"password" : strip_edges_password.hashData()
+	}
+	return message	
+	
+static func loginAccount(login:String,password:String) :
+	var strip_edges_password = password.strip_edges(true, true)
+	var message = {
+		"message_type":"connexion",
+		"login": login.strip_edges(true,true),
+		"password" : strip_edges_password.hashData()
+	}
+	return message
+
+static func hashData(data:String):
+	var hashContext = HashingContext.new()
+	hashContext.start(HashingContext.HASH_SHA256)
+	hashContext.update(data.to_utf8_buffer())
+	var hash = hashContext.finish()
+	return hash.hex_encode()

@@ -37,6 +37,7 @@ var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
 var port: int = 12345
 var address: String = "wss://localhost:%d" % port
 var id: int
+var login
 var tls_options
 
 func _ready():
@@ -94,8 +95,20 @@ func process_message(data:Dictionary):
 		process_table(data)
 	elif data["message_type"] == "error":
 		process_error(data)
+	elif data["message_type"] == "connexion":
+		process_connexion(data)
 	else:
 		print("invalid message")
+		
+func on_create_Account(login:String,password:String):
+	var account = Account.createAccount(login,password)
+	send_message_to_server.rpc_id(1,account)
+	
+func on_login_Account(login:String,password:String):
+	var account = Account.loginAccount(login,password)
+	send_message_to_server.rpc_id(1,account)
+
+		
 func put_message_in_chat(_data:Dictionary):
 	pass
 	
@@ -105,5 +118,11 @@ func process_card_played(_data:Dictionary):
 func process_table(_data:Dictionary):
 	pass
 
-func process_error(_data:Dictionary):
-	pass
+func process_connexion(data:Dictionary):
+	login = data["login"]
+	id = data["id"]
+	print("has been logged")
+
+func process_error(data:Dictionary):
+	if data["error_type"] == "unconnected":
+		print("error on password or loggin, retry")

@@ -17,7 +17,9 @@ func _ready() -> void:
 	var message = {"message_type":"card_played","player":0,"card_type":"normal","family":"deer","area":"queen_table","position":1}
 	client.send_message_to_server.rpc_id(1,message)
 	client.send_message_to_server.rpc_id(1,message)
-
+	var login = {"message_type":"connexion","login":"login","password":"password"}
+	client.send_message_to_server.rpc_id(1,login)
+	client.send_message_to_server.rpc_id(1,message)
 	await get_tree().create_timer(1.0).timeout
 	# Wait a moment to process messages
 	await get_tree().create_timer(1.0).timeout
