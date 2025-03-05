@@ -20,8 +20,8 @@ def handle_insert_database(data):
         cursor = connection.cursor()
         
         # Example: Insert into a users table
-        query = "INSERT INTO users (username, password) VALUES (:username, :password)"
-        cursor.execute(query, username=data['login'], password=data['password'])
+        query = "INSERT INTO users (username, email, password_hash, is_active, total_games_played) VALUES (:username, :email, :password_hash, :is_active, :total_games_played)"
+        cursor.execute(query, username=data['login'], email=data['email'],password_hash=data['password'], is_active=data['is_active'], total_games_played=data['total_games_played'])
         connection.commit()
         
         cursor.close()

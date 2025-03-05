@@ -100,8 +100,8 @@ func process_message(data:Dictionary):
 	else:
 		print("invalid message")
 		
-func on_create_Account(login:String,password:String):
-	var account = Account.createAccount(login,password)
+func on_create_Account(login:String,email:String,password:String):
+	var account = Account.createAccount(login,email,password)
 	send_message_to_server.rpc_id(1,account)
 	
 func on_login_Account(login:String,password:String):

@@ -67,6 +67,7 @@ func send_message_to_server(data: Dictionary):
 		elif data["message_type"] == "connexion":
 			login(data,i)
 		elif data["message_type"] == "createAccount":
+			
 			insertDatabase(data)
 		else:
 			var error_login = {
@@ -206,3 +207,7 @@ func connect_to_database():
 		print("Connected to Flask-SocketIO server!")
 	else:
 		print("Failed to connect to Flask-SocketIO server")
+
+func end_game():
+	for i in range(CLIENT_COUNT)
+		
