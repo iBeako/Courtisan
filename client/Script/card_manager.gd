@@ -28,10 +28,20 @@ func end_drag():
 	if card_slot_found and not card_is_dragged in card_slot_found.cards_in_slot:
 		card_slot_found.add_card(card_is_dragged)
 		player_hand_reference.remove_card_from_hand(card_is_dragged)  # Retire la carte de la main
+		
+		# Déterminer l'aire et la position (exemple : queen_table avec position spécifique)
+		var area = card_slot_found.name
+		var position = -1  # Exemple : -1 pour disgrâce
+		if area == "queen_table":
+			position = 1  # Exemple : position spécifique
+		
+		# Envoyer le message
+		play_card(1, card_is_dragged, area, position)  # Exemple : joueur 1
 	else:
 		player_hand_reference.add_card_to_hand(card_is_dragged)  # Sinon, remet la carte en main
 
 	card_is_dragged = null
+
 
 	
 func connect_card_signals(card):
@@ -94,3 +104,21 @@ func get_card_with_highest_index(cards):
 func on_left_mouse_button_released():
 	if card_is_dragged:
 		end_drag()
+		
+func play_card(player_id: int, card, area: String, position: int = 0):
+	# Construire le message
+	var message = {
+		"message_type": "card_played",
+		"player": player_id,
+		"card_type": card.card_type,
+		"family": card.card_color,
+		"area": area
+	}
+	
+	# Ajouter des informations spécifiques si nécessaire
+	if area == "queen_table":
+		message["position"] = position
+	
+	# Convertir en JSON et afficher dans la console
+	var json_message = JSON.stringify(message)
+	print("#card_played:\n" + json_message)

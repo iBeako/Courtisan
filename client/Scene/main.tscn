@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bw6ntenrqw1vi"]
+[gd_scene load_steps=13 format=3 uid="uid://bw6ntenrqw1vi"]
 
 [ext_resource type="Script" path="res://Script/main.gd" id="1_yrk5g"]
 [ext_resource type="Texture2D" uid="uid://bwnofn63mn3mp" path="res://Assets/Board_2Players.png" id="2_iyv7j"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://cmrdrrth5bhfq" path="res://Assets/jeudice-catch-up-games-courtisans_plateau-1.jpg" id="8_ffjsa"]
 [ext_resource type="Script" path="res://Script/input_manager.gd" id="9_327nj"]
 [ext_resource type="PackedScene" uid="uid://dpfp7ed8iupiu" path="res://Scene/play_zone_board.tscn" id="10_gln5c"]
+[ext_resource type="Script" path="res://Scene/message_manager.gd" id="11_oehsl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v7si8"]
 size = Vector2(80, 120)
@@ -20,11 +21,6 @@ script = ExtResource("1_yrk5g")
 [node name="Board2Players" type="Sprite2D" parent="."]
 position = Vector2(960, 540)
 texture = ExtResource("2_iyv7j")
-
-[node name="Jeudice-catch-up-games-courtisansPlateau-1" type="Sprite2D" parent="."]
-position = Vector2(960, 540)
-scale = Vector2(0.664667, 0.815218)
-texture = ExtResource("8_ffjsa")
 
 [node name="PlayZone_Ennemie" parent="." instance=ExtResource("8_0gqd0")]
 light_mask = 2
@@ -40,13 +36,16 @@ rotation = -3.14159
 scale = Vector2(1, -1)
 
 [node name="PlayZone_Grace" parent="." instance=ExtResource("10_gln5c")]
-visible = false
 position = Vector2(468, 399)
 
 [node name="PlayZone_Disgrace" parent="." instance=ExtResource("10_gln5c")]
-visible = false
 position = Vector2(467, 550)
 Play_ZoneType = 1
+
+[node name="Jeudice-catch-up-games-courtisansPlateau-1" type="Sprite2D" parent="."]
+position = Vector2(960, 540)
+scale = Vector2(0.664667, 0.815218)
+texture = ExtResource("8_ffjsa")
 
 [node name="CardManager" type="Node2D" parent="."]
 script = ExtResource("2_rmro5")
@@ -73,3 +72,6 @@ shape = SubResource("RectangleShape2D_v7si8")
 
 [node name="inputManager" type="Node2D" parent="."]
 script = ExtResource("9_327nj")
+
+[node name="MessageManager" type="Node2D" parent="."]
+script = ExtResource("11_oehsl")
