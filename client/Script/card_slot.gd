@@ -1,45 +1,46 @@
 extends Node2D
 
-# Variables
-var card_in_slot = false
-var cards_in_slot: Array = []  # Liste des cartes dans le slot
-const CARD_SPACING: int = 10  # Espacement entre les cartes
+var cards_in_slot: Array = []
+const CARD_SPACING: int = 10
 
-# Référence à la scène principale (à définir dans l'éditeur ou via un script)
 @onready var main_node: Node2D = get_node("/root/Main")
+@onready var count_label: Label = $CountLabel
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	print($Area2D.collision_mask)  # Affiche le masque de collision
+	print("CardSlot ready: ", self.name)
+	if count_label:
+		print("Label found for ", self.name)
+		count_label.z_index = 10
+	else:
+		print("Label NOT found for ", self.name)
 
-# Ajouter une carte au slot
 func add_card(card: Node2D) -> void:
+	print("Adding card to slot: ", self.name)
 	if card in cards_in_slot:
-		return  # Évite d'ajouter la même carte plusieurs fois
+		return
 
-	# Déterminer dynamiquement le type de zone en fonction du parent
 	var zone_type: String = determine_zone_type()
-	print("Zone type determined: ", zone_type)  # Affiche le type de zone déterminé
+	var card_slot = find_card_slot(card.card_type, zone_type)
+	
+	if card_slot:
+		card_slot.cards_in_slot.append(card)
+		card.z_index = 5
+		var target_position: Vector2 = calculate_card_position_based_on_type(card.card_type, zone_type)
+		var tween: Tween = get_tree().create_tween()
+		tween.tween_property(card, "position", target_position, 0.2)
 
-	# Déterminer la position en fonction du type de carte et du type de zone
-	var target_position: Vector2 = calculate_card_position_based_on_type(card.card_type, zone_type)
+		if card.has_node("Area2D/CollisionShape2D"):
+			card.get_node("Area2D/CollisionShape2D").disabled = true
 
-	# Animation pour un placement fluide
-	var tween: Tween = get_tree().create_tween()
-	tween.tween_property(card, "position", target_position, 0.2)
+		card_slot.update_count_label()
+		print("Card added to ", card_slot.name, ". Total cards: ", card_slot.cards_in_slot.size())
+	else:
+		print("Failed to add card: CardSlot not found")
 
-	# Désactiver la collision pour éviter les conflits
-	card.get_node("Area2D/CollisionShape2D").disabled = true
-
-	# Ajouter la carte à la liste des cartes dans le slot
-	cards_in_slot.append(card)
-
-# Déterminer le type de zone en fonction du parent
 func determine_zone_type() -> String:
-	var parent_name: String = get_parent().name  # Récupère le nom du nœud parent
-	print("Parent name: ", parent_name)  # Affiche le nom du parent
+	var parent_name: String = get_parent().name
+	print("Parent name: ", parent_name)
 
-	# Extraire le type de zone du nom du parent
 	if "Joueur" in parent_name:
 		return "Joueur"
 	elif "Grace" in parent_name:
@@ -50,40 +51,45 @@ func determine_zone_type() -> String:
 		return "Ennemie"
 	else:
 		print("Unknown zone type for parent: ", parent_name)
-		return "Joueur"  # Valeur par défaut
+		return "Joueur"
 
-# Calculer la position de la carte en fonction du type de carte et du type de zone
-func calculate_card_position_based_on_type(card_type: String, zone_type: String) -> Vector2:
-	print("Calculating position for card type: ", card_type, " in zone: ", zone_type)
-
-	# Construire le nom du nœud en fonction de la couleur de la carte et du type de zone
+func find_card_slot(card_type: String, zone_type: String) -> Node2D:
 	var node_name: String = card_type.capitalize() + "_" + zone_type
-	print("Node name to find: ", node_name)  # Affiche le nom du nœud recherché
-
-	# Récupérer la zone correspondante
 	var target_zone: Node = get_target_zone(zone_type)
-
-	# Vérifier si la zone existe
+	
 	if not target_zone:
 		print("Error: Target zone not found for type: ", zone_type)
-		return Vector2(0, 0)
-
-	# Trouver le nœud dans la zone
+		return null
+	
 	var slot_node: Node2D = target_zone.get_node_or_null(node_name)
+	if slot_node:
+		print("CardSlot found: ", slot_node.name)
+		return slot_node
+	else:
+		print("CardSlot not found: ", node_name)
+		return null
 
-	# Si le nœud est trouvé, retourner sa position globale
+func calculate_card_position_based_on_type(card_type: String, zone_type: String) -> Vector2:
+	print("Calculating position for card type: ", card_type, " in zone: ", zone_type)
+	var node_name: String = card_type.capitalize() + "_" + zone_type
+	var target_zone: Node = get_target_zone(zone_type)
+
+	if not target_zone:
+		print("Error: Target zone not found for type: ", zone_type)
+		return Vector2.ZERO
+
+	var slot_node: Node2D = target_zone.get_node_or_null(node_name)
 	if slot_node:
 		print("Node found: ", slot_node.name, " at global position ", slot_node.global_position)
-		var local_pos = main_node.to_local(slot_node.global_position)  # Convertit en coordonnées locales par rapport à la scène principale
+		var local_pos = main_node.to_local(slot_node.global_position)
 		print("Node local position in Main: ", local_pos)
 		return local_pos
 	else:
 		print("Node not found: ", node_name)
-		return Vector2(0, 0)
+		return Vector2.ZERO
 
-# Récupérer la zone cible en fonction du type de zone
 func get_target_zone(zone_type: String) -> Node:
-	print("Getting target zone for type: ", zone_type)  # Affiche le type de zone recherché
+	print("Getting target zone for type: ", zone_type)
 	match zone_type:
 		"Joueur":
 			return get_node_or_null("/root/Main/PlayZone_Joueur")
@@ -97,19 +103,52 @@ func get_target_zone(zone_type: String) -> Node:
 			print("Unknown zone type: ", zone_type)
 			return null
 
-# Mettre à jour les positions des cartes
-func update_card_positions() -> void:
-	for i: int in range(cards_in_slot.size()):
-		var card: Node2D = cards_in_slot[i]
-		card.position = position + Vector2(i * CARD_SPACING, 0)  # Décalage horizontal
-		card.get_node("Area2D/CollisionShape2D").disabled = true  # Désactiver la collision
-
-# Retirer une carte du slot
 func remove_card(card: Node2D) -> void:
 	if card in cards_in_slot:
 		cards_in_slot.erase(card)
 		update_card_positions()
+		update_count_label()
+		print("Card removed from ", self.name, ". Remaining cards: ", cards_in_slot.size())
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func update_card_positions() -> void:
+	for i in range(cards_in_slot.size()):
+		var card: Node2D = cards_in_slot[i]
+		card.position = position + Vector2(i * CARD_SPACING, 0)
+		if card.has_node("Area2D/CollisionShape2D"):
+			card.get_node("Area2D/CollisionShape2D").disabled = true
+
+func update_count_label() -> void:
+	print("Updating label for ", self.name)
+	if count_label:
+		var new_text = str(cards_in_slot.size())
+		count_label.text = new_text
+		count_label.add_theme_color_override("font_color", Color(1, 0, 0))  # Rouge
+		print("Label updated to: ", new_text)
+	else:
+		print("CountLabel not found in CardSlot: ", self.name)
+
+func get_all_cards() -> Array:
+	return cards_in_slot
+
+func get_card_count() -> int:
+	return cards_in_slot.size()
+
+func get_card_at_index(index: int) -> Node2D:
+	if index >= 0 and index < cards_in_slot.size():
+		return cards_in_slot[index]
+	return null
+
+func get_first_card() -> Node2D:
+	return cards_in_slot[0] if not cards_in_slot.is_empty() else null
+
+func get_last_card() -> Node2D:
+	return cards_in_slot[-1] if not cards_in_slot.is_empty() else null
+
+func find_card_by_name(card_name: String) -> Node2D:
+	for card in cards_in_slot:
+		if card.name == card_name:
+			return card
+	return null
+
+func get_cards_by_type(card_type: String) -> Array:
+	return cards_in_slot.filter(func(card): return card.card_type == card_type)
