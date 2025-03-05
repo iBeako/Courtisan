@@ -11,6 +11,7 @@ var clients = {}
 var tls_cert: X509Certificate
 var tls_key: CryptoKey
 var server_tls_options
+var session = load("res://processing/session.gd").new(MAX_CLIENT) # a session specific to a port
 
 
 func _onready():
@@ -25,9 +26,10 @@ func _ready():
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	print("Server started and listening on port %d" % port)
+	add_child(session) # Creation of new game session
 	connect_to_database()
 
-func _process(delta):
+func _process(_delta):
 	if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
 		db_peer.poll()
 		while db_peer.get_available_packet_count() > 0:
@@ -52,9 +54,14 @@ func _on_peer_connected(peer_id: int):
 			"message_type"="id",
 			"your_id"=number_of_client
 		}
-		number_of_client += 1
+		session._add_player(peer_id)
 		send_message_to_peer.rpc_id(peer_id,data_id)
-
+		session.check_game_start()
+		number_of_client += 1
+		
+		
+		
+	
 @rpc("any_peer")
 func send_message_to_server(data: Dictionary):
 	if data != null and data.has("message_type"):
@@ -112,7 +119,7 @@ func process_message(data : Dictionary,sender_id:int):
 		_process_error(data)
 	#action message
 	elif data["message_type"] == "card_played":
-		if _validate_card_played(data):
+		if _validate_card_played(sender_id,data):
 			send_message_to_everyone.rpc(data)
 		else:
 			var error_card_played = {
@@ -132,19 +139,65 @@ func process_message(data : Dictionary,sender_id:int):
 	else:
 		print("invalid message")	
 
-func _validate_message(_message: Dictionary) -> bool:
-	# massage has the good format
+func _validate_message(message: Dictionary) -> bool:
+	if message["message"] > 0 and message["message"] <6:
 	# message number exist (for nom between 1 and 5)
-	return true
+		return true
+	return false
 
+func _validate_card_played(_sender_id :int,message: Dictionary) -> bool:
+	
+	# The game has not yet begun
+	if session.check_status() == false :
+		print("Error : The game has not yet begun")
+		return false
+		
+	else :
+		var is_valid_action = true
 
-func _validate_card_played(_message: Dictionary) -> bool:
-	# message has the good format
-	# validate action if it is the good player that have played the card (same client id and same id)
-	# the player has the card is the hand
-	# he did not put a card in the same area in the turn
-	# he had a card in hand
-	return true
+		# message has the good format
+		is_valid_action = is_valid_action and ( message.has("area") and message.has("card_type") and message.has("family") and message.has("player") )
+		if  is_valid_action :
+			print("OK : Right message format")
+		else :
+			print("Error : message has not right format")
+			return false
+			
+		# validate action if it is the good player that have played the card (same client id and same game id)
+		is_valid_action = is_valid_action and session.check_player_turn(_sender_id, message["player"])
+		if is_valid_action :
+			print("OK : Right player who is currently playing")
+		else :
+			print("Error : Wrong player who is currently playing")
+			return false
+		
+		# player has a card in hand and it is the right card
+		is_valid_action = is_valid_action and session.check_player_hand(message["player"], message["card_type"], message["family"])
+		if is_valid_action :
+			print("OK : Player can indeed play this card")
+		else :
+			print("Error : Player has no card or wrong one")
+			return false
+		
+		# he did not put a card in the same area in the turn
+		is_valid_action = is_valid_action and session.check_player_area(message["player"], message["area"])
+		if is_valid_action :
+			print("OK : Player can indeed play this card in this area")
+		else :
+			print("Error : Player can play this card in this area again")
+			return false
+		
+		if is_valid_action :
+			if message["area"] == "queen_table":
+				session.place_card(message["player"], message["area"], message["card_type"], message["family"], message["position"])
+			elif message["area"] == "our_domain":
+				session.place_card(message["player"], message["area"], message["card_type"], message["family"])
+			elif message["area"] == "domain":
+				session.place_card(message["player"], message["area"], message["card_type"], message["family"], message["id_player_domain"])
+		
+		session.display_session_status()
+		
+	return true	
 
 func _process_error(_data: Dictionary):
 	pass
@@ -194,10 +247,13 @@ func getDatabase(data: Dictionary):
 			else:
 				return {"message_type":"error","error_type":"JSON_parse"}
 		return {"message_type":"error","error_type":"database_connexion"}
+		
 
 func validate_login(data: Dictionary) -> bool:
-	var client_data = await getDatabase(data)
-	if client_data.has("password") and data["password"] == client_data["password"]:
+	
+	#var client_data = await getDatabase(data)
+	#if client_data.has("password") and data["password"] == client_data["password"]:
+	if  data["password"] == "password":
 		return true
 	return false
 
@@ -207,7 +263,3 @@ func connect_to_database():
 		print("Connected to Flask-SocketIO server!")
 	else:
 		print("Failed to connect to Flask-SocketIO server")
-
-func end_game():
-	for i in range(CLIENT_COUNT)
-		

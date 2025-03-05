@@ -14,7 +14,17 @@ func _ready() -> void:
 	await get_tree().create_timer(1.0).timeout
 	
 	# Send test messages from clients
-	var message = {"message_type":"card_played","player":0,"card_type":"normal","family":"deer","area":"queen_table","position":1}
+	var card_types = ["normal", "noble", "guard"]
+	var families = ["butterfly", "frog", "bird", "bunny", "deer", "fish"]
+	var positions = [1, -1]
+	var message = {
+			"message_type": "card_played",
+			"player": 1,
+			"card_type": card_types[randi() % card_types.size()],
+			"family": families[randi() % families.size()],
+			"area": "queen_table",
+			"position": positions[randi() % positions.size()],
+		}
 	client.send_message_to_server.rpc_id(1,message)
 	client.send_message_to_server.rpc_id(1,message)
 	var login = {"message_type":"connexion","login":"login","password":"password"}

@@ -8,7 +8,7 @@ static func createAccount(login:String,email:String,password:String,):
 		
 		"login": login.strip_edges(true,true),
 		"email": email.strip_edges(true,true),
-		"password" : strip_edges_password.hashData(),
+		"password" : strip_edges_password,
 		"is_active": 0,
 		"total_games_played" : 0
 	}
@@ -19,7 +19,7 @@ static func loginAccount(login:String,password:String) :
 	var message = {
 		"message_type":"connexion",
 		"login": login.strip_edges(true,true),
-		"password" : strip_edges_password.hashData()
+		"password" : strip_edges_password
 	}
 	return message
 
