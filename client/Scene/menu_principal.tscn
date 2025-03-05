@@ -1,0 +1,80 @@
+[gd_scene load_steps=4 format=3 uid="uid://cv8seoipymj2k"]
+
+[ext_resource type="Script" path="res://Scene/menu_principal.gd" id="1_p40ge"]
+[ext_resource type="Theme" uid="uid://b3dxwemiqf3lr" path="res://Assets/Buttons/default.tres" id="2_71ub5"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_m767v"]
+font_size = 50
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_p40ge")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -30.0
+offset_top = 9.0
+offset_right = -30.0
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -181.0
+offset_top = 44.0
+offset_right = 181.0
+offset_bottom = 113.0
+grow_horizontal = 2
+text = "Menu Principal
+"
+label_settings = SubResource("LabelSettings_m767v")
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -193.0
+offset_top = -317.0
+offset_right = 193.0
+offset_bottom = -143.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 20
+
+[node name="StartButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_71ub5")
+theme_override_font_sizes/font_size = 50
+text = "Start"
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_71ub5")
+theme_override_font_sizes/font_size = 50
+text = "Paramètres"
+
+[node name="QuitButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_71ub5")
+theme_override_font_sizes/font_size = 50
+text = "Quit"
+
+[connection signal="button_down" from="VBoxContainer/StartButton" to="." method="_on_start_button_button_down"]
+[connection signal="button_down" from="VBoxContainer/Button" to="." method="_on_button_button_down"]
+[connection signal="button_down" from="VBoxContainer/QuitButton" to="." method="_on_quit_button_button_down"]
