@@ -1,6 +1,6 @@
 extends Control
 
-@onready var menu = preload("res://Scene/menu_principal.tscn")
+@onready var menu = load("res://Scene/menu_principal.tscn")
 
 
 func _on_retour_menu_pressed() -> void:

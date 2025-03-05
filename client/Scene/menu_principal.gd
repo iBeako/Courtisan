@@ -1,7 +1,7 @@
 extends Control
 
-@onready var game = preload("res://Scene/main.tscn")
-@onready var param = preload("res://Scene/param.tscn")
+@onready var game = load("res://Scene/main.tscn")
+@onready var param = load("res://Scene/param.tscn")
 
 
 

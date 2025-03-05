@@ -6,3 +6,5 @@
 max_value = 1.0
 step = 0.001
 script = ExtResource("1_2vidp")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
