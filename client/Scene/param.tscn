@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=4 uid="uid://bbc1fban0w0w5"]
 
-[ext_resource type="Script" path="res://Scene/param.gd" id="1_5hj5w"]
-[ext_resource type="PackedScene" uid="uid://qpalo3t402dj" path="res://Scene/VolumeSlider.tscn" id="2_2ign2"]
+[ext_resource type="Script" path="res://Script/param.gd" id="1_5hj5w"]
+[ext_resource type="PackedScene" uid="uid://qpalo3t402dj" path="res://Scene/volume_slider.tscn" id="2_2ign2"]
 [ext_resource type="AudioStream" uid="uid://cx56u4ccjhyad" path="res://Assets/Page Turn Sound Effect.mp3" id="3_g03yr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1aek2"]
