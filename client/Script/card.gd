@@ -4,7 +4,7 @@ signal hovered
 signal hovered_off
 
 var starting_position
-var card_type  # Type de la carte (blanc, vert, rouge, etc.)
+var card_type
 var card_color
 const CARD_COLORS = {
 	"Papillons": Color(1, 1, 1),  # Blanc

@@ -1,4 +1,5 @@
 extends Node2D
+class_name CardSlot
 
 var cards_in_slot: Array = []
 const CARD_SPACING: int = 10
@@ -34,7 +35,8 @@ func add_card(card: Node2D) -> void:
 		if card.has_node("Area2D/CollisionShape2D"):
 			card.get_node("Area2D/CollisionShape2D").disabled = true
 
-		card_slot.update_count_label()
+		#card_slot.update_count_label()
+		get_parent().update_labels()
 		print("Card added to ", card_slot.name, ". Total cards: ", card_slot.cards_in_slot.size())
 	else:
 		print("Failed to add card: CardSlot not found")
@@ -53,7 +55,7 @@ func remove_card(card: Node2D) -> void:
 	if card in cards_in_slot:
 		cards_in_slot.erase(card)
 		update_card_positions()
-		update_count_label()
+		#update_count_label()
 		print("Card removed from ", self.name, ". Remaining cards: ", cards_in_slot.size())
 
 func update_card_positions() -> void:
@@ -63,15 +65,20 @@ func update_card_positions() -> void:
 		if card.has_node("Area2D/CollisionShape2D"):
 			card.get_node("Area2D/CollisionShape2D").disabled = true
 
-func update_count_label() -> void:
-	print("Updating label for ", self.name)
+func update_count_label(value : int) -> int: # value sert à pondérer les cartes dans les domaines des joueurs
+	#print("Updating label for ", self.name)
 	if count_label:
-		var new_text = str(cards_in_slot.size())
-		count_label.text = new_text
+		var cpt:int = 0
+		for c in cards_in_slot: #permettra de rajouter la logique avec les cartes compte double
+			cpt+=value
+			
+		count_label.text = str(cpt) if cpt!=0 else ""
 		count_label.add_theme_color_override("font_color", Color(1, 0, 0))  # Rouge
-		print("Label updated to: ", new_text)
+		#print("Label updated to: ", new_text)
+		return cpt
 	else:
 		print("CountLabel not found in CardSlot: ", self.name)
+		return 0
 
 func get_all_cards() -> Array:
 	return cards_in_slot

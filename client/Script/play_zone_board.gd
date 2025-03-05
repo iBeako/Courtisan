@@ -1,5 +1,7 @@
 extends Node2D
 
+signal updated_score_board
+
 enum PlayZoneType { Joueur, Ennemie, Grace, Disgrace }
 @export var Play_ZoneType: PlayZoneType = PlayZoneType.Grace
 
@@ -43,3 +45,19 @@ func rename_nodes_based_on_type() -> void:
 					print("Renamed node to: ", node_to_rename.name)  # Affiche le nouveau nom
 		else:
 			print("Error: Node ", node_base_name + "_Grace", " not found!")
+
+
+func update_labels(emit_signal : bool = true, values : Dictionary = { #fonction qui mettra à jour les labels de la zone
+	"Papillons" : 1, 
+	"Crapauds" : 1, 
+	"Rossignols" : 1, 
+	"Lièvres" : 1, 
+	"Cerfs" : 1, 
+	"Carpes" : 1
+}) -> Dictionary:
+	if emit_signal : updated_score_board.emit()
+	for node_name : String in nodes_to_rename: # parcourir les nodes
+		var nd : CardSlot = get_node_or_null(node_name)
+		if not nd: break
+		values[node_name]=nd.update_count_label(values[node_name])
+	return values

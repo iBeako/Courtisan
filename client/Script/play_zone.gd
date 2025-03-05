@@ -8,6 +8,8 @@ enum PlayZoneType { Joueur, Ennemie, Grace, Disgrace }
 var nodes_to_rename = ["Papillons", "Crapauds", "Rossignols", "Lièvres", "Cerfs", "Carpes"]
 
 func _ready() -> void:
+	get_parent().get_node("PlayZone_Grace").connect("updated_score_board",update_labels)
+	get_parent().get_node("PlayZone_Disgrace").connect("updated_score_board",update_labels)	
 	update_color_rect()
 	#rename_nodes_based_on_type()
 	adjust_labels()
@@ -38,9 +40,7 @@ func rename_nodes_based_on_type() -> void:
 		else:
 			print("Error: Node ", node_base_name + "_Joueur", " not found!")
 
-func adjust_labels(values : Dictionary = {
-	
-} ) -> void:
+func adjust_labels() -> void:
 	if Play_ZoneType == PlayZoneType.Joueur:
 		for node_base_name in nodes_to_rename:  # Exemple : joueur 1
 			var slot = get_node_or_null(node_base_name)
@@ -54,3 +54,20 @@ func adjust_labels(values : Dictionary = {
 					print("Error: CountLabel not found in ", slot.name)
 			else:
 				print("Error: Slot ", node_base_name, " not found! (labels)")
+
+func update_labels() -> Dictionary:
+	var values : Dictionary = {}
+	
+	var node_grace : Node2D = get_parent().get_node("PlayZone_Grace")
+	var node_disgrace : Node2D = get_parent().get_node("PlayZone_Disgrace")
+	
+	var dict_grace : Dictionary = node_grace.update_labels(false)
+	var dict_disgrace : Dictionary = node_disgrace.update_labels(false)
+	
+	
+	for node_name : String in nodes_to_rename: # parcourir les nodes
+		var nd : CardSlot = get_node_or_null(node_name)
+		if not nd: break
+		var score_famille : int = dict_grace[node_name]-dict_disgrace[node_name]
+		values[node_name]=nd.update_count_label(score_famille)
+	return values
