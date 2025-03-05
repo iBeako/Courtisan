@@ -1,18 +1,18 @@
 extends Node2D
 
-enum PlayZoneType { Grace, Disgrace }
+enum PlayZoneType { Joueur, Ennemie, Grace, Disgrace }
 @export var Play_ZoneType: PlayZoneType = PlayZoneType.Grace
 
 # Référence au ColorRect
 @onready var color_rect: ColorRect = $ColorRect
 
 # Liste des nœuds à renommer
-var nodes_to_rename = ["Blanc", "Marron", "Rouge", "Jaune", "Vert", "Bleu", "Assassin"]
+var nodes_to_rename = ["Papillons", "Crapauds", "Rossignols", "Lièvres", "Cerfs", "Carpes"]
 
 # Appelé lorsque le nœud entre dans l'arbre de la scène
 func _ready() -> void:
 	update_color_rect()
-	rename_nodes_based_on_type()
+	#rename_nodes_based_on_type()
 
 # Fonction pour mettre à jour la couleur du ColorRect
 func update_color_rect() -> void:

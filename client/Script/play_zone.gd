@@ -1,6 +1,6 @@
 extends Node2D
 
-enum PlayZoneType { Joueur, Ennemie }
+enum PlayZoneType { Joueur, Ennemie, Grace, Disgrace }
 @export var Play_ZoneType: PlayZoneType = PlayZoneType.Joueur
 
 @onready var color_rect: ColorRect = $ColorRect
@@ -9,7 +9,7 @@ var nodes_to_rename = ["Papillons", "Crapauds", "Rossignols", "Lièvres", "Cerfs
 
 func _ready() -> void:
 	update_color_rect()
-	rename_nodes_based_on_type()
+	#rename_nodes_based_on_type()
 	adjust_labels()
 
 func update_color_rect() -> void:
@@ -42,8 +42,8 @@ func adjust_labels(values : Dictionary = {
 	
 } ) -> void:
 	if Play_ZoneType == PlayZoneType.Joueur:
-		for node_base_name in nodes_to_rename:
-			var slot = get_node_or_null(node_base_name + "_Joueur")
+		for node_base_name in nodes_to_rename:  # Exemple : joueur 1
+			var slot = get_node_or_null(node_base_name)
 			if slot:
 				var label = slot.get_node_or_null("CountLabel")
 				if label:
@@ -53,4 +53,4 @@ func adjust_labels(values : Dictionary = {
 				else:
 					print("Error: CountLabel not found in ", slot.name)
 			else:
-				print("Error: Slot ", node_base_name + "_Joueur", " not found!")
+				print("Error: Slot ", node_base_name, " not found! (labels)")

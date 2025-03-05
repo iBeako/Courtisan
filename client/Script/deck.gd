@@ -2,7 +2,7 @@ extends Node2D
 
 const CARD_SCENE_PATH = "res://Scene/card.tscn"
 var deck_cards = ["carte","carte","carte","carte","carte","carte","carte","carte"]  # Liste des cartes dans le deck
-var card_types = ["blanc", "vert", "rouge", "jaune", "marron", "bleu"]  # Types de cartes
+var card_types = ["Papillons", "Crapauds", "Rossignols", "Lièvres", "Cerfs", "Carpes"]  # Types de cartes
 var player_hand  # Référence à PlayerHand
 var Hand_Count = 3
 const COLLISION_MASK_DECK = 4

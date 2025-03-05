@@ -6,6 +6,9 @@ const CARD_SPACING: int = 10
 @onready var main_node: Node2D = get_node("/root/Main")
 @onready var count_label: Label = $CountLabel
 
+enum PlayZoneType { Joueur, Ennemie, Grace, Disgrace }
+
+
 func _ready() -> void:
 	print("CardSlot ready: ", self.name)
 	if count_label:
@@ -19,13 +22,12 @@ func add_card(card: Node2D) -> void:
 	if card in cards_in_slot:
 		return
 
-	var zone_type: String = determine_zone_type()
-	var card_slot = find_card_slot(card.card_type, zone_type)
+	var card_slot = find_card_slot(card.card_type)
 	
 	if card_slot:
 		card_slot.cards_in_slot.append(card)
 		card.z_index = 5
-		var target_position: Vector2 = calculate_card_position_based_on_type(card.card_type, zone_type)
+		var target_position: Vector2 = card_slot.global_position
 		var tween: Tween = get_tree().create_tween()
 		tween.tween_property(card, "position", target_position, 0.2)
 
@@ -37,71 +39,15 @@ func add_card(card: Node2D) -> void:
 	else:
 		print("Failed to add card: CardSlot not found")
 
-func determine_zone_type() -> String:
-	var parent_name: String = get_parent().name
-	print("Parent name: ", parent_name)
+func determine_zone_type() -> PlayZoneType:
+	return get_parent().Play_ZoneType
 
-	if "Joueur" in parent_name:
-		return "Joueur"
-	elif "Grace" in parent_name:
-		return "Grace"
-	elif "Disgrace" in parent_name:
-		return "Disgrace"
-	elif "Ennemie" in parent_name:
-		return "Ennemie"
-	else:
-		print("Unknown zone type for parent: ", parent_name)
-		return "Joueur"
-
-func find_card_slot(card_type: String, zone_type: String) -> Node2D:
-	var node_name: String = card_type.capitalize() + "_" + zone_type
-	var target_zone: Node = get_target_zone(zone_type)
+func find_card_slot(card_type: String) -> Node2D:
+	return get_node_or_null("../"+card_type)
 	
-	if not target_zone:
-		print("Error: Target zone not found for type: ", zone_type)
-		return null
-	
-	var slot_node: Node2D = target_zone.get_node_or_null(node_name)
-	if slot_node:
-		print("CardSlot found: ", slot_node.name)
-		return slot_node
-	else:
-		print("CardSlot not found: ", node_name)
-		return null
 
-func calculate_card_position_based_on_type(card_type: String, zone_type: String) -> Vector2:
-	print("Calculating position for card type: ", card_type, " in zone: ", zone_type)
-	var node_name: String = card_type.capitalize() + "_" + zone_type
-	var target_zone: Node = get_target_zone(zone_type)
 
-	if not target_zone:
-		print("Error: Target zone not found for type: ", zone_type)
-		return Vector2.ZERO
 
-	var slot_node: Node2D = target_zone.get_node_or_null(node_name)
-	if slot_node:
-		print("Node found: ", slot_node.name, " at global position ", slot_node.global_position)
-		var local_pos = main_node.to_local(slot_node.global_position)
-		print("Node local position in Main: ", local_pos)
-		return local_pos
-	else:
-		print("Node not found: ", node_name)
-		return Vector2.ZERO
-
-func get_target_zone(zone_type: String) -> Node:
-	print("Getting target zone for type: ", zone_type)
-	match zone_type:
-		"Joueur":
-			return get_node_or_null("/root/Main/PlayZone_Joueur")
-		"Grace":
-			return get_node_or_null("/root/Main/PlayZone_Grace")
-		"Disgrace":
-			return get_node_or_null("/root/Main/PlayZone_Disgrace")
-		"Ennemie":
-			return get_node_or_null("/root/Main/PlayZone_Ennemie")
-		_:
-			print("Unknown zone type: ", zone_type)
-			return null
 
 func remove_card(card: Node2D) -> void:
 	if card in cards_in_slot:
