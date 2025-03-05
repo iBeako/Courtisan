@@ -1,15 +1,21 @@
 extends Node2D
 var screen_size
-const COLLISION_MASK_CARD = 1	
+const COLLISION_MASK_CARD = 1
 const COLLISION_MASK_CARD_SLOT = 2
 var card_is_dragged
-var is_hovered
+var is_hovered : bool
 var player_hand_reference
+var message_manager_reference : MessageManager
+
+var can_play = [1, 1, 1] #zone joueur, zone milieu, zone ennemie
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _ready() -> void:
 	screen_size = get_viewport_rect().size
 	player_hand_reference = $"../PlayerHand"
+	message_manager_reference = $"../MessageManager"
 	$"../inputManager".connect("left_mouse_button_released",on_left_mouse_button_released)
+	
 func _process(delta: float) -> void:
 	if card_is_dragged:
 		var mouse_pos = get_global_mouse_position()
@@ -20,6 +26,10 @@ func _process(delta: float) -> void:
 func start_drag(card):
 	card_is_dragged = card
 	card.scale = Vector2(1.0,1.0)
+	
+	
+func start_turn():
+	can_play = [1, 1, 1]
 	
 func end_drag():
 	card_is_dragged.scale = Vector2(1.05, 1.05)
@@ -32,9 +42,8 @@ func end_drag():
 		# Déterminer l'aire et la position (exemple : queen_table avec position spécifique)
 		var area = card_slot_found.name
 		var position = -1  # Exemple : -1 pour disgrâce
-		if area == "queen_table":
-			position = 1  # Exemple : position spécifique
-		
+		var player_id = get_parent().player_id
+		message_manager_reference.send_card_played(player_id, card_is_dragged.card_type, card_is_dragged.card_color, "our_domain")
 		# Envoyer le message
 		play_card(1, card_is_dragged, area, position)  # Exemple : joueur 1
 	else:
@@ -70,7 +79,7 @@ func highlight_card(card,hovered):
 		card.scale = Vector2(1.0,1.0)
 		card.z_index=1
 		
-func check_card_slot():
+func check_card_slot() -> Node2D:
 	var space_state = get_world_2d().direct_space_state
 	var parameters = PhysicsPointQueryParameters2D.new()
 	parameters.position = get_global_mouse_position()
@@ -80,6 +89,7 @@ func check_card_slot():
 	if result.size()>0:
 		return result[0].collider.get_parent()
 	return null
+	
 func check_card():
 	var space_state = get_world_2d().direct_space_state
 	var parameters = PhysicsPointQueryParameters2D.new()

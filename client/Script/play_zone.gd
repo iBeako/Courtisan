@@ -5,7 +5,7 @@ enum PlayZoneType { Joueur, Ennemie }
 
 @onready var color_rect: ColorRect = $ColorRect
 
-var nodes_to_rename = ["Blanc", "Marron", "Rouge", "Jaune", "Vert", "Bleu", "Assassin"]
+var nodes_to_rename = ["Papillons", "Crapauds", "Rossignols", "Lièvres", "Cerfs", "Carpes"]
 
 func _ready() -> void:
 	update_color_rect()
@@ -38,7 +38,9 @@ func rename_nodes_based_on_type() -> void:
 		else:
 			print("Error: Node ", node_base_name + "_Joueur", " not found!")
 
-func adjust_labels() -> void:
+func adjust_labels(values : Dictionary = {
+	
+} ) -> void:
 	if Play_ZoneType == PlayZoneType.Joueur:
 		for node_base_name in nodes_to_rename:
 			var slot = get_node_or_null(node_base_name + "_Joueur")
