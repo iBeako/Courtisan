@@ -4,16 +4,17 @@ signal hovered
 signal hovered_off
 
 var starting_position
-var card_type  # Type de la carte (blanc, vert, rouge, etc.)
+var card_type
 var card_color
 const CARD_COLORS = {
-	"blanc": Color(1, 1, 1),  # Blanc
-	"vert": Color(0, 1, 0),   # Vert
-	"rouge": Color(1, 0, 0),  # Rouge
-	"jaune": Color(1, 1, 0),  # Jaune
-	"marron": Color(0.6, 0.3, 0),  # Marron
-	"bleu": Color(0, 0, 1)    # Bleu
+	"Papillons": Color(1, 1, 1),  # Blanc
+	"Crapauds": Color(0, 1, 0),   # Vert
+	"Rossignols": Color(1, 0, 0),  # Rouge
+	"Lièvres": Color(1, 1, 0),  # Jaune
+	"Cerfs": Color(0.6, 0.3, 0),  # Marron
+	"Carpes": Color(0, 0, 1)    # Bleu
 }
+
 
 func _ready() -> void:
 	get_parent().connect_card_signals(self)

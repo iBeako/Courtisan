@@ -1,5 +1,7 @@
 extends Node2D
 
+var player_id : int = 1
+
 # Dictionnaire pour stocker le nombre de cartes dans chaque slot
 var slot_card_counts: Dictionary = {}
 
