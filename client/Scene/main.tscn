@@ -5,10 +5,10 @@
 [ext_resource type="Script" path="res://Script/card_manager.gd" id="2_rmro5"]
 [ext_resource type="Script" path="res://Script/player_hand.gd" id="5_e645g"]
 [ext_resource type="Script" path="res://Script/deck.gd" id="6_6k3ci"]
-[ext_resource type="Texture2D" uid="uid://fcet1dxa144u" path="res://Assets/Deck.png" id="6_a45a8"]
 [ext_resource type="PackedScene" uid="uid://dam3quia7fus1" path="res://Scene/play_zone.tscn" id="8_0gqd0"]
 [ext_resource type="Texture2D" uid="uid://cmrdrrth5bhfq" path="res://Assets/jeudice-catch-up-games-courtisans_plateau-1.jpg" id="8_ffjsa"]
 [ext_resource type="Script" path="res://Script/input_manager.gd" id="9_327nj"]
+[ext_resource type="Texture2D" uid="uid://dc7jese687boj" path="res://Assets/dos_carte.jpg" id="9_sil62"]
 [ext_resource type="PackedScene" uid="uid://dpfp7ed8iupiu" path="res://Scene/play_zone_board.tscn" id="10_gln5c"]
 [ext_resource type="Script" path="res://Scene/message_manager.gd" id="11_oehsl"]
 
@@ -57,9 +57,10 @@ script = ExtResource("5_e645g")
 script = ExtResource("6_6k3ci")
 
 [node name="Sprite2D" type="Sprite2D" parent="Deck"]
-position = Vector2(360, 540)
-scale = Vector2(0.444444, 0.45283)
-texture = ExtResource("6_a45a8")
+position = Vector2(360.063, 539.773)
+rotation = 1.5708
+scale = Vector2(0.0900154, 0.113236)
+texture = ExtResource("9_sil62")
 
 [node name="Area2D" type="Area2D" parent="Deck"]
 position = Vector2(141, 181)
