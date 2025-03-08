@@ -1,12 +1,13 @@
 extends Node
 
-#client receive only the action done during a turn and in the beginning 
-#of every new turn send all the table
+# client receive only the action done during a turn and in the beginning 
+# of every new turn send all the table
 
 var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
 var port: int = 12345  # Change this for an internet address in the future
-const MAX_CLIENT:int = 5
+const MAX_CLIENT:int = 2
 var number_of_client :int = 0
+var clients_peer = [] # table of all clients_peer
 
 var session = load("res://server/processing/session.gd").new(MAX_CLIENT) # a session specific to a port
 
@@ -21,17 +22,23 @@ func _ready():
 func _on_peer_connected(peer_id:int) -> void:
 	number_of_client += 1
 	print("New client connected with id: %d" % peer_id)
-	var welcome = {"message_type":"id","your_id":peer_id}
-	var json = JSON.stringify(welcome)
-	peer.set_target_peer(peer_id)
-	peer.put_packet(json.to_utf8_buffer())
+	
 	if number_of_client > MAX_CLIENT:
 		peer.refuse_new_connections = true
 		print("cannot connect more people in the room")
 	else :
-		session._add_player(peer_id)
-		session.check_game_start()
+		clients_peer.append(peer_id)
+		var id = session._add_player(peer_id)
+		var welcome = {"message_type":"id","your_id":id}
+		var json = JSON.stringify(welcome)
+		peer.set_target_peer(peer_id)
+		peer.put_packet(json.to_utf8_buffer())
 		
+		if session.check_game_start():
+			session.load_game() # load game of the session
+			_send_three_cards_to_each_player()
+			
+	
 func _process(_delta):
 	peer.poll()
 	while peer.get_available_packet_count() > 0:
@@ -62,6 +69,16 @@ func _process_packet(sender_id: int, packet: String):
 				peer.put_packet(packet.to_utf8_buffer())
 		else:
 			print("problem")
+		
+	if session.check_end_game() :
+		session.display_session_status()
+		var stat = session.get_stat()
+		packet = JSON.stringify(stat)
+		_broadcast_message(packet)
+		peer.close()
+	elif session.check_next_player(clients_peer.find(sender_id)) :
+		_send_three_cards_to_a_player(sender_id)
+		session.display_session_status()
 
 func _validate_message(_message: String) -> bool:
 	# the game has not yet begun
@@ -73,7 +90,7 @@ func _validate_card_played(_sender_id :int,_message: String) -> bool:
 	
 	# The game has not yet begun
 	if session.check_status() == false :
-		print("Error : The game has not yet begun")
+		print("SERVER - Error : The game has not yet begun")
 		return false
 	
 	# message has the good format
@@ -87,34 +104,30 @@ func _validate_card_played(_sender_id :int,_message: String) -> bool:
 		
 		# message has the good format
 		is_valid_action = is_valid_action and ( data_dict.has("area") and data_dict.has("card_type") and data_dict.has("family") and data_dict.has("player") )
-		if  is_valid_action :
-			print("OK : Right message format")
-		else :
-			print("Error : message has not right format")
+		if  !is_valid_action :
+			print("SERVER - Error : message has not right format")
+			return false
+			
+		if  data_dict.has("id_player_domain") and !session.check_id_player_domain(data_dict["id_player_domain"]):
+			print("SERVER - Error : adversary id is the player or does not exist")
 			return false
 			
 		# validate action if it is the good player that have played the card (same client id and same id)
-		is_valid_action = is_valid_action and session.check_player_turn(_sender_id, data_dict["player"])
-		if is_valid_action :
-			print("OK : Right player who is currently playing")
-		else :
-			print("Error : Wrong player who is currently playing")
+		is_valid_action = is_valid_action and session.check_player_turn(clients_peer.find(_sender_id), data_dict["player"])
+		if !is_valid_action :
+			print("SERVER - Error : Wrong player who is currently playing")
 			return false
 		
 		# player has a card in hand and it is the right card
 		is_valid_action = is_valid_action and session.check_player_hand(data_dict["player"], data_dict["card_type"], data_dict["family"])
-		if is_valid_action :
-			print("OK : Player can indeed play this card")
-		else :
-			print("Error : Player has no card or wrong one")
+		if !is_valid_action :
+			print("SERVER - Error : Player has no card or wrong one")
 			return false
 		
 		# he did not put a card in the same area in the turn
 		is_valid_action = is_valid_action and session.check_player_area(data_dict["player"], data_dict["area"])
-		if is_valid_action :
-			print("OK : Player can indeed play this card in this area")
-		else :
-			print("Error : Player can play this card in this area again")
+		if !is_valid_action :
+			print("SERVER - Error : Player can play this card in this area again")
 			return false
 		
 		if is_valid_action :
@@ -123,9 +136,7 @@ func _validate_card_played(_sender_id :int,_message: String) -> bool:
 			elif data_dict["area"] == "our_domain":
 				session.place_card(data_dict["player"], data_dict["area"], data_dict["card_type"], data_dict["family"])
 			elif data_dict["area"] == "domain":
-				session.place_card(data_dict["player"], data_dict["area"], data_dict["card_type"], data_dict["family"], data_dict["id_player_domain"])
-		
-		session.display_session_status()
+				session.place_card(data_dict["player"], data_dict["area"], data_dict["card_type"], data_dict["family"], 0, data_dict["id_player_domain"])
 		
 	return true
 
@@ -141,5 +152,18 @@ func _broadcast_card_played(message: String):
 func _send_error(peer_id: int, error_message: String):
 	var error_packet = {"error": error_message}
 	var packet = JSON.stringify(error_packet)
+	peer.set_target_peer(peer_id)
+	peer.put_packet(packet.to_utf8_buffer())
+
+#-------------------------------------------------
+## At game start, distribute cads to players
+
+func _send_three_cards_to_each_player():
+	for peer_id in clients_peer:
+		_send_three_cards_to_a_player(peer_id)
+	
+func _send_three_cards_to_a_player(peer_id):
+	var cards_as_dict = session.distribute_three_cards(clients_peer.find(peer_id))
+	var packet = JSON.stringify(cards_as_dict)
 	peer.set_target_peer(peer_id)
 	peer.put_packet(packet.to_utf8_buffer())

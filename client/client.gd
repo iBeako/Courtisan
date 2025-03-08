@@ -1,13 +1,9 @@
 extends Node
 
-enum family {
-	butterfly = 0,
-	frog = 1,
-	bird = 2,
-	bunny = 3,
-	deer = 4,
-	fish = 5
-}
+var hand = []
+var card_types = ["normal", "noble", "spy", "guard", "assassin"]
+var families = ["butterfly", "frog", "bird", "bunny", "deer", "fish"]
+var positions = [1, -1]
 
 #card_played:
 #{"message_type":"card_played","player":1,"card_type":"normal","family":"deer","area":"queen_table","position":1} card in the light
@@ -56,14 +52,30 @@ func _process_packet(packet: String):
 		var message = json.data
 		#error message
 		if message.has("message_type") and message["message_type"] == "error":
-			print("Error from server: %s" % message["error_type"])
+			print("CLIENT - Error from server : %s" % message["error_type"])
 			_process_error(message)
 		#id message
 		elif message.has("message_type")  and message["message_type"] == "id":
 			id = message.your_id
+			print("CLIENT : I have been saved as player ", id)
+		#distribut hand
+		elif message.has("message_type")  and message["message_type"] == "hand":
+			hand.clear()
+			
+			var cards = [
+				["first_card_family", "first_card_type"],
+				["second_card_family", "second_card_type"],
+				["third_card_family", "third_card_type"]
+			]
+
+			for card in cards:
+				var new_card = [message[card[0]], message[card[1]]]
+				hand.append(new_card)
+			
+			print("CLIENT : As player ",id,", I recieved hand : ", hand)
 		#action message
 		elif message.has("message_type")  and message["message_type"] == "card_played":
-			var writting_message = "player %d "  % message["player"] + " has put %s" % message["card_type"] + " family %s" % message["family"]+ " in %s" % message["area"]
+			var writting_message = "CLIENT - Player %d" % id + " : player %d "  % message["player"] + " has put %s" % message["card_type"] + " %s" % message["family"]+ " in %s" % message["area"]
 			if message.has("position"):
 				if message["position"] > 0:
 					writting_message = writting_message + " in the light"
@@ -73,7 +85,7 @@ func _process_packet(packet: String):
 					writting_message = writting_message + message["id_adversary"]
 			print(writting_message)
 		elif message.has("message_type") and message["message_type"] == "message":
-			print("player %s "  % message["player"] + " has said message %d" % message["message"] )
+			print("PLAYER ",id," : player %s "  % message["player"] + " has said message %d" % message["message"] )
 		else:
 			print("invalid message")	
 	else:
@@ -83,3 +95,39 @@ func _process_error(message: Dictionary):
 	if message["error_type"] == "card_played":
 		print("redo an action")
 	
+func test_play_card(id_hand_card, area, position: int = 0, id_domain: int = -1):
+	var typ = hand[id_hand_card][0]
+	var fam = hand[id_hand_card][1]
+	var message = {}
+	print("\nCLIENT - NEW ACTION ------------------------------------------------------")
+	if area == "our_domain" :
+		print("CLIENT : player ", id," want to play ", hand[id_hand_card], " in ", area)
+		message = {
+			"message_type": "card_played",
+			"player": id,
+			"family": fam,
+			"card_type": typ,
+			"area":area,
+		}
+	elif area == "queen_table" :
+		print("CLIENT : player ", id," want to play ", hand[id_hand_card], " in ", area)
+		message = {
+			"message_type": "card_played",
+			"player": id,
+			"family": fam,
+			"card_type": typ,
+			"area":area,
+			"position": position,
+		}
+	elif area == "domain" :
+		print("CLIENT : player ", id," want to play ", hand[id_hand_card], " in domain player ", id_domain)
+		message = {
+			"message_type": "card_played",
+			"player": id,
+			"family": fam,
+			"card_type": typ,
+			"area":area,
+			"id_player_domain":id_domain,
+		}
+	var message_converted_in_json = JSON.stringify(message)
+	send_message(message_converted_in_json)

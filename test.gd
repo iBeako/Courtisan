@@ -1,6 +1,6 @@
 extends Node
 
-const CLIENT_COUNT = 5
+const CLIENT_COUNT = 2
 var server: Node
 var clients: Array
 
@@ -16,38 +16,27 @@ func _ready():
 		add_child(client)
 		clients.append(client)
 		await get_tree().create_timer(0.5).timeout
-	
-	# Wait a moment for connections to establish
-	#await get_tree().create_timer(1.0).timeout
-	
-	# Send test messages from clients
-	for i in range(CLIENT_COUNT):
-		var message = {"message_type":"card_played","player":i,"card_type":"normal","family":"deer","area":"queen_table","position":1}
-		var message_converted_in_json = JSON.stringify(message)
-		clients[i].send_message(message_converted_in_json)
+		
 		
 	# test radom values
-	var card_types = ["normal", "noble", "guard"]
-	var families = ["butterfly", "frog", "bird", "bunny", "deer", "fish"]
-	var positions = [1, -1]
+	var _card_types = ["normal", "noble", "guard"]
+	var _families = ["butterfly", "frog", "bird", "bunny", "deer", "fish"]
+	var _positions = [1, -1]
 
-	for i in range(CLIENT_COUNT):
-		var message = {
-			"message_type": "card_played",
-			"player": i,
-			"card_type": card_types[randi() % card_types.size()],
-			"family": families[randi() % families.size()],
-			"area": "queen_table",
-			"position": positions[randi() % positions.size()],
-		}
-		var message_converted_in_json = JSON.stringify(message)
-		clients[i].send_message(message_converted_in_json)
-		
-		# Wait a moment to process messages
-		await get_tree().create_timer(1.0).timeout
-	
-	# Wait a moment to process messages
-	await get_tree().create_timer(1.0).timeout
+	var adv = 0
+	for j in range(10) : 
+		for i in range(CLIENT_COUNT):
+			if i == 0 :
+				adv = 1
+			else :
+				adv = 0
+			clients[i].test_play_card(0, "queen_table", _positions[randi() % _positions.size()] )
+			await get_tree().create_timer(0.5).timeout
+			clients[i].test_play_card(1, "our_domain")
+			await get_tree().create_timer(0.5).timeout
+			clients[i].test_play_card(2, "domain", 0, adv ) # third argument is only for position at queen's table (0 as default)
+			await get_tree().create_timer(0.5).timeout
+		#await get_tree().create_timer(0.5).timeout
 	
 	# Print responses (handled in client.gd)
 	print("Test interaction completed")
