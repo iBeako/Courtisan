@@ -41,11 +41,13 @@ func add_card(card: Node2D) -> void:
 	else:
 		print("Failed to add card: CardSlot not found")
 
+func find_card_slot(card_type: String) -> Node2D:
+	return get_node_or_null("../"+card_type)
+
 func determine_zone_type() -> PlayZoneType:
 	return get_parent().Play_ZoneType
 
-func find_card_slot(card_type: String) -> Node2D:
-	return get_node_or_null("../"+card_type)
+
 	
 
 

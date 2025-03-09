@@ -24,3 +24,8 @@ window/stretch/mode="viewport"
 [dotnet]
 
 project/assembly_name="Courtisan"
+
+[layer_names]
+
+2d_render/layer_2="card"
+2d_render/layer_3="zones"
