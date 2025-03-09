@@ -24,6 +24,7 @@ func draw_cards():
 		$"../CardManager".add_child(new_card)  # Ajouter la carte au CardManager
 		new_card.name = "carte"  # Nom de la carte
 		player_hand.add_card_to_hand(new_card)  # Ajouter la carte à la main du joueur
+	$"../CardManager".start_turn()
 
 # Fonction pour récupérer une couleur aléatoire parmi les types de cartes
 func get_random_card_color() -> String:

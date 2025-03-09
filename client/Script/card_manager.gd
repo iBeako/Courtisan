@@ -8,7 +8,7 @@ var is_hovered : bool
 var player_hand_reference
 var message_manager_reference : MessageManager
 
-var can_play = [1, 1, 1] #zone joueur, zone milieu, zone ennemie
+var can_play = [1, 1, 1] #zone joueur, zone ennemie, zone milieu
 
 enum PlayZoneType { Joueur, Ennemie, Grace, Disgrace }
 
@@ -29,19 +29,18 @@ func _process(delta: float) -> void:
 
 func start_drag(card):
 	card_is_dragged = card
-	card.scale = Vector2(1.0,1.0)
+	card.z_index=10
 	
 	
 func start_turn(): # permet de remettre a 0 les actions du joueur, il peut a nouveau jouer dans chacune des zones
 	can_play = [1, 1, 1]
 	
 func end_drag():
-	card_is_dragged.scale = Vector2(1.05, 1.05)
+	card_is_dragged.z_index=1
 	var card_zone_found = check_zone()
 	#print("Zone trouvée"+str(card_slot_found))
 
 	if card_zone_found and not card_is_dragged in card_zone_found.cards_in_zone:
-		card_zone_found.add_card(card_is_dragged)
 		player_hand_reference.remove_card_from_hand(card_is_dragged)  # Retire la carte de la main
 		
 		# Déterminer l'aire et la position (exemple : queen_table avec position spécifique)
@@ -49,9 +48,26 @@ func end_drag():
 		print("zonetype"+str(area))
 		var player_id = get_parent().player_id
 		
+		var id_can_play : int
+		match area:
+			0: #carte jouée chez soi
+				id_can_play = 0
+			1: #chez un joueur
+				id_can_play = 1
+			_: #au milieu
+				id_can_play = 2
 		
-		message_manager_reference.send_card_played(player_id, card_is_dragged.card_color, card_is_dragged.card_color, area)
-		# Envoyer le message
+		if can_play[id_can_play] == 1:
+			# Envoyer le message
+			message_manager_reference.send_card_played(player_id, card_is_dragged.card_color, card_is_dragged.card_color, area)
+			
+			# --------- verif reponse serveur avant ajout------------
+			card_zone_found.add_card(card_is_dragged)
+			can_play[id_can_play] = 0 #indique qu'on ne peut plus jouer a cet endroit
+		else:
+			player_hand_reference.add_card_to_hand(card_is_dragged)  # Sinon, remet la carte en main
+			
+		
 		
 	else:
 		player_hand_reference.add_card_to_hand(card_is_dragged)  # Sinon, remet la carte en main
