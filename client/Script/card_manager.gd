@@ -1,15 +1,21 @@
 extends Node2D
 var screen_size
-const COLLISION_MASK_CARD = 1	
+const COLLISION_MASK_CARD = 1
 const COLLISION_MASK_CARD_SLOT = 2
 var card_is_dragged
-var is_hovered
+var is_hovered : bool
 var player_hand_reference
+var message_manager_reference : MessageManager
+
+var can_play = [1, 1, 1] #zone joueur, zone milieu, zone ennemie
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _ready() -> void:
 	screen_size = get_viewport_rect().size
 	player_hand_reference = $"../PlayerHand"
+	message_manager_reference = $"../MessageManager"
 	$"../inputManager".connect("left_mouse_button_released",on_left_mouse_button_released)
+	
 func _process(delta: float) -> void:
 	if card_is_dragged:
 		var mouse_pos = get_global_mouse_position()
@@ -21,6 +27,10 @@ func start_drag(card):
 	card_is_dragged = card
 	card.scale = Vector2(1.0,1.0)
 	
+	
+func start_turn():
+	can_play = [1, 1, 1]
+	
 func end_drag():
 	card_is_dragged.scale = Vector2(1.05, 1.05)
 	var card_slot_found = check_card_slot()
@@ -28,10 +38,21 @@ func end_drag():
 	if card_slot_found and not card_is_dragged in card_slot_found.cards_in_slot:
 		card_slot_found.add_card(card_is_dragged)
 		player_hand_reference.remove_card_from_hand(card_is_dragged)  # Retire la carte de la main
+		
+		# Déterminer l'aire et la position (exemple : queen_table avec position spécifique)
+		var area = card_slot_found.name
+		var position = -1  # Exemple : -1 pour disgrâce
+		var player_id = get_parent().player_id
+		
+		
+		#message_manager_reference.send_card_played(player_id, card_is_dragged.card_type, card_is_dragged.card_color, "our_domain")
+		# Envoyer le message
+		
 	else:
 		player_hand_reference.add_card_to_hand(card_is_dragged)  # Sinon, remet la carte en main
 
 	card_is_dragged = null
+
 
 	
 func connect_card_signals(card):
@@ -52,15 +73,20 @@ func on_hovered_off_card(card):
 		else:
 			is_hovered=false
 	
-func highlight_card(card,hovered):
-	if (hovered):
-		card.scale = Vector2(1.05,1.05)
-		card.z_index=2
+func highlight_card(card, hovered):
+	var tween = card.create_tween()
+	tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	
+	if hovered:
+		tween.tween_property(card, "scale", Vector2(1.05, 1.05), 0.2)
+		card.z_index = 2
 	else:
-		card.scale = Vector2(1.0,1.0)
-		card.z_index=1
+		tween.tween_property(card, "scale", Vector2(1.0, 1.0), 0.2)
+		await tween.finished
+		card.z_index = 1  # Redescend le z_index une fois l'animation terminée
+
 		
-func check_card_slot():
+func check_card_slot() -> Node2D:
 	var space_state = get_world_2d().direct_space_state
 	var parameters = PhysicsPointQueryParameters2D.new()
 	parameters.position = get_global_mouse_position()
@@ -70,6 +96,7 @@ func check_card_slot():
 	if result.size()>0:
 		return result[0].collider.get_parent()
 	return null
+	
 func check_card():
 	var space_state = get_world_2d().direct_space_state
 	var parameters = PhysicsPointQueryParameters2D.new()
@@ -94,3 +121,4 @@ func get_card_with_highest_index(cards):
 func on_left_mouse_button_released():
 	if card_is_dragged:
 		end_drag()
+		

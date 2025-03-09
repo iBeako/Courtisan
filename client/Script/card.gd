@@ -4,33 +4,35 @@ signal hovered
 signal hovered_off
 
 var starting_position
-var card_type  # Type de la carte (blanc, vert, rouge, etc.)
+var card_type
 var card_color
-const CARD_COLORS = {
-	"blanc": Color(1, 1, 1),  # Blanc
-	"vert": Color(0, 1, 0),   # Vert
-	"rouge": Color(1, 0, 0),  # Rouge
-	"jaune": Color(1, 1, 0),  # Jaune
-	"marron": Color(0.6, 0.3, 0),  # Marron
-	"bleu": Color(0, 0, 1)    # Bleu
-}
 
+@onready var sprite = $Sprite2D  # Référence au sprite de la carte
+
+const CARD_TEXTURES = {
+	"Papillons": preload("res://Assets/papillons/cropped_card_3.png"),
+	"Crapauds": preload("res://Assets/crapauds/cropped_card_4.png"),
+	"Rossignols": preload("res://Assets/rossignols/cropped_card_3.png"),
+	"Lièvres": preload("res://Assets/lièvres/cropped_card_3.png"),
+	"Cerfs": preload("res://Assets/cerfs/cropped_card_4.png"),
+	"Carpes": preload("res://Assets/carpes/blue_normal_carte.jpg")
+}
+func apply_card_texture() -> void:
+	var sprite = $CardImage  # Accès au Sprite2D correct
+	
+	print("→ Assignation de la texture pour:", "'" + card_type + "'")  # Vérification
+	if card_type in CARD_TEXTURES:
+		sprite.texture = CARD_TEXTURES[card_type]
+		sprite.scale = Vector2(0.113, 0.09)  # Applique le scale ici ✅
+	else:
+		print("⚠ Erreur : texture non trouvée pour '" + card_type + "'")  # Débogage amélioré
 func _ready() -> void:
 	get_parent().connect_card_signals(self)
-	apply_card_color()
+	apply_card_texture()
 
-# Appliquer la couleur en fonction du type
-func apply_card_color():
-	if card_type and card_type in CARD_COLORS:
-		self.modulate = CARD_COLORS[card_type]  # Change la couleur de la carte
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
 
 func _on_area_2d_mouse_entered() -> void:
-	emit_signal("hovered",self)
-
+	emit_signal("hovered", self)
 
 func _on_area_2d_mouse_exited() -> void:
-	emit_signal("hovered_off",self)
+	emit_signal("hovered_off", self)

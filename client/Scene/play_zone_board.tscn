@@ -18,23 +18,23 @@ visible = false
 position = Vector2(506, 68)
 scale = Vector2(12.6782, 1.17315)
 
-[node name="Blanc_Joueur" parent="." instance=ExtResource("2_xa725")]
+[node name="Papillons" parent="." instance=ExtResource("2_xa725")]
 position = Vector2(89, 70)
 
-[node name="Marron_Joueur" parent="." instance=ExtResource("2_xa725")]
+[node name="Crapauds" parent="." instance=ExtResource("2_xa725")]
 position = Vector2(233, 70)
 
-[node name="Rouge_Joueur" parent="." instance=ExtResource("2_xa725")]
+[node name="Rossignols" parent="." instance=ExtResource("2_xa725")]
 position = Vector2(369, 70)
 
-[node name="Jaune_Joueur" parent="." instance=ExtResource("2_xa725")]
+[node name="Lièvres" parent="." instance=ExtResource("2_xa725")]
 position = Vector2(641, 70)
 
-[node name="Vert_Joueur" parent="." instance=ExtResource("2_xa725")]
+[node name="Cerfs" parent="." instance=ExtResource("2_xa725")]
 position = Vector2(769, 70)
 
-[node name="Bleu_Joueur" parent="." instance=ExtResource("2_xa725")]
+[node name="Carpes" parent="." instance=ExtResource("2_xa725")]
 position = Vector2(913, 70)
 
-[node name="Assassin_Joueur" parent="." instance=ExtResource("2_xa725")]
+[node name="Espions" parent="." instance=ExtResource("2_xa725")]
 position = Vector2(505, 70)
