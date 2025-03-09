@@ -1,4 +1,5 @@
 extends Node2D
+class_name Card
 
 signal hovered
 signal hovered_off
@@ -23,8 +24,8 @@ func _ready() -> void:
 
 # Appliquer la couleur en fonction du type
 func apply_card_color():
-	if card_type and card_type in CARD_COLORS:
-		self.modulate = CARD_COLORS[card_type]  # Change la couleur de la carte
+	if card_color and card_color in CARD_COLORS:
+		self.modulate = CARD_COLORS[card_color]  # Change la couleur de la carte
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

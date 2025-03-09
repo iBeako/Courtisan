@@ -40,7 +40,7 @@ func add_card(card: Node2D) -> void:
 		return
 	
 	cards_in_zone.append(card)
-	var card_slot : CardSlot = find_card_slot(card.card_type)
+	var card_slot : CardSlot = find_card_slot(card.card_color)
 	
 	if card_slot:
 		card_slot.cards_in_slot.append(card)

@@ -43,5 +43,5 @@ position = Vector2(265, 73)
 [node name="Carpes" parent="." instance=ExtResource("1_bpis3")]
 position = Vector2(165, 73)
 
-[node name="Assassin" parent="." instance=ExtResource("1_bpis3")]
+[node name="Espions" parent="." instance=ExtResource("1_bpis3")]
 position = Vector2(65, 73)

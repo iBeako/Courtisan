@@ -47,11 +47,10 @@ func end_drag():
 		# Déterminer l'aire et la position (exemple : queen_table avec position spécifique)
 		var area = card_zone_found.Play_ZoneType
 		print("zonetype"+str(area))
-		var pos = -1  # Exemple : -1 pour disgrâce
 		var player_id = get_parent().player_id
 		
 		
-		#message_manager_reference.send_card_played(player_id, card_is_dragged.card_type, card_is_dragged.card_color, "our_domain")
+		message_manager_reference.send_card_played(player_id, card_is_dragged.card_color, card_is_dragged.card_color, area)
 		# Envoyer le message
 		
 	else:
