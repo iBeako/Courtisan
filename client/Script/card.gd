@@ -1,11 +1,12 @@
 extends Node2D
+class_name Card
 
 signal hovered
 signal hovered_off
 
-var starting_position
-var card_type
-var card_color
+var starting_position : Vector2
+var card_type : String
+var card_color : String
 
 @onready var sprite = $Sprite2D  # Référence au sprite de la carte
 
@@ -20,13 +21,14 @@ const CARD_TEXTURES = {
 func apply_card_texture() -> void:
 	var sprite = $CardImage  # Accès au Sprite2D correct
 	
-	print("→ Assignation de la texture pour:", "'" + card_type + "'")  # Vérification
-	if card_type in CARD_TEXTURES:
-		sprite.texture = CARD_TEXTURES[card_type]
+	print("→ Assignation de la texture pour:", "'" + card_color + "'")  # Vérification
+	if card_color in CARD_TEXTURES:
+		sprite.texture = CARD_TEXTURES[card_color]
 		sprite.scale = Vector2(0.113, 0.09)  # Applique le scale ici ✅
 	else:
-		print("⚠ Erreur : texture non trouvée pour '" + card_type + "'")  # Débogage amélioré
+		print("⚠ Erreur : texture non trouvée pour '" + card_color + "'")  # Débogage amélioré
 func _ready() -> void:
+	$Area2D.collision_layer = 1<<3
 	get_parent().connect_card_signals(self)
 	apply_card_texture()
 

@@ -5,7 +5,9 @@ signal message_sent(message)
 
 signal card_played()
 
-func send_card_played(player: int, card_type: String, family: String, area: String, position: int = 0, id_player_domain: String = ""):
+const CARD_SCENE_PATH = "res://Scene/card.tscn"
+
+func send_card_played(player: int, card_type: String, family: String, area: int, id_player_domain: int = -1):
 	var message = {
 		"message_type": "card_played",
 		"player": player,
@@ -13,10 +15,8 @@ func send_card_played(player: int, card_type: String, family: String, area: Stri
 		"family": family,
 		"area": area
 	}
-	
-	if area == "queen_table": # cas ou c'est joue au milieu
-		message["position"] = position
-	elif area == "domain": # cas ou joue chez un joueur
+
+	if area == 1: # cas ou joue chez un joueur
 		message["id_player_domain"] = id_player_domain
 	
 	_send_message(message)
@@ -68,8 +68,32 @@ func send_error(error_type: String):
 	}
 	_send_message(message)
 
+func add_card_to_zone(card_color : String, card_type : String, area : int) -> void:
+	var card_scene = preload(CARD_SCENE_PATH)
+
+	var new_card = card_scene.instantiate()  # Instancier la carte
+	new_card.card_color = card_color  # Assigner la couleur à la carte
+	new_card.card_type = card_type
+	new_card.z_index = 10
+	$"../CardManager".add_child(new_card)  # Ajouter la carte au CardManager
+	new_card.name = "carte"  # Nom de la carte
+	var zone : PlayZone
+	match area:
+		0:
+			zone = $"../PlayZone_Joueur"
+		1:
+			zone = $"../PlayZone_Ennemie"
+		2:
+			zone = $"../PlayZone_Grace"
+		3:
+			zone = $"../PlayZone_Disgrace"
+		_:
+			return
+	zone.add_card(new_card)
+
+
 func _send_message(message: Dictionary):
 	var json_message = JSON.stringify(message)
-	#print(json_message)  # Pour le débogage
+	print(json_message)  # Pour le débogage
 	emit_signal("message_sent", json_message)
 	# Ici, vous pouvez ajouter la logique pour envoyer le message via le réseau
