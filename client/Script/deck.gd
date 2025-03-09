@@ -5,10 +5,9 @@ var deck_cards = ["carte","carte","carte","carte","carte","carte","carte","carte
 var card_types = ["Papillons", "Crapauds", "Rossignols", "Lièvres", "Cerfs", "Carpes"]  # Types de cartes
 var player_hand  # Référence à PlayerHand
 var Hand_Count = 3
-const COLLISION_MASK_DECK = 4
 
 func _ready() -> void:
-	print($Area2D.collision_mask)
+	$Area2D.collision_layer = 1<<4
 	player_hand = get_node("../PlayerHand")  # Assurez-vous que le chemin est correct
 
 # Fonction pour tirer des cartes et leur attribuer une couleur

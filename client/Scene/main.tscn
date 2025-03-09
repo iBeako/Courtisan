@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://cmrdrrth5bhfq" path="res://Assets/jeudice-catch-up-games-courtisans_plateau-1.jpg" id="8_ffjsa"]
 [ext_resource type="Script" path="res://Script/input_manager.gd" id="9_327nj"]
 [ext_resource type="PackedScene" uid="uid://dpfp7ed8iupiu" path="res://Scene/play_zone_board.tscn" id="10_gln5c"]
-[ext_resource type="Script" path="res://Scene/message_manager.gd" id="11_oehsl"]
+[ext_resource type="Script" path="res://Script/message_manager.gd" id="11_oehsl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v7si8"]
 size = Vector2(80, 120)
@@ -37,10 +37,11 @@ scale = Vector2(1, -1)
 
 [node name="PlayZone_Grace" parent="." instance=ExtResource("10_gln5c")]
 position = Vector2(468, 399)
+Play_ZoneType = 2
 
 [node name="PlayZone_Disgrace" parent="." instance=ExtResource("10_gln5c")]
 position = Vector2(467, 550)
-Play_ZoneType = 1
+Play_ZoneType = 3
 
 [node name="Jeudice-catch-up-games-courtisansPlateau-1" type="Sprite2D" parent="."]
 position = Vector2(960, 540)

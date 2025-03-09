@@ -17,6 +17,7 @@ const CARD_COLORS = {
 
 
 func _ready() -> void:
+	$Area2D.collision_layer = 1<<3
 	get_parent().connect_card_signals(self)
 	apply_card_color()
 
