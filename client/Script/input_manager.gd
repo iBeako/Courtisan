@@ -6,6 +6,8 @@ signal left_mouse_button_released
 var card_manager_reference
 var deck_reference
 
+var menu_scene : PackedScene = load("res://Scene/menu_principal.tscn")
+
 func _ready() -> void:
 	card_manager_reference = $"../CardManager"
 	deck_reference = $"../Deck"
@@ -17,6 +19,8 @@ func _input(event):
 			raycast_at_cursor()
 		else:
 			emit_signal("left_mouse_button_released")
+	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
+		get_tree().change_scene_to_packed(menu_scene)
 			 
 func raycast_at_cursor():
 	var space_state = get_world_2d().direct_space_state

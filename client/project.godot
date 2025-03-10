@@ -29,3 +29,8 @@ project/assembly_name="Courtisan"
 
 2d_render/layer_2="card"
 2d_render/layer_3="zones"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

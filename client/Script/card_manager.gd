@@ -98,8 +98,10 @@ func highlight_card(card, hovered):
 	var tween = card.create_tween()
 	tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	
+	print("hovered"+str(hovered))
 	if hovered:
 		tween.tween_property(card, "scale", Vector2(1.05, 1.05), 0.2)
+		await tween.finished
 		card.z_index = 2
 	else:
 		tween.tween_property(card, "scale", Vector2(1.0, 1.0), 0.2)

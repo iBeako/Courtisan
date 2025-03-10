@@ -18,39 +18,9 @@ func _ready() -> void:
 	else:
 		print("Label NOT found for ", self.name)
 
-func add_card(card: Node2D) -> void:
-	print("Adding card to slot: ", self.name)
-	if card in cards_in_slot:
-		return
-
-	var card_slot = find_card_slot(card.card_type)
-	
-	if card_slot:
-		card_slot.cards_in_slot.append(card)
-		card.z_index = 5
-		var target_position: Vector2 = card_slot.global_position
-		var tween: Tween = get_tree().create_tween()
-		tween.tween_property(card, "position", target_position, 0.2)
-
-		if card.has_node("Area2D/CollisionShape2D"):
-			card.get_node("Area2D/CollisionShape2D").disabled = true
-
-		#card_slot.update_count_label()
-		get_parent().update_labels()
-		print("Card added to ", card_slot.name, ". Total cards: ", card_slot.cards_in_slot.size())
-	else:
-		print("Failed to add card: CardSlot not found")
-
-func find_card_slot(card_type: String) -> Node2D:
-	return get_node_or_null("../"+card_type)
 
 func determine_zone_type() -> PlayZoneType:
 	return get_parent().Play_ZoneType
-
-
-	
-
-
 
 
 func remove_card(card: Node2D) -> void:
