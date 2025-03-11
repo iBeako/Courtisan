@@ -3,7 +3,7 @@ extends Node
 var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
 var db_peer: WebSocketPeer = WebSocketPeer.new()
 var db_url: String = "ws://localhost:10000/socket.io/?EIO=4&transport=websocket"
-var port: int = 19001
+var port: int = 10001
 const MAX_CLIENT: int = 2
 var number_of_client: int = 0
 var return_database: String = ""
