@@ -2,9 +2,13 @@ extends Node2D
 
 const CARD_SCENE_PATH = "res://Scene/card.tscn"
 
-var deck_cards = ["carte","carte","carte","carte","carte","carte","carte","carte"]  # Liste des cartes dans le deck
-var card_colors = ["Papillons", "Crapauds", "Rossignols", "Lièvres", "Cerfs", "Carpes"]  # Types de cartes
+# List of cards in the deck
+var deck_cards = ["carte","carte","carte","carte","carte","carte","carte","carte"]  
 
+# Card color types
+var card_colors = ["Papillons", "Crapauds", "Rossignols", "Lièvres", "Cerfs", "Carpes"]  
+
+# Enum for different card types
 enum TYPES {
 	Normal,
 	Assassin,
@@ -13,45 +17,43 @@ enum TYPES {
 	Noble
 }
 
-var Hand_Count = 3
+var Hand_Count = 3  # Number of cards a player can hold
 
-@onready var player_hand = get_node("../PlayerHand")
+@onready var player_hand = get_node("../PlayerHand")  # Reference to the player's hand node
 
 func _ready() -> void:
-	$Area2D.collision_layer = 1<<4
-	randomize()  # Initialise la génération aléatoire
+	$Area2D.collision_layer = 1<<4  # Set the collision layer for Area2D
+	randomize()  # Initialize random number generation
 
-
-
-# Fonction pour tirer des cartes et leur attribuer un type aléatoire
+# Function to draw cards and assign them a random type
 func draw_cards():
 	print("Drawing cards...")
 
 	if not player_hand:
-		print("Erreur : player_hand introuvable")
+		print("Error: player_hand not found")
 		return
 	
-	var card_scene = preload(CARD_SCENE_PATH)
+	var card_scene = preload(CARD_SCENE_PATH)  # Load the card scene
 	
+	# Continue drawing until the player’s hand has the required number of cards
 	while player_hand.player_hand.size() < Hand_Count:
-		var new_card = card_scene.instantiate()  # Instancier la carte
+		var new_card = card_scene.instantiate()  # Instantiate a new card
 
+		var card_color = get_random_card_color()  # Assign a random color
+		new_card.card_color = card_color  # Set the card’s color
+		new_card.card_type = TYPES.Normal  # Assign a default type
 
+		# new_card.apply_card_texture()  # Update the texture immediately (commented out)
 
-		var card_color = get_random_card_color()  # Attribuer une couleur aléatoire
-		new_card.card_color = card_color  # Assigner la couleur à la carte
-		new_card.card_type = TYPES.Espion
-
-		#new_card.apply_card_texture()  # Mettre à jour la texture immédiatement
-
-		new_card.z_index = 5
-		new_card.name = "carte_" + card_color  # Nommer la carte
+		new_card.z_index = 5  # Set the rendering order
+		new_card.name = "carte_" + card_color  # Give the card a unique name
 		
-		$"../CardManager".add_child(new_card)  # Ajouter la carte au CardManager
+		$"../CardManager".add_child(new_card)  # Add the card to the CardManager
 		
-		player_hand.add_card_to_hand(new_card)  # Ajouter à la main du joueur
-	$"../CardManager".start_turn()
+		player_hand.add_card_to_hand(new_card)  # Add the card to the player's hand
 	
-# Fonction pour récupérer un type de carte aléatoire
+	$"../CardManager".start_turn()  # Start the turn after drawing cards
+
+# Function to get a random card color
 func get_random_card_color() -> String:
-	return card_colors[randi() % card_colors.size()]  # Retourne un type de carte aléatoire
+	return card_colors[randi() % card_colors.size()]  # Return a random card color
