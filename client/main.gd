@@ -11,7 +11,7 @@ func _ready() -> void:
 	var client = load("res://network.gd").new()
 	add_child(client)
 	
-	await get_tree().create_timer(1.0).timeout
+	await get_tree().create_timer(3.0).timeout
 	
 	# Send test messages from clients
 	var card_types = ["normal", "noble", "guard"]
