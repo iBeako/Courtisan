@@ -5,6 +5,14 @@ const CARD_SCENE_PATH = "res://Scene/card.tscn"
 var deck_cards = ["carte","carte","carte","carte","carte","carte","carte","carte"]  # Liste des cartes dans le deck
 var card_colors = ["Papillons", "Crapauds", "Rossignols", "Lièvres", "Cerfs", "Carpes"]  # Types de cartes
 
+enum TYPES {
+	Normal,
+	Assassin,
+	Espion,
+	Garde,
+	Noble
+}
+
 var Hand_Count = 3
 
 @onready var player_hand = get_node("../PlayerHand")
@@ -32,8 +40,9 @@ func draw_cards():
 
 		var card_color = get_random_card_color()  # Attribuer une couleur aléatoire
 		new_card.card_color = card_color  # Assigner la couleur à la carte
+		new_card.card_type = TYPES.Espion
 
-		new_card.apply_card_texture()  # Mettre à jour la texture immédiatement
+		#new_card.apply_card_texture()  # Mettre à jour la texture immédiatement
 
 		new_card.z_index = 5
 		new_card.name = "carte_" + card_color  # Nommer la carte

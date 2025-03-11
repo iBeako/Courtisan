@@ -4,11 +4,20 @@ class_name Card
 signal hovered
 signal hovered_off
 
+enum TYPES {
+	Normal,
+	Assassin,
+	Espion,
+	Garde,
+	Noble
+}
+
+
 var starting_position : Vector2
-var card_type : String
+var card_type : TYPES
 var card_color : String
 
-@onready var sprite = $Sprite2D  # Référence au sprite de la carte
+var sprite : TextureRect   # Référence au sprite de la carte
 
 const CARD_TEXTURES = {
 	"Papillons": preload("res://Assets/papillons/cropped_card_3.png"),
@@ -16,18 +25,30 @@ const CARD_TEXTURES = {
 	"Rossignols": preload("res://Assets/rossignols/cropped_card_3.png"),
 	"Lièvres": preload("res://Assets/lièvres/cropped_card_3.png"),
 	"Cerfs": preload("res://Assets/cerfs/cropped_card_4.png"),
-	"Carpes": preload("res://Assets/carpes/blue_normal_carte.jpg")
+	"Carpes": preload("res://Assets/carpes/blue_normal_carte.jpg"),
+	"Back": preload("res://Assets/dos_carte.jpg")
 }
 func apply_card_texture() -> void:
-	var sprite = $CardImage  # Accès au Sprite2D correct
-	
+	#var sprite = $CardImage  # Accès au Sprite2D correct
+	#print(sprite)
+	sprite.texture
 	print("→ Assignation de la texture pour:", "'" + card_color + "'")  # Vérification
 	if card_color in CARD_TEXTURES:
 		sprite.texture = CARD_TEXTURES[card_color]
-		sprite.scale = Vector2(0.113, 0.09)  # Applique le scale ici ✅
+		
 	else:
 		print("⚠ Erreur : texture non trouvée pour '" + card_color + "'")  # Débogage amélioré
+
+func hide_card() -> void:
+	#var sprite = $CardImage  # Accès au Sprite2D correct
+	
+	sprite.texture = CARD_TEXTURES["Back"]
+	
+	
+	
+
 func _ready() -> void:
+	sprite = $TextureRect
 	$Area2D.collision_layer = 1<<3
 	get_parent().connect_card_signals(self)
 	apply_card_texture()

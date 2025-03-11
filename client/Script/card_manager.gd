@@ -3,7 +3,7 @@ var screen_size
 const COLLISION_MASK_CARD = 1 << 0
 const COLLISION_MASK_CARD_SLOT = 1 << 1
 const COLLISION_MASK_ZONE = 1 << 2
-var card_is_dragged
+var card_is_dragged : Card
 var is_hovered : bool
 var player_hand_reference
 var message_manager_reference : MessageManager
@@ -23,8 +23,8 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if card_is_dragged:
 		var mouse_pos = get_global_mouse_position()
-		card_is_dragged.position = Vector2(clamp(mouse_pos.x,0,screen_size.x),clamp(mouse_pos.y,0,screen_size.y))
-		card_is_dragged.position = mouse_pos
+		card_is_dragged.global_position = Vector2(clamp(mouse_pos.x,0,screen_size.x),clamp(mouse_pos.y,0,screen_size.y))
+		card_is_dragged.global_position = mouse_pos
 
 
 func start_drag(card):
@@ -37,7 +37,7 @@ func start_turn(): # permet de remettre a 0 les actions du joueur, il peut a nou
 	
 func end_drag():
 	card_is_dragged.z_index=1
-	var card_zone_found = check_zone()
+	var card_zone_found : PlayZone = check_zone()
 	#print("Zone trouvée"+str(card_slot_found))
 
 	if card_zone_found and not card_is_dragged in card_zone_found.cards_in_zone:
@@ -63,6 +63,8 @@ func end_drag():
 			
 			# --------- verif reponse serveur avant ajout------------
 			card_zone_found.add_card(card_is_dragged)
+			if card_is_dragged.card_type:
+				card_is_dragged.hide_card()
 			can_play[id_can_play] = 0 #indique qu'on ne peut plus jouer a cet endroit
 		else:
 			player_hand_reference.add_card_to_hand(card_is_dragged)  # Sinon, remet la carte en main
@@ -120,7 +122,7 @@ func check_card_slot() -> Node2D:
 		return result[0].collider.get_parent()
 	return null
 
-func check_zone() -> Node2D:
+func check_zone() -> PlayZone:
 	var space_state = get_world_2d().direct_space_state
 	var parameters = PhysicsPointQueryParameters2D.new()
 	parameters.position = get_global_mouse_position()

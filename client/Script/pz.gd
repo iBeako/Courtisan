@@ -10,6 +10,14 @@ var family_names = ["Papillons", "Crapauds", "Rossignols", "Lièvres", "Cerfs", 
 
 var cards_in_zone : Array = []
 
+enum TYPES {
+	Normal,
+	Assassin,
+	Espion,
+	Garde,
+	Noble
+}
+
 func _ready() -> void:
 	update_color_rect()
 	$Area2D.collision_layer=1<<2
@@ -34,26 +42,25 @@ func update_color_rect() -> void:
 		_:
 			color_rect.color = Color(1, 1, 1)  # Blanc par défaut
 
-func add_card(card: Node2D) -> void:
+func add_card(card: Card) -> void:
 	print("Adding card to slot: ", self.name)
 	if card in cards_in_zone:
 		return
 	
 	cards_in_zone.append(card)
-	var card_slot : CardSlot = find_card_slot(card.card_color)
+	var card_slot : CardSlot = find_card_slot(card.card_color, card.card_type)
 	
 	if card_slot:
 		card_slot.cards_in_slot.append(card)
 		card.z_index = 5
 		var target_position: Vector2 = card_slot.global_position
 		var tween: Tween = get_tree().create_tween()
-		tween.tween_property(card, "position", target_position, 0.2)
+		tween.tween_property(card, "global_position", target_position, 0.2)
 
 		if card.has_node("Area2D/CollisionShape2D"):
 			card.get_node("Area2D/CollisionShape2D").disabled = true
 		
 		update_labels()
-		#card_slot.update_count_label()
 		print("Card added to ", card_slot.name, ". Total cards: ", card_slot.cards_in_slot.size())
 	else:
 		print("Failed to add card: CardSlot not found")
@@ -62,8 +69,10 @@ func update_labels(emit_signal : bool = true, values : Dictionary = {}) -> Dicti
 	push_error("Classe update labels non implémentée")
 	return {}
 
-func find_card_slot(card_type: String) -> Node2D:
-	return get_node_or_null(card_type)
+func find_card_slot(card_color: String, card_type : int) -> Node2D:
+	if card_type == TYPES.Espion:
+		return get_node_or_null("Espions")
+	return get_node_or_null(card_color)
 
 
 
