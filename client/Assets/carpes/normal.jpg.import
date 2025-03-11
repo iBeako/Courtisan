@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dwkr3ageywoxu"
-path="res://.godot/imported/crapauds_garde.png-bb7884a0730784d2d7cb866e07de686d.ctex"
+uid="uid://cen1734v1jf8u"
+path="res://.godot/imported/normal.jpg-850e2705b2cb291f6dab2435d08cb600.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/crapauds/crapauds_garde.png"
-dest_files=["res://.godot/imported/crapauds_garde.png-bb7884a0730784d2d7cb866e07de686d.ctex"]
+source_file="res://Assets/carpes/normal.jpg"
+dest_files=["res://.godot/imported/normal.jpg-850e2705b2cb291f6dab2435d08cb600.ctex"]
 
 [params]
 

@@ -7,7 +7,7 @@ signal card_played()
 
 const CARD_SCENE_PATH = "res://Scene/card.tscn"
 
-func send_card_played(player: int, card_type: String, family: String, area: int, id_player_domain: int = -1):
+func send_card_played(player: int, card_type: int, family: String, area: int, id_player_domain: int = -1):
 	var message = {
 		"message_type": "card_played",
 		"player": player,
@@ -21,7 +21,7 @@ func send_card_played(player: int, card_type: String, family: String, area: int,
 	
 	_send_message(message)
 
-func send_action(player: int, card_type: String, family: String, area: String, card_killed_type: String = "", card_killed_family: String = "", id_adversary: String = ""):
+func send_action(player: int, card_type: int, family: String, area: String, card_killed_type: String = "", card_killed_family: String = "", id_adversary: String = ""):
 	# uniquement appelee lorsqu'un assassin est joue
 	
 	var message = {

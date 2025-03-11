@@ -1,5 +1,13 @@
 extends Node2D
 
+enum TYPES {
+	Normal,
+	Assassin,
+	Espion,
+	Garde,
+	Noble
+}
+
 # Variables for screen size and collision masks
 var screen_size
 const COLLISION_MASK_CARD = 1 << 0
@@ -71,11 +79,11 @@ func end_drag():
 		# Check if the player can still play in this zone
 		if can_play[id_can_play] == 1:
 			# Send a message to the server about the played card
-			message_manager_reference.send_card_played(player_id, card_is_dragged.card_color, card_is_dragged.card_color, area)
+			message_manager_reference.send_card_played(player_id, card_is_dragged.card_type, card_is_dragged.card_color, area)
 			
 			# Add the card to the play zone
 			card_zone_found.add_card(card_is_dragged)
-			if card_is_dragged.card_type:
+			if card_is_dragged.card_type == TYPES.Espion:
 				card_is_dragged.hide_card()
 			can_play[id_can_play] = 0  # Mark the zone as played
 		else:

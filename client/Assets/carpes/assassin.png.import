@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cspyvadcuredl"
-path="res://.godot/imported/lièvres_normal.png-c9ab283fb3d83b02ba4fd5d56c1a1201.ctex"
+uid="uid://b62ug8d6imuvx"
+path="res://.godot/imported/assassin.png-a84a82669bdb6a9b1728025db4dfa3ab.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/papillons/lièvres_normal.png"
-dest_files=["res://.godot/imported/lièvres_normal.png-c9ab283fb3d83b02ba4fd5d56c1a1201.ctex"]
+source_file="res://Assets/carpes/assassin.png"
+dest_files=["res://.godot/imported/assassin.png-a84a82669bdb6a9b1728025db4dfa3ab.ctex"]
 
 [params]
 

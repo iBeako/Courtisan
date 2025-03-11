@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d1mas3inbn5nt"
-path="res://.godot/imported/cerfs_espion.png-8f1c88b12c799d1a8f33f14c389a7807.ctex"
+uid="uid://sbljygmy5570"
+path="res://.godot/imported/assassin.png-8c893d53dd414188f4a14cb188611408.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/cerfs/cerfs_espion.png"
-dest_files=["res://.godot/imported/cerfs_espion.png-8f1c88b12c799d1a8f33f14c389a7807.ctex"]
+source_file="res://Assets/crapauds/assassin.png"
+dest_files=["res://.godot/imported/assassin.png-8c893d53dd414188f4a14cb188611408.ctex"]
 
 [params]
 

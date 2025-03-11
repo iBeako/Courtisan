@@ -29,7 +29,7 @@ func determine_zone_type() -> PlayZoneType:
 	return get_parent().Play_ZoneType  # Get the play zone type from the parent node
 
 # Function to remove a card from the slot
-func remove_card(card: Node2D) -> void:
+func remove_card(card: Card) -> void:
 	if card in cards_in_slot:
 		cards_in_slot.erase(card)  # Remove the card from the list
 		update_card_positions()  # Update the positions of remaining cards
@@ -39,7 +39,7 @@ func remove_card(card: Node2D) -> void:
 # Function to reposition cards after one is removed
 func update_card_positions() -> void:
 	for i in range(cards_in_slot.size()):
-		var card: Node2D = cards_in_slot[i]
+		var card: Card = cards_in_slot[i]
 		card.position = position + Vector2(i * CARD_SPACING, 0)  # Adjust card position
 
 		# Disable the collision shape if it exists
@@ -52,8 +52,8 @@ func update_count_label(value : int) -> int:  # 'value' is used to adjust the co
 		var cpt: int = 0
 
 		# Loop through all cards and apply any special count logic
-		for c in cards_in_slot:
-			cpt += value
+		for c : Card in cards_in_slot:
+			cpt += value * c.get_value()
 
 		# Update the label text, hide it if count is zero
 		count_label.text = str(cpt) if cpt != 0 else ""

@@ -20,29 +20,32 @@ var card_type : TYPES  # Type of the card
 var card_color : String  # Color/faction of the card
 var sprite : TextureRect  # Reference to the card's sprite
 
+
 # Dictionary storing the textures for different card colors
-const CARD_TEXTURES = {
-	"Papillons": preload("res://Assets/papillons/lièvres_normal.png"),
-	"Crapauds": preload("res://Assets/crapauds/crapauds_normal.png"),
-	"Rossignols": preload("res://Assets/rossignols/rossignols_normal.png"),
-	"Lièvres": preload("res://Assets/lièvres/lièvres_normal.png"),
-	"Cerfs": preload("res://Assets/cerfs/cerfs_normal.png"),
-	"Carpes": preload("res://Assets/carpes/carpe_normal.jpg"),
-	"Back": preload("res://Assets/dos_carte.jpg")
-}
+
+var card_colors = ["Papillons", "Crapauds", "Rossignols", "Lièvres", "Cerfs", "Carpes"]  
+
+var back_texture = preload("res://Assets/dos_carte.jpg")
+
 
 # Function to apply the correct texture based on the card's color
 func apply_card_texture() -> void:
 	#print("→ Assigning texture for:", "'" + card_color + "'")  # Debugging output
+	var card_texture : Texture = load("res://Assets/"+card_color.to_lower()+"/"+TYPES.find_key(card_type).to_lower()+".png")
 	
-	if card_color in CARD_TEXTURES:
-		sprite.texture = CARD_TEXTURES[card_color]  # Set the correct texture
+	if card_texture!=null:
+		sprite.texture = card_texture  # Set the correct texture
 	else:
 		print("⚠ Error: Texture not found for '" + card_color + "'")  # Error handling
+		print("res://Assets/"+card_color.to_lower()+"/"+TYPES.find_key(card_type).to_lower()+".png")
+		
+
+func get_value():
+	return 2 if card_type == TYPES.Noble else 1
 
 # Function to hide the card (show the back texture)
 func hide_card() -> void:
-	sprite.texture = CARD_TEXTURES["Back"]
+	sprite.texture = back_texture
 
 # Ready function: runs when the node is added to the scene
 func _ready() -> void:

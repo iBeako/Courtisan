@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cph7cwlqvmqad"
-path="res://.godot/imported/lièvres_espion.png-0a8ea393b58423c7c440b58126dc18e9.ctex"
+uid="uid://bd32r2uodod7i"
+path="res://.godot/imported/noble.png-080063cb1550f8c6c3825ce8ff2e96e3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/papillons/lièvres_espion.png"
-dest_files=["res://.godot/imported/lièvres_espion.png-0a8ea393b58423c7c440b58126dc18e9.ctex"]
+source_file="res://Assets/carpes/noble.png"
+dest_files=["res://.godot/imported/noble.png-080063cb1550f8c6c3825ce8ff2e96e3.ctex"]
 
 [params]
 
