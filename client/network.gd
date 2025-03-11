@@ -8,6 +8,11 @@ enum family {
 	deer = 4,
 	fish = 5
 }
+var hand = []
+var card_types = ["normal", "noble", "spy", "guard", "assassin"]
+var families = ["butterfly", "frog", "bird", "bunny", "deer", "fish"]
+var positions = [1, -1]
+
 
 #card_played:
 #{"message_type":"card_played","player":1,"card_type":"normal","family":"deer","area":"queen_table","position":1} card in the light
@@ -97,6 +102,20 @@ func process_message(data:Dictionary):
 		process_error(data)
 	elif data["message_type"] == "connexion":
 		process_connexion(data)
+	elif data["message_type"] == "hand":
+		hand.clear()
+		var cards = [
+			["first_card_family", "first_card_type"],
+			["second_card_family", "second_card_type"],
+			["third_card_family", "third_card_type"]
+		]
+
+		for card in cards:
+			var new_card = [message[card[0]], message[card[1]]]
+			hand.append(new_card)
+			
+		print("CLIENT : As player ",id,", I recieved hand : ", hand)
+
 	else:
 		print("invalid message")
 		
@@ -113,8 +132,51 @@ func put_message_in_chat(_data:Dictionary):
 	pass
 	
 func process_card_played(_data:Dictionary):
-	pass
-	
+	var writting_message = "CLIENT - Player %d" % id + " : player %d "  % message["player"] + " has put %s" % message["card_type"] + " %s" % message["family"]+ " in %s" % message["area"]
+		if message.has("position"):
+			if message["position"] > 0:
+				writting_message = writting_message + " in the light"
+				writting_message = writting_message + message["id_adversary"]
+		print(writting_message)
+
+
+func test_play_card(id_hand_card, area, position: int = 0, id_domain: int = -1):
+	var typ = hand[id_hand_card][0]
+	var fam = hand[id_hand_card][1]
+	var message = {}
+	print("\nCLIENT - NEW ACTION ------------------------------------------------------")
+	if area == "our_domain" :
+		print("CLIENT : player ", id," want to play ", hand[id_hand_card], " in ", area)
+		message = {
+			"message_type": "card_played",
+			"player": id,
+			"family": fam,
+			"card_type": typ,
+			"area":area,
+		}
+	elif area == "queen_table" :
+		print("CLIENT : player ", id," want to play ", hand[id_hand_card], " in ", area)
+		message = {
+			"message_type": "card_played",
+			"player": id,
+			"family": fam,
+			"card_type": typ,
+			"area":area,
+			"position": position,
+		}
+	elif area == "domain" :
+		print("CLIENT : player ", id," want to play ", hand[id_hand_card], " in domain player ", id_domain)
+		message = {
+			"message_type": "card_played",
+			"player": id,
+			"family": fam,
+			"card_type": typ,
+			"area":area,
+			"id_player_domain":id_domain,
+		}
+	send_message_to_server(message)
+
+
 func process_table(_data:Dictionary):
 	pass
 

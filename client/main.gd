@@ -14,9 +14,9 @@ func _ready() -> void:
 	await get_tree().create_timer(3.0).timeout
 	
 	# Send test messages from clients
-	var card_types = ["normal", "noble", "guard"]
-	var families = ["butterfly", "frog", "bird", "bunny", "deer", "fish"]
-	var positions = [1, -1]
+	var _card_types = ["normal", "noble", "guard"]
+	var _families = ["butterfly", "frog", "bird", "bunny", "deer", "fish"]
+	var _positions = [1, -1]
 	var message = {
 			"message_type": "card_played",
 			"player": 1,

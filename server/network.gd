@@ -6,6 +6,8 @@ var db_url: String = "ws://localhost:10000/socket.io/?EIO=4&transport=websocket"
 var port: int = 10001
 const MAX_CLIENT: int = 2
 var number_of_client: int = 0
+var clients_peer = [] # table of all clients_peer
+
 var return_database: String = ""
 var clients = {}
 var tls_cert: X509Certificate
@@ -35,12 +37,23 @@ func _process(_delta):
 		while db_peer.get_available_packet_count() > 0:
 			var packet = db_peer.get_packet()
 			return_database = packet.get_string_from_utf8()
+	if session.check_end_game() :
+		session.display_session_status()
+		var stat = session.get_stat()
+		packet = JSON.stringify(stat)
+		_broadcast_message(packet)
+		peer.close()
+	elif session.check_next_player(clients_peer.find(sender_id)) :
+		_send_three_cards_to_a_player(sender_id)
+		session.display_session_status()
+
 
 func _on_peer_disconnected(peer_id: int):
 	clients.erase(peer_id)
 	number_of_client -= 1
 
 func _on_peer_connected(peer_id: int):
+
 	print("New client connected with id: %d" % peer_id)
 	if number_of_client >= MAX_CLIENT:
 		print("Cannot connect more people in the room")
@@ -50,14 +63,19 @@ func _on_peer_connected(peer_id: int):
 			"peer_id":peer_id,
 			"status":"unlogged"
 		}
+		
+		
+		clients_peer.append(peer_id)
 		var data_id = {
 			"message_type"="id",
-			"your_id"=number_of_client
+			"your_id"= session._add_player(peer_id)
 		}
-		session._add_player(peer_id)
 		send_message_to_peer.rpc_id(peer_id,data_id)
-		session.check_game_start()
+		if session.check_game_start():
+			session.load_game() # load game of the session
+			_send_three_cards_to_each_player()
 		number_of_client += 1
+		
 		
 		
 		
@@ -139,6 +157,18 @@ func process_message(data : Dictionary,sender_id:int):
 	else:
 		print("invalid message")	
 
+## At game start, distribute cads to players
+
+func _send_three_cards_to_each_player():
+	for peer_id in clients_peer:
+		_send_three_cards_to_a_player(peer_id)
+	
+func _send_three_cards_to_a_player(peer_id):
+	var cards_as_dict = session.distribute_three_cards(clients_peer.find(peer_id))
+	send_message_to_peer.rpc_id(peer_id,cards_as_dict)	
+
+
+
 func _validate_message(message: Dictionary) -> bool:
 	if message["message"] > 0 and message["message"] <6:
 	# message number exist (for nom between 1 and 5)
@@ -149,7 +179,7 @@ func _validate_card_played(_sender_id :int,message: Dictionary) -> bool:
 	
 	# The game has not yet begun
 	if session.check_status() == false :
-		print("Error : The game has not yet begun")
+		print("SERVER - Error : The game has not yet begun")
 		return false
 		
 	else :
@@ -157,34 +187,30 @@ func _validate_card_played(_sender_id :int,message: Dictionary) -> bool:
 
 		# message has the good format
 		is_valid_action = is_valid_action and ( message.has("area") and message.has("card_type") and message.has("family") and message.has("player") )
-		if  is_valid_action :
-			print("OK : Right message format")
-		else :
-			print("Error : message has not right format")
+		if  !is_valid_action :
+			print("SERVER - Error : message has not right format")
+			return false
+			
+		if  data_dict.has("id_player_domain") and !session.check_id_player_domain(data_dict["id_player_domain"]):
+			print("SERVER - Error : adversary id is the player or does not exist")
 			return false
 			
 		# validate action if it is the good player that have played the card (same client id and same game id)
-		is_valid_action = is_valid_action and session.check_player_turn(_sender_id, message["player"])
-		if is_valid_action :
-			print("OK : Right player who is currently playing")
-		else :
-			print("Error : Wrong player who is currently playing")
+		is_valid_action = is_valid_action and session.check_player_turn(clients_peer.find(_sender_id), data_dict["player"])
+		if !is_valid_action :
+			print("SERVER - Error : Wrong player who is currently playing")
 			return false
 		
 		# player has a card in hand and it is the right card
 		is_valid_action = is_valid_action and session.check_player_hand(message["player"], message["card_type"], message["family"])
-		if is_valid_action :
-			print("OK : Player can indeed play this card")
-		else :
-			print("Error : Player has no card or wrong one")
+		if !is_valid_action :
+			print("SERVER - Error : Player has no card or wrong one")
 			return false
 		
 		# he did not put a card in the same area in the turn
 		is_valid_action = is_valid_action and session.check_player_area(message["player"], message["area"])
-		if is_valid_action :
-			print("OK : Player can indeed play this card in this area")
-		else :
-			print("Error : Player can play this card in this area again")
+		if !is_valid_action :
+			print("SERVER - Error : Player can play this card in this area again")
 			return false
 		
 		if is_valid_action :
@@ -193,9 +219,8 @@ func _validate_card_played(_sender_id :int,message: Dictionary) -> bool:
 			elif message["area"] == "our_domain":
 				session.place_card(message["player"], message["area"], message["card_type"], message["family"])
 			elif message["area"] == "domain":
-				session.place_card(message["player"], message["area"], message["card_type"], message["family"], message["id_player_domain"])
-		
-		session.display_session_status()
+				session.place_card(message["player"], message["area"], message["card_type"], message["family"], 0, message["id_player_domain"])
+
 		
 	return true	
 

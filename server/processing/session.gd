@@ -1,5 +1,9 @@
 extends Node
 
+var card_types = ["normal", "noble", "spy", "guard", "assassin"]
+var families = ["butterfly", "frog", "bird", "bunny", "deer", "fish"]
+
+
 ## Fields of class
 
 # to enhance with the beta version with dynamic lobby
@@ -9,17 +13,18 @@ var player_max : int
 
 var clients_peer = [] # table of all clients_peer
 var players = [] # size of player_max
-var queens_table = [
+var queen_table = [
+	[[], []], # PAPILLON
+	[[], []], # CRAPAUD
+	[[], []], # ROSSIGNOL
+	[[], []], # LIEVRE
+	[[], []], # CERF
+	[[], []], # CARPE
 	["SPECIFIC CARD"], # SPIES
-	[0, 0], # PAPILLON
-	[0, 0], # CRAPAUD
-	[0, 0], # ROSSIGNOL
-	[0, 0], # LIEVRE
-	[0, 0], # CERF
-	[0, 0], # CARPE
 ]
 
-var card_stack = [0]
+var card_stack = load("res://server/processing/stack.gd").new()
+
 
 var card_played = [
 	0, # card count in the stack
@@ -39,12 +44,15 @@ var current_player_id : int
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
 ## On creation of session
-func _init(_player_max: int = 5) -> void:
+func _init(_player_max: int = 2) -> void:
+
 	self.session_id = 12345
 	self.player_max = _player_max
-	self.current_player_id = 1 # could be picked radomly or from connection order
-	set_card_stack()
+	self.current_player_id = 0 # could be picked radomly or from connection order
+	card_stack._set_card_number(_player_max)
 	print("Initilization of a new session success")
+	card_stack.print_stack_state()
+
 	
 func set_card_stack() -> void:
 	if player_max == 2 :
@@ -66,13 +74,14 @@ func set_card_stack() -> void:
 func _add_player(_id_peer) -> int:
 	var count_players = players.size()
 	players.append( [
-		[], # current cards in hands
-		0, # PAPILLON
-		0, # CRAPAUD
-		0, # ROSSIGNOL
-		0, # LIEVRE
-		0, # CERF
-		0 # CARPE
+		[], # PAPILLON
+		[], # CRAPAUD
+		[], # ROSSIGNOL
+		[], # LIEVRE
+		[], # CERF
+		[], # CARPE
+		[[], [], []], # current cards in hands
+
 	] )
 	clients_peer.append(_id_peer)
 	print("Client '", _id_peer, "' registered as Player ", count_players)
@@ -90,41 +99,44 @@ func display_session_status():
 	print("	Session id : ", session_id)
 	print("	Player max : ", player_max)
 	print("	All connected peers : ", clients_peer)
+	print("\n")
 	
+	print("Card stack count : ", card_stack._get_card_number())
+
 	print("\n")
 	print("	Queen's table : <in the light>, <out of favor>")
+	print("		Papillon : ↑", queen_table[0][0],", ↓", queen_table[0][1])
+	print("		Crapaud : ↑", queen_table[1][0],", ↓", queen_table[1][1])
+	print("		Rossignol : ↑", queen_table[2][0],", ↓", queen_table[2][1])
+	print("		Lievre : ↑", queen_table[3][0],", ↓", queen_table[3][1])
+	print("		Cerf : ↑", queen_table[4][0],", ↓", queen_table[4][1])
+	print("		Carpe : ↑", queen_table[5][0],", ↓", queen_table[5][1])
 	print("		Spies : 0 spies")
-	print("		Papillon : ↑", queens_table[1][0],", ↓", queens_table[1][1])
-	print("		Crapaud : ↑", queens_table[2][0],", ↓", queens_table[2][1])
-	print("		Rossignol : ↑", queens_table[3][0],", ↓", queens_table[3][1])
-	print("		Lievre : ↑", queens_table[4][0],", ↓", queens_table[4][1])
-	print("		Cerf : ↑", queens_table[5][0],", ↓", queens_table[5][1])
-	print("		Carpe : ↑", queens_table[6][0],", ↓", queens_table[6][1])
-		
+	
 	print("\n")
 	print("Player status :\n")
 	for i in range(players.size()):
-		print("Player ", i+1, " =>")
+		print("Player ", i, " =>")
 		print("	Hand :")
-		print("		First card : ", players[i][0][0], "")
-		print("		Second card : ", players[i][0][1], "")
-		print("		Third card : ", players[i][0][2], "\n")
+		print("		First card : ", players[i][6][0], "")
+		print("		Second card : ", players[i][6][1], "")
+		print("		Third card : ", players[i][6][2], "\n")
 		print("	Collection in domain :")
-		print("		Papillon : ", players[i][1])
-		print("		Crapaud : ", players[i][2])
-		print("		Rossignol : ", players[i][3])
-		print("		Lievre : ", players[i][4])
-		print("		Cerf : ", players[i][5])
-		print("		Carpe : ", players[i][6])
+		print("		Papillon : ", players[i][0])
+		print("		Crapaud : ", players[i][1])
+		print("		Rossignol : ", players[i][2])
+		print("		Lievre : ", players[i][3])
+		print("		Cerf : ", players[i][4])
+		print("		Carpe : ", players[i][5])
 	print("--------------------------")
 	
 func check_status() -> bool:
 	return status
 	
 func check_game_start() -> bool :
-	if clients_peer.size() == player_max:
-		self.status = true
-		return load_game()
+	if clients_peer.size() == player_max :
+		status = true
+		return true
 	return false
 	
 func load_game() -> bool :
@@ -132,49 +144,55 @@ func load_game() -> bool :
 	print("-----------------------------")
 	print("-----------------------------")
 	print("Game start")
-	print("Get all cards ( ", card_stack[0] ," random cards ) from `API server` data")
-	for i in range(card_stack[0]) :
-		card_stack.append(["family", "type"])
-	print(card_stack)
-	print("sharing three cards for each player from `card_stack`")
-	print("Keep card infromation (the three cards) for each player")
-	for player in players:
-		player[0].append([false, "area", ["card_type", "family"]])
-		player[0].append([false, "area", ["card_type", "family"]])
-		player[0].append([false, "area", ["card_type", "family"]])
-	display_session_status()
+	card_stack.generate_card()
+	card_stack._set_card_stack()
+	card_stack.print_stack_state()
 	return true
+
+func distribute_three_cards(player_id:int) -> Dictionary:
+	var cards = card_stack._retrieve_three_cards()
+	var cards_as_dict = {
+		"message_type":"hand",
+		"first_card_family":cards[0][0],
+		"first_card_type":cards[0][1],
+		"second_card_family":cards[1][0],
+		"second_card_type":cards[1][1],
+		"third_card_family":cards[2][0],
+		"third_card_type":cards[2][1]
+	}
+	players[player_id][6][0] = ([true, "area", cards[0]])
+	players[player_id][6][1] = ([true, "area", cards[1]])
+	players[player_id][6][2] = ([true, "area", cards[2]])
+	return cards_as_dict
+
 	
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
 ## On player's actions
+
+# check 
+func check_id_player_domain(id_player_domain: int) :
+	return id_player_domain < players.size() and id_player_domain != current_player_id
+
 # Check player id regarding a session
-func check_player_turn(_id_peer : int, _id_in_message: int) -> bool:
-	var is_valid = true
-	
-	var id_client = clients_peer.find(_id_peer)
-	
-	#if it's a player in the current session (AUTOMATICLY true due to webSocket connection)
-	is_valid = is_valid and (id_client != -1)
-	
-	#if it's the current player
-	is_valid = is_valid and (id_client == _id_in_message)
-	
-	return is_valid
+func check_player_turn(player_id : int, _id_in_message: int) -> bool:
+	return (player_id == _id_in_message) and (current_player_id == player_id)
+
 	
 func check_player_hand(_player_id: int, card_type: String, family: String) -> bool:
 	var is_valid = false
-	for card in players[_player_id][0] :
-		is_valid = is_valid or ( card[0] == false )
-		if is_valid == true and card_type == card[2][0] and card[2][1] == family :
-			return is_valid
-	return is_valid
+	for card in players[_player_id][6] :
+		is_valid = is_valid or card[0]
+		if is_valid :
+			if card_type == card[2][0] and card[2][1] == family and card_stack.check_card(card_type, family):
+				return is_valid
+
 	
 func check_player_area(_player_id: int, area: String) -> bool:
 	var is_valid = true
-	for card in players[_player_id][0] :
+	for card in players[_player_id][6] :
 		is_valid = is_valid and ( card[1] != area )
 	return is_valid
 	
