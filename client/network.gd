@@ -35,7 +35,7 @@ enum family {
 
 var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
 var port: int = 19001
-var address: String = "wss://mai-projet-integrateur.u-strasbg.fr/vmProjetIntegrateurgrp9-0:%d" % port
+var address: String = "wss://185.155.93.105:%d" % port
 var id: int
 var username
 var tls_options
