@@ -20,12 +20,12 @@ var card_color : String
 var sprite : TextureRect   # Référence au sprite de la carte
 
 const CARD_TEXTURES = {
-	"Papillons": preload("res://Assets/papillons/cropped_card_3.png"),
-	"Crapauds": preload("res://Assets/crapauds/cropped_card_4.png"),
-	"Rossignols": preload("res://Assets/rossignols/cropped_card_3.png"),
-	"Lièvres": preload("res://Assets/lièvres/cropped_card_3.png"),
-	"Cerfs": preload("res://Assets/cerfs/cropped_card_4.png"),
-	"Carpes": preload("res://Assets/carpes/blue_normal_carte.jpg"),
+	"Papillons": preload("res://Assets/papillons/lièvres_normal.png"),
+	"Crapauds": preload("res://Assets/crapauds/crapauds_normal.png"),
+	"Rossignols": preload("res://Assets/rossignols/rossignols_normal.png"),
+	"Lièvres": preload("res://Assets/lièvres/lièvres_normal.png"),
+	"Cerfs": preload("res://Assets/cerfs/cerfs_normal.png"),
+	"Carpes": preload("res://Assets/carpes/carpe_normal.jpg"),
 	"Back": preload("res://Assets/dos_carte.jpg")
 }
 func apply_card_texture() -> void:
