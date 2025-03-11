@@ -1,0 +1,9 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://c7t8pk2m4v2je"]
+
+[ext_resource type="Texture2D" uid="uid://bg05syifgbcy6" path="res://Assets/Rectangle 1.png" id="1_k2ndl"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lgaa4"]
+texture = ExtResource("1_k2ndl")
+
+[resource]
+PanelContainer/styles/panel = SubResource("StyleBoxTexture_lgaa4")
