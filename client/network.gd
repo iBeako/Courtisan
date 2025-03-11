@@ -34,8 +34,8 @@ enum family {
 #{"message_type:"connexion","login":"login","password":"password"}
 
 var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
-var port: int = 12345
-var address: String = "wss://localhost:%d" % port
+var port: int = 19001
+var address: String = "wss://mai-projet-integrateur.u-strasbg.fr/vmProjetIntegrateurgrp9-0:%d" % port
 var id: int
 var username
 var tls_options
