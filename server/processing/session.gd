@@ -1,8 +1,5 @@
 extends Node
 
-var card_types = ["normal", "noble", "spy", "guard", "assassin"]
-var families = ["butterfly", "frog", "bird", "bunny", "deer", "fish"]
-	
 ## Fields of class
 
 # to enhance with the beta version with dynamic lobby
@@ -23,7 +20,6 @@ var queen_table = [
 ]
 
 var card_stack = load("res://server/processing/stack.gd").new()
-
 var current_player_id : int
 
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
@@ -65,8 +61,9 @@ func _remove_player(player_id) -> bool:
 	return true # to fix
 
 func display_session_status():
-	print("--------------------------")
-	print("Session status :\n")
+	print("==========================================================================")
+	print("==========================================================================")
+	print("SESSION STATUS :\n")
 	print("	Session id : ", session_id)
 	print("	Player max : ", player_max)
 	print("	All connected peers : ", clients_peer)
@@ -99,7 +96,7 @@ func display_session_status():
 		print("		Lievre : ", players[i][3])
 		print("		Cerf : ", players[i][4])
 		print("		Carpe : ", players[i][5])
-	print("--------------------------")
+	print("==========================================================================")
 	
 func check_status() -> bool:
 	return status
@@ -111,9 +108,8 @@ func check_game_start() -> bool :
 	return false
 	
 func load_game() -> bool :
-	# Need API server and Database
-	print("-----------------------------")
-	print("-----------------------------")
+	print("==========================================================================")
+	print("==========================================================================")
 	print("Game start")
 	
 	card_stack.generate_card()
@@ -123,19 +119,21 @@ func load_game() -> bool :
 	return true
 	
 func distribute_three_cards(player_id:int) -> Dictionary:
-	var cards = card_stack._retrieve_three_cards()
-	var cards_as_dict = {
-		"message_type":"hand",
-		"first_card_family":cards[0][0],
-		"first_card_type":cards[0][1],
-		"second_card_family":cards[1][0],
-		"second_card_type":cards[1][1],
-		"third_card_family":cards[2][0],
-		"third_card_type":cards[2][1]
-	}
-	players[player_id][6][0] = ([true, "area", cards[0]])
-	players[player_id][6][1] = ([true, "area", cards[1]])
-	players[player_id][6][2] = ([true, "area", cards[2]])
+	var cards_as_dict = {}
+	if !card_stack._no_more_card_in_stack():
+		var cards = card_stack._retrieve_three_cards()
+		cards_as_dict = {
+			"message_type":"hand",
+			"first_card_family":cards[0][0],
+			"first_card_type":cards[0][1],
+			"second_card_family":cards[1][0],
+			"second_card_type":cards[1][1],
+			"third_card_family":cards[2][0],
+			"third_card_type":cards[2][1]
+		}
+		players[player_id][6][0] = ([true, -1, cards[0]])
+		players[player_id][6][1] = ([true, -1, cards[1]])
+		players[player_id][6][2] = ([true, -1, cards[2]])
 	return cards_as_dict
 	
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
@@ -144,9 +142,9 @@ func distribute_three_cards(player_id:int) -> Dictionary:
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
 ## On player's actions
 
-# check 
+# checking
 func check_id_player_domain(id_player_domain: int) :
-	return id_player_domain < players.size() and id_player_domain != current_player_id
+	return (id_player_domain >= 0 and id_player_domain < players.size()) and id_player_domain != current_player_id
 
 # Check player id regarding a session
 func check_player_turn(player_id : int, _id_in_message: int) -> bool:
@@ -161,42 +159,47 @@ func check_player_hand(_player_id: int, card_type: String, family: String) -> bo
 				return is_valid
 	return is_valid
 	
-func check_player_area(_player_id: int, area: String) -> bool:
+func check_player_area(_player_id: int, area: global.PlayZoneType) -> bool:
 	var is_valid = true
 	for card in players[_player_id][6] :
 		is_valid = is_valid and ( card[1] != area )
 	return is_valid
 	
-func place_card(_id_player: int, _area: String, _card_type: String, _family: String, _position: int = 0, _id_player_domain: int = -1) -> bool:
-	var pos = 0 if _position == 1 else 1
+func place_card(_id_player: int, _area: global.PlayZoneType, _card_type: String, _family: String, _id_player_domain: int = -1) -> bool:
 	
-	if _area == "queen_table":
-		print("SERVER : Action saved as card palced in Queen table at ", _position)
-		queen_table[families.find(_family)][pos].append([_card_type, _family])
+	if _area == global.PlayZoneType.FAVOR or _area == global.PlayZoneType.DISFAVOR :
+		var pos = 0 if _area == global.PlayZoneType.FAVOR else 1
+		print("SERVER : Action saved as card placed at Queen's table ", global.play_zone_type[_area])
+		queen_table[global.families.find(_family)][pos].append([_card_type, _family])
 					
-	elif _area == "our_domain":
-		print("SERVER : Action saved as card palced in Own domain")
-		players[_id_player][families.find(_family)].append([_card_type, _family])
+	elif _area == global.PlayZoneType.PLAYER:
+		print("SERVER : Action saved as card placed in player's domain")
+		players[_id_player][global.families.find(_family)].append([_card_type, _family])
 				
-	elif _area == "domain":
-		print("SERVER : Action saved as card palced in Adversary domain ", _id_player_domain)
-		players[_id_player_domain][families.find(_family)].append([_card_type, _family])
+	elif _area == global.PlayZoneType.ENEMY:
+		print("SERVER : Action saved as card placed in enemy's domain ", _id_player_domain)
+		players[_id_player_domain][global.families.find(_family)].append([_card_type, _family])
 	else :
 		print("SERVER - Error : wrong area name")
 	
 	for card in players[_id_player][6] :
-		if _card_type == card[2][0] and card[2][1] == _family :
+		if card[0] == true and _card_type == card[2][0] and card[2][1] == _family :
 			card[0] = false # has been played
 			card[1] = _area
+			break
 	
+	# remove card from original stack to avoid cheat
 	card_stack._retrieve_card(_card_type, _family)
+	card_stack._one_card_played()
 	
+	# check player trun
 	var still_current = false
 	for card in players[_id_player][6] :
 		still_current = still_current or card[0]
 	if !still_current :
 		print("SERVER : Move to next player")
 		current_player_id = (current_player_id + 1) % players.size()
+		print("\n")
 	
 	return true
 	
@@ -233,7 +236,7 @@ func get_stat() -> Dictionary :
 		[
 			[], # in light
 			[] # out of favor
-		], # 6 families for queen's table
+		], # 6 global.families for queen's table
 		# append stat for each player
 	]
 	
@@ -246,23 +249,28 @@ func get_stat() -> Dictionary :
 		for j in range(6) :
 			col.append(get_collection_points(player[j]))
 		stat.append(col)
-			
+	
+	for i in range(global.families.size()) :
+		var weight = -1 if stat[0][0][i] < abs(stat[0][1][i]) else 1
+		for j in range(1, stat.size()) :
+			stat[j][i] = stat[j][i] * weight
+	
 	var data_dict = {"message_type":"stat"}
 
 	# Ajout des statuts spéciaux
-	data_dict["in_the_light"] = stat[0][0]
-	data_dict["out_of_favor"] = stat[0][1]
+	data_dict["favor"] = stat[0][0]
+	data_dict["disfavor"] = stat[0][1]
 
 	# Ajout des stat des joueurs
 	for i in range(1, stat.size()):
-		data_dict["player_" + str(i - 1)] = stat[i]
+		data_dict[str(i - 1)] = stat[i]
 	print("Game stat",data_dict)
 	return data_dict
 	
 func check_end_game() -> bool:
-	if card_stack._get_card_number() == 0 :
-		print("SERVER : End game ============> ")
+	if card_stack._no_more_card_to_play() :
+		print("---\nSERVER : ============ End game ============ \n---")
 		status = false
 		return true
-	print("\nSERVER : wait for next move ...\n")
+	print("---\nSERVER : waiting for next action ...\n---")
 	return false

@@ -1,13 +1,10 @@
 extends Node
 
 var card_number: int
+var card_played_count = 0
 
 var all_cards = []
 var card_stack = []
-var card_type_numbers = [4, 4, 2, 2, 3] # [idle, noble, spy, guard, assassin]
-
-var card_types = ["normal", "noble", "spy", "guard", "assassin"]
-var families = ["butterfly", "frog", "bird", "bunny", "deer", "fish"]
 
 # Called when the node enters the scene tree for the first time.
 func _init() -> void:
@@ -19,25 +16,25 @@ func _set_card_number(player_max: int) -> void:
 	elif player_max == 3 :
 		card_number = 72
 	elif player_max == 4 :
-		card_number = 83
+		card_number = 84
 	elif player_max == 5 :
 		card_number = 90
 	else :
-		print("Error : number of players invalid")
+		print("Error : number of player invalid")
 
 func _get_card_number():
 	return card_stack.size()
 
 func print_stack_state() -> void:
-	print("	Card number : ", card_number)
-	print("	Stack :", card_stack)
+	print("	Card stack number : ", card_number)
+	print("	Card stack :", card_stack, "\n")
 	
 func generate_card() -> bool :
 	# 90 times
-	for family in families :
-		for card_type_number in card_type_numbers :
+	for family in global.families :
+		for card_type_number in global.card_type_numbers :
 			for i in range(card_type_number) :
-				all_cards.append([card_types[i], family])
+				all_cards.append([global.card_types[i], family])
 	
 	return !all_cards.is_empty()
 	
@@ -64,3 +61,12 @@ func _retrieve_card(card_type: String, family: String) -> bool :
 		all_cards.remove_at(id)
 		return true
 	return false
+	
+func _one_card_played() -> void:
+	card_played_count += 1
+	
+func _no_more_card_to_play() -> bool :
+	return card_played_count == card_number
+	
+func _no_more_card_in_stack() -> bool:
+	return card_stack.size() == 0

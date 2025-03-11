@@ -1,42 +1,105 @@
 extends Node
 
-const CLIENT_COUNT = 2
-var server: Node
-var clients: Array
-
 func _ready():
-	# Initialize server
-	server = load("res://server/server.gd").new()
+	#await _smok_test()
+	#await get_tree().create_timer(1.0).timeout
+	#await _unit_test()
+	#await get_tree().create_timer(1.0).timeout
+	await _integrity_test()
+
+func _smok_test():
+	print("=========================================================================")
+	print("=== SMOK TEST ===")
+	var server = load("res://server/server.gd").new()
+	add_child(server)
+	var client_1 = load("res://client/client.gd").new()
+	add_child(client_1)
+	var client_2 = load("res://client/client.gd").new()
+	add_child(client_2)
+	
+	
+	await get_tree().create_timer(0.5).timeout
+	server.queue_free()
+	client_1.queue_free()
+	client_2.queue_free()
+	
+	print('=== SMOK TEST COMPLETED ===\n')
+	
+func _unit_test():
+	print("=========================================================================")
+	print("=== UNIT TEST ===")
+	var server = load("res://server/server.gd").new()
+	add_child(server)
+	var client_1 = load("res://client/client.gd").new()
+	add_child(client_1)
+	await get_tree().create_timer(0.5).timeout
+	var client_2 = load("res://client/client.gd").new()
+	add_child(client_2)
+	await get_tree().create_timer(0.5).timeout
+	
+	
+	# should return error
+	client_1._play_card(-1,  0)
+	print("TEST : should be an error")
+	client_1._play_card(0,  -1)
+	print("TEST : should be an error")
+	## should pass
+	client_1._play_card(0,  2)
+	await get_tree().create_timer(0.5).timeout
+	print("TEST : should pass")
+	
+	# should return error
+	client_1._play_card(0, 2)
+	await get_tree().create_timer(0.5).timeout
+	print("TEST : should be an error")
+	# should pass
+	client_1._play_card(1,  0)
+	await get_tree().create_timer(0.5).timeout
+	print("TEST : should pass")
+	
+	# should return error
+	client_1._play_card(2, 1, -1)
+	await get_tree().create_timer(0.5).timeout
+	print("TEST : should be an error")
+	client_1._play_card(2, 1, 0)
+	await get_tree().create_timer(0.5).timeout
+	print("TEST : should be an error")
+	## should pass
+	client_1._play_card(2, 1, 1)
+	await get_tree().create_timer(0.5).timeout
+	print("TEST : should pass")
+	
+	client_1._play_card(0, 2)
+	print("TEST : should be an error")
+	await get_tree().create_timer(0.5).timeout
+	
+	server.queue_free()
+	client_1.queue_free()
+	client_2.queue_free()
+	
+	print('=== UNIT TEST COMPLETED ===\n')
+	
+func _integrity_test():
+	print("=========================================================================")
+	print("=== INTEGRITY TEST COMPLETED ===")
+	var server = load("res://server/server.gd").new()
 	add_child(server)
 	
-	# Initialize clients
-	clients = []
-	for i in range(CLIENT_COUNT):
+	var clients = []
+	for i in range(global.MAX_CLIENT):
 		var client = load("res://client/client.gd").new()
 		add_child(client)
 		clients.append(client)
 		await get_tree().create_timer(0.5).timeout
 		
-		
-	# test radom values
-	var _card_types = ["normal", "noble", "guard"]
-	var _families = ["butterfly", "frog", "bird", "bunny", "deer", "fish"]
-	var _positions = [1, -1]
-
-	var adv = 0
-	for j in range(10) : 
-		for i in range(CLIENT_COUNT):
-			if i == 0 :
-				adv = 1
-			else :
-				adv = 0
-			clients[i].test_play_card(0, "queen_table", _positions[randi() % _positions.size()] )
+	for j in range(global.LOOP_COUNT) : 
+		for i in range(global.MAX_CLIENT):
+			var pos = 2 if i%2 == 0 else 3
+			clients[i]._play_card(0, pos)
 			await get_tree().create_timer(0.5).timeout
-			clients[i].test_play_card(1, "our_domain")
+			clients[i]._play_card(1, 0)
 			await get_tree().create_timer(0.5).timeout
-			clients[i].test_play_card(2, "domain", 0, adv ) # third argument is only for position at queen's table (0 as default)
+			clients[i]._play_card(2, 1, ((i+1)%global.MAX_CLIENT))
 			await get_tree().create_timer(0.5).timeout
-		#await get_tree().create_timer(0.5).timeout
 	
-	# Print responses (handled in client.gd)
-	print("Test interaction completed")
+	print("=== INTEGRITY TEST COMPLETED ===\n")

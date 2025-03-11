@@ -5,11 +5,10 @@ extends Node
 
 var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
 var port: int = 12345  # Change this for an internet address in the future
-const MAX_CLIENT:int = 2
 var number_of_client :int = 0
 var clients_peer = [] # table of all clients_peer
 
-var session = load("res://server/processing/session.gd").new(MAX_CLIENT) # a session specific to a port
+var session = load("res://server/processing/session.gd").new(global.MAX_CLIENT) # a session specific to a port
 
 func _ready():
 	peer.create_server(port)  # Listening on specified port
@@ -23,7 +22,7 @@ func _on_peer_connected(peer_id:int) -> void:
 	number_of_client += 1
 	print("New client connected with id: %d" % peer_id)
 	
-	if number_of_client > MAX_CLIENT:
+	if number_of_client > global.MAX_CLIENT:
 		peer.refuse_new_connections = true
 		print("cannot connect more people in the room")
 	else :
@@ -71,14 +70,14 @@ func _process_packet(sender_id: int, packet: String):
 			print("problem")
 		
 	if session.check_end_game() :
-		session.display_session_status()
+		#session.display_session_status()
 		var stat = session.get_stat()
 		packet = JSON.stringify(stat)
 		_broadcast_message(packet)
 		peer.close()
 	elif session.check_next_player(clients_peer.find(sender_id)) :
-		_send_three_cards_to_a_player(sender_id)
 		session.display_session_status()
+		_send_three_cards_to_a_player(sender_id)
 
 func _validate_message(_message: String) -> bool:
 	# the game has not yet begun
@@ -131,12 +130,12 @@ func _validate_card_played(_sender_id :int,_message: String) -> bool:
 			return false
 		
 		if is_valid_action :
-			if data_dict["area"] == "queen_table":
-				session.place_card(data_dict["player"], data_dict["area"], data_dict["card_type"], data_dict["family"], data_dict["position"])
-			elif data_dict["area"] == "our_domain":
+			if data_dict["area"] == global.PlayZoneType.FAVOR or data_dict["area"] == global.PlayZoneType.DISFAVOR:
 				session.place_card(data_dict["player"], data_dict["area"], data_dict["card_type"], data_dict["family"])
-			elif data_dict["area"] == "domain":
-				session.place_card(data_dict["player"], data_dict["area"], data_dict["card_type"], data_dict["family"], 0, data_dict["id_player_domain"])
+			elif data_dict["area"] == global.PlayZoneType.PLAYER :
+				session.place_card(data_dict["player"], data_dict["area"], data_dict["card_type"], data_dict["family"])
+			elif data_dict["area"] == global.PlayZoneType.ENEMY:
+				session.place_card(data_dict["player"], data_dict["area"], data_dict["card_type"], data_dict["family"], data_dict["id_player_domain"])
 		
 	return true
 
@@ -164,6 +163,7 @@ func _send_three_cards_to_each_player():
 	
 func _send_three_cards_to_a_player(peer_id):
 	var cards_as_dict = session.distribute_three_cards(clients_peer.find(peer_id))
-	var packet = JSON.stringify(cards_as_dict)
-	peer.set_target_peer(peer_id)
-	peer.put_packet(packet.to_utf8_buffer())
+	if cards_as_dict != {}:
+		var packet = JSON.stringify(cards_as_dict)
+		peer.set_target_peer(peer_id)
+		peer.put_packet(packet.to_utf8_buffer())

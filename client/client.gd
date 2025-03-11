@@ -1,36 +1,12 @@
 extends Node
 
 var hand = []
-var card_types = ["normal", "noble", "spy", "guard", "assassin"]
-var families = ["butterfly", "frog", "bird", "bunny", "deer", "fish"]
-var positions = [1, -1]
-
-#card_played:
-#{"message_type":"card_played","player":1,"card_type":"normal","family":"deer","area":"queen_table","position":1} card in the light
-#{"message_type":"card_played","player":1,"card_type":"normal","family":"deer","area":"queen_table","position":-1} card out of favor
-#{"message_type":"card_played","player":1,"card_type":"normal","family":"deer","area":"our_domain"}
-#{"message_type":"card_played","player":1,"card_type":"normal","family":"deer","area":"domain","id_player_domain":"2"}
-#action:
-#{"message_type":"action","player":1,"card_type":"assassin","family":"deer",area":"queen_table","card_killed_type":"normal","card_killed_family":"deer"}
-#{"message_type":"action","player":1,"card_type":"spy","family":"deer",area":"our_domain"}
-#{"message_type":"action","player":1,"card_type":"spy","family":"deer","area":"adversary_domain","id_adversary":"2""}
-#table:
-#{"message_type":"table","area":"queen_table","position":1,"card_type":"normal","family":"deer"}
-#{"message_type":"table","area":"domain","player":1,"card_type":"normal","family":"deer"}
-#message:
-#{"message_type":"message","player":1,"message":1}
-#id:
-#{"message_type":"id","your_id":}
-#error:
-#{"message_type":"error","error_type":"action"} -> unknown action : ask to redo action
-#{"message_type":"error","error_type":"message"} ->  unknown message: do nothing
-#{"message_type":"error","error_type":"connection"} -> connection not down: no connection
-#{"message_type":"error","error_type":"command"} -> unknown command : do nothing
 
 var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
 var port: int = 12345
 var address: String = "ws://localhost:%d" % port  # Change 'localhost' to the future address when needed
 var id: int
+
 func _ready():
 	peer.create_client(address)
 	multiplayer.multiplayer_peer = peer
@@ -67,7 +43,6 @@ func _process_packet(packet: String):
 				["second_card_family", "second_card_type"],
 				["third_card_family", "third_card_type"]
 			]
-
 			for card in cards:
 				var new_card = [message[card[0]], message[card[1]]]
 				hand.append(new_card)
@@ -85,7 +60,7 @@ func _process_packet(packet: String):
 					writting_message = writting_message + message["id_adversary"]
 			print(writting_message)
 		elif message.has("message_type") and message["message_type"] == "message":
-			print("PLAYER ",id," : player %s "  % message["player"] + " has said message %d" % message["message"] )
+			print("PLAYER ",id," : Player %s "  % message["player"] + " has said message %d" % message["message"] )
 		else:
 			print("invalid message")	
 	else:
@@ -95,39 +70,46 @@ func _process_error(message: Dictionary):
 	if message["error_type"] == "card_played":
 		print("redo an action")
 	
-func test_play_card(id_hand_card, area, position: int = 0, id_domain: int = -1):
-	var typ = hand[id_hand_card][0]
-	var fam = hand[id_hand_card][1]
-	var message = {}
+func _play_card(id_hand_card, area, id_domain: int = -1):
 	print("\nCLIENT - NEW ACTION ------------------------------------------------------")
-	if area == "our_domain" :
-		print("CLIENT : player ", id," want to play ", hand[id_hand_card], " in ", area)
-		message = {
-			"message_type": "card_played",
-			"player": id,
-			"family": fam,
-			"card_type": typ,
-			"area":area,
-		}
-	elif area == "queen_table" :
-		print("CLIENT : player ", id," want to play ", hand[id_hand_card], " in ", area)
-		message = {
-			"message_type": "card_played",
-			"player": id,
-			"family": fam,
-			"card_type": typ,
-			"area":area,
-			"position": position,
-		}
-	elif area == "domain" :
-		print("CLIENT : player ", id," want to play ", hand[id_hand_card], " in domain player ", id_domain)
-		message = {
-			"message_type": "card_played",
-			"player": id,
-			"family": fam,
-			"card_type": typ,
-			"area":area,
-			"id_player_domain":id_domain,
-		}
-	var message_converted_in_json = JSON.stringify(message)
-	send_message(message_converted_in_json)
+	if id_hand_card < 3 and id_hand_card >= 0 :
+		if area >= 0 and area < global.play_zone_type.size() :
+			var typ = hand[id_hand_card][0]
+			var fam = hand[id_hand_card][1]
+			var message = {}
+			if area == global.PlayZoneType.PLAYER :
+				print("CLIENT : Player ", id," want to play ", hand[id_hand_card], " in ", global.play_zone_type[area])
+				message = {
+					"message_type": "card_played",
+					"player": id,
+					"family": fam,
+					"card_type": typ,
+					"area":area,
+				}
+			elif area == global.PlayZoneType.FAVOR or area == global.PlayZoneType.DISFAVOR :
+				print("CLIENT : player ", id," want to play ", hand[id_hand_card], " in ", global.play_zone_type[area])
+				message = {
+					"message_type": "card_played",
+					"player": id,
+					"family": fam,
+					"card_type": typ,
+					"area":area
+				}
+			elif area == global.PlayZoneType.ENEMY :
+				print("CLIENT : player ", id," want to play ", hand[id_hand_card], " in domain player ", id_domain)
+				message = {
+					"message_type": "card_played",
+					"player": id,
+					"family": fam,
+					"card_type": typ,
+					"area":area,
+					"id_player_domain":id_domain,
+				}
+			else :
+				print("CLIENT Error : Action unknown")
+			var message_converted_in_json = JSON.stringify(message)
+			send_message(message_converted_in_json)
+		else :
+			print("CLIENT - Error : Play zone not valid")
+	else :
+		print("CLIENT - Error : Card identifier not valid")
