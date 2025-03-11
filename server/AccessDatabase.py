@@ -39,8 +39,8 @@ def handle_get_database(data):
         cursor = connection.cursor()
         
         # Example: Fetch user details
-        query = "SELECT username, password FROM users WHERE username = :username"
-        cursor.execute(query, username=data['login'])
+        query = "SELECT username, password FROM users WHERE email = :email"
+        cursor.execute(query, email=data['email'])
         
         result = cursor.fetchone()
         cursor.close()

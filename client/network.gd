@@ -37,7 +37,7 @@ var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
 var port: int = 12345
 var address: String = "wss://localhost:%d" % port
 var id: int
-var login
+var username
 var tls_options
 
 func _ready():
@@ -104,8 +104,8 @@ func on_create_Account(login:String,email:String,password:String):
 	var account = Account.createAccount(login,email,password)
 	send_message_to_server.rpc_id(1,account)
 	
-func on_login_Account(login:String,password:String):
-	var account = Account.loginAccount(login,password)
+func on_login_Account(email:String,password:String):
+	var account = Account.loginAccount(email,password)
 	send_message_to_server.rpc_id(1,account)
 
 		
@@ -119,7 +119,7 @@ func process_table(_data:Dictionary):
 	pass
 
 func process_connexion(data:Dictionary):
-	login = data["login"]
+	username = data["login"]
 	id = data["id"]
 	print("has been logged")
 

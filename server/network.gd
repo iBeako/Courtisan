@@ -4,7 +4,7 @@ var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
 var db_peer: WebSocketPeer = WebSocketPeer.new()
 var db_url: String = "ws://localhost:10000/socket.io/?EIO=4&transport=websocket"
 var port: int = 12345
-const MAX_CLIENT: int = 5
+const MAX_CLIENT: int = 2
 var number_of_client: int = 0
 var return_database: String = ""
 var clients = {}
@@ -226,7 +226,7 @@ func insertDatabase(data: Dictionary):
 func getDatabase(data: Dictionary):
 	if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
 		var search = {
-			"login" = data["login"]
+			"email" = data["email"]
 		}
 		var json_string = JSON.stringify(search)
 		db_peer.send_text(json_string)
