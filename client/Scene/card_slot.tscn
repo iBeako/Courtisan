@@ -25,6 +25,8 @@ shape = SubResource("RectangleShape2D_7bs8y")
 [node name="CountLabel" type="Label" parent="."]
 z_index = 10
 offset_left = -40.0
-offset_top = -60.0
+offset_top = -12.0
 offset_right = 40.0
-offset_bottom = -37.0
+offset_bottom = 11.0
+horizontal_alignment = 1
+vertical_alignment = 1
