@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Script/card.gd" id="1_rh58d"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_x788j"]
-size = Vector2(80, 120)
+size = Vector2(86, 162)
 
 [node name="Card" type="Node2D"]
 script = ExtResource("1_rh58d")
@@ -16,10 +16,10 @@ visibility_layer = 8
 shape = SubResource("RectangleShape2D_x788j")
 
 [node name="TextureRect" type="TextureRect" parent="."]
-offset_left = -40.0
-offset_top = -60.0
-offset_right = 40.0
-offset_bottom = 60.0
+offset_left = -43.0
+offset_top = -81.0
+offset_right = 43.0
+offset_bottom = 81.0
 expand_mode = 3
 
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]

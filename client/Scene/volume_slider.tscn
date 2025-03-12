@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://bc8674us66i1v"]
+[gd_scene load_steps=3 format=3 uid="uid://bc8674us66i1v"]
 
-[ext_resource type="Theme" uid="uid://p2ekl26u8dnf" path="res://slider.tres" id="1_3xs80"]
-[ext_resource type="Script" path="res://Scene/volume_slider.gd" id="1_idrh5"]
+[ext_resource type="Script" path="res://Script/volume_slider.gd" id="1_idrh5"]
 [ext_resource type="FontFile" uid="uid://dim3hkmopleo2" path="res://Assets/Mighty Souly.otf" id="3_3qksr"]
 
 [node name="volume_slider" type="HBoxContainer"]
@@ -12,7 +11,6 @@ script = ExtResource("1_idrh5")
 [node name="VolumeSlider" type="HSlider" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_3xs80")
 max_value = 1.0
 step = 0.001
 

@@ -19,6 +19,7 @@ position = Vector2(506.5, 68.5)
 shape = SubResource("RectangleShape2D_glm01")
 
 [node name="ColorRect" type="ColorRect" parent="."]
+visible = false
 offset_right = 730.0
 offset_bottom = 150.0
 scale = Vector2(1.38787, 0.906348)
