@@ -3,7 +3,7 @@ extends Node
 var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
 var db_peer: WebSocketPeer = WebSocketPeer.new()
 var db_url: String = "ws://localhost:10000/socket.io/?EIO=4&transport=websocket"
-var port: int = 10001
+var port: int = 8080
 const MAX_CLIENT: int = 2
 var number_of_client: int = 0
 var clients_peer = [] # table of all clients_peer
@@ -14,7 +14,7 @@ var tls_cert: X509Certificate
 var tls_key: CryptoKey
 var server_tls_options
 var session = load("res://processing/session.gd").new(MAX_CLIENT) # a session specific to a port
-
+var global = preload("res://processing/global.gd")
 
 func _onready():
 	tls_key = load("res://certificates/private.key")
@@ -23,7 +23,7 @@ func _onready():
 
 func _ready():
 	_onready()
-	peer.create_server(port, "0.0.0.0", server_tls_options)
+	peer.create_server(port, "127.0.0.1", server_tls_options)
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
@@ -37,14 +37,6 @@ func _process(_delta):
 		while db_peer.get_available_packet_count() > 0:
 			var packet = db_peer.get_packet()
 			return_database = packet.get_string_from_utf8()
-	if session.check_end_game() :
-		session.display_session_status()
-		var stat = session.get_stat()
-		send_message_to_everyone(stat)
-		peer.close()
-	elif session.check_next_player(clients_peer.find(sender_id)) :
-		_send_three_cards_to_a_player(sender_id)
-		session.display_session_status()
 
 
 func _on_peer_disconnected(peer_id: int):
@@ -154,7 +146,16 @@ func process_message(data : Dictionary,sender_id:int):
 			}
 			send_message_to_peer.rpc_id(sender_id,error_message)	
 	else:
-		print("invalid message")	
+		print("invalid message")
+		
+	if session.check_end_game() :
+		session.display_session_status()
+		var stat = session.get_stat()
+		send_message_to_everyone.rpc(stat)
+
+	elif session.check_next_player(sender_id) :
+		_send_three_cards_to_a_player(sender_id)
+		session.display_session_status()
 
 ## At game start, distribute cads to players
 
@@ -164,7 +165,7 @@ func _send_three_cards_to_each_player():
 	
 func _send_three_cards_to_a_player(peer_id):
 	var cards_as_dict = session.distribute_three_cards(clients_peer.find(peer_id))
-	send_message_to_peer.rpc_id(peer_id,cards_as_dict)	
+	send_message_to_peer.rpc_id(peer_id,cards_as_dict)
 
 
 
@@ -191,10 +192,12 @@ func _validate_card_played(_sender_id :int,message: Dictionary) -> bool:
 			return false
 			
 		if  message.has("id_player_domain") and !session.check_id_player_domain(message["id_player_domain"]):
+		if  message.has("id_player_domain") and !session.check_id_player_domain(message["id_player_domain"]):
 			print("SERVER - Error : adversary id is the player or does not exist")
 			return false
 			
 		# validate action if it is the good player that have played the card (same client id and same game id)
+		is_valid_action = is_valid_action and session.check_player_turn(clients_peer.find(_sender_id), message["player"])
 		is_valid_action = is_valid_action and session.check_player_turn(clients_peer.find(_sender_id), message["player"])
 		if !is_valid_action :
 			print("SERVER - Error : Wrong player who is currently playing")

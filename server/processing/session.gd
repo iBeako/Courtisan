@@ -19,9 +19,10 @@ var queen_table = [
 	["SPECIFIC CARD"], # SPIES
 ]
 
-var card_stack = load("res://server/processing/stack.gd").new()
+var card_stack = load("res://processing/stack.gd").new()
 var current_player_id : int
 
+var global = preload("res://processing/global.gd")
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
@@ -159,13 +160,13 @@ func check_player_hand(_player_id: int, card_type: String, family: String) -> bo
 				return is_valid
 	return is_valid
 	
-func check_player_area(_player_id: int, area: global.PlayZoneType) -> bool:
+func check_player_area(_player_id: int, area: int) -> bool:
 	var is_valid = true
 	for card in players[_player_id][6] :
 		is_valid = is_valid and ( card[1] != area )
 	return is_valid
 	
-func place_card(_id_player: int, _area: global.PlayZoneType, _card_type: String, _family: String, _id_player_domain: int = -1) -> bool:
+func place_card(_id_player: int, _area: int, _card_type: String, _family: String, _id_player_domain: int = -1) -> bool:
 	
 	if _area == global.PlayZoneType.FAVOR or _area == global.PlayZoneType.DISFAVOR :
 		var pos = 0 if _area == global.PlayZoneType.FAVOR else 1
