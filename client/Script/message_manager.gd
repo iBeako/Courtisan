@@ -68,10 +68,10 @@ func send_error(error_type: String):
 	}
 	_send_message(message)
 
-func add_card_to_zone(card_color : String, card_type : String, area : int) -> void:
+func add_card_to_zone(card_color : String, card_type : int, area : int) -> void:
 	var card_scene = preload(CARD_SCENE_PATH)
 
-	var new_card = card_scene.instantiate()  # Instancier la carte
+	var new_card : Card = card_scene.instantiate()  # Instancier la carte
 	new_card.card_color = card_color  # Assigner la couleur à la carte
 	new_card.card_type = card_type
 	new_card.z_index = 10

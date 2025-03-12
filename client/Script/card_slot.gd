@@ -15,7 +15,8 @@ const CARD_SPACING: int = 10
 enum PlayZoneType { Joueur, Ennemie, Grace, Disgrace }
 
 func _ready() -> void:
-	print("CardSlot ready: ", self.name)  # Debug message when the slot is ready
+	#print("CardSlot ready: ", self.name)  # Debug message when the slot is ready
+	$TextureRect.hide()
 	
 	# Check if the label exists
 	if count_label:
@@ -58,7 +59,12 @@ func update_count_label(value : int) -> int:  # 'value' is used to adjust the co
 		# Update the label text, hide it if count is zero
 		count_label.text = str(cpt) if cpt != 0 else ""
 		count_label.add_theme_color_override("font_color", Color(1, 0, 0))  # Set text color to red
-
+		if cpt != 0:
+			$TextureRect.show()
+		else:
+			$TextureRect.hide()
+			
+		
 		return cpt
 	else:
 		print("CountLabel not found in CardSlot: ", self.name)

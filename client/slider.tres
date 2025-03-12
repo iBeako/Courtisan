@@ -1,6 +1,8 @@
-[gd_resource type="Theme" load_steps=6 format=3 uid="uid://p2ekl26u8dnf"]
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://p2ekl26u8dnf"]
 
-[sub_resource type="Image" id="Image_kgxko"]
+[ext_resource type="Texture2D" uid="uid://ddfbwcaed3p70" path="res://Ellipse 1.png" id="1_v1vvj"]
+
+[sub_resource type="Image" id="Image_4buk5"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -10,7 +12,7 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_203po"]
-image = SubResource("Image_kgxko")
+image = SubResource("Image_4buk5")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_se5b7"]
 bg_color = Color(0, 0.14902, 0.184314, 0.8)
@@ -47,6 +49,7 @@ corner_detail = 6
 [resource]
 HSlider/constants/center_grabber = 0
 HSlider/constants/grabber_offset = 0
+HSlider/icons/grabber = ExtResource("1_v1vvj")
 HSlider/icons/tick = SubResource("ImageTexture_203po")
 HSlider/styles/grabber_area = SubResource("StyleBoxFlat_se5b7")
 HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_2s6gw")
