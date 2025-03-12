@@ -14,7 +14,7 @@ var tls_cert: X509Certificate
 var tls_key: CryptoKey
 var server_tls_options
 var session = load("res://processing/session.gd").new(MAX_CLIENT) # a session specific to a port
-var global = preload("res://processing/global.gd")
+var global = preload("res://processing/global.gd").new()
 
 func _onready():
 	tls_key = load("res://certificates/private.key")
