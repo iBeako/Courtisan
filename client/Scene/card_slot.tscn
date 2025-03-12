@@ -1,10 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://hxhhmah7l5fw"]
+[gd_scene load_steps=6 format=3 uid="uid://hxhhmah7l5fw"]
 
 [ext_resource type="Script" path="res://Script/card_slot.gd" id="1_66xls"]
 [ext_resource type="Texture2D" uid="uid://dmg462e425n3g" path="res://Assets/CardSlot.png" id="1_p3tgm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7bs8y"]
 size = Vector2(80, 120)
+
+[sub_resource type="Gradient" id="Gradient_efqwd"]
+colors = PackedColorArray(0.380392, 0.380392, 0.380392, 0.654902, 0.380392, 0.380392, 0.380392, 0.654902)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6skxp"]
+gradient = SubResource("Gradient_efqwd")
+width = 24
 
 [node name="CardSlot" type="Node2D"]
 light_mask = 2
@@ -30,3 +37,11 @@ offset_right = 40.0
 offset_bottom = 11.0
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="."]
+z_index = 10
+offset_left = -12.0
+offset_top = -12.0
+offset_right = 12.0
+offset_bottom = 12.0
+texture = SubResource("GradientTexture1D_6skxp")

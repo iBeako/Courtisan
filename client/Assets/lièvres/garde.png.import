@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://xbtlnjij75ih"
-path="res://.godot/imported/cerfs_assassin.png-91547114b4c1a1a53b9dc5b39e1a9961.ctex"
+uid="uid://cpr7itm2sjhh0"
+path="res://.godot/imported/garde.png-151922ab86a7716e665c9f1a18ad599b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/cerfs/cerfs_assassin.png"
-dest_files=["res://.godot/imported/cerfs_assassin.png-91547114b4c1a1a53b9dc5b39e1a9961.ctex"]
+source_file="res://Assets/lièvres/garde.png"
+dest_files=["res://.godot/imported/garde.png-151922ab86a7716e665c9f1a18ad599b.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://vjg0wbyaia8f"
-path="res://.godot/imported/crapauds_normal.png-0f8be4993103948ae25c61a4895a8f68.ctex"
+uid="uid://d1mas3inbn5nt"
+path="res://.godot/imported/espion.png-5fed143e60f28d0d2c0a54266cdb6d84.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/crapauds/crapauds_normal.png"
-dest_files=["res://.godot/imported/crapauds_normal.png-0f8be4993103948ae25c61a4895a8f68.ctex"]
+source_file="res://Assets/cerfs/espion.png"
+dest_files=["res://.godot/imported/espion.png-5fed143e60f28d0d2c0a54266cdb6d84.ctex"]
 
 [params]
 

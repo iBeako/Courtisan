@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cp1m4exfdnnwc"
-path="res://.godot/imported/rossignols_normal.png-71ace3a37e8a28680bd3c56ed5c975cb.ctex"
+uid="uid://c4onwkbgq1rw2"
+path="res://.godot/imported/normal.png-c4fa578d14f2a8cddf3a4329c48bdf13.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/rossignols/rossignols_normal.png"
-dest_files=["res://.godot/imported/rossignols_normal.png-71ace3a37e8a28680bd3c56ed5c975cb.ctex"]
+source_file="res://Assets/carpes/normal.png"
+dest_files=["res://.godot/imported/normal.png-c4fa578d14f2a8cddf3a4329c48bdf13.ctex"]
 
 [params]
 

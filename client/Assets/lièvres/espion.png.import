@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://i4y4pwdq2kcr"
-path="res://.godot/imported/rossignols_assassin.png-7968d9b8933c7f9b3561e332909f602e.ctex"
+uid="uid://bd0t2tppha5bd"
+path="res://.godot/imported/espion.png-76c546f887b5a5f17b493948221939d0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/rossignols/rossignols_assassin.png"
-dest_files=["res://.godot/imported/rossignols_assassin.png-7968d9b8933c7f9b3561e332909f602e.ctex"]
+source_file="res://Assets/lièvres/espion.png"
+dest_files=["res://.godot/imported/espion.png-76c546f887b5a5f17b493948221939d0.ctex"]
 
 [params]
 

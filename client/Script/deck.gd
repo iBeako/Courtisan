@@ -41,7 +41,7 @@ func draw_cards():
 
 		var card_color = get_random_card_color()  # Assign a random color
 		new_card.card_color = card_color  # Set the card’s color
-		new_card.card_type = TYPES.Normal  # Assign a default type
+		new_card.card_type = randi_range(0,4)   # Assign a default type
 
 		# new_card.apply_card_texture()  # Update the texture immediately (commented out)
 

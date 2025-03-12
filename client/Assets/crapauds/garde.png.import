@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://vafsp65lsnhl"
-path="res://.godot/imported/lièvres_normal.png-fe8d386ca3f7ac255f4206034f23d63f.ctex"
+uid="uid://dwkr3ageywoxu"
+path="res://.godot/imported/garde.png-174f0fc8d70b663f990d5ff92c56488c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/lièvres/lièvres_normal.png"
-dest_files=["res://.godot/imported/lièvres_normal.png-fe8d386ca3f7ac255f4206034f23d63f.ctex"]
+source_file="res://Assets/crapauds/garde.png"
+dest_files=["res://.godot/imported/garde.png-174f0fc8d70b663f990d5ff92c56488c.ctex"]
 
 [params]
 

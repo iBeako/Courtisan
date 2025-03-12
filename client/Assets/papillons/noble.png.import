@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://i1axp6rp71nw"
-path="res://.godot/imported/rossignols_garde.png-5fa16f3e1cb731d59499d1d93b604ea7.ctex"
+uid="uid://c3px3fdss74qp"
+path="res://.godot/imported/noble.png-fb60b49e6e94efa53e91673983652922.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/rossignols/rossignols_garde.png"
-dest_files=["res://.godot/imported/rossignols_garde.png-5fa16f3e1cb731d59499d1d93b604ea7.ctex"]
+source_file="res://Assets/papillons/noble.png"
+dest_files=["res://.godot/imported/noble.png-fb60b49e6e94efa53e91673983652922.ctex"]
 
 [params]
 

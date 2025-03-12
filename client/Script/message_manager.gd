@@ -7,7 +7,7 @@ signal card_played()
 
 const CARD_SCENE_PATH = "res://Scene/card.tscn"
 
-func send_card_played(player: int, card_type: String, family: String, area: int, id_player_domain: int = -1):
+func send_card_played(player: int, card_type: int, family: String, area: int, id_player_domain: int = -1):
 	var message = {
 		"message_type": "card_played",
 		"player": player,
@@ -21,7 +21,7 @@ func send_card_played(player: int, card_type: String, family: String, area: int,
 	
 	_send_message(message)
 
-func send_action(player: int, card_type: String, family: String, area: String, card_killed_type: String = "", card_killed_family: String = "", id_adversary: String = ""):
+func send_action(player: int, card_type: int, family: String, area: String, card_killed_type: String = "", card_killed_family: String = "", id_adversary: String = ""):
 	# uniquement appelee lorsqu'un assassin est joue
 	
 	var message = {
@@ -68,10 +68,10 @@ func send_error(error_type: String):
 	}
 	_send_message(message)
 
-func add_card_to_zone(card_color : String, card_type : String, area : int) -> void:
+func add_card_to_zone(card_color : String, card_type : int, area : int) -> void:
 	var card_scene = preload(CARD_SCENE_PATH)
 
-	var new_card = card_scene.instantiate()  # Instancier la carte
+	var new_card : Card = card_scene.instantiate()  # Instancier la carte
 	new_card.card_color = card_color  # Assigner la couleur à la carte
 	new_card.card_type = card_type
 	new_card.z_index = 10

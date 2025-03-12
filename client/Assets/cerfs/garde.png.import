@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bnqjh70duf4cj"
-path="res://.godot/imported/lièvres_garde.png-c4c576cecb1f8c0a8387f703148c352a.ctex"
+uid="uid://brf5c4ufqhe8r"
+path="res://.godot/imported/garde.png-6d90249f0345eb4f481c19ed94827f8e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/papillons/lièvres_garde.png"
-dest_files=["res://.godot/imported/lièvres_garde.png-c4c576cecb1f8c0a8387f703148c352a.ctex"]
+source_file="res://Assets/cerfs/garde.png"
+dest_files=["res://.godot/imported/garde.png-6d90249f0345eb4f481c19ed94827f8e.ctex"]
 
 [params]
 

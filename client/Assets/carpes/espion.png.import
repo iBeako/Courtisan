@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cen1734v1jf8u"
-path="res://.godot/imported/carpe_normal.jpg-e8f5a2bf265b281a5b63ba19aa218ba0.ctex"
+uid="uid://c0nam8dixpy74"
+path="res://.godot/imported/espion.png-9140f1bc4eac8de5a511e5e4cbff0bc8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/carpes/carpe_normal.jpg"
-dest_files=["res://.godot/imported/carpe_normal.jpg-e8f5a2bf265b281a5b63ba19aa218ba0.ctex"]
+source_file="res://Assets/carpes/espion.png"
+dest_files=["res://.godot/imported/espion.png-9140f1bc4eac8de5a511e5e4cbff0bc8.ctex"]
 
 [params]
 
