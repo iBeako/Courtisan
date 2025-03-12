@@ -24,7 +24,7 @@ func _ready() -> void:
 			"player": 1,
 			"card_type": _card_types[randi() % _card_types.size()],
 			"family": _families[randi() % _families.size()],
-			"area": "queen_table",
+			"area": PlayZoneType.PLAYER,
 		}
 	client.send_message_to_server.rpc_id(1,message)
 	client.send_message_to_server.rpc_id(1,message)

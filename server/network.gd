@@ -197,7 +197,6 @@ func _validate_card_played(_sender_id :int,message: Dictionary) -> bool:
 			
 		# validate action if it is the good player that have played the card (same client id and same game id)
 		is_valid_action = is_valid_action and session.check_player_turn(clients_peer.find(_sender_id), message["player"])
-		is_valid_action = is_valid_action and session.check_player_turn(clients_peer.find(_sender_id), message["player"])
 		if !is_valid_action :
 			print("SERVER - Error : Wrong player who is currently playing")
 			return false
