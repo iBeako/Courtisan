@@ -111,7 +111,7 @@ func process_message(data:Dictionary):
 		]
 
 		for card in cards:
-			var new_card = [message[card[0]], message[card[1]]]
+			var new_card = [data[card[0]], data[card[1]]]
 			hand.append(new_card)
 			
 		print("CLIENT : As player ",id,", I recieved hand : ", hand)
@@ -131,13 +131,13 @@ func on_login_Account(email:String,password:String):
 func put_message_in_chat(_data:Dictionary):
 	pass
 	
-func process_card_played(_data:Dictionary):
-	var writting_message = "CLIENT - Player %d" % id + " : player %d "  % message["player"] + " has put %s" % message["card_type"] + " %s" % message["family"]+ " in %s" % message["area"]
-		if message.has("position"):
-			if message["position"] > 0:
-				writting_message = writting_message + " in the light"
-				writting_message = writting_message + message["id_adversary"]
-		print(writting_message)
+func process_card_played(data:Dictionary):
+	var writting_message = "CLIENT - Player %d" % id + " : player %d "  % data["player"] + " has put %s" % data["card_type"] + " %s" % data["family"]+ " in %s" % data["area"]
+	if data.has("position"):
+		if data["position"] > 0:
+			writting_message = writting_message + " in the light"
+			writting_message = writting_message + data["id_adversary"]
+	print(writting_message)
 
 
 func test_play_card(id_hand_card, area, position: int = 0, id_domain: int = -1):

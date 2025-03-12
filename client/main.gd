@@ -18,13 +18,13 @@ func _ready() -> void:
 	var _families = ["butterfly", "frog", "bird", "bunny", "deer", "fish"]
 	var _positions = [1, -1]
 	var message = {
-			"message_type": "card_played",
-			"player": 1,
-			"card_type": card_types[randi() % card_types.size()],
-			"family": families[randi() % families.size()],
-			"area": "queen_table",
-			"position": positions[randi() % positions.size()],
-		}
+		"message_type": "card_played",
+		"player": 1,
+		"card_type": card_types[randi() % card_types.size()],
+		"family": families[randi() % families.size()],
+		"area": "queen_table",
+		"position": positions[randi() % positions.size()],
+	}
 	client.send_message_to_server.rpc_id(1,message)
 	client.send_message_to_server.rpc_id(1,message)
 	var login = {"message_type":"connexion","login":"login","password":"password"}

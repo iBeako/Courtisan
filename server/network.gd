@@ -40,8 +40,7 @@ func _process(_delta):
 	if session.check_end_game() :
 		session.display_session_status()
 		var stat = session.get_stat()
-		packet = JSON.stringify(stat)
-		_broadcast_message(packet)
+		send_message_to_everyone(stat)
 		peer.close()
 	elif session.check_next_player(clients_peer.find(sender_id)) :
 		_send_three_cards_to_a_player(sender_id)
@@ -191,12 +190,12 @@ func _validate_card_played(_sender_id :int,message: Dictionary) -> bool:
 			print("SERVER - Error : message has not right format")
 			return false
 			
-		if  data_dict.has("id_player_domain") and !session.check_id_player_domain(data_dict["id_player_domain"]):
+		if  message.has("id_player_domain") and !session.check_id_player_domain(message["id_player_domain"]):
 			print("SERVER - Error : adversary id is the player or does not exist")
 			return false
 			
 		# validate action if it is the good player that have played the card (same client id and same game id)
-		is_valid_action = is_valid_action and session.check_player_turn(clients_peer.find(_sender_id), data_dict["player"])
+		is_valid_action = is_valid_action and session.check_player_turn(clients_peer.find(_sender_id), message["player"])
 		if !is_valid_action :
 			print("SERVER - Error : Wrong player who is currently playing")
 			return false

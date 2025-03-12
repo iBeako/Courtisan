@@ -1,5 +1,6 @@
 extends Node
 
+
 var card_number: int
 var card_played_count = 0
 
