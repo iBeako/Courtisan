@@ -11,8 +11,7 @@ enum family {
 var hand = []
 var card_types = ["normal", "noble", "spy", "guard", "assassin"]
 var families = ["butterfly", "frog", "bird", "bunny", "deer", "fish"]
-var positions = [1, -1]
-
+enum PlayZoneType {PLAYER, ENEMY, FAVOR, DISFAVOR}
 
 #card_played:
 #{"message_type":"card_played","player":1,"card_type":"normal","family":"deer","area":"queen_table","position":1} card in the light
@@ -39,8 +38,10 @@ var positions = [1, -1]
 #{"message_type:"connexion","login":"login","password":"password"}
 
 var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
-var port: int = 19001
-var address: String = "wss://185.155.93.105:%d" % port
+#var port: int = 19001
+#var address: String = "wss://185.155.93.105:%d" % port
+var port: int = 8080
+var address: String = "wss://127.0.0.1:%d" % port
 var id: int
 var username
 var tls_options
@@ -111,7 +112,7 @@ func process_message(data:Dictionary):
 		]
 
 		for card in cards:
-			var new_card = [message[card[0]], message[card[1]]]
+			var new_card = [data[card[0]], data[card[1]]]
 			hand.append(new_card)
 			
 		print("CLIENT : As player ",id,", I recieved hand : ", hand)
@@ -132,48 +133,45 @@ func put_message_in_chat(_data:Dictionary):
 	pass
 	
 func process_card_played(_data:Dictionary):
-	var writting_message = "CLIENT - Player %d" % id + " : player %d "  % message["player"] + " has put %s" % message["card_type"] + " %s" % message["family"]+ " in %s" % message["area"]
-		if message.has("position"):
-			if message["position"] > 0:
-				writting_message = writting_message + " in the light"
-				writting_message = writting_message + message["id_adversary"]
-		print(writting_message)
+	var writting_message = "CLIENT - Player %d" % id + " : player %d "  % _data["player"] + " has put %s" % _data["card_type"] + " %s" % _data["family"]+ " in %s" % _data["area"]
+	if _data.has("position"):
+		if _data["position"] > 0:
+			writting_message = writting_message + " in the light"
+			writting_message = writting_message + _data["id_adversary"]
+	print(writting_message)
+	
+func get_hand() -> Array:
+	return hand
 
-
-func test_play_card(id_hand_card, area, position: int = 0, id_domain: int = -1):
-	var typ = hand[id_hand_card][0]
-	var fam = hand[id_hand_card][1]
+func _play_card( type_card, family, area, id_domain: int = -1):
 	var message = {}
-	print("\nCLIENT - NEW ACTION ------------------------------------------------------")
-	if area == "our_domain" :
-		print("CLIENT : player ", id," want to play ", hand[id_hand_card], " in ", area)
+	if area == PlayZoneType.PLAYER :
 		message = {
 			"message_type": "card_played",
 			"player": id,
-			"family": fam,
-			"card_type": typ,
+			"family": family,
+			"card_type": type_card,
 			"area":area,
 		}
-	elif area == "queen_table" :
-		print("CLIENT : player ", id," want to play ", hand[id_hand_card], " in ", area)
+	elif area == PlayZoneType.FAVOR or area == PlayZoneType.DISFAVOR :
 		message = {
 			"message_type": "card_played",
 			"player": id,
-			"family": fam,
-			"card_type": typ,
-			"area":area,
-			"position": position,
+			"family": family,
+			"card_type": type_card,
+			"area":area
 		}
-	elif area == "domain" :
-		print("CLIENT : player ", id," want to play ", hand[id_hand_card], " in domain player ", id_domain)
+	elif area == PlayZoneType.ENEMY :
 		message = {
 			"message_type": "card_played",
 			"player": id,
-			"family": fam,
-			"card_type": typ,
+			"family": family,
+			"card_type": type_card,
 			"area":area,
 			"id_player_domain":id_domain,
 		}
+	else :
+		print("CLIENT Error : Action unknown")
 	send_message_to_server(message)
 
 

@@ -1,9 +1,11 @@
 extends Node
 
-const MAX_CLIENT:int = 5 # 2, 3, 4, 5
+class_name Global
+
+const MAX_CLIENT:int = 2 # 2, 3, 4, 5
 
 # for tests
-const LOOP_COUNT = 6 # 10, 8, 7, 6 (according client count)
+const LOOP_COUNT = 10 # 10, 8, 7, 6 (according client count)
 
 var card_type_numbers = [4, 4, 2, 2, 3] # [idle, noble, spy, guard, assassin]
 

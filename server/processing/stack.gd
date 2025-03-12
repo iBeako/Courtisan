@@ -6,6 +6,8 @@ var card_played_count = 0
 var all_cards = []
 var card_stack = []
 
+var global = preload("res://processing/global.gd")
+
 # Called when the node enters the scene tree for the first time.
 func _init() -> void:
 	self.card_number = 0
