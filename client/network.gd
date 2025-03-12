@@ -113,7 +113,6 @@ func process_message(data:Dictionary):
 
 		for card in cards:
 			var new_card = [data[card[0]], data[card[1]]]
-			var new_card = [data[card[0]], data[card[1]]]
 			hand.append(new_card)
 			
 		print("CLIENT : As player ",id,", I recieved hand : ", hand)

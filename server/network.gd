@@ -192,7 +192,6 @@ func _validate_card_played(_sender_id :int,message: Dictionary) -> bool:
 			return false
 			
 		if  message.has("id_player_domain") and !session.check_id_player_domain(message["id_player_domain"]):
-		if  message.has("id_player_domain") and !session.check_id_player_domain(message["id_player_domain"]):
 			print("SERVER - Error : adversary id is the player or does not exist")
 			return false
 			
