@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://ddfbwcaed3p70" path="res://Ellipse 1.png" id="1_v1vvj"]
 
-[sub_resource type="Image" id="Image_2gotc"]
+[sub_resource type="Image" id="Image_mvh46"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -12,15 +12,21 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_203po"]
-image = SubResource("Image_2gotc")
+image = SubResource("Image_mvh46")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_se5b7"]
+content_margin_left = 1.0
+content_margin_top = 1.0
+content_margin_right = 1.0
+content_margin_bottom = 1.0
 bg_color = Color(0, 0.14902, 0.184314, 0.8)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
 corner_detail = 6
+expand_margin_top = 10.0
+expand_margin_bottom = 10.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2s6gw"]
 content_margin_left = 4.0
@@ -28,11 +34,13 @@ content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
 bg_color = Color(0, 0.212833, 0.259167, 0.8)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
 corner_detail = 6
+expand_margin_top = 10.0
+expand_margin_bottom = 10.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nkbc2"]
 content_margin_left = 4.0
@@ -40,16 +48,19 @@ content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
 bg_color = Color(0.396078, 0.796078, 0.921569, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-corner_detail = 6
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+expand_margin_top = 10.0
+expand_margin_bottom = 10.0
 
 [resource]
 HSlider/constants/center_grabber = 0
 HSlider/constants/grabber_offset = 0
 HSlider/icons/grabber = ExtResource("1_v1vvj")
+HSlider/icons/grabber_disabled = ExtResource("1_v1vvj")
+HSlider/icons/grabber_highlight = ExtResource("1_v1vvj")
 HSlider/icons/tick = SubResource("ImageTexture_203po")
 HSlider/styles/grabber_area = SubResource("StyleBoxFlat_se5b7")
 HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_2s6gw")
