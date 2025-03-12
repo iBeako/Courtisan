@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://bw6ntenrqw1vi"]
 
-[ext_resource type="Script" path="res://Script/main.gd" id="1_yrk5g"]
+[ext_resource type="Script" path="res://Script/main.gd" id="1_q15hj"]
 [ext_resource type="Texture2D" uid="uid://bwnofn63mn3mp" path="res://Assets/Board_2Players.png" id="2_iyv7j"]
 [ext_resource type="Script" path="res://Script/card_manager.gd" id="2_rmro5"]
 [ext_resource type="Script" path="res://Script/player_hand.gd" id="5_e645g"]
@@ -16,7 +16,7 @@
 size = Vector2(80, 120)
 
 [node name="Main" type="Node2D"]
-script = ExtResource("1_yrk5g")
+script = ExtResource("1_q15hj")
 
 [node name="Board2Players" type="Sprite2D" parent="."]
 position = Vector2(960, 540)

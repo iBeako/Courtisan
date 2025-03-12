@@ -21,7 +21,7 @@ func _onready():
 
 func _ready():
 	_onready()
-	peer.create_server(port, "0.0.0.0", server_tls_options)
+	peer.create_server(port, "*", server_tls_options)
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)

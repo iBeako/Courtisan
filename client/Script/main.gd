@@ -8,6 +8,13 @@ var slot_card_counts: Dictionary = {}
 
 func _ready() -> void:
 	# Connect signals for each play zone
+	print_tree()
+	var client = load("res://Script/network.gd").new()
+	add_child(client)
+	await get_tree().create_timer(3.0).timeout
+	var login = {"message_type":"connexion","login":"login","password":"password"}
+	client.send_message_to_server.rpc_id(1,login)
+	await get_tree().create_timer(2.0).timeout
 	for zone_name in ["PlayZone_Joueur", "PlayZone_Grace", "PlayZone_Disgrace", "PlayZone_Ennemie"]:
 		if has_node(zone_name):
 			var zone = get_node(zone_name)
