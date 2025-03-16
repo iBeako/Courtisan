@@ -40,7 +40,7 @@ enum PlayZoneType {PLAYER, ENEMY, FAVOR, DISFAVOR}
 var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
 #var port: int = 19001
 #var address: String = "wss://185.155.93.105:%d" % port
-var port: int = 8080
+var port: int = 10001
 var address: String = "wss://127.0.0.1:%d" % port
 var id: int
 var username
