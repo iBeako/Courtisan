@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Courtisans client"
-run/main_scene="res://client.tscn"
+run/main_scene="res://Scene/client.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
 

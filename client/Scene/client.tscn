@@ -1,9 +1,9 @@
 [gd_scene load_steps=2 format=3 uid="uid://b6ymgmo3dsdu5"]
 
-[ext_resource type="Script" path="res://main.gd" id="1_dfsaf"]
+[ext_resource type="Script" path="res://Script/test_network.gd" id="1_juumn"]
 
 [node name="Node" type="Node"]
-script = ExtResource("1_dfsaf")
+script = ExtResource("1_juumn")
 
 [node name="Panel" type="Panel" parent="."]
 offset_right = 40.0
