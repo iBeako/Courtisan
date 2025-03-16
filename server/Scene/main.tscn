@@ -1,6 +1,13 @@
 [gd_scene load_steps=2 format=3 uid="uid://cj4amifas8uol"]
 
+<<<<<<< HEAD
 [ext_resource type="Script" path="res://Script/main.gd" id="1_pl8mi"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_pl8mi")
+=======
+[ext_resource type="Script" path="res://Script/main.gd" id="1_jpi5e"]
+
+[node name="Node" type="Node"]
+script = ExtResource("1_jpi5e")
+>>>>>>> network
