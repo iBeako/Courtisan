@@ -1,10 +1,10 @@
 extends Control
 
 # Load the main game scene
-@onready var game = load("res://Scene/main.tscn")
+@onready var game = preload("res://Scene/main.tscn")
 
 # Load the parameter/settings scene
-@onready var param = load("res://Scene/param.tscn")
+@onready var param = preload("res://Scene/param.tscn")
 
 # Function triggered when the Start button is pressed
 func _on_start_button_button_down() -> void:

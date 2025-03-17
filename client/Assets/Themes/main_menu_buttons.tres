@@ -1,7 +1,7 @@
 [gd_resource type="Theme" load_steps=8 format=3 uid="uid://bvoq80lx73y43"]
 
 [ext_resource type="FontFile" uid="uid://dim3hkmopleo2" path="res://Assets/Mighty Souly.otf" id="1_y0byt"]
-[ext_resource type="Texture2D" uid="uid://bxdsrjy753lif" path="res://Assets/Buttons/Buttons_bg.png" id="2_pwojw"]
+[ext_resource type="Texture2D" uid="uid://df5gg84weglr8" path="res://Assets/Buttons/default.png" id="3_nd5m1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4r2xm"]
 content_margin_left = 4.0
@@ -37,22 +37,13 @@ expand_margin_right = 2.0
 expand_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_psc10"]
-texture = ExtResource("2_pwojw")
+texture = ExtResource("3_nd5m1")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_f7jdn"]
-texture = ExtResource("2_pwojw")
+texture = ExtResource("3_nd5m1")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xoa1x"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0, 0, 0, 0.6)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-corner_detail = 5
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yp020"]
+texture = ExtResource("3_nd5m1")
 
 [resource]
 Button/colors/font_color = Color(0.992157, 0.733333, 0.0117647, 1)
@@ -78,4 +69,4 @@ Button/styles/disabled = SubResource("StyleBoxFlat_4r2xm")
 Button/styles/focus = SubResource("StyleBoxFlat_wog1f")
 Button/styles/hover = SubResource("StyleBoxTexture_psc10")
 Button/styles/normal = SubResource("StyleBoxTexture_f7jdn")
-Button/styles/pressed = SubResource("StyleBoxFlat_xoa1x")
+Button/styles/pressed = SubResource("StyleBoxTexture_yp020")
