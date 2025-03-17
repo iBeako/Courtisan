@@ -26,7 +26,7 @@ func _ready() -> void:
 	randomize()  # Initialize random number generation
 
 # Function to draw cards and assign them a random type
-func draw_cards():
+func draw_cards(message):
 	print("Drawing cards...")
 
 	if not player_hand:
@@ -34,20 +34,19 @@ func draw_cards():
 		return
 	
 	var card_scene = preload(CARD_SCENE_PATH)  # Load the card scene
-	
+	var i = 0
 	# Continue drawing until the player’s hand has the required number of cards
 	while player_hand.player_hand.size() < Hand_Count:
 		var new_card = card_scene.instantiate()  # Instantiate a new card
 
-		var card_color = get_random_card_color()  # Assign a random color
-		new_card.card_color = card_color  # Set the card’s color
-		new_card.card_type = randi_range(0,4)   # Assign a default type
-
+		new_card.card_color = message[i][1]  # Set the card’s color
+		new_card.card_type = message[i][0]   # Assign a default type
+		
 		# new_card.apply_card_texture()  # Update the texture immediately (commented out)
 
 		new_card.z_index = 5  # Set the rendering order
-		new_card.name = "carte_" + card_color  # Give the card a unique name
-		
+		new_card.name = "carte_" + card_colors[message[i][0]]  # Give the card a unique name
+		i+= 1
 		$"../CardManager".add_child(new_card)  # Add the card to the CardManager
 		
 		player_hand.add_card_to_hand(new_card)  # Add the card to the player's hand

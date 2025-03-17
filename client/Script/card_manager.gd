@@ -8,6 +8,8 @@ enum TYPES {
 	Noble
 }
 
+const CARD_SCENE_PATH = "res://Scene/card.tscn"
+
 # Variables for screen size and collision masks
 var screen_size
 const COLLISION_MASK_CARD = 1 << 0
@@ -19,7 +21,9 @@ var card_is_dragged : Card
 var is_hovered : bool
 var player_hand_reference
 var message_manager_reference : MessageManager
-
+var deck
+# Card color types
+var card_colors = ["Papillons", "Crapauds", "Rossignols", "Lièvres", "Cerfs", "Carpes"]
 # Array to track where the player can play cards (player zone, enemy zone, middle zone)
 var can_play = [1, 1, 1] 
 
@@ -30,9 +34,11 @@ func _ready() -> void:
 	screen_size = get_viewport_rect().size  # Get screen size
 	player_hand_reference = $"../PlayerHand"  # Reference to the player's hand
 	message_manager_reference = $"../MessageManager"  # Reference to the message manager
+	deck = $"../Deck"
 	
 	# Connect the input manager's signal for left mouse button release
 	$"../inputManager".connect("left_mouse_button_released", on_left_mouse_button_released)
+
 	
 # Update function called every frame
 func _process(delta: float) -> void:
@@ -44,6 +50,9 @@ func _process(delta: float) -> void:
 
 # Function to start dragging a card
 func start_drag(card):
+	if not get_parent().client.id == get_parent().client.turn_player:
+		print("It's not your turn, you cannot drag a card.")
+		return
 	card_is_dragged = card
 	card.z_index = 10  # Bring the card to the front layer
 
@@ -64,7 +73,7 @@ func end_drag():
 		# Determine the play area and position
 		var area = card_zone_found.Play_ZoneType
 		print("Zone type: " + str(area))
-		var player_id = get_parent().player_id
+		var player_id = get_parent().client.turn_player
 		
 		# Determine which play zone the card was placed in
 		var id_can_play : int

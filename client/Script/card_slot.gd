@@ -17,10 +17,9 @@ enum PlayZoneType { Joueur, Ennemie, Grace, Disgrace }
 func _ready() -> void:
 	#print("CardSlot ready: ", self.name)  # Debug message when the slot is ready
 	$TextureRect.hide()
-	
 	# Check if the label exists
 	if count_label:
-		print("Label found for ", self.name)
+		#print("Label found for ", self.name)
 		count_label.z_index = 10  # Ensure the label appears on top
 	else:
 		print("Label NOT found for ", self.name)

@@ -1,5 +1,5 @@
 extends Node
-
+signal turn(turn)
 ## Fields of class
 
 # to enhance with the beta version with dynamic lobby
@@ -35,6 +35,8 @@ func _init(_player_max: int = 2) -> void:
 	card_stack._set_card_number(_player_max)
 	print("Initilization of a new session success")
 	card_stack.print_stack_state()
+
+	
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
@@ -145,13 +147,14 @@ func distribute_three_cards(player_id:int) -> Dictionary:
 
 # checking
 func check_id_player_domain(id_player_domain: int) :
-	return (id_player_domain >= 0 and id_player_domain < players.size()) and id_player_domain != current_player_id
-
+	return id_player_domain == -1
+	#return (id_player_domain >= 0 and id_player_domain < players.size()) and id_player_domain != current_player_id
+	#when more than 1 player
 # Check player id regarding a session
 func check_player_turn(player_id : int, _id_in_message: int) -> bool:
 	return (player_id == _id_in_message) and (current_player_id == player_id)
 	
-func check_player_hand(_player_id: int, card_type: String, family: String) -> bool:
+func check_player_hand(_player_id: int, card_type: int, family: String) -> bool:
 	var is_valid = false
 	for card in players[_player_id][6] :
 		is_valid = is_valid or card[0]
@@ -166,7 +169,7 @@ func check_player_area(_player_id: int, area: int) -> bool:
 		is_valid = is_valid and ( card[1] != area )
 	return is_valid
 	
-func place_card(_id_player: int, _area: int, _card_type: String, _family: String, _id_player_domain: int = -1) -> bool:
+func place_card(_id_player: int, _area: int, _card_type: int, _family: String) -> bool:
 	
 	if _area == global.PlayZoneType.FAVOR or _area == global.PlayZoneType.DISFAVOR :
 		var pos = 0 if _area == global.PlayZoneType.FAVOR else 1
@@ -178,8 +181,8 @@ func place_card(_id_player: int, _area: int, _card_type: String, _family: String
 		players[_id_player][global.families.find(_family)].append([_card_type, _family])
 				
 	elif _area == global.PlayZoneType.ENEMY:
-		print("SERVER : Action saved as card placed in enemy's domain ", _id_player_domain)
-		players[_id_player_domain][global.families.find(_family)].append([_card_type, _family])
+		print("SERVER : Action saved as card placed in enemy's domain ")
+		players[_id_player][global.families.find(_family)].append([_card_type, _family])
 	else :
 		print("SERVER - Error : wrong area name")
 	
@@ -200,6 +203,7 @@ func place_card(_id_player: int, _area: int, _card_type: String, _family: String
 	if !still_current :
 		print("SERVER : Move to next player")
 		current_player_id = (current_player_id + 1) % players.size()
+		print("player %d turn" % current_player_id)
 		print("\n")
 	
 	return true
@@ -207,7 +211,7 @@ func place_card(_id_player: int, _area: int, _card_type: String, _family: String
 func check_next_player(player_id) -> bool :
 	return current_player_id != player_id
 	
-func get_card_points(_card_type: String, _family: String, _position: int = 1) -> int :
+func get_card_points(_card_type: int, _family: String, _position: int = 1) -> int :
 	var points = 0
 	match _card_type:
 		"normal":
