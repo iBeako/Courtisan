@@ -2,9 +2,9 @@ extends Control
 
 @onready var menu = load("res://Scene/menu_principal.tscn")
 
-@onready var tab_container : TabContainer = $MarginContainer/PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer
+@onready var tab_container : TabContainer = $PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer
 
-@onready var tabs : VBoxContainer = $MarginContainer/PanelContainer2/HBoxContainer/PanelContainer/Tabs
+@onready var tabs : VBoxContainer = $PanelContainer2/HBoxContainer/PanelContainer/Tabs
 
 var btn_func = [change_to_sound, change_to_profile, change_to_privacy]
 
@@ -15,6 +15,7 @@ func _ready() -> void:
 		btn.text = tab_container.get_tab_title(i)
 		btn.set_theme(btn_theme)
 		tabs.add_child(btn)
+		tabs.move_child(btn,2+i) #place le bouton dans le bon ordre 
 		
 		btn.pressed.connect(btn_func[i])
 
@@ -29,6 +30,9 @@ func change_to_privacy():
 	tab_container.current_tab=2
 	
 
-func _on_retour_menu_pressed() -> void:
+
+
+
+func _on_texture_button_pressed() -> void:
 	print(menu)
 	get_tree().change_scene_to_packed(menu)

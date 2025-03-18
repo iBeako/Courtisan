@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=7 format=3 uid="uid://p2ekl26u8dnf"]
 
-[ext_resource type="Texture2D" uid="uid://bqi1vxd3c5c8s" path="res://Assets/slider_graber.svg" id="1_yy0f6"]
+[ext_resource type="Texture2D" uid="uid://bqi1vxd3c5c8s" path="res://Assets/slider_graber.svg" id="1_x080a"]
 
 [sub_resource type="Image" id="Image_gos1r"]
 data = {
@@ -62,9 +62,9 @@ expand_margin_bottom = 10.0
 [resource]
 HSlider/constants/center_grabber = 1
 HSlider/constants/grabber_offset = 0
-HSlider/icons/grabber = ExtResource("1_yy0f6")
-HSlider/icons/grabber_disabled = ExtResource("1_yy0f6")
-HSlider/icons/grabber_highlight = ExtResource("1_yy0f6")
+HSlider/icons/grabber = ExtResource("1_x080a")
+HSlider/icons/grabber_disabled = ExtResource("1_x080a")
+HSlider/icons/grabber_highlight = ExtResource("1_x080a")
 HSlider/icons/tick = SubResource("ImageTexture_203po")
 HSlider/styles/grabber_area = SubResource("StyleBoxFlat_se5b7")
 HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_kff6j")
