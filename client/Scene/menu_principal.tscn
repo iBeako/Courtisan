@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://ghnhxtw8ow2v"]
 
 [ext_resource type="Script" path="res://Script/menu_principal.gd" id="1_odear"]
-[ext_resource type="Texture2D" uid="uid://cyo5oikndmglh" path="res://Assets/MainPageMenu.png" id="2_cgov5"]
+[ext_resource type="Texture2D" uid="uid://moika2rm8x7n" path="res://Assets/background.png" id="2_6j14x"]
 [ext_resource type="Theme" uid="uid://bvoq80lx73y43" path="res://Assets/Themes/main_menu_buttons.tres" id="3_1qxdg"]
 [ext_resource type="Theme" uid="uid://tfwgx5wawp6i" path="res://Assets/Themes/main_menu_buttons_green.tres" id="3_i1lxy"]
 [ext_resource type="Theme" uid="uid://crok16l33fj87" path="res://Assets/Themes/main_menu_buttons_blue.tres" id="4_7ryuf"]
@@ -27,7 +27,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_cgov5")
+texture = ExtResource("2_6j14x")
 expand_mode = 5
 
 [node name="Label" type="Label" parent="."]
@@ -90,7 +90,7 @@ layout_mode = 2
 theme = ExtResource("6_hbyqo")
 text = "Quit"
 
-[node name="TextureRect2" type="TextureRect" parent="."]
+[node name="Title" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
