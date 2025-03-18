@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://bw6ntenrqw1vi"]
 
 [ext_resource type="Script" path="res://Script/main.gd" id="1_q15hj"]
-[ext_resource type="Texture2D" uid="uid://bwnofn63mn3mp" path="res://Assets/Board_2Players.png" id="2_iyv7j"]
+[ext_resource type="Texture2D" uid="uid://yn6givliy0yr" path="res://Assets/background_board.png" id="2_racv5"]
 [ext_resource type="Script" path="res://Script/card_manager.gd" id="2_rmro5"]
 [ext_resource type="Script" path="res://Script/player_hand.gd" id="5_e645g"]
 [ext_resource type="Script" path="res://Script/deck.gd" id="6_6k3ci"]
@@ -18,9 +18,13 @@ size = Vector2(80, 120)
 [node name="Main" type="Node2D"]
 script = ExtResource("1_q15hj")
 
-[node name="Board2Players" type="Sprite2D" parent="."]
-position = Vector2(960, 540)
-texture = ExtResource("2_iyv7j")
+[node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(1920, 1080)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("2_racv5")
+expand_mode = 3
+metadata/_edit_use_anchors_ = true
 
 [node name="PlayZone_Ennemie" parent="." instance=ExtResource("8_0gqd0")]
 light_mask = 2
