@@ -214,16 +214,16 @@ func check_next_player(player_id) -> bool :
 func get_card_points(_card_type: int, _family: String, _position: int = 1) -> int :
 	var points = 0
 	match _card_type:
-		"normal":
+		0 : # idle
 			points = 1
-		"noble":
+		1 : # assassin
+			points = 1
+		2 : # spy
+			points = 1
+		3 : # guard
+			points = 1
+		4 : # noble
 			points = 2
-		"spy":
-			points = 1
-		"guard":
-			points = 1
-		"assassin":
-			points = 1
 		_:
 			points = 0
 	points = points * _position
