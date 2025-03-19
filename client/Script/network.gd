@@ -121,6 +121,7 @@ func process_message(data:Dictionary):
 		process_connexion(data)
 	elif data["message_type"] == "player_turn":
 		print("player turn : ", data)
+		deck_reference.number_of_cards = data["number_of_cards"]
 		turn_player = data["id_player"]
 	elif data["message_type"] == "hand":
 		hand.clear()

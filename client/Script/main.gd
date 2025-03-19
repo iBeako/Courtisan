@@ -8,7 +8,6 @@ var slot_card_counts: Dictionary = {}
 
 func _ready() -> void:
 	# Connect signals for each play zone
-	var test = get_node("./Network")
 	client = load("res://Script/network.gd").new()
 	add_child(client)
 	await get_tree().create_timer(3.0).timeout

@@ -67,9 +67,10 @@ func _on_peer_connected(peer_id: int):
 		if session.check_game_start():
 			session.load_game() # load game of the session
 			_send_three_cards_to_each_player()
-			var turn = {"message_type":"player_turn","id_player":session.current_player_id}
+			var turn = {"message_type":"player_turn","id_player":session.current_player_id,"number_of_cards":session.card_stack._get_card_number()}
 			print("turn :" ,turn["id_player"])
 			send_message_to_everyone.rpc(turn)
+			
 			
 		number_of_client += 1
 		
@@ -152,7 +153,7 @@ func process_message(data : Dictionary,sender_id:int):
 	elif session.check_next_player(find_lobby_number_client(sender_id)) :
 		_send_three_cards_to_a_player(sender_id)
 		session.display_session_status()
-		var turn = {"message_type":"player_turn","id_player":session.current_player_id}
+		var turn = {"message_type":"player_turn","id_player":session.current_player_id,"number_of_cards":session.card_stack._get_card_number()}
 		print("turn :" ,turn["id_player"])
 		send_message_to_everyone.rpc(turn)
 

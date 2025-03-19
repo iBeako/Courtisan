@@ -4,7 +4,7 @@ const CARD_SCENE_PATH = "res://Scene/card.tscn"
 
 # List of cards in the deck
 var deck_cards = ["carte","carte","carte","carte","carte","carte","carte","carte"]  
-
+var number_of_cards
 # Card color types
 var card_colors = ["Papillons", "Crapauds", "Rossignols", "Lièvres", "Cerfs", "Carpes"]  
 
