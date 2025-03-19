@@ -19,7 +19,6 @@ func _ready() -> void:
 	# Initialize references to CardManager and Deck
 	card_manager_reference = $"../CardManager"
 	deck_reference = $"../Deck"
-
 func _input(event):
 	# Handle left mouse button events
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -52,5 +51,6 @@ func raycast_at_cursor():
 				card_manager_reference.start_drag(card_found)
 		
 		# If a deck is detected, draw a card
-		elif (result_collision_layer & COLLISION_MASK_DECK) != 0:
-			deck_reference.draw_cards()
+		#elif (result_collision_layer & COLLISION_MASK_DECK) != 0:
+		#	deck_reference.draw_cards()
+		#probably add a message to ask new cards

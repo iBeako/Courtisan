@@ -93,7 +93,5 @@ func add_card_to_zone(card_color : String, card_type : int, area : int) -> void:
 
 
 func _send_message(message: Dictionary):
-	var json_message = JSON.stringify(message)
-	print(json_message)  # Pour le débogage
-	emit_signal("message_sent", json_message)
+	emit_signal("message_sent", message)
 	# Ici, vous pouvez ajouter la logique pour envoyer le message via le réseau

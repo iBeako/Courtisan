@@ -2,14 +2,14 @@ extends Node2D
 
 # Player identifier
 var player_id : int = 1
-
+var client
 # Dictionary to store the number of cards in each slot
 var slot_card_counts: Dictionary = {}
 
 func _ready() -> void:
 	# Connect signals for each play zone
-	print_tree()
-	var client = load("res://Script/network.gd").new()
+	var test = get_node("./Network")
+	client = load("res://Script/network.gd").new()
 	add_child(client)
 	await get_tree().create_timer(3.0).timeout
 	var login = {"message_type":"connexion","login":"login","password":"password"}

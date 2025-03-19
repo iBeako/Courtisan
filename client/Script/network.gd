@@ -1,4 +1,5 @@
 extends Node
+signal error_card_played(message)
 
 enum family {
 	butterfly = 0,
@@ -36,22 +37,23 @@ enum PlayZoneType {PLAYER, ENEMY, FAVOR, DISFAVOR}
 #{"message_type":"error","error_type":"command"} -> unknown command : do nothing
 #connexion:
 #{"message_type:"connexion","login":"login","password":"password"}
+#player_turn:
+#{"message_type:"player_turn","id_player":id}
 
 var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
-<<<<<<< HEAD
+
 #var port: int = 19001 #connection to VM when connected to eduroam or osiris
 var port: int = 10001
 #var address: String = "wss://185.155.93.105:%d" % port #connection to VM when connected to eduroam or osiris
 var address: String = "wss://localhost:%d" % port
-=======
-#var port: int = 19001
-#var address: String = "wss://185.155.93.105:%d" % port
-var port: int = 10001
-var address: String = "wss://127.0.0.1:%d" % port
->>>>>>> network
+var turn_player
+var deck_reference
+var message_manager
 var id: int
 var username
 var tls_options
+
+
 
 func _ready():
 	var client_trusted_cas = load("res://certificates/certificate.crt")
@@ -59,11 +61,18 @@ func _ready():
 	peer.create_client(address, client_tls_options)
 	multiplayer.multiplayer_peer = peer
 	print("Client connected to server at %s" % address)
-
+	message_manager = $"/root/Main/MessageManager"
+	message_manager.connect("message_sent", Callable(self, "_on_message_sent"))
+	deck_reference = $"/root/Main/Deck"
+	
 func close_connection():
 	if peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
 		peer.close()
 		print("Client connection closed")
+
+func _on_message_sent(message: Dictionary) -> void:
+	send_message_to_server.rpc_id(1, message)
+
 
 @rpc("any_peer")
 func send_message_to_server(data: Dictionary):
@@ -110,6 +119,9 @@ func process_message(data:Dictionary):
 		process_error(data)
 	elif data["message_type"] == "connexion":
 		process_connexion(data)
+	elif data["message_type"] == "player_turn":
+		print("player turn : ", data)
+		turn_player = data["id_player"]
 	elif data["message_type"] == "hand":
 		hand.clear()
 		var cards = [
@@ -122,8 +134,8 @@ func process_message(data:Dictionary):
 			var new_card = [data[card[0]], data[card[1]]]
 			hand.append(new_card)
 			
-		print("CLIENT : As player ",id,", I recieved hand : ", hand)
-
+		print("CLIENT : As player ",id,", I received hand : ", hand)
+		deck_reference.draw_cards(hand)
 	else:
 		print("invalid message")
 		
@@ -139,14 +151,22 @@ func on_login_Account(email:String,password:String):
 func put_message_in_chat(_data:Dictionary):
 	pass
 	
-func process_card_played(_data:Dictionary):
-	var writting_message = "CLIENT - Player %d" % id + " : player %d "  % _data["player"] + " has put %s" % _data["card_type"] + " %s" % _data["family"]+ " in %s" % _data["area"]
-	if _data.has("position"):
-		if _data["position"] > 0:
+func process_card_played(data:Dictionary):
+	if data["player"] != id:
+		if data["area"] == 0:
+			data["area"] = 1
+		elif data["area"] == 1:
+			data["area"] = 0
+	var writting_message = "CLIENT - Player %d" % id + " : player %d "  % data["player"] + " has put %s" % data["card_type"] + " %s" % data["family"]+ " in %s" % data["area"]
+	if data.has("position"):
+		if data["position"] > 0:
 			writting_message = writting_message + " in the light"
-			writting_message = writting_message + _data["id_adversary"]
+			writting_message = writting_message + data["id_adversary"]
 	print(writting_message)
-	
+	if data["player"] != id:
+		
+		message_manager.add_card_to_zone(data["family"],data["card_type"],data["area"])
+		
 func get_hand() -> Array:
 	return hand
 
@@ -191,5 +211,9 @@ func process_connexion(data:Dictionary):
 	print("has been logged")
 
 func process_error(data:Dictionary):
+	
 	if data["error_type"] == "unconnected":
 		print("error on password or loggin, retry")
+	if data["error_type"] == "card_played":
+		print("card can not be played")
+		emit_signal("error_card_played", data)
