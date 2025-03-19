@@ -59,9 +59,9 @@ func update_count_label(value : int) -> int:  # 'value' is used to adjust the co
 		count_label.text = str(cpt) if cpt != 0 else ""
 		count_label.add_theme_color_override("font_color", Color(1, 0, 0))  # Set text color to red
 		if cpt != 0:
-			$TextureRect.show()
+			$PanelContainer.show()
 		else:
-			$TextureRect.hide()
+			$PanelContainer.hide()
 			
 		
 		return cpt

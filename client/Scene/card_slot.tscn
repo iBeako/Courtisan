@@ -5,7 +5,7 @@
 [ext_resource type="FontFile" uid="uid://dim3hkmopleo2" path="res://Assets/Mighty Souly.otf" id="3_quh00"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7bs8y"]
-size = Vector2(80, 120)
+size = Vector2(79, 157)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_in1m1"]
 bg_color = Color(0, 0, 0, 0.611765)
@@ -20,7 +20,7 @@ visibility_layer = 2
 script = ExtResource("1_66xls")
 
 [node name="CardSlotImage" type="Sprite2D" parent="."]
-scale = Vector2(0.444444, 0.45283)
+scale = Vector2(0.438889, 0.592453)
 texture = ExtResource("1_p3tgm")
 
 [node name="Area2D" type="Area2D" parent="."]
