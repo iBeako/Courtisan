@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://48nonev1xprr"]
+[gd_scene load_steps=12 format=3 uid="uid://48nonev1xprr"]
 
 [ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/Sign/sign_title.tres" id="1_5d8kw"]
+[ext_resource type="Script" path="res://Scene/signin_page.gd" id="1_vve6k"]
 [ext_resource type="PackedScene" uid="uid://d053ssckadw1i" path="res://Scene/input_sign.tscn" id="2_idw5c"]
 [ext_resource type="PackedScene" uid="uid://ttn5g35730bq" path="res://Scene/input_sign_password.tscn" id="3_ep1yl"]
 [ext_resource type="FontFile" uid="uid://dim3hkmopleo2" path="res://Assets/Mighty Souly.otf" id="4_dcmhl"]
@@ -43,6 +44,7 @@ Button/styles/pressed = SubResource("StyleBoxEmpty_og31f")
 
 [node name="signIN" type="VBoxContainer"]
 theme_override_constants/separation = 30
+script = ExtResource("1_vve6k")
 metadata/_tab_index = 0
 
 [node name="Label" type="Label" parent="."]
@@ -52,11 +54,11 @@ text = "SIGN IN"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Username" parent="." instance=ExtResource("2_idw5c")]
+[node name="Email" parent="." instance=ExtResource("2_idw5c")]
 layout_mode = 2
 
-[node name="LineEdit" parent="Username/MarginContainer/HBoxContainer" index="2"]
-placeholder_text = "USERNAME"
+[node name="LineEdit" parent="Email/MarginContainer/HBoxContainer" index="2"]
+placeholder_text = "E-MAIL"
 
 [node name="Password" parent="." instance=ExtResource("3_ep1yl")]
 layout_mode = 2
@@ -69,19 +71,19 @@ layout_mode = 2
 theme = SubResource("Theme_js0p0")
 text = "Forgot password?"
 
-[node name="SignUP" type="Button" parent="."]
+[node name="SignIN" type="Button" parent="."]
 layout_mode = 2
 theme = ExtResource("1_5d8kw")
-text = "SIGN UP"
+text = "SIGN IN"
 
 [node name="HSeparator" type="HSeparator" parent="."]
 layout_mode = 2
 
-[node name="SignIn" type="Button" parent="."]
+[node name="SignUP" type="Button" parent="."]
 layout_mode = 2
 theme = ExtResource("1_5d8kw")
-text = "SIGN IN
+text = "SIGN UP
 "
 
-[editable path="Username"]
+[editable path="Email"]
 [editable path="Password"]

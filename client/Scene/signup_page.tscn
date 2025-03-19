@@ -1,5 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://ca7rr38xrchro"]
+[gd_scene load_steps=6 format=3 uid="uid://ca7rr38xrchro"]
 
+[ext_resource type="Script" path="res://Scene/signup_page.gd" id="1_qq0qf"]
 [ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/Sign/sign_title.tres" id="1_slf3n"]
 [ext_resource type="PackedScene" uid="uid://d053ssckadw1i" path="res://Scene/input_sign.tscn" id="2_syrqm"]
 [ext_resource type="Texture2D" uid="uid://dydwgqc1d7h2k" path="res://Assets/envelope.svg" id="3_1odxc"]
@@ -7,6 +8,7 @@
 
 [node name="SignUP" type="VBoxContainer"]
 theme_override_constants/separation = 30
+script = ExtResource("1_qq0qf")
 metadata/_tab_index = 1
 
 [node name="Label2" type="Label" parent="."]
@@ -16,10 +18,10 @@ text = "SIGN UP"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Username2" parent="." instance=ExtResource("2_syrqm")]
+[node name="Username" parent="." instance=ExtResource("2_syrqm")]
 layout_mode = 2
 
-[node name="LineEdit" parent="Username2/MarginContainer/HBoxContainer" index="2"]
+[node name="LineEdit" parent="Username/MarginContainer/HBoxContainer" index="2"]
 placeholder_text = "USERNAME"
 
 [node name="Email" parent="." instance=ExtResource("2_syrqm")]
@@ -43,12 +45,21 @@ layout_mode = 2
 [node name="LineEdit" parent="Password2/MarginContainer/HBoxContainer" index="2"]
 placeholder_text = "CONFIRM PASSWORD"
 
-[node name="Button" type="Button" parent="."]
+[node name="SignUP" type="Button" parent="."]
 layout_mode = 2
 theme = ExtResource("1_slf3n")
 text = "SIGN UP"
 
-[editable path="Username2"]
+[node name="HSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="SignIN" type="Button" parent="."]
+layout_mode = 2
+theme = ExtResource("1_slf3n")
+text = "SIGN IN
+"
+
+[editable path="Username"]
 [editable path="Email"]
 [editable path="Password"]
 [editable path="Password2"]

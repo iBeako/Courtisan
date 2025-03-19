@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://d053ssckadw1i"]
+[gd_scene load_steps=6 format=3 uid="uid://d053ssckadw1i"]
 
 [ext_resource type="Texture2D" uid="uid://bl1kbnd8lx55d" path="res://Assets/user.svg" id="1_hps6c"]
+[ext_resource type="Script" path="res://Script/input_sign.gd" id="1_mavrx"]
 [ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/Sign/sign_title.tres" id="2_4m5to"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ffix6"]
@@ -15,6 +16,7 @@ corner_radius_bottom_left = 10
 [node name="PanelContainer" type="PanelContainer"]
 custom_minimum_size = Vector2(300, 0)
 theme_override_styles/panel = SubResource("StyleBoxFlat_ffix6")
+script = ExtResource("1_mavrx")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
