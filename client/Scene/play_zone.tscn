@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://diq2mulbgvlxx" path="res://Assets/playboardZonePadd20.png" id="2_1ilcw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t84a7"]
-size = Vector2(762, 202)
+size = Vector2(728, 180)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oc2q4"]
 bg_color = Color(0.141176, 0.184314, 0.207843, 1)
@@ -29,7 +29,7 @@ visibility_layer = 4
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 light_mask = 4
 visibility_layer = 4
-position = Vector2(381, 101)
+position = Vector2(366, 89)
 shape = SubResource("RectangleShape2D_t84a7")
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -40,27 +40,28 @@ color = Color(0.0185693, 0.657099, 0.410049, 1)
 metadata/_edit_use_anchors_ = true
 
 [node name="Panel" type="Panel" parent="."]
-offset_right = 761.0
-offset_bottom = 220.0
+offset_top = -1.0
+offset_right = 730.0
+offset_bottom = 179.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_oc2q4")
 
 [node name="Papillons" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(699, 101)
+position = Vector2(664, 92)
 
 [node name="Crapauds" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(593, 101)
+position = Vector2(564, 92)
 
 [node name="Rossignols" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(487, 101)
+position = Vector2(464, 92)
 
 [node name="Lièvres" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(381, 101)
+position = Vector2(364, 92)
 
 [node name="Cerfs" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(275, 101)
+position = Vector2(264, 92)
 
 [node name="Carpes" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(169, 101)
+position = Vector2(164, 92)
 
 [node name="Espions" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(63, 101)
+position = Vector2(64, 92)

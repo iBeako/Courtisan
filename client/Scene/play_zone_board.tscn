@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cmrdrrth5bhfq" path="res://Assets/jeudice-catch-up-games-courtisans_plateau-1.jpg" id="3_5leg5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_glm01"]
-size = Vector2(1658.5, 202)
+size = Vector2(1000.5, 160)
 
 [node name="PlayZone" type="Node2D"]
 script = ExtResource("1_4gkkf")
@@ -28,7 +28,7 @@ visibility_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 visibility_layer = 4
-position = Vector2(829.75, 101)
+position = Vector2(500.75, 80)
 shape = SubResource("RectangleShape2D_glm01")
 
 [node name="Area2D" type="Area2D" parent="Area2D"]
@@ -45,22 +45,22 @@ color = Color(0.0185693, 0.657099, 0.410049, 1)
 metadata/_edit_use_anchors_ = true
 
 [node name="Papillons" parent="." instance=ExtResource("2_xa725")]
-position = Vector2(165, 101)
+position = Vector2(101, 79)
 
 [node name="Crapauds" parent="." instance=ExtResource("2_xa725")]
-position = Vector2(394, 101)
+position = Vector2(238, 77)
 
 [node name="Rossignols" parent="." instance=ExtResource("2_xa725")]
-position = Vector2(615, 101)
+position = Vector2(382, 77)
 
 [node name="Lièvres" parent="." instance=ExtResource("2_xa725")]
-position = Vector2(1044, 101)
+position = Vector2(639, 77)
 
 [node name="Cerfs" parent="." instance=ExtResource("2_xa725")]
-position = Vector2(1260, 101)
+position = Vector2(777, 77)
 
 [node name="Carpes" parent="." instance=ExtResource("2_xa725")]
-position = Vector2(1487, 100)
+position = Vector2(910, 77)
 
 [node name="Espions" parent="." instance=ExtResource("2_xa725")]
-position = Vector2(827, 101)
+position = Vector2(499, 77)
