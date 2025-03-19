@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://co37iv1ihtkok"]
+
+[ext_resource type="Script" path="res://main2.gd" id="1_dfsaf"]
+
+[node name="Node" type="Node"]
+script = ExtResource("1_dfsaf")
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Button" type="Button" parent="Panel"]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
