@@ -70,3 +70,5 @@ script = ExtResource("9_327nj")
 
 [node name="MessageManager" type="Node2D" parent="."]
 script = ExtResource("11_oehsl")
+
+[node name="Network" type="Node2D" parent="."]
