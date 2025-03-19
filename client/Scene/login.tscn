@@ -1,0 +1,91 @@
+[gd_scene load_steps=11 format=3 uid="uid://eohjjl152p3q"]
+
+[ext_resource type="Texture2D" uid="uid://daaytla5qql0r" path="res://Assets/Logo.svg" id="1_54qt3"]
+[ext_resource type="Script" path="res://Scene/login.gd" id="1_oesrk"]
+[ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/Sign/sign_title.tres" id="2_b7d1j"]
+[ext_resource type="PackedScene" uid="uid://48nonev1xprr" path="res://Scene/signin_page.tscn" id="2_d8vj7"]
+[ext_resource type="PackedScene" uid="uid://ca7rr38xrchro" path="res://Scene/signup_page.tscn" id="3_rwsdb"]
+[ext_resource type="Texture2D" uid="uid://bmfkw5qpewkq0" path="res://Assets/pixelcut-export 1.png" id="7_2glmo"]
+
+[sub_resource type="Gradient" id="Gradient_jrudx"]
+colors = PackedColorArray(0, 0.14902, 0.184314, 1, 0, 0.334807, 0.41758, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_aqxjo"]
+gradient = SubResource("Gradient_jrudx")
+fill_to = Vector2(1, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ccnwc"]
+texture = SubResource("GradientTexture2D_aqxjo")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ikgja"]
+
+[node name="Login" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_oesrk")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_ccnwc")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_top = 60
+theme_override_constants/margin_right = 60
+theme_override_constants/margin_bottom = 60
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+texture = ExtResource("1_54qt3")
+expand_mode = 5
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 30
+theme_override_styles/separator = SubResource("StyleBoxEmpty_ikgja")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 250
+theme_override_constants/margin_right = 250
+
+[node name="TabContainer" type="TabContainer" parent="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("2_b7d1j")
+current_tab = 1
+
+[node name="signIN" parent="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer" instance=ExtResource("2_d8vj7")]
+visible = false
+layout_mode = 2
+
+[node name="SignUP" parent="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer" instance=ExtResource("3_rwsdb")]
+layout_mode = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/HBoxContainer/MarginContainer2"]
+layout_mode = 2
+texture = ExtResource("7_2glmo")

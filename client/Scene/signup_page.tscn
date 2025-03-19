@@ -1,0 +1,54 @@
+[gd_scene load_steps=5 format=3 uid="uid://ca7rr38xrchro"]
+
+[ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/Sign/sign_title.tres" id="1_slf3n"]
+[ext_resource type="PackedScene" uid="uid://d053ssckadw1i" path="res://Scene/input_sign.tscn" id="2_syrqm"]
+[ext_resource type="Texture2D" uid="uid://dydwgqc1d7h2k" path="res://Assets/envelope.svg" id="3_1odxc"]
+[ext_resource type="PackedScene" uid="uid://ttn5g35730bq" path="res://Scene/input_sign_password.tscn" id="4_erawd"]
+
+[node name="SignUP" type="VBoxContainer"]
+theme_override_constants/separation = 30
+metadata/_tab_index = 1
+
+[node name="Label2" type="Label" parent="."]
+layout_mode = 2
+theme = ExtResource("1_slf3n")
+text = "SIGN UP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Username2" parent="." instance=ExtResource("2_syrqm")]
+layout_mode = 2
+
+[node name="LineEdit" parent="Username2/MarginContainer/HBoxContainer" index="2"]
+placeholder_text = "USERNAME"
+
+[node name="Email" parent="." instance=ExtResource("2_syrqm")]
+layout_mode = 2
+
+[node name="TextureRect" parent="Email/MarginContainer/HBoxContainer" index="0"]
+texture = ExtResource("3_1odxc")
+
+[node name="LineEdit" parent="Email/MarginContainer/HBoxContainer" index="2"]
+placeholder_text = "EMAIL"
+
+[node name="Password" parent="." instance=ExtResource("4_erawd")]
+layout_mode = 2
+
+[node name="LineEdit" parent="Password/MarginContainer/HBoxContainer" index="2"]
+placeholder_text = "Password"
+
+[node name="Password2" parent="." instance=ExtResource("4_erawd")]
+layout_mode = 2
+
+[node name="LineEdit" parent="Password2/MarginContainer/HBoxContainer" index="2"]
+placeholder_text = "CONFIRM PASSWORD"
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 2
+theme = ExtResource("1_slf3n")
+text = "SIGN UP"
+
+[editable path="Username2"]
+[editable path="Email"]
+[editable path="Password"]
+[editable path="Password2"]

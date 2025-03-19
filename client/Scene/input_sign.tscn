@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3 uid="uid://d053ssckadw1i"]
+
+[ext_resource type="Texture2D" uid="uid://bl1kbnd8lx55d" path="res://Assets/user.svg" id="1_hps6c"]
+[ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/Sign/sign_title.tres" id="2_4m5to"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ffix6"]
+bg_color = Color(0.85098, 0.85098, 0.85098, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uves2"]
+
+[node name="PanelContainer" type="PanelContainer"]
+custom_minimum_size = Vector2(300, 0)
+theme_override_styles/panel = SubResource("StyleBoxFlat_ffix6")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("1_hps6c")
+expand_mode = 3
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+theme_override_styles/separator = SubResource("StyleBoxEmpty_uves2")
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_4m5to")
