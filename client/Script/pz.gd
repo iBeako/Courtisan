@@ -75,7 +75,8 @@ func add_card(card: Card) -> void:
 		# Disable card's collision shape to prevent unwanted interactions
 		if card.has_node("Area2D/CollisionShape2D"):
 			card.get_node("Area2D/CollisionShape2D").disabled = true
-		
+		if card_slot.name == "Espions":
+			card.hide_card()
 		# Update the UI labels
 		update_labels()
 		print("Card added to ", card_slot.name, ". Total cards: ", card_slot.cards_in_slot.size())

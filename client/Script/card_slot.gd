@@ -9,14 +9,14 @@ const CARD_SPACING: int = 10
 
 # References to important nodes
 @onready var main_node: Node2D = get_node("/root/Main")  # Reference to the main node
-@onready var count_label: Label = $CountLabel  # Reference to the label displaying card count
+@onready var count_label: Label = $PanelContainer/CountLabel  # Reference to the label displaying card count
 
 # Enumeration defining different play zone types
 enum PlayZoneType { Joueur, Ennemie, Grace, Disgrace }
 
 func _ready() -> void:
 	#print("CardSlot ready: ", self.name)  # Debug message when the slot is ready
-	$TextureRect.hide()
+	$PanelContainer.hide()
 	# Check if the label exists
 	if count_label:
 		#print("Label found for ", self.name)
@@ -59,9 +59,9 @@ func update_count_label(value : int) -> int:  # 'value' is used to adjust the co
 		count_label.text = str(cpt) if cpt != 0 else ""
 		count_label.add_theme_color_override("font_color", Color(1, 0, 0))  # Set text color to red
 		if cpt != 0:
-			$TextureRect.show()
+			$PanelContainer.show()
 		else:
-			$TextureRect.hide()
+			$PanelContainer.hide()
 			
 		
 		return cpt

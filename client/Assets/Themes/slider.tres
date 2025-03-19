@@ -1,8 +1,8 @@
 [gd_resource type="Theme" load_steps=7 format=3 uid="uid://p2ekl26u8dnf"]
 
-[ext_resource type="Texture2D" uid="uid://ddfbwcaed3p70" path="res://Ellipse 1.png" id="1_v1vvj"]
+[ext_resource type="Texture2D" uid="uid://bqi1vxd3c5c8s" path="res://Assets/slider_graber.svg" id="1_x080a"]
 
-[sub_resource type="Image" id="Image_r2qsa"]
+[sub_resource type="Image" id="Image_tu3v7"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -12,56 +12,60 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_203po"]
-image = SubResource("Image_r2qsa")
+image = SubResource("Image_tu3v7")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_se5b7"]
 content_margin_left = 1.0
 content_margin_top = 1.0
 content_margin_right = 1.0
 content_margin_bottom = 1.0
-bg_color = Color(0, 0.14902, 0.184314, 0.8)
-corner_radius_top_left = 100
-corner_radius_top_right = 100
-corner_radius_bottom_right = 100
-corner_radius_bottom_left = 100
+bg_color = Color(0.0431373, 0.431373, 0.45098, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.741176, 0.592157, 0.12549, 1)
 corner_detail = 6
 expand_margin_top = 10.0
 expand_margin_bottom = 10.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2s6gw"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0, 0.212833, 0.259167, 0.8)
-corner_radius_top_left = 100
-corner_radius_top_right = 100
-corner_radius_bottom_right = 100
-corner_radius_bottom_left = 100
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kff6j"]
+content_margin_left = 1.0
+content_margin_top = 1.0
+content_margin_right = 1.0
+content_margin_bottom = 1.0
+bg_color = Color(0.0547289, 0.495522, 0.517741, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.741176, 0.592157, 0.12549, 1)
 corner_detail = 6
 expand_margin_top = 10.0
 expand_margin_bottom = 10.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nkbc2"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.396078, 0.796078, 0.921569, 1)
-corner_radius_top_left = 100
-corner_radius_top_right = 100
-corner_radius_bottom_right = 100
-corner_radius_bottom_left = 100
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8b2nu"]
+content_margin_left = 1.0
+content_margin_top = 1.0
+content_margin_right = 1.0
+content_margin_bottom = 1.0
+bg_color = Color(0.0156863, 0.156863, 0.2, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.741176, 0.592157, 0.12549, 1)
+corner_detail = 6
 expand_margin_top = 10.0
 expand_margin_bottom = 10.0
 
 [resource]
-HSlider/constants/center_grabber = 0
+HSlider/constants/center_grabber = 1
 HSlider/constants/grabber_offset = 0
-HSlider/icons/grabber = ExtResource("1_v1vvj")
-HSlider/icons/grabber_disabled = ExtResource("1_v1vvj")
-HSlider/icons/grabber_highlight = ExtResource("1_v1vvj")
+HSlider/icons/grabber = ExtResource("1_x080a")
+HSlider/icons/grabber_disabled = ExtResource("1_x080a")
+HSlider/icons/grabber_highlight = ExtResource("1_x080a")
 HSlider/icons/tick = SubResource("ImageTexture_203po")
 HSlider/styles/grabber_area = SubResource("StyleBoxFlat_se5b7")
-HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_2s6gw")
-HSlider/styles/slider = SubResource("StyleBoxFlat_nkbc2")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_kff6j")
+HSlider/styles/slider = SubResource("StyleBoxFlat_8b2nu")

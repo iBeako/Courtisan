@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://bc8674us66i1v"]
+[gd_scene load_steps=4 format=3 uid="uid://bc8674us66i1v"]
 
 [ext_resource type="Script" path="res://Script/volume_slider.gd" id="1_idrh5"]
 [ext_resource type="FontFile" uid="uid://dim3hkmopleo2" path="res://Assets/Mighty Souly.otf" id="3_3qksr"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jv54o"]
 
 [node name="volume_slider" type="HBoxContainer"]
 offset_right = 40.0
@@ -13,6 +15,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 max_value = 1.0
 step = 0.001
+
+[node name="VSeparator" type="VSeparator" parent="."]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxEmpty_jv54o")
 
 [node name="Label" type="Label" parent="."]
 custom_minimum_size = Vector2(50, 0)
