@@ -23,13 +23,15 @@ func _onready():
 
 func _ready():
 	_onready()
-	peer.create_server(port, "127.0.0.1", server_tls_options)
+	#peer.create_server(port, "0.0.0.0", server_tls_options) #connection to VM when connected to eduroam or osiris
+	peer.create_server(port, "*", server_tls_options)
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	print("Server started and listening on port %d" % port)
 	add_child(session) # Creation of new game session
 	connect_to_database()
+
 
 func _process(_delta):
 	if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
@@ -65,6 +67,10 @@ func _on_peer_connected(peer_id: int):
 		if session.check_game_start():
 			session.load_game() # load game of the session
 			_send_three_cards_to_each_player()
+			var turn = {"message_type":"player_turn","id_player":session.current_player_id}
+			print("turn :" ,turn["id_player"])
+			send_message_to_everyone.rpc(turn)
+			
 		number_of_client += 1
 		
 		
@@ -104,23 +110,13 @@ func find_lobby_number_client(id:int) ->int:
 
 @rpc("authority")
 func send_message_to_peer(data: Dictionary):
-	if data != null and data.has("message_type"):	
-		var sender_id = multiplayer.get_remote_sender_id()
-		print("server send a ", data["message_type"])
-		print(" ", data)
-		process_message(data,sender_id)
-	else:
-		print("error send_message_to_peer")
+	print("error cannot receive this type of message only client can")
+	print(" ", data)
 
 @rpc("authority")
 func send_message_to_everyone(data : Dictionary):
-	if data != null and data.has("message_type"):
-		var sender_id = multiplayer.get_remote_sender_id()
-		print("Broadcasting ", data["message_type"])
-		print(" ", data)
-		process_message(data,sender_id)
-	else:
-		print("error send_message_to_peer")
+	print("error cannot receive this type of message only client can")
+	print(" ", data)
 		
 func process_message(data : Dictionary,sender_id:int):
 	if data["message_type"] == "error":
@@ -153,9 +149,12 @@ func process_message(data : Dictionary,sender_id:int):
 		var stat = session.get_stat()
 		send_message_to_everyone.rpc(stat)
 
-	elif session.check_next_player(sender_id) :
+	elif session.check_next_player(find_lobby_number_client(sender_id)) :
 		_send_three_cards_to_a_player(sender_id)
 		session.display_session_status()
+		var turn = {"message_type":"player_turn","id_player":session.current_player_id}
+		print("turn :" ,turn["id_player"])
+		send_message_to_everyone.rpc(turn)
 
 ## At game start, distribute cads to players
 
@@ -214,12 +213,12 @@ func _validate_card_played(_sender_id :int,message: Dictionary) -> bool:
 			return false
 		
 		if is_valid_action :
-			if message["area"] == "queen_table":
-				session.place_card(message["player"], message["area"], message["card_type"], message["family"], message["position"])
-			elif message["area"] == "our_domain":
+			if message["area"] == 2 or  message["area"] == 3:
 				session.place_card(message["player"], message["area"], message["card_type"], message["family"])
-			elif message["area"] == "domain":
-				session.place_card(message["player"], message["area"], message["card_type"], message["family"], 0, message["id_player_domain"])
+			elif message["area"] == 0:
+				session.place_card(message["player"], message["area"], message["card_type"], message["family"])
+			elif message["area"] == 1:
+				session.place_card(message["player"], message["area"], message["card_type"], message["family"])#, 0, message["id_player_domain"])
 
 		
 	return true	
@@ -228,7 +227,7 @@ func _process_error(_data: Dictionary):
 	pass
 
 func login(data: Dictionary,client_number:int):
-	if await validate_login(data):
+	if validate_login(data):
 		var login_success_data = {
 			"message_type" = "connexion",
 			"login" = data["login"],

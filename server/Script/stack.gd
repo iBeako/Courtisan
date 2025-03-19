@@ -36,7 +36,7 @@ func generate_card() -> bool :
 	for family in global.families :
 		for card_type_number in global.card_type_numbers :
 			for i in range(card_type_number) :
-				all_cards.append([global.card_types[i], family])
+				all_cards.append([i, family])
 	
 	return !all_cards.is_empty()
 	
@@ -50,13 +50,13 @@ func _retrieve_three_cards() -> Array:
 		three_cards.append(card_stack.pop_front())
 	return three_cards
 	
-func check_card(card_type: String, family: String) -> bool :
+func check_card(card_type: int, family: String) -> bool :
 	var card = [card_type, family]
 	if all_cards.find(card) != -1 :
 		return  true
 	return false
 	
-func _retrieve_card(card_type: String, family: String) -> bool :
+func _retrieve_card(card_type: int, family: String) -> bool :
 	var card = [card_type, family]
 	var id = all_cards.find(card)
 	if  id != -1 :

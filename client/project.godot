@@ -10,18 +10,25 @@ config_version=5
 
 [application]
 
-config/name="Courtisans client"
-run/main_scene="res://Scene/client.tscn"
-config/features=PackedStringArray("4.3", "GL Compatibility")
-config/icon="res://icon.svg"
+config/name="courtisans client"
+run/main_scene="res://Scene/menu_principal.tscn"
+config/features=PackedStringArray("4.3", "Forward Plus")
+config/icon="res://Assets/icon.svg"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/stretch/mode="viewport"
 
 [dotnet]
 
-project/assembly_name="Courtisans client"
+project/assembly_name="Courtisan"
 
-[editor]
+[layer_names]
 
-run/main_run_args="--headless"
+2d_render/layer_2="card"
+2d_render/layer_3="zones"
 
 [rendering]
 
