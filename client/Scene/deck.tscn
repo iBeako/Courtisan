@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://825pe2ngj4he"]
+
+[ext_resource type="Script" path="res://Script/deck.gd" id="1_6dfoh"]
+[ext_resource type="Texture2D" uid="uid://dc7jese687boj" path="res://Assets/dos_carte.jpg" id="2_55av3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v7si8"]
+size = Vector2(86, 162)
+
+[node name="Deck" type="Node2D"]
+script = ExtResource("1_6dfoh")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_right = 86.0
+offset_bottom = 162.0
+texture = ExtResource("2_55av3")
+expand_mode = 1
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(43, 81)
+shape = SubResource("RectangleShape2D_v7si8")
