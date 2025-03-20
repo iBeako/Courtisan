@@ -8,11 +8,11 @@ extends Control
 
 func _on_sign_in_switch() -> void:
 	#changer de page pour aller au sign in
-	tab.current_tab = 1
+	tab.current_tab = 0
 
 
 func _on_sign_up_switch() -> void:
-	tab.current_tab = 0
+	tab.current_tab = 1
 
 
 func _on_sign_up_send() -> void:

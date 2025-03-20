@@ -43,7 +43,7 @@ Button/styles/normal = SubResource("StyleBoxEmpty_0y1ib")
 Button/styles/pressed = SubResource("StyleBoxEmpty_og31f")
 
 [node name="signIN" type="VBoxContainer"]
-theme_override_constants/separation = 30
+theme_override_constants/separation = 20
 script = ExtResource("1_vve6k")
 metadata/_tab_index = 0
 

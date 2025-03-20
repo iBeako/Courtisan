@@ -11,8 +11,6 @@ extends VBoxContainer
 
 func send_infos():
 	# --- envoi au serveur
-	return {
-			"user" : username.get_value(),
-			"mail" : mail.get_value(),
-			"pswd" : pswd.get_value()
-		}
+	if pswd.text == c_pswd.text:
+		return Account.createAccount(username.get_value(),mail.get_value(),pswd.get_value())
+	return null

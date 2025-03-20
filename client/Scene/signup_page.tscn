@@ -7,7 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://ttn5g35730bq" path="res://Scene/input_sign_password.tscn" id="4_erawd"]
 
 [node name="SignUP" type="VBoxContainer"]
-theme_override_constants/separation = 30
+offset_right = 300.0
+offset_bottom = 589.0
+theme_override_constants/separation = 20
 script = ExtResource("1_qq0qf")
 metadata/_tab_index = 1
 

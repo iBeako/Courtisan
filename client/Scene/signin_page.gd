@@ -8,9 +8,7 @@ extends VBoxContainer
 
 
 
+
 func send_infos():
 	# --- envoi au serveur
-	return {
-			"mail" : mail.get_value(),
-			"pswd" : pswd.get_value()
-		}
+	return Account.loginAccount(mail.get_value(),pswd.get_value())

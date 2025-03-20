@@ -17,8 +17,14 @@ func _on_texture_rect_2_pressed() -> void:
 	
 	
 func get_value() -> String:
-	return $MarginContainer/HBoxContainer/LineEdit.text
+	return txt.text
 
+func set_value(value : String) -> void:
+	txt.text = value
+
+func reset_value() -> void:
+	txt.text = ""
+	txt.secret = true
 
 func update_texture():
 	if hidden_line:
