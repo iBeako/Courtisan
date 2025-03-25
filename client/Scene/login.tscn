@@ -3,8 +3,8 @@
 [ext_resource type="Texture2D" uid="uid://daaytla5qql0r" path="res://Assets/Logo.svg" id="1_54qt3"]
 [ext_resource type="Script" path="res://Script/login.gd" id="1_oesrk"]
 [ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/general.tres" id="2_b7d1j"]
-[ext_resource type="PackedScene" path="res://Scene/signin_page.tscn" id="2_d8vj7"]
-[ext_resource type="PackedScene" path="res://Scene/signup_page.tscn" id="3_rwsdb"]
+[ext_resource type="PackedScene" uid="uid://t5g0uidnc5o7" path="res://Scene/signin_page.tscn" id="2_d8vj7"]
+[ext_resource type="PackedScene" uid="uid://qalpbwofepvi" path="res://Scene/signup_page.tscn" id="3_rwsdb"]
 [ext_resource type="Texture2D" uid="uid://bmfkw5qpewkq0" path="res://Assets/pixelcut-export 1.png" id="7_2glmo"]
 
 [sub_resource type="Gradient" id="Gradient_jrudx"]
@@ -75,10 +75,12 @@ tabs_visible = false
 
 [node name="SignIN" parent="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer" instance=ExtResource("2_d8vj7")]
 layout_mode = 2
+script = null
 
 [node name="SignUP" parent="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer" instance=ExtResource("3_rwsdb")]
 visible = false
 layout_mode = 2
+script = null
 
 [node name="MarginContainer2" type="MarginContainer" parent="PanelContainer/HBoxContainer"]
 layout_mode = 2

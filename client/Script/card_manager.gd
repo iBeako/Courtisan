@@ -11,34 +11,37 @@ enum TYPES {
 const CARD_SCENE_PATH = "res://Scene/card.tscn"
 
 # Variables for screen size and collision masks
-var screen_size
+
 const COLLISION_MASK_CARD = 1 << 0
 const COLLISION_MASK_CARD_SLOT = 1 << 1
 const COLLISION_MASK_ZONE = 1 << 2
 
 # Variables for card dragging and interactions
 var card_is_dragged : Card
-var is_hovered : bool
-var card_hovered : Card
-var player_hand_reference
-var message_manager_reference : MessageManager
-var deck
-# Card color types
-var card_colors = ["Papillons", "Crapauds", "Rossignols", "Lièvres", "Cerfs", "Carpes"]
-# Array to track where the player can play cards (player zone, enemy zone, middle zone)
-var can_play = [1, 1, 1] 
+var is_hovered: bool = false
+var card_hovered: Card
 
-# Enum for different play zones
+# Définition des couleurs des cartes
+var card_colors: Array[String] = ["Papillons", "Crapauds", "Rossignols", "Lièvres", "Cerfs", "Carpes"]
+
+# Définition des zones où le joueur peut jouer
+var can_play: Array[int] = [1, 1, 1] 
+
+# Enum des types de zones de jeu
 enum PlayZoneType { Joueur, Ennemie, Grace, Disgrace }
 
+# Références aux autres nodes avec typage
+@onready var input_manager_reference: Node = $"../inputManager"
+@onready var player_hand_reference: PlayerHand = $"../PlayerHand"
+@onready var message_manager_reference: MessageManager = $"../MessageManager"
+@onready var deck: Node = $"../Deck"  # Remplace `Node` par `Deck` si c'est une classe spécifique
+@onready var screen_size: Vector2 = get_viewport_rect().size  # Récupération de la taille de l'écran
+
 func _ready() -> void:
-	screen_size = get_viewport_rect().size  # Get screen size
-	player_hand_reference = $"../PlayerHand"  # Reference to the player's hand
-	message_manager_reference = $"../MessageManager"  # Reference to the message manager
-	deck = $"../Deck"
+	input_manager_reference.connect("left_mouse_button_released", end_drag)
 	
 	# Connect the input manager's signal for left mouse button release
-	$"../inputManager".connect("left_mouse_button_released", on_left_mouse_button_released)
+
 
 	
 # Update function called every frame
@@ -46,8 +49,7 @@ func _process(delta: float) -> void:
 	if card_is_dragged:
 		# Get the mouse position and clamp it within screen bounds
 		var mouse_pos = get_global_mouse_position()
-		card_is_dragged.global_position = Vector2(clamp(mouse_pos.x, 0, screen_size.x), clamp(mouse_pos.y, 0, screen_size.y))
-		card_is_dragged.global_position = mouse_pos  # Move the dragged card to the mouse position
+		card_is_dragged.global_position = mouse_pos-card_is_dragged.size/2  # Move the dragged card to the mouse position
 
 # Function to start dragging a card
 func start_drag(card):
@@ -63,7 +65,9 @@ func start_turn():
 
 # Function to handle when a card is released
 func end_drag():
-	card_is_dragged._on_area_2d_mouse_exited()
+	if not card_is_dragged: return
+	
+	card_is_dragged._on_mouse_exited()
 	card_is_dragged.z_index = 1  # Reset card layering
 
 	# Check which play zone the card is dropped in
@@ -106,50 +110,9 @@ func end_drag():
 
 	card_is_dragged = null  # Clear the dragged card variable
 
-# Function to connect signals for card hover detection
-func connect_card_signals(card):
-	card.connect("hovered", on_hovered_over_card)
-	card.connect("hovered_off", on_hovered_off_card)
 
-# Function triggered when a card is hovered over
-func on_hovered_over_card(card):
-	#if not is_hovered:
-		#is_hovered = true
-	card_hovered = card
-	highlight_card(card, true)
 
-# Function triggered when the mouse stops hovering over a card
-func on_hovered_off_card(card):
 
-	highlight_card(card, false)
-
-# Function to visually highlight a card when hovered
-func highlight_card(card : Card, hovered : bool):
-	#var tween = card.create_tween()
-	#tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	#
-	#print("Hovered: " + str(hovered))
-	#if hovered:
-		#tween.tween_property(card, "scale", Vector2(1.05, 1.05), 0.2)
-		#await tween.finished
-		#card.z_index = 2  # Bring the card forward when hovered
-	#else:
-		#tween.tween_property(card, "scale", Vector2(1.0, 1.0), 0.2)
-		#await tween.finished
-		#card.z_index = 1  # Reset the layering after animation
-	pass
-
-# Function to check if the mouse is over a card slot
-func check_card_slot() -> Node2D:
-	var space_state = get_world_2d().direct_space_state
-	var parameters = PhysicsPointQueryParameters2D.new()
-	parameters.position = get_global_mouse_position()
-	parameters.collide_with_areas = true
-	parameters.collision_mask = COLLISION_MASK_CARD_SLOT
-	var result = space_state.intersect_point(parameters)
-	if result.size() > 0:
-		return result[0].collider.get_parent()
-	return null
 
 # Function to check if the mouse is over a play zone
 func check_zone() -> PlayZone:
@@ -164,29 +127,33 @@ func check_zone() -> PlayZone:
 	return null
 	
 # Function to check if the mouse is over a card
-func check_card():
-	var space_state = get_world_2d().direct_space_state
-	var parameters = PhysicsPointQueryParameters2D.new()
-	parameters.position = get_global_mouse_position()
-	parameters.collide_with_areas = true
-	parameters.collision_mask = COLLISION_MASK_CARD
-	var result = space_state.intersect_point(parameters)
-	if result.size() > 0:
-		return get_card_with_highest_index(result)
-	return null
+#func check_card():
+	#var space_state = get_world_2d().direct_space_state
+	#var parameters = PhysicsPointQueryParameters2D.new()
+	#parameters.position = get_global_mouse_position()
+	#parameters.collide_with_areas = true
+	#parameters.collision_mask = COLLISION_MASK_CARD
+	#var result = space_state.intersect_point(parameters)
+	#if result.size() > 0:
+		#return get_card_with_highest_index(result)
+	#return null
 	
 # Function to find the card with the highest z-index (the topmost card)
-func get_card_with_highest_index(cards):
-	var highest_z_card = cards[0].collider.get_parent()
-	var highest_z_index = highest_z_card.z_index
-	for i in range(1, cards.size()):
-		var current_card = cards[i].collider.get_parent()
-		if current_card.z_index > highest_z_index:
-			highest_z_index = current_card.z_index
-			highest_z_card = current_card
-	return highest_z_card
+#func get_card_with_highest_index(cards):
+	#var highest_z_card = cards[0].collider.get_parent()
+	#var highest_z_index = highest_z_card.z_index
+	#for i in range(1, cards.size()):
+		#var current_card = cards[i].collider.get_parent()
+		#if current_card.z_index > highest_z_index:
+			#highest_z_index = current_card.z_index
+			#highest_z_card = current_card
+	#return highest_z_card
 
 # Function triggered when the left mouse button is released
-func on_left_mouse_button_released():
-	if card_is_dragged:
-		end_drag()
+
+
+
+func _on_child_entered_tree(node: Card) -> void:
+	node.connect("start_drag", start_drag)
+
+	

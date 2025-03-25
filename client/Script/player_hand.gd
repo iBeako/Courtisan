@@ -1,4 +1,5 @@
 extends Node2D
+class_name PlayerHand
 
 # Signal emitted when the player's hand is empty
 signal hand_emptied  
@@ -19,10 +20,7 @@ func add_card_to_hand(card):
 	if card not in player_hand:
 		# Insert the card at the beginning of the hand
 		player_hand.insert(0, card)
-		update_hand_position()
-	else:
-		# Animate card back to its starting position if it's already in hand
-		animate_card_position(card, card.starting_position)
+	update_hand_position()
 
 # Function to check if the player's hand is empty
 func is_hand_empty():
@@ -31,8 +29,8 @@ func is_hand_empty():
 # Function to update the position of cards in the hand
 func update_hand_position():
 	for i in range(player_hand.size()):
-		var new_position = Vector2(calculate_card_position(i), HAND_Y_POSITION)
 		var card = player_hand[i]
+		var new_position = Vector2(calculate_card_position(i), HAND_Y_POSITION)-card.size/2
 		card.starting_position = new_position
 		animate_card_position(card, new_position)
 

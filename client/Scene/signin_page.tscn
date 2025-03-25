@@ -1,9 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://48nonev1xprr"]
+[gd_scene load_steps=12 format=3 uid="uid://t5g0uidnc5o7"]
 
-[ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/Sign/sign_title.tres" id="1_5d8kw"]
-[ext_resource type="Script" path="res://Scene/signin_page.gd" id="1_vve6k"]
-[ext_resource type="PackedScene" uid="uid://d053ssckadw1i" path="res://Scene/input_sign.tscn" id="2_idw5c"]
-[ext_resource type="PackedScene" uid="uid://ttn5g35730bq" path="res://Scene/input_sign_password.tscn" id="3_ep1yl"]
+[ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/general.tres" id="1_5d8kw"]
+[ext_resource type="Script" path="res://Script/signin_page.gd" id="1_xebut"]
+[ext_resource type="PackedScene" path="res://Scene/input_sign.tscn" id="2_idw5c"]
+[ext_resource type="PackedScene" path="res://Scene/input_sign_password.tscn" id="3_ep1yl"]
 [ext_resource type="FontFile" uid="uid://dim3hkmopleo2" path="res://Assets/Mighty Souly.otf" id="4_dcmhl"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xi42k"]
@@ -44,7 +44,7 @@ Button/styles/pressed = SubResource("StyleBoxEmpty_og31f")
 
 [node name="signIN" type="VBoxContainer"]
 theme_override_constants/separation = 20
-script = ExtResource("1_vve6k")
+script = ExtResource("1_xebut")
 metadata/_tab_index = 0
 
 [node name="Label" type="Label" parent="."]

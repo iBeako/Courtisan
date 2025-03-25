@@ -53,7 +53,8 @@ func update_color_rect() -> void:
 # Function to add a card to the play zone
 func add_card(card: Card) -> void:
 	print("Adding card to slot: ", self.name)
-	
+	card.card_placed()
+
 	# Prevent duplicate cards in the zone
 	if card in cards_in_zone:
 		return
@@ -68,7 +69,7 @@ func add_card(card: Card) -> void:
 		card.z_index = 5  # Ensure the card is drawn above other elements
 		
 		# Move the card to the slot position with a tween animation
-		var target_position: Vector2 = card_slot.global_position
+		var target_position: Vector2 = card_slot.global_position-card.size/2
 		var tween: Tween = get_tree().create_tween()
 		tween.tween_property(card, "global_position", target_position, 0.2)
 		

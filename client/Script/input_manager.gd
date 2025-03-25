@@ -27,7 +27,7 @@ func _input(event):
 			raycast_at_cursor()
 		else:
 			emit_signal("left_mouse_button_released")
-	
+	#
 	# Handle Escape key press to return to the main menu
 	if event is InputEventKey:
 		$"../CanvasLayer/PauseMenu".escape()
