@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bq3favtvip0wd"]
+[gd_scene load_steps=24 format=3 uid="uid://bq3favtvip0wd"]
 
 [ext_resource type="Script" path="res://Script/card.gd" id="1_rh58d"]
 [ext_resource type="Texture2D" uid="uid://dc7jese687boj" path="res://Assets/dos_carte.jpg" id="3_rg1yq"]
@@ -24,6 +24,44 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g0hj0"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3y5q6"]
+
+[sub_resource type="Curve" id="Curve_gqw4i"]
+max_value = 45.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 7.35149), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_s0cwu"]
+curve = SubResource("Curve_gqw4i")
+
+[sub_resource type="Gradient" id="Gradient_sgey3"]
+offsets = PackedFloat32Array(0, 0.755556, 1)
+colors = PackedColorArray(1, 0.788235, 0, 1, 1, 0.372549, 0, 1, 1, 0.2, 0, 0.690196)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_tx4q5"]
+gradient = SubResource("Gradient_sgey3")
+
+[sub_resource type="Curve" id="Curve_38jlf"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.731061, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_3a6yp"]
+curve = SubResource("Curve_38jlf")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_r8iwk"]
+lifetime_randomness = 0.25
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 46.15
+angle_min = 1.07288e-05
+angle_max = 90.0
+angle_curve = SubResource("CurveTexture_s0cwu")
+gravity = Vector3(0, 0, 0)
+radial_accel_min = 60.0
+radial_accel_max = 100.0
+scale_min = 0.2
+scale_max = 5.0
+scale_curve = SubResource("CurveTexture_3a6yp")
+color_ramp = SubResource("GradientTexture1D_tx4q5")
 
 [sub_resource type="Animation" id="Animation_p2x4y"]
 length = 0.001
@@ -66,7 +104,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 1, 3, 4),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [0.0, -0.00872665, 0.00872665, 0.0]
+"values": [0.0, -0.0174533, 0.0174533, 0.0]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -78,7 +116,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 1, 3, 4),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [0.0, -0.00872665, 0.00872665, 0.0]
+"values": [0.0, -0.0174533, 0.0174533, 0.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_2pvps"]
@@ -124,6 +162,13 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0.105882, 0.105882, 0.105882, 0.513726)
 
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+position = Vector2(41, 73)
+emitting = false
+amount = 250
+process_material = SubResource("ParticleProcessMaterial_r8iwk")
+lifetime = 2.0
+
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -131,6 +176,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(41, 75)
 mouse_filter = 2
 texture = ExtResource("3_rg1yq")
 expand_mode = 3

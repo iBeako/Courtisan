@@ -6,6 +6,7 @@ signal start_drag
 
 var is_hovered : bool = false
 var is_draggable : bool = true
+var is_dragging : bool = false
 
 # Enum for different card types
 enum TYPES {
@@ -76,6 +77,11 @@ func hide_card() -> void:
 func _ready() -> void:
 	sprite = $TextureRect  # Get the TextureRect node
 	apply_card_texture()  # Apply the texture when the card is initialized
+	var anim_player = $AnimationPlayer
+	anim_player.play("rotate")  # Joue l'animation
+	var random_time = randf() * anim_player.current_animation_length  # Temps aléatoire dans l'animation
+	anim_player.seek(random_time, true)  # Décale à ce moment
+	
 
 
 
@@ -107,6 +113,7 @@ func handle_shadow() -> void:
 
 
 func _on_mouse_entered() -> void:
+	if not is_draggable : return 
 	print("entered")
 	is_hovered = true
 	emit_signal("hovered", self)
@@ -118,6 +125,7 @@ func _on_mouse_entered() -> void:
 
 
 func _on_mouse_exited() -> void:
+	if is_dragging : return
 	is_hovered = false
 	emit_signal("hovered_off", self)
 	# Reset rotation
@@ -136,11 +144,15 @@ func _on_mouse_exited() -> void:
 	tween_hover.tween_property(sprite, "scale", Vector2.ONE, 0.55)
 
 
-
+func dragging(val : bool):
+	is_dragging = val
+	$GPUParticles2D.emitting = val
 
 func card_placed():
 	shadow.visible = false
 	is_draggable = false
+	$AnimationPlayer.stop()
+	
 
 
 func _on_button_down() -> void:

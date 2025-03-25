@@ -54,7 +54,7 @@ func update_color_rect() -> void:
 func add_card(card: Card) -> void:
 	print("Adding card to slot: ", self.name)
 	card.card_placed()
-
+	
 	# Prevent duplicate cards in the zone
 	if card in cards_in_zone:
 		return
@@ -69,9 +69,16 @@ func add_card(card: Card) -> void:
 		card.z_index = 5  # Ensure the card is drawn above other elements
 		
 		# Move the card to the slot position with a tween animation
-		var target_position: Vector2 = card_slot.global_position-card.size/2
-		var tween: Tween = get_tree().create_tween()
-		tween.tween_property(card, "global_position", target_position, 0.2)
+		var center_offset = card.size / 2
+		var target_position = card_slot.to_global(Vector2.ZERO) - card_slot.get_global_transform().basis_xform(center_offset)
+		
+		
+
+		var tween_rotate: Tween = get_tree().create_tween().set_ease(Tween.EASE_IN)
+		tween_rotate.tween_property(card, "rotation", self.rotation, 0.15)
+		
+		var tween_pos: Tween = get_tree().create_tween().set_ease(Tween.EASE_IN)
+		tween_pos.tween_property(card, "global_position", target_position, 0.2)
 		
 		# Disable card's collision shape to prevent unwanted interactions
 		if card.has_node("Area2D/CollisionShape2D"):

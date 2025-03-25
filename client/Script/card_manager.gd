@@ -52,11 +52,12 @@ func _process(delta: float) -> void:
 		card_is_dragged.global_position = mouse_pos-card_is_dragged.size/2  # Move the dragged card to the mouse position
 
 # Function to start dragging a card
-func start_drag(card):
+func start_drag(card : Card):
 	if not get_parent().client.id == get_parent().client.turn_player:
 		print("It's not your turn, you cannot drag a card.")
 		return
 	card_is_dragged = card
+	card.dragging(true)
 	card.z_index = 10  # Bring the card to the front layer
 
 # Function to reset player's turn (allow playing in all zones again)
@@ -67,6 +68,7 @@ func start_turn():
 func end_drag():
 	if not card_is_dragged: return
 	
+	card_is_dragged.dragging(false)
 	card_is_dragged._on_mouse_exited()
 	card_is_dragged.z_index = 1  # Reset card layering
 
@@ -107,8 +109,9 @@ func end_drag():
 	else:
 		# If no valid zone is found, return the card to the player's hand
 		player_hand_reference.add_card_to_hand(card_is_dragged)
-
+	
 	card_is_dragged = null  # Clear the dragged card variable
+	
 
 
 

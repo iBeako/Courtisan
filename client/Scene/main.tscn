@@ -39,7 +39,8 @@ texture = ExtResource("8_ffjsa")
 [node name="PlayZone_Ennemie" parent="." instance=ExtResource("8_0gqd0")]
 light_mask = 2
 visibility_layer = 2
-position = Vector2(368, 48)
+position = Vector2(1098, 224)
+rotation = 3.14159
 Play_ZoneType = 1
 
 [node name="PlayZone_Joueur" parent="." instance=ExtResource("8_0gqd0")]

@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://c64rbytxpt4j6"]
+[gd_scene load_steps=5 format=3 uid="uid://c64rbytxpt4j6"]
 
 [ext_resource type="PackedScene" uid="uid://hxhhmah7l5fw" path="res://Scene/card_slot.tscn" id="1_bpis3"]
 [ext_resource type="Script" path="res://Script/play_zone.gd" id="1_ofgpd"]
-[ext_resource type="Texture2D" uid="uid://diq2mulbgvlxx" path="res://Assets/playboardZonePadd20.png" id="2_1ilcw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t84a7"]
 size = Vector2(728, 180)
@@ -17,11 +16,6 @@ corner_radius_bottom_left = 20
 [node name="PlayZone" type="Node2D"]
 script = ExtResource("1_ofgpd")
 
-[node name="PlayboardZonePadd20" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(381, 101)
-texture = ExtResource("2_1ilcw")
-
 [node name="Area2D" type="Area2D" parent="."]
 light_mask = 4
 visibility_layer = 4
@@ -32,13 +26,6 @@ visibility_layer = 4
 position = Vector2(366, 89)
 shape = SubResource("RectangleShape2D_t84a7")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-visible = false
-offset_right = 730.0
-offset_bottom = 146.0
-color = Color(0.0185693, 0.657099, 0.410049, 1)
-metadata/_edit_use_anchors_ = true
-
 [node name="Panel" type="Panel" parent="."]
 offset_top = -1.0
 offset_right = 730.0
@@ -46,22 +33,22 @@ offset_bottom = 179.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_oc2q4")
 
 [node name="Papillons" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(664, 92)
+position = Vector2(62, 93)
 
 [node name="Crapauds" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(564, 92)
+position = Vector2(162, 93)
 
 [node name="Rossignols" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(464, 92)
+position = Vector2(262, 93)
 
 [node name="Lièvres" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(364, 92)
+position = Vector2(362, 93)
 
 [node name="Cerfs" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(264, 92)
+position = Vector2(462, 93)
 
 [node name="Carpes" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(164, 92)
+position = Vector2(562, 93)
 
 [node name="Espions" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(64, 92)
+position = Vector2(662, 93)
