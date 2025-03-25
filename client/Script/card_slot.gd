@@ -17,12 +17,7 @@ enum PlayZoneType { Joueur, Ennemie, Grace, Disgrace }
 func _ready() -> void:
 	#print("CardSlot ready: ", self.name)  # Debug message when the slot is ready
 	$PanelContainer.hide()
-	# Check if the label exists
-	if count_label:
-		#print("Label found for ", self.name)
-		count_label.z_index = 10  # Ensure the label appears on top
-	else:
-		print("Label NOT found for ", self.name)
+
 
 # Function to determine the type of play zone
 func determine_zone_type() -> PlayZoneType:
@@ -57,7 +52,7 @@ func update_count_label(value : int) -> int:  # 'value' is used to adjust the co
 
 		# Update the label text, hide it if count is zero
 		count_label.text = str(cpt) if cpt != 0 else ""
-		count_label.add_theme_color_override("font_color", Color(1, 0, 0))  # Set text color to red
+		#count_label.add_theme_color_override("font_color", Color(1, 0, 0))  # Set text color to red
 		if cpt != 0:
 			$PanelContainer.show()
 		else:

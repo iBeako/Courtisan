@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://bq3favtvip0wd"]
+[gd_scene load_steps=4 format=3 uid="uid://bq3favtvip0wd"]
 
 [ext_resource type="Script" path="res://Script/card.gd" id="1_rh58d"]
+[ext_resource type="Texture2D" uid="uid://dc7jese687boj" path="res://Assets/dos_carte.jpg" id="3_rg1yq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_x788j"]
 size = Vector2(82, 150)
@@ -15,12 +16,25 @@ visibility_layer = 8
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_x788j")
 
+[node name="Shadow" type="ColorRect" parent="."]
+modulate = Color(0.0646965, 0.0646965, 0.0646965, 1)
+self_modulate = Color(1, 1, 1, 0.254902)
+z_index = -1
+offset_left = -41.0
+offset_top = -65.0
+offset_right = 41.0
+offset_bottom = 85.0
+color = Color(0.105882, 0.105882, 0.105882, 0.513726)
+
 [node name="TextureRect" type="TextureRect" parent="."]
 offset_left = -41.0
 offset_top = -75.0
 offset_right = 41.0
 offset_bottom = 75.0
+texture = ExtResource("3_rg1yq")
 expand_mode = 3
 
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
+[connection signal="gui_input" from="Shadow" to="." method="_on_texture_rect_gui_input"]
+[connection signal="gui_input" from="TextureRect" to="." method="_on_texture_rect_gui_input"]

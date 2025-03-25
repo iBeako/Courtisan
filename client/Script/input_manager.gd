@@ -13,7 +13,7 @@ var card_manager_reference
 var deck_reference
 
 # Load the main menu scene
-var menu_scene : PackedScene = load("res://Scene/menu_principal.tscn")
+
 
 func _ready() -> void:
 	# Initialize references to CardManager and Deck
@@ -29,8 +29,9 @@ func _input(event):
 			emit_signal("left_mouse_button_released")
 	
 	# Handle Escape key press to return to the main menu
-	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
-		get_tree().change_scene_to_packed(menu_scene)
+	if event is InputEventKey:
+		$"../CanvasLayer/PauseMenu".escape()
+		
 
 # Function to perform a raycast at the cursor position
 func raycast_at_cursor():

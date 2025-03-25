@@ -1,10 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://eohjjl152p3q"]
+[gd_scene load_steps=11 format=3 uid="uid://cl6483u4xkdww"]
 
 [ext_resource type="Texture2D" uid="uid://daaytla5qql0r" path="res://Assets/Logo.svg" id="1_54qt3"]
 [ext_resource type="Script" path="res://Script/login.gd" id="1_oesrk"]
-[ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/Sign/sign_title.tres" id="2_b7d1j"]
-[ext_resource type="PackedScene" uid="uid://48nonev1xprr" path="res://Scene/signin_page.tscn" id="2_d8vj7"]
-[ext_resource type="PackedScene" uid="uid://ca7rr38xrchro" path="res://Scene/signup_page.tscn" id="3_rwsdb"]
+[ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/general.tres" id="2_b7d1j"]
+[ext_resource type="PackedScene" path="res://Scene/signin_page.tscn" id="2_d8vj7"]
+[ext_resource type="PackedScene" path="res://Scene/signup_page.tscn" id="3_rwsdb"]
 [ext_resource type="Texture2D" uid="uid://bmfkw5qpewkq0" path="res://Assets/pixelcut-export 1.png" id="7_2glmo"]
 
 [sub_resource type="Gradient" id="Gradient_jrudx"]
@@ -71,6 +71,7 @@ theme_override_constants/margin_right = 230
 layout_mode = 2
 theme = ExtResource("2_b7d1j")
 current_tab = 0
+tabs_visible = false
 
 [node name="SignIN" parent="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer" instance=ExtResource("2_d8vj7")]
 layout_mode = 2

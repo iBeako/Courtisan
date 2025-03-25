@@ -19,6 +19,7 @@ const COLLISION_MASK_ZONE = 1 << 2
 # Variables for card dragging and interactions
 var card_is_dragged : Card
 var is_hovered : bool
+var card_hovered : Card
 var player_hand_reference
 var message_manager_reference : MessageManager
 var deck
@@ -62,6 +63,7 @@ func start_turn():
 
 # Function to handle when a card is released
 func end_drag():
+	card_is_dragged._on_area_2d_mouse_exited()
 	card_is_dragged.z_index = 1  # Reset card layering
 
 	# Check which play zone the card is dropped in
@@ -111,34 +113,31 @@ func connect_card_signals(card):
 
 # Function triggered when a card is hovered over
 func on_hovered_over_card(card):
-	if not is_hovered:
-		is_hovered = true
-		highlight_card(card, true)
+	#if not is_hovered:
+		#is_hovered = true
+	card_hovered = card
+	highlight_card(card, true)
 
 # Function triggered when the mouse stops hovering over a card
 func on_hovered_off_card(card):
-	if not card_is_dragged:
-		highlight_card(card, false)
-		var new_card_hover = check_card()
-		if new_card_hover:
-			highlight_card(new_card_hover, true)
-		else:
-			is_hovered = false
-	
+
+	highlight_card(card, false)
+
 # Function to visually highlight a card when hovered
-func highlight_card(card, hovered):
-	var tween = card.create_tween()
-	tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	
-	print("Hovered: " + str(hovered))
-	if hovered:
-		tween.tween_property(card, "scale", Vector2(1.05, 1.05), 0.2)
-		await tween.finished
-		card.z_index = 2  # Bring the card forward when hovered
-	else:
-		tween.tween_property(card, "scale", Vector2(1.0, 1.0), 0.2)
-		await tween.finished
-		card.z_index = 1  # Reset the layering after animation
+func highlight_card(card : Card, hovered : bool):
+	#var tween = card.create_tween()
+	#tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	#
+	#print("Hovered: " + str(hovered))
+	#if hovered:
+		#tween.tween_property(card, "scale", Vector2(1.05, 1.05), 0.2)
+		#await tween.finished
+		#card.z_index = 2  # Bring the card forward when hovered
+	#else:
+		#tween.tween_property(card, "scale", Vector2(1.0, 1.0), 0.2)
+		#await tween.finished
+		#card.z_index = 1  # Reset the layering after animation
+	pass
 
 # Function to check if the mouse is over a card slot
 func check_card_slot() -> Node2D:
