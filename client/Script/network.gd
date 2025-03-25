@@ -42,10 +42,10 @@ enum PlayZoneType {PLAYER, ENEMY, FAVOR, DISFAVOR}
 
 var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
 
-#var port: int = 19001 #connection to VM when connected to eduroam or osiris
-var port: int = 10001
-#var address: String = "wss://185.155.93.105:%d" % port #connection to VM when connected to eduroam or osiris
-var address: String = "wss://localhost:%d" % port
+var port: int = 19001 #connection to VM when connected to eduroam or osiris
+#var port: int = 10001
+var address: String = "wss://185.155.93.105:%d" % port #connection to VM when connected to eduroam or osiris
+#var address: String = "wss://localhost:%d" % port
 var turn_player
 var deck_reference
 var message_manager

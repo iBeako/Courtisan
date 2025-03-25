@@ -1,60 +1,117 @@
-from flask import Flask, request
-from flask_socketio import SocketIO
+from fastapi import FastAPI, HTTPException, WebSocket, Depends
 import cx_Oracle
+from sshtunnel import SSHTunnelForwarder  # pip install sshtunnel
+from contextlib import contextmanager
 
-app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins="*")
+app = FastAPI()
 
-# Oracle DB connection
+# SSH tunnel configuration for remote DB access
+SSH_HOST = 'vmProjetIntegrateur9-1'
+SSH_PORT = 22
+# Removed SSH_USER and SSH_PASSWORD for auto SSH connection via SSH config
+
+# Remote database configuration
 DB_USER = 'your_username'
 DB_PASSWORD = 'your_password'
-DB_DSN = 'your_db_host/your_service_name'
+DB_REMOTE_HOST = 'your_db_host'
+DB_REMOTE_PORT = 1521  # ensure this port is correct for your Oracle DB
+DB_SERVICE_NAME = 'your_service_name'
 
 def get_db_connection():
-    return cx_Oracle.connect(DB_USER, DB_PASSWORD, DB_DSN)
+    # Establish SSH tunnel to the remote VM using your SSH config
+    tunnel = SSHTunnelForwarder(
+        (SSH_HOST, SSH_PORT),
+        use_ssh_config=True,
+        remote_bind_address=(DB_REMOTE_HOST, DB_REMOTE_PORT)
+    )
+    tunnel.start()
+    local_port = tunnel.local_bind_port
+    dsn = f"127.0.0.1:{local_port}/{DB_SERVICE_NAME}"
+    connection = cx_Oracle.connect(DB_USER, DB_PASSWORD, dsn)
+    # Attach the tunnel for later cleanup
+    connection.tunnel = tunnel
+    return connection
 
-@socketio.on('insert_database')
-def handle_insert_database(data):
+@contextmanager
+def get_db():
+    connection = get_db_connection()
     try:
-        connection = get_db_connection()
-        cursor = connection.cursor()
-        
-        # Example: Insert into a users table
-        query = "INSERT INTO users (username, email, password_hash, is_active, total_games_played) VALUES (:username, :email, :password_hash, :is_active, :total_games_played)"
-        cursor.execute(query, username=data['login'], email=data['email'],password_hash=data['password'], is_active=data['is_active'], total_games_played=data['total_games_played'])
-        connection.commit()
-        
-        cursor.close()
+        yield connection
+    finally:
         connection.close()
-        
-        socketio.emit('database_response', {"status": "success", "message": "Account created."})
-    except Exception as e:
-        socketio.emit('database_response', {"status": "error", "message": str(e)})
+        connection.tunnel.stop()
 
+# Business logic helper functions
+def insert_account(data: dict, connection):
+    cursor = connection.cursor()
+    query = """
+        INSERT INTO users (username, email, password_hash, is_active, total_games_played)
+        VALUES (:username, :email, :password_hash, :is_active, :total_games_played)
+    """
+    cursor.execute(
+        query,
+        username=data['login'],
+        email=data['email'],
+        password_hash=data['password'],
+        is_active=data['is_active'],
+        total_games_played=data['total_games_played']
+    )
+    connection.commit()
+    cursor.close()
+    return {"status": "success", "message": "Account created."}
 
-@socketio.on('get_database')
-def handle_get_database(data):
+def get_account(email: str, connection):
+    cursor = connection.cursor()
+    query = "SELECT username, password FROM users WHERE email = :email"
+    cursor.execute(query, email=email)
+    result = cursor.fetchone()
+    cursor.close()
+    if result:
+        return {"login": result[0], "password": result[1]}
+    else:
+        return {"message": "User not found."}
+
+# HTTP endpoints using dependency injection
+@app.post("/insert_database")
+async def insert_database(data: dict, connection=Depends(get_db)):
     try:
-        connection = get_db_connection()
-        cursor = connection.cursor()
-        
-        # Example: Fetch user details
-        query = "SELECT username, password FROM users WHERE email = :email"
-        cursor.execute(query, email=data['email'])
-        
-        result = cursor.fetchone()
-        cursor.close()
-        connection.close()
-        
-        if result:
-            socketio.emit('database_response', {"login": result[0], "password": result[1]})
-        else:
-            socketio.emit('database_response', {"message": "User not found."})
-            
+        result = insert_account(data, connection)
+        return result
     except Exception as e:
-        socketio.emit('database_response', {"status": "error", "message": str(e)})
+        raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/get_database")
+async def get_database(email: str, connection=Depends(get_db)):
+    try:
+        result = get_account(email, connection)
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# WebSocket endpoint: since dependency injection is not automatically applied here,
+# we create a new connection per operation using our context manager.
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    try:
+        while True:
+            data = await websocket.receive_json()
+            action = data.get("action")
+            if action == "insert":
+                with get_db() as connection:
+                    response = insert_account(data, connection)
+                await websocket.send_json(response)
+            elif action == "get":
+                email = data.get("email")
+                with get_db() as connection:
+                    response = get_account(email, connection)
+                await websocket.send_json(response)
+            else:
+                await websocket.send_json({"message": "Unknown action"})
+    except Exception as e:
+        await websocket.send_json({"status": "error", "message": str(e)})
+        await websocket.close()
 
 if __name__ == '__main__':
-    socketio.run(app, host='127.0.0.1', port=10000)
-
+    import uvicorn
+    uvicorn.run(app, host='127.0.0.1', port=10000)

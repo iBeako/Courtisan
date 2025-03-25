@@ -2,7 +2,7 @@ extends Node
 
 var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
 var db_peer: WebSocketPeer = WebSocketPeer.new()
-var db_url: String = "ws://localhost:10000/socket.io/?EIO=4&transport=websocket"
+var db_url: String = "ws://localhost:10000/ws"
 var port: int = 10001
 const MAX_CLIENT: int = 2
 var number_of_client: int = 0
@@ -23,8 +23,8 @@ func _onready():
 
 func _ready():
 	_onready()
-	#peer.create_server(port, "0.0.0.0", server_tls_options) #connection to VM when connected to eduroam or osiris
-	peer.create_server(port, "*", server_tls_options)
+	peer.create_server(port, "0.0.0.0", server_tls_options) #connection to VM when connected to eduroam or osiris
+	#peer.create_server(port, "*", server_tls_options)
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
