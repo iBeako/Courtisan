@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://bq3favtvip0wd"]
+[gd_scene load_steps=25 format=3 uid="uid://bq3favtvip0wd"]
 
 [ext_resource type="Script" path="res://Script/card.gd" id="1_rh58d"]
 [ext_resource type="Texture2D" uid="uid://dc7jese687boj" path="res://Assets/dos_carte.jpg" id="3_rg1yq"]
@@ -24,6 +24,8 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g0hj0"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3y5q6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kcjcm"]
 
 [sub_resource type="Curve" id="Curve_gqw4i"]
 max_value = 45.0
@@ -146,6 +148,7 @@ shortcut_feedback = false
 shortcut_in_tooltip = false
 flat = true
 script = ExtResource("1_rh58d")
+card_color = "Carpes"
 
 [node name="Shadow" type="ColorRect" parent="."]
 modulate = Color(0.0646965, 0.0646965, 0.0646965, 1)
@@ -163,8 +166,8 @@ mouse_filter = 2
 color = Color(0.105882, 0.105882, 0.105882, 0.513726)
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+material = SubResource("ShaderMaterial_kcjcm")
 position = Vector2(41, 73)
-emitting = false
 amount = 250
 process_material = SubResource("ParticleProcessMaterial_r8iwk")
 lifetime = 2.0

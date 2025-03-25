@@ -17,10 +17,38 @@ enum TYPES {
 	Noble
 }
 
+var palette_courtisans = {
+	"rossignols": {
+		"light": "#FF7F7F",  # Rouge clair
+		"dark": "#8B0000"    # Rouge foncé
+	},
+	"cerfs": {
+		"light": "#6B8E23",  # Vert olive
+		"dark": "#013220"    # Vert foncé
+	},
+	"carpes": {
+		"light": "#4682B4",  # Bleu acier
+		"dark": "#00008B"    # Bleu foncé
+	},
+	"lièvres": {
+		"light": "#FFD700",  # Or
+		"dark": "#B8860B"    # Brun doré
+	},
+	"crapauds": {
+		"light": "#ADFF2F",  # Vert clair
+		"dark": "#228B22"    # Vert forêt
+	},
+	"papillons": {
+		"light": "#D3D3D3",  # Gris clair
+		"dark": "#A9A9A9"    # Gris foncé
+	}
+}
+
+
 # Card properties
 var starting_position : Vector2 = Vector2.ZERO
 var card_type : TYPES  # Type of the card
-var card_color : String  # Color/faction of the card
+@export var card_color : String  # Color/faction of the card
 @onready var sprite : TextureRect = $TextureRect  # Reference to the card's sprite
 @onready var shadow : ColorRect = $Shadow
 
@@ -82,6 +110,18 @@ func _ready() -> void:
 	var random_time = randf() * anim_player.current_animation_length  # Temps aléatoire dans l'animation
 	anim_player.seek(random_time, true)  # Décale à ce moment
 	
+	var particles = $GPUParticles2D
+	if card_color.to_lower() in palette_courtisans:
+		var gradient = Gradient.new()
+		gradient.add_point(0.0, palette_courtisans[card_color.to_lower()]["light"])
+		gradient.add_point(1.0, palette_courtisans[card_color.to_lower()]["dark"])
+
+		var gradient_texture = GradientTexture2D.new() 
+		gradient_texture.gradient = gradient
+		
+		particles.process_material.set("color_ramp", gradient_texture)
+		particles.restart()
+
 
 
 

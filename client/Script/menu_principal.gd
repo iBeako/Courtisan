@@ -22,3 +22,13 @@ func _on_button_button_down() -> void:
 	print(param)
 	# Change to the parameter/settings scene
 	get_tree().change_scene_to_packed(param)
+
+
+func _on_play_mouse_entered() -> void:
+	var tween = create_tween()
+	tween.tween_property($VBoxContainer/Play, "scale", Vector2(1.1,1.1), 0.2).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+
+
+func _on_play_mouse_exited() -> void:
+	var tween = create_tween()
+	tween.tween_property($VBoxContainer/Play, "scale", Vector2(1,1), 0.2).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
