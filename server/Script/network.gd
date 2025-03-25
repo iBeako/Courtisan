@@ -2,7 +2,7 @@ extends Node
 
 var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
 var db_peer: WebSocketPeer = WebSocketPeer.new()
-var db_url: String = "ws://localhost:10000/ws"
+var db_url: String = "ws://127.0.0.1:12345"
 var port: int = 10001
 const MAX_CLIENT: int = 2
 var number_of_client: int = 0
@@ -23,8 +23,8 @@ func _onready():
 
 func _ready():
 	_onready()
-	peer.create_server(port, "0.0.0.0", server_tls_options) #connection to VM when connected to eduroam or osiris
-	#peer.create_server(port, "*", server_tls_options)
+	#peer.create_server(port, "0.0.0.0", server_tls_options) #connection to VM when connected to eduroam or osiris
+	peer.create_server(port, "*", server_tls_options)
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
@@ -228,7 +228,8 @@ func _process_error(_data: Dictionary):
 	pass
 
 func login(data: Dictionary,client_number:int):
-	if validate_login(data):
+	if await validate_login(data):
+	#if validate_login(data):
 		var login_success_data = {
 			"message_type" = "connexion",
 			"login" = data["login"],
@@ -276,15 +277,29 @@ func getDatabase(data: Dictionary):
 
 func validate_login(data: Dictionary) -> bool:
 	
-	#var client_data = await getDatabase(data)
-	#if client_data.has("password") and data["password"] == client_data["password"]:
-	if  data["password"] == "password":
-		return true
+	var client_data = await getDatabase(data)
+	
+	if client_data.has("password") and client_data.has("salt"):
+		var data_hashed = Account.new()
+		data_hashed.HashPassword(data["password"],client_data["salt"])
+		if data_hashed == client_data["password"]:
+			return true
+	#if  data["password"] == "password":
+		#return true
 	return false
 
 func connect_to_database():
 	var err = db_peer.connect_to_url(db_url)
 	if err == OK:
-		print("Connected to Flask-SocketIO server!")
+		await get_tree().create_timer(5.0).timeout
+		print (db_peer.get)
+		if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
+			print("Connected to python API server!")
+			var data = {"message_type":"test","message":"hello_world"}
+			var json_string = JSON.stringify(data)  # Convert Dictionary to JSON string
+			db_peer.send_text(json_string)
+			print("Sent:", json_string)
+		else: 
+			print("no connection to database")
 	else:
-		print("Failed to connect to Flask-SocketIO server")
+		print("Failed to connect to python API server")

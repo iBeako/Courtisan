@@ -1,3 +1,21 @@
+from fastapi import FastAPI, WebSocket
+
+app = FastAPI()
+
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    try:
+        while True:
+            data = await websocket.receive_json()  # Receive JSON message
+            print(f"Received: {data}")
+            response = {"message": "Received your data!", "data": data}
+            await websocket.send_json(response)  # Send a response
+    except Exception as e:
+        print("WebSocket error:", str(e))
+        await websocket.close()
+
+""" 
 from fastapi import FastAPI, HTTPException, WebSocket, Depends
 import cx_Oracle
 from sshtunnel import SSHTunnelForwarder  # pip install sshtunnel
@@ -11,11 +29,10 @@ SSH_PORT = 22
 # Removed SSH_USER and SSH_PASSWORD for auto SSH connection via SSH config
 
 # Remote database configuration
-DB_USER = 'your_username'
-DB_PASSWORD = 'your_password'
-DB_REMOTE_HOST = 'your_db_host'
+DB_USER = 'sys'
+DB_PASSWORD = '"C@uRT1$4n5"'
+DB_REMOTE_HOST = 'vmProjetIntegrateur9-1'
 DB_REMOTE_PORT = 1521  # ensure this port is correct for your Oracle DB
-DB_SERVICE_NAME = 'your_service_name'
 
 def get_db_connection():
     # Establish SSH tunnel to the remote VM using your SSH config
@@ -27,7 +44,7 @@ def get_db_connection():
     tunnel.start()
     local_port = tunnel.local_bind_port
     dsn = f"127.0.0.1:{local_port}/{DB_SERVICE_NAME}"
-    connection = cx_Oracle.connect(DB_USER, DB_PASSWORD, dsn)
+    connection = cx_Oracle.connect(DB_USER, DB_PASSWORD, dsn,mode=cx_Oracle.SYSDBA, encoding="UTF-8", nencoding="UTF-8")
     # Attach the tunnel for later cleanup
     connection.tunnel = tunnel
     return connection
@@ -45,9 +62,9 @@ def get_db():
 def insert_account(data: dict, connection):
     cursor = connection.cursor()
     query = """
-        INSERT INTO users (username, email, password_hash, is_active, total_games_played)
-        VALUES (:username, :email, :password_hash, :is_active, :total_games_played)
-    """
+        #INSERT INTO users (username, email, password_hash, is_active, total_games_played)
+        #VALUES (:username, :email, :password_hash, :is_active, :total_games_played)
+"""
     cursor.execute(
         query,
         username=data['login'],
@@ -111,7 +128,7 @@ async def websocket_endpoint(websocket: WebSocket):
     except Exception as e:
         await websocket.send_json({"status": "error", "message": str(e)})
         await websocket.close()
-
+""" 
 if __name__ == '__main__':
     import uvicorn
-    uvicorn.run(app, host='127.0.0.1', port=10000)
+    uvicorn.run(app, host='0.0.0.0', port=12345)
