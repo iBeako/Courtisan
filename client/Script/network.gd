@@ -10,9 +10,10 @@ enum family {
 	fish = 5
 }
 var hand = []
-var card_types = ["normal", "noble", "spy", "guard", "assassin"]
+var card_types = ["normal", "noble", "espion", "garde", "assassin"]
 var families = ["butterfly", "frog", "bird", "bunny", "deer", "fish"]
 enum PlayZoneType {PLAYER, ENEMY, FAVOR, DISFAVOR}
+var zone = ["Joueur","Ennemie","Faveur","Disgrâce"]
 
 #card_played:
 #{"message_type":"card_played","player":1,"card_type":"normal","family":"deer","area":"queen_table","position":1} card in the light
@@ -48,11 +49,11 @@ var port: int = 10001
 var address: String = "wss://localhost:%d" % port
 var turn_player
 var deck_reference
+var taskbar_reference
 var message_manager
 var id: int
 var username
 var tls_options
-
 
 
 func _ready():
@@ -64,6 +65,7 @@ func _ready():
 	message_manager = $"/root/Main/MessageManager"
 	message_manager.connect("message_sent", Callable(self, "_on_message_sent"))
 	deck_reference = $"/root/Main/Deck"
+	taskbar_reference = $"/root/Main/Taskbar"
 	
 func close_connection():
 	if peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
@@ -121,6 +123,7 @@ func process_message(data:Dictionary):
 		process_connexion(data)
 	elif data["message_type"] == "player_turn":
 		print("player turn : ", data)
+		deck_reference.update_card_count(data["number_of_cards"])
 		turn_player = data["id_player"]
 	elif data["message_type"] == "hand":
 		hand.clear()
@@ -158,6 +161,7 @@ func process_card_played(data:Dictionary):
 		elif data["area"] == 1:
 			data["area"] = 0
 	var writting_message = "CLIENT - Player %d" % id + " : player %d "  % data["player"] + " has put %s" % data["card_type"] + " %s" % data["family"]+ " in %s" % data["area"]
+	taskbar_reference.print_action("Le joueur %d a placé un %s %s dans %s" % [id + 1, card_types[data["card_type"]], data["family"], zone[data["area"]]])
 	if data.has("position"):
 		if data["position"] > 0:
 			writting_message = writting_message + " in the light"

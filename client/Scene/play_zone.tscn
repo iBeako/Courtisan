@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://c64rbytxpt4j6"]
+[gd_scene load_steps=6 format=3 uid="uid://c64rbytxpt4j6"]
 
 [ext_resource type="PackedScene" uid="uid://hxhhmah7l5fw" path="res://Scene/card_slot.tscn" id="1_bpis3"]
 [ext_resource type="Script" path="res://Script/play_zone.gd" id="1_ofgpd"]
@@ -12,6 +12,13 @@ corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_whtmj"]
+bg_color = Color(0.741176, 0.592157, 0.12549, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [node name="PlayZone" type="Node2D"]
 script = ExtResource("1_ofgpd")
@@ -31,6 +38,13 @@ offset_top = -1.0
 offset_right = 730.0
 offset_bottom = 179.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_oc2q4")
+
+[node name="Panel2" type="Panel" parent="."]
+offset_left = 612.0
+offset_top = 5.0
+offset_right = 712.0
+offset_bottom = 174.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_whtmj")
 
 [node name="Papillons" parent="." instance=ExtResource("1_bpis3")]
 position = Vector2(62, 93)
