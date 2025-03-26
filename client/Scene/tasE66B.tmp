@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://bh50trycnjge0"]
+
+[ext_resource type="Script" path="res://Script/taskbar.gd" id="1_xf50j"]
+[ext_resource type="FontFile" uid="uid://dim3hkmopleo2" path="res://Assets/Mighty Souly.otf" id="3_4wbyk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w0pkc"]
+bg_color = Color(1, 0.866667, 0.682353, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="LabelSettings" id="LabelSettings_jb3en"]
+font = ExtResource("3_4wbyk")
+font_size = 36
+font_color = Color(0, 0, 0, 1)
+
+[node name="Taskbar" type="Node2D"]
+script = ExtResource("1_xf50j")
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 650.0
+offset_bottom = 50.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_w0pkc")
+
+[node name="ActionPlayed" type="Label" parent="Panel"]
+layout_mode = 0
+offset_right = 650.0
+offset_bottom = 50.0
+label_settings = SubResource("LabelSettings_jb3en")
+horizontal_alignment = 1
+vertical_alignment = 1
