@@ -14,6 +14,35 @@ var card_types = ["normal", "noble", "spy", "guard", "assassin"]
 var families = ["butterfly", "frog", "bird", "bunny", "deer", "fish"]
 enum PlayZoneType {PLAYER, ENEMY, FAVOR, DISFAVOR}
 
+
+const white_missions = [
+	"Vous devez posseder au moins 2 assassins",
+	"Vous devez posseder au moins 3 nobles",
+	"Vous devez posseder au moins 3 espions",
+	"Vous devez posseder au moins 4 gardes",
+	
+	"Vous devez posseder moins de carpes que votre voision de gauche",
+	"Vous devez posseder moins de crapauds que votre voision de gauche",
+	"Vous devez posseder moins de cerfs que votre voision de gauche",
+	"Vous devez posseder moins de rossignols que votre voision de gauche",
+	"Vous devez posseder moins de papillons que votre voision de gauche",
+	"Vous devez posseder moins de lièvres que votre voision de gauche",
+]
+
+const blue_missions = [
+	"Les lièvres doivent être en disgrâce à la cours",
+	"Les crapauds doivent être en disgrâce à la cours",
+	"Les cerfs doivent être en disgrâce à la cours",
+	"Les carpes doivent être en disgrâce à la cours",
+	"Les papillons doivent être en disgrâce à la cours",
+	"Les rossignols doivent être en disgrâce à la cours",
+
+	"3 familles, au maximum, doivent être dans la lumière à la cours",
+	"Une famille doit avoir au moins 5 cartes au-dessous du tapis de jeu",
+	"Au moins 2 familles, doivent être en disgrace à la cours",
+	"Au moins 1 cartes de chaque famille doit être au-dessous du tapis de jeu",
+]
+
 #card_played:
 #{"message_type":"card_played","player":1,"card_type":"normal","family":"deer","area":"queen_table","position":1} card in the light
 #{"message_type":"card_played","player":1,"card_type":"normal","family":"deer","area":"queen_table","position":-1} card out of favor
@@ -122,6 +151,9 @@ func process_message(data:Dictionary):
 	elif data["message_type"] == "player_turn":
 		print("player turn : ", data)
 		turn_player = data["id_player"]
+	elif data["message_type"] == "mission":
+		print("white mission : ", white_missions[data["white_mission"]])
+		print("blue mission : ", blue_missions[data["blue_mission"]])
 	elif data["message_type"] == "hand":
 		hand.clear()
 		var cards = [
@@ -136,6 +168,10 @@ func process_message(data:Dictionary):
 			
 		print("CLIENT : As player ",id,", I received hand : ", hand)
 		deck_reference.draw_cards(hand)
+	elif data["message_type"] == "player_score":
+		print("Current score : ", data)
+	elif data["message_type"] == "final_score":
+		print("Final scores : ", data)
 	else:
 		print("invalid message")
 		

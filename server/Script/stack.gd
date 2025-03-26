@@ -6,6 +6,10 @@ var card_played_count = 0
 var all_cards = []
 var card_stack = []
 
+
+var player_white_missions = []
+var player_blue_missions = []
+
 var global = preload("res://Script/global.gd").new()
 
 # Called when the node enters the scene tree for the first time.
@@ -14,7 +18,7 @@ func _init() -> void:
 
 func _set_card_number(player_max: int) -> void:
 	if player_max == 2 :
-		card_number = 60
+		card_number = 6
 	elif player_max == 3 :
 		card_number = 72
 	elif player_max == 4 :
@@ -63,6 +67,19 @@ func _retrieve_card(card_type: int, family: String) -> bool :
 		all_cards.remove_at(id)
 		return true
 	return false
+
+func _get_rand_missions() -> Array:
+	var id_white_mission = randi() % global.white_missions.size()
+	while player_white_missions.find(id_white_mission) != -1 :
+		id_white_mission = randi() % global.white_missions.size()
+	player_white_missions.append(id_white_mission)
+	
+	var id_blue_mission = randi() % global.blue_missions.size()
+	while player_blue_missions.find(id_blue_mission) != -1 :
+		id_blue_mission = randi() % global.blue_missions.size()
+	player_blue_missions.append(id_blue_mission)
+
+	return [id_white_mission, id_blue_mission]
 	
 func _one_card_played() -> void:
 	card_played_count += 1

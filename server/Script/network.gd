@@ -66,7 +66,7 @@ func _on_peer_connected(peer_id: int):
 		send_message_to_peer.rpc_id(peer_id,data_id)
 		if session.check_game_start():
 			session.load_game() # load game of the session
-			_send_three_cards_to_each_player()
+			_send_cards_set_to_each_player()
 			var turn = {"message_type":"player_turn","id_player":session.current_player_id}
 			print("turn :" ,turn["id_player"])
 			send_message_to_everyone.rpc(turn)
@@ -146,26 +146,32 @@ func process_message(data : Dictionary,sender_id:int):
 		
 	if session.check_end_game() :
 		session.display_session_status()
-		var stat = session.get_stat()
-		send_message_to_everyone.rpc(stat)
+		session.get_score(0)
+		session.get_score(1)
+		var scores = session.get_final_score()
+		send_message_to_everyone.rpc(scores)
 
 	elif session.check_next_player(find_lobby_number_client(sender_id)) :
-		_send_three_cards_to_a_player(sender_id)
-		session.display_session_status()
+		_send_hand_cards_to_a_player(sender_id)
+		# session.display_session_status()
 		var turn = {"message_type":"player_turn","id_player":session.current_player_id}
 		print("turn :" ,turn["id_player"])
 		send_message_to_everyone.rpc(turn)
 
-## At game start, distribute cads to players
+## At game start, distribute cards and missions to players
 
-func _send_three_cards_to_each_player():
+func _send_cards_set_to_each_player():
 	for peer_id in clients_peer:
-		_send_three_cards_to_a_player(peer_id)
+		_send_hand_cards_to_a_player(peer_id)
+		_send_mission_to_a_player(peer_id)
 	
-func _send_three_cards_to_a_player(peer_id):
-	var cards_as_dict = session.distribute_three_cards(clients_peer.find(peer_id))
+func _send_hand_cards_to_a_player(peer_id):
+	var cards_as_dict = session.distribute_hand_cards(clients_peer.find(peer_id))
 	send_message_to_peer.rpc_id(peer_id,cards_as_dict)
 
+func _send_mission_to_a_player(peer_id):
+	var mission_as_dict = session.distribute_missions(clients_peer.find(peer_id))
+	send_message_to_peer.rpc_id(peer_id,mission_as_dict)
 
 
 func _validate_message(message: Dictionary) -> bool:

@@ -52,6 +52,7 @@ func _add_player(_id_peer) -> int:
 		[], # CERF
 		[], # CARPE
 		[[], [], []], # current cards in hands
+		# seventh element is the id of mission
 	] )
 	clients_peer.append(_id_peer)
 	print("Client '", _id_peer, "' registered as Player ", count_players)
@@ -121,7 +122,7 @@ func load_game() -> bool :
 	
 	return true
 	
-func distribute_three_cards(player_id:int) -> Dictionary:
+func distribute_hand_cards(player_id:int) -> Dictionary:
 	var cards_as_dict = {}
 	if !card_stack._no_more_card_in_stack():
 		var cards = card_stack._retrieve_three_cards()
@@ -138,7 +139,20 @@ func distribute_three_cards(player_id:int) -> Dictionary:
 		players[player_id][6][1] = ([true, -1, cards[1]])
 		players[player_id][6][2] = ([true, -1, cards[2]])
 	return cards_as_dict
-	
+
+func distribute_missions(player_id:int) -> Dictionary:
+	var mission_as_dict = {}
+	if check_player_id(player_id) :
+		var missions = card_stack._get_rand_missions()
+		if missions.size() != 0 :
+			mission_as_dict = {
+				"message_type":"mission",
+				"white_mission":missions[0], # as id of mission according global file
+				"blue_mission":missions[1]
+			}
+		players[player_id].append([missions[0], missions[1]])
+	return mission_as_dict
+
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
@@ -150,7 +164,12 @@ func check_id_player_domain(id_player_domain: int) :
 	return id_player_domain == -1
 	#return (id_player_domain >= 0 and id_player_domain < players.size()) and id_player_domain != current_player_id
 	#when more than 1 player
+
 # Check player id regarding a session
+
+func check_player_id(player_id: int) -> bool:
+	return player_id >= 0 and player_id < players.size()
+
 func check_player_turn(player_id : int, _id_in_message: int) -> bool:
 	return (player_id == _id_in_message) and (current_player_id == player_id)
 	
@@ -185,6 +204,7 @@ func place_card(_id_player: int, _area: int, _card_type: int, _family: String) -
 		players[_id_player][global.families.find(_family)].append([_card_type, _family])
 	else :
 		print("SERVER - Error : wrong area name")
+		return false
 	
 	for card in players[_id_player][6] :
 		if card[0] == true and _card_type == card[2][0] and card[2][1] == _family :
@@ -211,7 +231,22 @@ func place_card(_id_player: int, _area: int, _card_type: int, _family: String) -
 func check_next_player(player_id) -> bool :
 	return current_player_id != player_id
 	
-func get_card_points(_card_type: int, _family: String, _position: int = 1) -> int :
+
+### ----------------------------------------------------------------------------------------------------------------------------------------------
+### ----------------------------------------------------------------------------------------------------------------------------------------------
+### ----------------------------------------------------------------------------------------------------------------------------------------------
+### ----------------------------------------------------------------------------------------------------------------------------------------------
+## On end game
+
+func check_end_game() -> bool:
+	if card_stack._no_more_card_to_play() :
+		print("---\nSERVER : ============ End game ============ \n---")
+		status = false
+		return true
+	print("---\nSERVER : waiting for next action ...\n---")
+	return false
+
+func get_card_points(_card_type: int, _family: String, _position: int = 1, _on_run = false) -> int :
 	var points = 0
 	match _card_type:
 		0 : # idle
@@ -219,7 +254,10 @@ func get_card_points(_card_type: int, _family: String, _position: int = 1) -> in
 		1 : # assassin
 			points = 1
 		2 : # spy
-			points = 1
+			if _on_run :
+				points = 0
+			else :
+				points = 1
 		3 : # guard
 			points = 1
 		4 : # noble
@@ -229,15 +267,14 @@ func get_card_points(_card_type: int, _family: String, _position: int = 1) -> in
 	points = points * _position
 	return points
 	
-func get_collection_points(_collection: Array, _position: int = 1) -> int :
+func get_collection_points(_collection: Array, _position: int = 1, _on_run = false) -> int :
 	var points = 0
 	for card in _collection :
-		points = points + get_card_points(card[0], card[1], _position)
+		points = points + get_card_points(card[0], card[1], _position, _on_run)
 	return points
 	
-func get_stat() -> Dictionary :
+func get_stat(_on_run = false) -> Array :
 	var stat = [
-		# Card already played in game
 		[
 			[], # in light
 			[] # out of favor
@@ -246,36 +283,66 @@ func get_stat() -> Dictionary :
 	]
 	
 	for i in range(6) : 
-		stat[0][0].append(get_collection_points(queen_table[i][0])) # in light
-		stat[0][1].append(get_collection_points(queen_table[i][1], -1)) # out of favor
+		stat[0][0].append(get_collection_points(queen_table[i][0], 1, _on_run)) # in light
+		stat[0][1].append(get_collection_points(queen_table[i][1], -1, _on_run)) # out of favor
 	
 	for player in players :
 		var col = []
 		for j in range(6) :
-			col.append(get_collection_points(player[j]))
+			col.append(get_collection_points(player[j], 1, _on_run))
 		stat.append(col)
 	
 	for i in range(global.families.size()) :
 		var weight = -1 if stat[0][0][i] < abs(stat[0][1][i]) else 1
 		for j in range(1, stat.size()) :
 			stat[j][i] = stat[j][i] * weight
-	
-	var data_dict = {"message_type":"stat"}
 
-	# Ajout des statuts spéciaux
+	return stat
+	
+func get_score(player_id: int) -> Dictionary:
+	var stat = get_stat(true)
+	var data_dict = {"message_type":"player_score"}
+
 	data_dict["favor"] = stat[0][0]
 	data_dict["disfavor"] = stat[0][1]
 
-	# Ajout des stat des joueurs
-	for i in range(1, stat.size()):
-		data_dict[str(i - 1)] = stat[i]
-	print("Game stat",data_dict)
+	var score = 0
+	for k in stat[player_id + 1] :
+		score = score + k
+	data_dict["collection"] = stat[player_id + 1]
+	data_dict["score"] = score
+	print(data_dict)
 	return data_dict
+
+func get_final_score() -> Dictionary:
+	var stat = get_stat(false)
+	var data_dict = {"message_type":"final_score"}
+
+	var scores = []
+	var winner = -1
+	for i in range(1, stat.size()):
+		var score = 0
+		for k in stat[i] :
+			score = score + k
+		scores.append(score)
+		if score > winner :
+			winner = i - 1
 	
-func check_end_game() -> bool:
-	if card_stack._no_more_card_to_play() :
-		print("---\nSERVER : ============ End game ============ \n---")
-		status = false
-		return true
-	print("---\nSERVER : waiting for next action ...\n---")
-	return false
+	data_dict["winner"] = winner
+	data_dict["scores"] = scores
+		
+	print(data_dict)
+	return data_dict
+
+func get_winner() -> int:
+	var stat = get_stat()
+	var winner = 0
+	var max = 0
+	for i in range(1, stat.size()) :
+		var sum = 0
+		for j in range(6) :
+			sum = sum + stat[i][j]
+		if sum > max :
+			max = sum
+			winner = i
+	return winner
