@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://bq3favtvip0wd"]
+[gd_scene load_steps=24 format=3 uid="uid://bq3favtvip0wd"]
 
 [ext_resource type="Script" path="res://Script/card.gd" id="1_rh58d"]
 [ext_resource type="Texture2D" uid="uid://dc7jese687boj" path="res://Assets/dos_carte.jpg" id="3_rg1yq"]
@@ -25,45 +25,43 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3y5q6"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_kcjcm"]
-
-[sub_resource type="Curve" id="Curve_gqw4i"]
+[sub_resource type="Curve" id="Curve_xldud"]
 max_value = 45.0
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 7.35149), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="CurveTexture" id="CurveTexture_s0cwu"]
-curve = SubResource("Curve_gqw4i")
+[sub_resource type="CurveTexture" id="CurveTexture_yjukp"]
+curve = SubResource("Curve_xldud")
 
-[sub_resource type="Gradient" id="Gradient_sgey3"]
+[sub_resource type="Gradient" id="Gradient_t7cnw"]
 offsets = PackedFloat32Array(0, 0.755556, 1)
 colors = PackedColorArray(1, 0.788235, 0, 1, 1, 0.372549, 0, 1, 1, 0.2, 0, 0.690196)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_tx4q5"]
-gradient = SubResource("Gradient_sgey3")
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_sydqq"]
+gradient = SubResource("Gradient_t7cnw")
 
-[sub_resource type="Curve" id="Curve_38jlf"]
+[sub_resource type="Curve" id="Curve_rfknc"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.731061, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
 
-[sub_resource type="CurveTexture" id="CurveTexture_3a6yp"]
-curve = SubResource("Curve_38jlf")
+[sub_resource type="CurveTexture" id="CurveTexture_lybxa"]
+curve = SubResource("Curve_rfknc")
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_r8iwk"]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fpqqr"]
 lifetime_randomness = 0.25
 particle_flag_disable_z = true
 emission_shape = 1
 emission_sphere_radius = 46.15
 angle_min = 1.07288e-05
 angle_max = 90.0
-angle_curve = SubResource("CurveTexture_s0cwu")
+angle_curve = SubResource("CurveTexture_yjukp")
 gravity = Vector3(0, 0, 0)
 radial_accel_min = 60.0
 radial_accel_max = 100.0
 scale_min = 0.2
 scale_max = 5.0
-scale_curve = SubResource("CurveTexture_3a6yp")
-color_ramp = SubResource("GradientTexture1D_tx4q5")
+scale_curve = SubResource("CurveTexture_lybxa")
+color_ramp = SubResource("GradientTexture1D_sydqq")
 
 [sub_resource type="Animation" id="Animation_p2x4y"]
 length = 0.001
@@ -166,10 +164,9 @@ mouse_filter = 2
 color = Color(0.105882, 0.105882, 0.105882, 0.513726)
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
-material = SubResource("ShaderMaterial_kcjcm")
 position = Vector2(41, 73)
 amount = 250
-process_material = SubResource("ParticleProcessMaterial_r8iwk")
+process_material = SubResource("ParticleProcessMaterial_fpqqr")
 lifetime = 2.0
 
 [node name="TextureRect" type="TextureRect" parent="."]

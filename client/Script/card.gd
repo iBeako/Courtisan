@@ -19,28 +19,28 @@ enum TYPES {
 
 var palette_courtisans = {
 	"rossignols": {
-		"light": "#FF7F7F",  # Rouge clair
-		"dark": "#8B0000"    # Rouge foncé
+		"light": "#EF9E84",  # Rouge clair
+		"dark": "#960C2B"    # Rouge foncé
 	},
 	"cerfs": {
-		"light": "#6B8E23",  # Vert olive
-		"dark": "#013220"    # Vert foncé
+		"light": "#219B66",  # Vert olive
+		"dark": "#113C28"    # Vert foncé
 	},
 	"carpes": {
-		"light": "#4682B4",  # Bleu acier
-		"dark": "#00008B"    # Bleu foncé
+		"light": "#909DCC",  # Bleu acier
+		"dark": "#375F7B"    # Bleu foncé
 	},
 	"lièvres": {
-		"light": "#FFD700",  # Or
-		"dark": "#B8860B"    # Brun doré
+		"light": "#F2D368",  # Or
+		"dark": "#CA9516"    # Brun doré
 	},
 	"crapauds": {
-		"light": "#ADFF2F",  # Vert clair
-		"dark": "#228B22"    # Vert forêt
+		"light": "#B5B359",  # Vert clair
+		"dark": "#6C7226"    # Vert forêt
 	},
 	"papillons": {
-		"light": "#D3D3D3",  # Gris clair
-		"dark": "#A9A9A9"    # Gris foncé
+		"light": "#D8E6E5",  # Gris clair
+		"dark": "#949C97"    # Gris foncé
 	}
 }
 
@@ -110,19 +110,38 @@ func _ready() -> void:
 	var random_time = randf() * anim_player.current_animation_length  # Temps aléatoire dans l'animation
 	anim_player.seek(random_time, true)  # Décale à ce moment
 	
+	apply_particle_color()
+
+
+func apply_particle_color():
 	var particles = $GPUParticles2D
-	if card_color.to_lower() in palette_courtisans:
-		var gradient = Gradient.new()
-		gradient.add_point(0.0, palette_courtisans[card_color.to_lower()]["light"])
-		gradient.add_point(1.0, palette_courtisans[card_color.to_lower()]["dark"])
+	if not particles or not particles.process_material:
+		return
 
-		var gradient_texture = GradientTexture2D.new() 
-		gradient_texture.gradient = gradient
-		
-		particles.process_material.set("color_ramp", gradient_texture)
-		particles.restart()
+	if not (card_color.to_lower() in palette_courtisans): 
+		return
+	
+	
+	# DUPLIQUER le matériau pour éviter qu’il soit partagé entre toutes les cartes
+	particles.process_material = particles.process_material.duplicate()
 
+	var material : Material = particles.process_material  # Récupérer le matériau unique
 
+	# Création d'un dégradé de couleur
+	var gradient = Gradient.new()
+	gradient.add_point(0.0, palette_courtisans[card_color.to_lower()]["light"])
+	gradient.add_point(1.0, palette_courtisans[card_color.to_lower()]["dark"])
+
+	var gradient_texture = GradientTexture2D.new()
+	gradient_texture.gradient = gradient
+
+	# Appliquer le dégradé au matériau des particules
+	material.set("color_ramp", gradient_texture)
+
+	# Redémarrer les particules pour voir les changements
+	particles.emitting = false
+	
+	print(material.get("color_ramp"))
 
 
 func handle_rot():
