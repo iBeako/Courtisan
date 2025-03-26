@@ -155,13 +155,15 @@ func put_message_in_chat(_data:Dictionary):
 	pass
 	
 func process_card_played(data:Dictionary):
+	
 	if data["player"] != id:
 		if data["area"] == 0:
 			data["area"] = 1
 		elif data["area"] == 1:
 			data["area"] = 0
 	var writting_message = "CLIENT - Player %d" % id + " : player %d "  % data["player"] + " has put %s" % data["card_type"] + " %s" % data["family"]+ " in %s" % data["area"]
-	taskbar_reference.print_action("Le joueur %d a placé un %s %s dans %s" % [id + 1, card_types[data["card_type"]], data["family"], zone[data["area"]]])
+	taskbar_reference.print_action("Le joueur %d a placé un %s %s dans %s" % [data["player"] + 1, card_types[data["card_type"]], data["family"], zone[data["area"]]])
+	
 	if data.has("position"):
 		if data["position"] > 0:
 			writting_message = writting_message + " in the light"

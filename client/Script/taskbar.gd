@@ -1,5 +1,5 @@
 extends Node
-@onready var taskbar_label = $Panel/ActionPlayed
+@onready var taskbar_label = $Panel/MarginContainer/ActionPlayed
 @onready var taskbar_panel = $Panel
 
 func print_action(action: String) -> void:

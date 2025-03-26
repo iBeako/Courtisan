@@ -47,22 +47,22 @@ offset_bottom = 174.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_whtmj")
 
 [node name="Papillons" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(62, 93)
+position = Vector2(62, 90)
 
 [node name="Crapauds" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(162, 93)
+position = Vector2(162, 90)
 
 [node name="Rossignols" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(262, 93)
+position = Vector2(262, 90)
 
 [node name="Lièvres" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(362, 93)
+position = Vector2(362, 90)
 
 [node name="Cerfs" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(462, 93)
+position = Vector2(462, 90)
 
 [node name="Carpes" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(562, 93)
+position = Vector2(562, 90)
 
 [node name="Espions" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(662, 93)
+position = Vector2(662, 90)

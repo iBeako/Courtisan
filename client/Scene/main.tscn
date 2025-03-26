@@ -76,11 +76,13 @@ script = ExtResource("9_327nj")
 script = ExtResource("11_oehsl")
 
 [node name="Taskbar" parent="." instance=ExtResource("13_aom1t")]
-position = Vector2(635, 301)
+offset_left = 635.0
+offset_top = 301.0
+offset_right = 635.0
+offset_bottom = 301.0
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("12_j7emy")]
-visible = true
 
 [connection signal="child_entered_tree" from="CardManager" to="CardManager" method="_on_child_entered_tree"]

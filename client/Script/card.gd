@@ -141,7 +141,7 @@ func apply_particle_color():
 	# Redémarrer les particules pour voir les changements
 	particles.emitting = false
 	
-	print(material.get("color_ramp"))
+	#print(material.get("color_ramp"))
 
 
 func handle_rot():
