@@ -1,7 +1,7 @@
 extends Node2D
 
 const CARD_SCENE_PATH = "res://Scene/card.tscn"
-
+@onready var card_count_label = $PanelContainer/CountLabel
 # List of cards in the deck
 var deck_cards = ["carte","carte","carte","carte","carte","carte","carte","carte"]  
 
@@ -20,7 +20,8 @@ enum TYPES {
 var Hand_Count = 3  # Number of cards a player can hold
 
 @onready var player_hand = get_node("../PlayerHand")  # Reference to the player's hand node
-
+func update_card_count(count: int) -> void:
+	card_count_label.text = "Cartes : " + str(count)
 func _ready() -> void:
 	$Area2D.collision_layer = 1<<4  # Set the collision layer for Area2D
 	randomize()  # Initialize random number generation
