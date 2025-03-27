@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bw6ntenrqw1vi"]
+[gd_scene load_steps=15 format=3 uid="uid://bw6ntenrqw1vi"]
 
 [ext_resource type="Script" path="res://Script/main.gd" id="1_q15hj"]
 [ext_resource type="Texture2D" uid="uid://yn6givliy0yr" path="res://Assets/background_board.png" id="2_racv5"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://Script/message_manager.gd" id="11_oehsl"]
 [ext_resource type="PackedScene" uid="uid://c6pe3aj31r8w2" path="res://Scene/pause_menu.tscn" id="12_j7emy"]
 [ext_resource type="PackedScene" uid="uid://bh50trycnjge0" path="res://Scene/taskbar.tscn" id="13_aom1t"]
+[ext_resource type="PackedScene" uid="uid://dyjc6rpnebosj" path="res://Scene/controlParam.tscn" id="14_7ujh6"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_q15hj")
@@ -84,5 +85,9 @@ offset_bottom = 301.0
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("12_j7emy")]
+
+[node name="Control" parent="." instance=ExtResource("14_7ujh6")]
+offset_right = 1858.0
+offset_bottom = 155.0
 
 [connection signal="child_entered_tree" from="CardManager" to="CardManager" method="_on_child_entered_tree"]
