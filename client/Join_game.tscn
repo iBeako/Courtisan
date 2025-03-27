@@ -1,0 +1,152 @@
+[gd_scene load_steps=6 format=3 uid="uid://57g2yl4fsfpt"]
+
+[ext_resource type="Texture2D" uid="uid://dgcdevknlk732" path="res://Assets/Join_Game.png" id="1_ohbm4"]
+[ext_resource type="Texture2D" uid="uid://moika2rm8x7n" path="res://Assets/background.png" id="2_vk6xo"]
+[ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/general.tres" id="4_ovxt2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mv0a1"]
+bg_color = Color(0.0156863, 0.156863, 0.2, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.741176, 0.592157, 0.12549, 1)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wje2d"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="JoinGame" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(960, 540)
+texture = ExtResource("1_ohbm4")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("2_vk6xo")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="PanelContainer" type="PanelContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 357.0
+offset_top = 39.0
+offset_right = -360.0
+offset_bottom = -39.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Control/PanelContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_mv0a1")
+
+[node name="GridContainer" type="GridContainer" parent="Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 547.0
+offset_top = 322.0
+offset_right = -410.0
+offset_bottom = -156.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = 250
+theme_override_constants/v_separation = 25
+columns = 3
+
+[node name="Label4" type="Label" parent="Control/GridContainer"]
+layout_mode = 2
+theme = ExtResource("4_ovxt2")
+theme_override_font_sizes/font_size = 40
+text = "ROOMS
+"
+
+[node name="Label5" type="Label" parent="Control/GridContainer"]
+layout_mode = 2
+theme = ExtResource("4_ovxt2")
+theme_override_font_sizes/font_size = 40
+text = "Creator
+"
+
+[node name="Label6" type="Label" parent="Control/GridContainer"]
+layout_mode = 2
+theme = ExtResource("4_ovxt2")
+theme_override_font_sizes/font_size = 40
+text = "player
+"
+
+[node name="PanelContainer3" type="PanelContainer" parent="Control/GridContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_wje2d")
+
+[node name="Label3" type="Label" parent="Control/GridContainer/PanelContainer3"]
+layout_mode = 2
+theme = ExtResource("4_ovxt2")
+theme_override_font_sizes/font_size = 40
+text = "player
+"
+
+[node name="PanelContainer2" type="PanelContainer" parent="Control/GridContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_wje2d")
+
+[node name="Label2" type="Label" parent="Control/GridContainer/PanelContainer2"]
+layout_mode = 2
+theme = ExtResource("4_ovxt2")
+theme_override_font_sizes/font_size = 40
+text = "Creator
+"
+
+[node name="PanelContainer" type="PanelContainer" parent="Control/GridContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_wje2d")
+
+[node name="Label" type="Label" parent="Control/GridContainer/PanelContainer"]
+layout_mode = 2
+theme = ExtResource("4_ovxt2")
+theme_override_font_sizes/font_size = 40
+text = "ROOMS
+"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control"]
+layout_mode = 0
+offset_left = 495.0
+offset_top = 197.0
+offset_right = 1513.0
+offset_bottom = 276.0
+theme_override_constants/separation = 200
+
+[node name="Label" type="Label" parent="Control/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_ovxt2")
+theme_override_colors/font_color = Color(0.741176, 0.592157, 0.12549, 1)
+text = "ROOMS
+"
+
+[node name="Label2" type="Label" parent="Control/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_ovxt2")
+theme_override_colors/font_color = Color(0.741176, 0.592157, 0.12549, 1)
+text = "Creator
+"
+
+[node name="Label3" type="Label" parent="Control/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_ovxt2")
+theme_override_colors/font_color = Color(0.741176, 0.592157, 0.12549, 1)
+text = "player
+"
