@@ -1,10 +1,12 @@
-[gd_scene load_steps=15 format=3 uid="uid://bw6ntenrqw1vi"]
+[gd_scene load_steps=21 format=3 uid="uid://bw6ntenrqw1vi"]
 
 [ext_resource type="Script" path="res://Script/main.gd" id="1_q15hj"]
 [ext_resource type="Texture2D" uid="uid://yn6givliy0yr" path="res://Assets/background_board.png" id="2_racv5"]
 [ext_resource type="Script" path="res://Script/card_manager.gd" id="2_rmro5"]
 [ext_resource type="Texture2D" uid="uid://dyhqkx44ce5vs" path="res://Assets/Board.png" id="3_pgjjn"]
 [ext_resource type="Script" path="res://Script/player_hand.gd" id="5_e645g"]
+[ext_resource type="Script" path="res://Script/play_zone.gd" id="6_yk7ym"]
+[ext_resource type="PackedScene" uid="uid://hxhhmah7l5fw" path="res://Scene/card_slot.tscn" id="7_feyio"]
 [ext_resource type="PackedScene" uid="uid://c64rbytxpt4j6" path="res://Scene/play_zone.tscn" id="8_0gqd0"]
 [ext_resource type="PackedScene" uid="uid://825pe2ngj4he" path="res://Scene/deck.tscn" id="8_asgfb"]
 [ext_resource type="Texture2D" uid="uid://cmrdrrth5bhfq" path="res://Assets/jeudice-catch-up-games-courtisans_plateau-1.jpg" id="8_ffjsa"]
@@ -14,6 +16,24 @@
 [ext_resource type="PackedScene" uid="uid://c6pe3aj31r8w2" path="res://Scene/pause_menu.tscn" id="12_j7emy"]
 [ext_resource type="PackedScene" uid="uid://bh50trycnjge0" path="res://Scene/taskbar.tscn" id="13_aom1t"]
 [ext_resource type="PackedScene" uid="uid://dyjc6rpnebosj" path="res://Scene/controlParam.tscn" id="14_7ujh6"]
+[ext_resource type="PackedScene" uid="uid://cmahvw0fibdqa" path="res://Scene/AffichageSlotCard.tscn" id="15_dc6ue"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t84a7"]
+size = Vector2(728, 180)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oc2q4"]
+bg_color = Color(0.141176, 0.184314, 0.207843, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_whtmj"]
+bg_color = Color(0.741176, 0.592157, 0.12549, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_q15hj")
@@ -45,10 +65,55 @@ position = Vector2(1098, 224)
 rotation = 3.14159
 Play_ZoneType = 1
 
-[node name="PlayZone_Joueur" parent="." instance=ExtResource("8_0gqd0")]
+[node name="PlayZone_Joueur" type="Node2D" parent="."]
 light_mask = 2
 visibility_layer = 2
 position = Vector2(777, 868)
+script = ExtResource("6_yk7ym")
+
+[node name="Area2D" type="Area2D" parent="PlayZone_Joueur"]
+light_mask = 4
+visibility_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayZone_Joueur/Area2D"]
+light_mask = 4
+visibility_layer = 4
+position = Vector2(366, 89)
+shape = SubResource("RectangleShape2D_t84a7")
+
+[node name="Panel" type="Panel" parent="PlayZone_Joueur"]
+offset_top = -1.0
+offset_right = 730.0
+offset_bottom = 179.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_oc2q4")
+
+[node name="Panel2" type="Panel" parent="PlayZone_Joueur"]
+offset_left = 612.0
+offset_top = 5.0
+offset_right = 712.0
+offset_bottom = 174.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_whtmj")
+
+[node name="Papillons" parent="PlayZone_Joueur" instance=ExtResource("7_feyio")]
+position = Vector2(62, 90)
+
+[node name="Crapauds" parent="PlayZone_Joueur" instance=ExtResource("7_feyio")]
+position = Vector2(162, 90)
+
+[node name="Rossignols" parent="PlayZone_Joueur" instance=ExtResource("7_feyio")]
+position = Vector2(262, 90)
+
+[node name="Lièvres" parent="PlayZone_Joueur" instance=ExtResource("7_feyio")]
+position = Vector2(362, 90)
+
+[node name="Cerfs" parent="PlayZone_Joueur" instance=ExtResource("7_feyio")]
+position = Vector2(462, 90)
+
+[node name="Carpes" parent="PlayZone_Joueur" instance=ExtResource("7_feyio")]
+position = Vector2(562, 90)
+
+[node name="Espions" parent="PlayZone_Joueur" instance=ExtResource("7_feyio")]
+position = Vector2(662, 90)
 
 [node name="PlayZone_Grace" parent="." instance=ExtResource("10_gln5c")]
 visible = false
@@ -89,5 +154,13 @@ offset_bottom = 301.0
 [node name="Control" parent="." instance=ExtResource("14_7ujh6")]
 offset_right = 1858.0
 offset_bottom = 155.0
+
+[node name="slotMenuCanvas" type="CanvasLayer" parent="."]
+
+[node name="SlotMenu" parent="slotMenuCanvas" instance=ExtResource("15_dc6ue")]
+offset_left = -422.0
+offset_top = -54.0
+offset_right = -382.0
+offset_bottom = -14.0
 
 [connection signal="child_entered_tree" from="CardManager" to="CardManager" method="_on_child_entered_tree"]

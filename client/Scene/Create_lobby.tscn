@@ -1,0 +1,148 @@
+[gd_scene load_steps=12 format=3 uid="uid://le7iea2g3100"]
+
+[ext_resource type="Texture2D" uid="uid://moika2rm8x7n" path="res://Assets/background.png" id="1_ue0mc"]
+[ext_resource type="Texture2D" uid="uid://daai2wt26jgdt" path="res://Assets/Create_Game.png" id="2_5wem8"]
+[ext_resource type="Texture2D" uid="uid://dp7rxbav2clb2" path="res://Assets/arrow-small-left 2.svg" id="3_6v3v5"]
+[ext_resource type="Texture2D" uid="uid://bqy42sdw7lweo" path="res://Assets/Group 69.png" id="4_nmmst"]
+[ext_resource type="Texture2D" uid="uid://d1bk1ehnrxcjx" path="res://Assets/Group 71.png" id="5_6s786"]
+[ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/general.tres" id="6_3qbd0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p5cjq"]
+bg_color = Color(0.0156863, 0.156863, 0.2, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.741176, 0.592157, 0.12549, 1)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[sub_resource type="Theme" id="Theme_g5otf"]
+CheckBox/icons/radio_checked = null
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_64qtd"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_ylqyn"]
+allow_unpress = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v75c0"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_top = 15.0
+expand_margin_bottom = 15.0
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_ue0mc")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 360.0
+offset_top = 139.0
+offset_right = -359.0
+offset_bottom = -142.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_p5cjq")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="TextureButton" type="TextureButton" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+texture_normal = ExtResource("3_6v3v5")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 110
+theme_override_constants/margin_top = 147
+
+[node name="CreateGame" type="Sprite2D" parent="PanelContainer/VBoxContainer/MarginContainer"]
+visible = false
+position = Vector2(590, 410)
+texture = ExtResource("2_5wem8")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 125
+
+[node name="CheckBox" type="CheckBox" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_g5otf")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_64qtd")
+button_group = SubResource("ButtonGroup_ylqyn")
+icon = ExtResource("4_nmmst")
+
+[node name="CheckBox2" type="CheckBox" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_g5otf")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_64qtd")
+button_group = SubResource("ButtonGroup_ylqyn")
+icon = ExtResource("5_6s786")
+
+[node name="CheckBox3" type="CheckBox" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_g5otf")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_64qtd")
+button_group = SubResource("ButtonGroup_ylqyn")
+icon = ExtResource("5_6s786")
+
+[node name="CheckBox4" type="CheckBox" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_g5otf")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_64qtd")
+button_group = SubResource("ButtonGroup_ylqyn")
+icon = ExtResource("5_6s786")
+
+[node name="MarginContainer2" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 60
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+theme_override_constants/separation = 40
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("6_3qbd0")
+text = "Room name"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 340
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 340
+
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/MarginContainer2/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("6_3qbd0")
+theme_override_styles/normal = SubResource("StyleBoxFlat_v75c0")
+placeholder_text = "         Lobby number one"
+
+[node name="CheckBox" type="CheckBox" parent="PanelContainer/VBoxContainer/MarginContainer2/VBoxContainer"]
+layout_mode = 2

@@ -43,6 +43,7 @@ func update_card_positions() -> void:
 
 # Function to update the count label based on the number of cards
 func update_count_label(value : int) -> int:  # 'value' is used to adjust the count based on special card effects
+	print()
 	if count_label:
 		var cpt: int = 0
 
@@ -58,7 +59,8 @@ func update_count_label(value : int) -> int:  # 'value' is used to adjust the co
 		else:
 			$PanelContainer.hide()
 			
-		
+		for card in cards_in_slot:
+			print("Card Name: ", card.name, ", Card Value: ", card.get_value())  # Adjust based on your card properties
 		return cpt
 	else:
 		print("CountLabel not found in CardSlot: ", self.name)

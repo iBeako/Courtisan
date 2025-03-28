@@ -1,0 +1,135 @@
+[gd_scene load_steps=8 format=3 uid="uid://ceb3fmllmsobj"]
+
+[ext_resource type="Shader" path="res://Assets/Shaders/pause_menu.gdshader" id="1_e7ayd"]
+[ext_resource type="Texture2D" uid="uid://b2e5jx0khrkiq" path="res://Assets/Emoji_Board.png" id="2_2v40o"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2ycmt"]
+shader = ExtResource("1_e7ayd")
+shader_parameter/lod = 0.0
+
+[sub_resource type="Animation" id="Animation_tr57b"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BG_blur:material:shader_parameter/lod")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.15, 0, 0.15, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Panel:position:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(597, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Panel:modulate:a")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_bqv5w"]
+resource_name = "blur"
+length = 0.5
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BG_blur:material:shader_parameter/lod")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.15, 0, 0.15, 0, 2, -0.15, 0, 0.15, 0),
+"times": PackedFloat32Array(0, 0.4)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Panel:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(1100, -0.25, 0, 0.25, 0, 305.5, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.4)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Panel:modulate:a")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ux43i"]
+_data = {
+"RESET": SubResource("Animation_tr57b"),
+"blur": SubResource("Animation_bqv5w")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qcwuh"]
+bg_color = Color(0.337255, 0.796078, 0.921569, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchor_right = 0.001
+anchor_bottom = 0.001
+offset_right = 38.08
+offset_bottom = 38.92
+
+[node name="BG_blur" type="ColorRect" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_2ycmt")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ux43i")
+}
+movie_quit_on_finish = true
+
+[node name="EmojiBoard" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(-233, 8)
+texture = ExtResource("2_2v40o")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 597.0
+offset_right = 1072.0
+offset_bottom = 260.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_qcwuh")
