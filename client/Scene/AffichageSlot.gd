@@ -30,7 +30,7 @@ func _on_button_pressed() -> void:
 	
 	# Create an instance of the card scene
 	var card_instance = card_scene.instantiate()
-	card_instance.custom_minimum_size = Vector2(150, 200)
+	card_instance.custom_minimum_size = Vector2(164, 300)
 	card_instance.card_color="Papillons"
 	card_instance.card_type = Card.TYPES.Normal
 	$Panel/MarginContainer2/ScrollContainer/GridContainer.add_child(card_instance)
