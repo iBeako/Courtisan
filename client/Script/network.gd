@@ -168,8 +168,6 @@ func process_message(data:Dictionary):
 			
 		print("CLIENT : As player ",id,", I received hand : ", hand)
 		deck_reference.draw_cards(hand)
-	elif data["message_type"] == "player_score":
-		print("Current score : ", data)
 	elif data["message_type"] == "final_score":
 		print("Final scores : ", data)
 	else:

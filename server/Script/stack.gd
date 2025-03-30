@@ -1,4 +1,5 @@
 extends Node
+class_name Stack
 
 var card_number: int
 var card_played_count = 0
@@ -7,8 +8,6 @@ var all_cards = []
 var card_stack = []
 
 
-var player_white_missions = []
-var player_blue_missions = []
 
 var global = preload("res://Script/global.gd").new()
 
@@ -38,10 +37,11 @@ func print_stack_state() -> void:
 func generate_card() -> bool :
 	# 90 times
 	for family in global.families :
-		for card_type_number in global.card_type_numbers :
-			for i in range(card_type_number) :
-				all_cards.append([i, family])
-	
+		var card_type = 0
+		for number in global.card_type_numbers :
+			for i in range(number) :
+				all_cards.append([card_type, family])
+			card_type = card_type + 1
 	return !all_cards.is_empty()
 	
 func _set_card_stack() -> void:
@@ -68,18 +68,6 @@ func _retrieve_card(card_type: int, family: String) -> bool :
 		return true
 	return false
 
-func _get_rand_missions() -> Array:
-	var id_white_mission = randi() % global.white_missions.size()
-	while player_white_missions.find(id_white_mission) != -1 :
-		id_white_mission = randi() % global.white_missions.size()
-	player_white_missions.append(id_white_mission)
-	
-	var id_blue_mission = randi() % global.blue_missions.size()
-	while player_blue_missions.find(id_blue_mission) != -1 :
-		id_blue_mission = randi() % global.blue_missions.size()
-	player_blue_missions.append(id_blue_mission)
-
-	return [id_white_mission, id_blue_mission]
 	
 func _one_card_played() -> void:
 	card_played_count += 1

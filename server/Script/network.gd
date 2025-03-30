@@ -146,14 +146,12 @@ func process_message(data : Dictionary,sender_id:int):
 		
 	if session.check_end_game() :
 		session.display_session_status()
-		session.get_score(0)
-		session.get_score(1)
 		var scores = session.get_final_score()
+		print(scores)
 		send_message_to_everyone.rpc(scores)
 
 	elif session.check_next_player(find_lobby_number_client(sender_id)) :
 		_send_hand_cards_to_a_player(sender_id)
-		# session.display_session_status()
 		var turn = {"message_type":"player_turn","id_player":session.current_player_id}
 		print("turn :" ,turn["id_player"])
 		send_message_to_everyone.rpc(turn)
@@ -224,7 +222,7 @@ func _validate_card_played(_sender_id :int,message: Dictionary) -> bool:
 			elif message["area"] == 0:
 				session.place_card(message["player"], message["area"], message["card_type"], message["family"])
 			elif message["area"] == 1:
-				session.place_card(message["player"], message["area"], message["card_type"], message["family"])#, 0, message["id_player_domain"])
+				session.place_card(message["player"], message["area"], message["card_type"], message["family"], message["id_player_domain"])
 
 		
 	return true	
