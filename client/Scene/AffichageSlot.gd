@@ -6,8 +6,11 @@ var menu_scene : PackedScene = load("res://Scene/menu_principal.tscn")
 
 func _ready() -> void:
 	resume()
-
 func resume():
+	# Supprime toutes les cartes dans le GridContainer
+	for card in $Panel/MarginContainer2/ScrollContainer/GridContainer.get_children():
+		card.queue_free()  # Supprime proprement chaque carte
+	
 	$AnimationPlayer.play_backwards("blur")
 	paused = false
 	await $AnimationPlayer.animation_finished
