@@ -125,10 +125,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 98.0
-offset_top = 1145.0
-offset_right = 1727.0
-offset_bottom = 1812.0
+offset_left = 577.0
+offset_top = 1131.5
+offset_right = 2206.0
+offset_bottom = 1825.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_8owhj")
@@ -138,22 +138,40 @@ layout_mode = 2
 theme_override_constants/margin_left = 30
 theme_override_constants/margin_top = 30
 theme_override_constants/margin_right = 30
-theme_override_constants/margin_bottom = 30
+theme_override_constants/margin_bottom = 600
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 100
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 50
 
-[node name="Resume" type="Button" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Resume" type="Button" parent="Panel/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 theme = ExtResource("4_quyo3")
 text = "Resume"
+
+[node name="Button" type="Button" parent="Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_quyo3")
+text = "Instantiate"
+
+[node name="MarginContainer2" type="MarginContainer" parent="Panel"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/MarginContainer2"]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="Panel/MarginContainer2/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 50
+theme_override_constants/v_separation = 50
+columns = 6
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -161,4 +179,5 @@ libraries = {
 }
 movie_quit_on_finish = true
 
-[connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/HBoxContainer/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="Panel/MarginContainer/HBoxContainer/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="Panel/MarginContainer/HBoxContainer/Button" to="." method="_on_button_pressed"]

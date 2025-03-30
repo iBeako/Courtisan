@@ -158,9 +158,9 @@ offset_bottom = 155.0
 [node name="slotMenuCanvas" type="CanvasLayer" parent="."]
 
 [node name="SlotMenu" parent="slotMenuCanvas" instance=ExtResource("15_dc6ue")]
-offset_left = -422.0
-offset_top = -54.0
-offset_right = -382.0
-offset_bottom = -14.0
+offset_left = -419.0
+offset_top = -17.0
+offset_right = -379.0
+offset_bottom = 23.0
 
 [connection signal="child_entered_tree" from="CardManager" to="CardManager" method="_on_child_entered_tree"]
