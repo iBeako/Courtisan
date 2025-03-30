@@ -1,9 +1,67 @@
-[gd_scene format=3 uid="uid://dkvpku1e6uddl"]
+[gd_scene load_steps=6 format=3 uid="uid://dkvpku1e6uddl"]
 
-[node name="Control2" type="Node2D"]
+[ext_resource type="Script" path="res://Scene/LigneLobby.gd" id="1_n6fkm"]
+[ext_resource type="Texture2D" uid="uid://dgcdevknlk732" path="res://Assets/Join_Game.png" id="1_wcnsn"]
+[ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/general.tres" id="2_5nvou"]
+[ext_resource type="FontFile" uid="uid://dim3hkmopleo2" path="res://Assets/Mighty Souly.otf" id="3_cp4tu"]
 
-[node name="Control" type="Control" parent="."]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3aggp"]
+bg_color = Color(0.00784314, 0.45098, 0.329412, 1)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+expand_margin_left = 15.0
+expand_margin_right = 22.0
+
+[node name="Control" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+script = ExtResource("1_n6fkm")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 1100.0
+offset_bottom = 79.0
+theme_override_constants/separation = 156
+
+[node name="JoinGame" type="Sprite2D" parent="HBoxContainer"]
+visible = false
+position = Vector2(550, 233)
+texture = ExtResource("1_wcnsn")
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 139
+
+[node name="LobbyName" type="Label" parent="HBoxContainer/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("2_5nvou")
+theme_override_fonts/font = ExtResource("3_cp4tu")
+theme_override_font_sizes/font_size = 36
+text = "Lobby 1"
+
+[node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 139
+
+[node name="CreatorName" type="Label" parent="HBoxContainer/MarginContainer2"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_cp4tu")
+theme_override_font_sizes/font_size = 36
+text = "John"
+
+[node name="MarginContainer3" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 200
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="Button" type="Button" parent="HBoxContainer/MarginContainer3"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_cp4tu")
+theme_override_font_sizes/font_size = 27
+theme_override_styles/normal = SubResource("StyleBoxFlat_3aggp")
+text = "Enter"

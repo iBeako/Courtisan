@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://57g2yl4fsfpt"]
+[gd_scene load_steps=7 format=3 uid="uid://57g2yl4fsfpt"]
 
 [ext_resource type="Texture2D" uid="uid://dgcdevknlk732" path="res://Assets/Join_Game.png" id="1_ohbm4"]
+[ext_resource type="Script" path="res://refreshButton.gd" id="2_pp54t"]
 [ext_resource type="Texture2D" uid="uid://moika2rm8x7n" path="res://Assets/background.png" id="2_vk6xo"]
 [ext_resource type="Texture2D" uid="uid://dp7rxbav2clb2" path="res://Assets/arrow-small-left 2.svg" id="3_xoh4a"]
 [ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/general.tres" id="4_ovxt2"]
@@ -29,11 +30,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
-
-[node name="JoinGame" type="Sprite2D" parent="Control"]
-visible = false
-position = Vector2(960, 540)
-texture = ExtResource("1_ohbm4")
+script = ExtResource("2_pp54t")
 
 [node name="Panel" type="Panel" parent="Control"]
 layout_mode = 2
@@ -42,6 +39,19 @@ offset_top = 39.0
 offset_right = 1560.0
 offset_bottom = 1041.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_mv0a1")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
+layout_mode = 0
+offset_left = 368.0
+offset_top = 339.0
+offset_right = 1548.0
+offset_bottom = 1028.0
+theme_override_constants/separation = 100
+
+[node name="JoinGame" type="Sprite2D" parent="Control"]
+visible = false
+position = Vector2(960, 540)
+texture = ExtResource("1_ohbm4")
 
 [node name="TextureButton" type="TextureButton" parent="Control"]
 layout_mode = 0
@@ -59,6 +69,11 @@ offset_right = 1556.0
 offset_bottom = 302.0
 theme_override_constants/margin_left = 130
 theme_override_constants/margin_top = 120
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 500
+theme_override_constants/margin_top = 10
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer"]
 layout_mode = 2
@@ -84,3 +99,14 @@ theme = ExtResource("4_ovxt2")
 theme_override_colors/font_color = Color(0.741176, 0.592157, 0.12549, 1)
 text = "player
 "
+
+[node name="Refresh" type="Button" parent="Control"]
+layout_mode = 2
+offset_left = 1328.0
+offset_top = 65.0
+offset_right = 1530.0
+offset_bottom = 188.0
+theme = ExtResource("4_ovxt2")
+text = "Refresh"
+
+[connection signal="pressed" from="Control/Refresh" to="Control" method="_on_refresh_pressed"]

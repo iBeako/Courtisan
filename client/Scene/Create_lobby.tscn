@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://le7iea2g3100"]
+[gd_scene load_steps=15 format=3 uid="uid://le7iea2g3100"]
 
 [ext_resource type="Texture2D" uid="uid://moika2rm8x7n" path="res://Assets/background.png" id="1_ue0mc"]
 [ext_resource type="Texture2D" uid="uid://daai2wt26jgdt" path="res://Assets/Create_Game.png" id="2_5wem8"]
@@ -6,6 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://bqy42sdw7lweo" path="res://Assets/Group 69.png" id="4_nmmst"]
 [ext_resource type="Texture2D" uid="uid://d1bk1ehnrxcjx" path="res://Assets/Group 71.png" id="5_6s786"]
 [ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/general.tres" id="6_3qbd0"]
+[ext_resource type="FontFile" uid="uid://dim3hkmopleo2" path="res://Assets/Mighty Souly.otf" id="7_ilo26"]
+[ext_resource type="Texture2D" uid="uid://c1qg8h3mbysvt" path="res://Assets/Cadenas.png" id="8_dpr78"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p5cjq"]
 bg_color = Color(0.0156863, 0.156863, 0.2, 1)
@@ -35,6 +37,20 @@ corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
 expand_margin_top = 15.0
 expand_margin_bottom = 15.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dleh7"]
+bg_color = Color(0.00784314, 0.45098, 0.329412, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.741176, 0.592157, 0.12549, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_top = 21.0
+expand_margin_bottom = 19.0
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -69,7 +85,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_p5cjq")
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
 layout_mode = 2
 
-[node name="TextureButton" type="TextureButton" parent="PanelContainer/MarginContainer"]
+[node name="arrow" type="TextureButton" parent="PanelContainer/MarginContainer"]
 layout_mode = 2
 texture_normal = ExtResource("3_6v3v5")
 
@@ -78,12 +94,12 @@ layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 110
-theme_override_constants/margin_top = 147
+theme_override_constants/margin_left = 108
+theme_override_constants/margin_top = 130
 
 [node name="CreateGame" type="Sprite2D" parent="PanelContainer/VBoxContainer/MarginContainer"]
 visible = false
-position = Vector2(590, 410)
+position = Vector2(590, 391)
 texture = ExtResource("2_5wem8")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer"]
@@ -93,6 +109,7 @@ theme_override_constants/separation = 125
 [node name="CheckBox" type="CheckBox" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 theme = SubResource("Theme_g5otf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_64qtd")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_64qtd")
 button_group = SubResource("ButtonGroup_ylqyn")
 icon = ExtResource("4_nmmst")
@@ -144,5 +161,27 @@ theme = ExtResource("6_3qbd0")
 theme_override_styles/normal = SubResource("StyleBoxFlat_v75c0")
 placeholder_text = "         Lobby number one"
 
-[node name="CheckBox" type="CheckBox" parent="PanelContainer/VBoxContainer/MarginContainer2/VBoxContainer"]
+[node name="MarginContainer3" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/margin_left = 370
+theme_override_constants/margin_top = 69
+
+[node name="CheckBox" type="CheckBox" parent="PanelContainer/VBoxContainer/MarginContainer3"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_ilo26")
+theme_override_font_sizes/font_size = 33
+text = "Password"
+icon = ExtResource("8_dpr78")
+
+[node name="MarginContainer4" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 390
+theme_override_constants/margin_top = 89
+theme_override_constants/margin_right = 390
+
+[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer4"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_ilo26")
+theme_override_font_sizes/font_size = 34
+theme_override_styles/normal = SubResource("StyleBoxFlat_dleh7")
+text = "Create a room"
