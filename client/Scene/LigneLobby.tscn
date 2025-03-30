@@ -16,9 +16,9 @@ expand_margin_right = 22.0
 
 [node name="Control" type="Control"]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
 script = ExtResource("1_n6fkm")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
@@ -32,34 +32,23 @@ visible = false
 position = Vector2(550, 233)
 texture = ExtResource("1_wcnsn")
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+[node name="CreatorName" type="Label" parent="HBoxContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 139
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_cp4tu")
+theme_override_font_sizes/font_size = 36
+text = "John"
 
-[node name="LobbyName" type="Label" parent="HBoxContainer/MarginContainer"]
+[node name="LobbyName" type="Label" parent="HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 theme = ExtResource("2_5nvou")
 theme_override_fonts/font = ExtResource("3_cp4tu")
 theme_override_font_sizes/font_size = 36
 text = "Lobby 1"
 
-[node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 139
-
-[node name="CreatorName" type="Label" parent="HBoxContainer/MarginContainer2"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("3_cp4tu")
-theme_override_font_sizes/font_size = 36
-text = "John"
-
-[node name="MarginContainer3" type="MarginContainer" parent="HBoxContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 200
-theme_override_constants/margin_top = 14
-theme_override_constants/margin_bottom = 14
-
-[node name="Button" type="Button" parent="HBoxContainer/MarginContainer3"]
+[node name="Button" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_cp4tu")
 theme_override_font_sizes/font_size = 27

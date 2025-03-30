@@ -31,11 +31,6 @@ visibility_layer = 4
 position = Vector2(500.75, 80)
 shape = SubResource("RectangleShape2D_glm01")
 
-[node name="Area2D" type="Area2D" parent="Area2D"]
-light_mask = 4
-visibility_layer = 4
-position = Vector2(0, 204)
-
 [node name="ColorRect" type="ColorRect" parent="."]
 visible = false
 offset_right = 730.0

@@ -21,8 +21,8 @@ func _on_refresh_pressed():
 	$ScrollContainer/VBoxContainer.add_child(scene_to_instance)
 
 	# Accéder aux labels dans la scène instanciée
-	var lobby_label = scene_to_instance.get_node("HBoxContainer/MarginContainer/LobbyName")
-	var creator_label = scene_to_instance.get_node("HBoxContainer/MarginContainer2/CreatorName")
+	var lobby_label = scene_to_instance.get_node("HBoxContainer/LobbyName")
+	var creator_label = scene_to_instance.get_node("HBoxContainer/CreatorName")
 
 
 	# Modifier le texte des labels

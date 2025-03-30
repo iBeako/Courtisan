@@ -4,7 +4,7 @@
 [ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/general.tres" id="1_slf3n"]
 [ext_resource type="PackedScene" path="res://Scene/input_sign.tscn" id="2_syrqm"]
 [ext_resource type="Texture2D" uid="uid://dydwgqc1d7h2k" path="res://Assets/envelope.svg" id="3_1odxc"]
-[ext_resource type="PackedScene" path="res://Scene/input_sign_password.tscn" id="4_erawd"]
+[ext_resource type="PackedScene" uid="uid://c3oiwppnr4cxt" path="res://Scene/input_sign_password.tscn" id="4_erawd"]
 
 [node name="SignUP" type="VBoxContainer"]
 offset_right = 300.0
@@ -60,6 +60,9 @@ layout_mode = 2
 theme = ExtResource("1_slf3n")
 text = "SIGN IN
 "
+
+[connection signal="pressed" from="SignUP" to="." method="send_infos"]
+[connection signal="pressed" from="SignIN" to="." method="_on_sign_in_pressed"]
 
 [editable path="Username"]
 [editable path="Email"]

@@ -1,6 +1,6 @@
 extends VBoxContainer
 
-
+signal switch_tab
 
 @onready var mail : PanelContainer = $Email
 
@@ -11,4 +11,9 @@ extends VBoxContainer
 
 func send_infos():
 	# --- envoi au serveur
-	return Account.loginAccount(mail.get_value(),pswd.get_value())
+	print(Account.loginAccount(mail.get_value(),pswd.get_value()))
+
+
+func _on_sign_up_pressed() -> void:
+	print("emit")
+	switch_tab.emit()

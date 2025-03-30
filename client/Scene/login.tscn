@@ -75,12 +75,10 @@ tabs_visible = false
 
 [node name="SignIN" parent="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer" instance=ExtResource("2_d8vj7")]
 layout_mode = 2
-script = null
 
 [node name="SignUP" parent="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer" instance=ExtResource("3_rwsdb")]
 visible = false
 layout_mode = 2
-script = null
 
 [node name="MarginContainer2" type="MarginContainer" parent="PanelContainer/HBoxContainer"]
 layout_mode = 2
@@ -92,17 +90,3 @@ theme_override_constants/margin_bottom = 30
 [node name="TextureRect" type="TextureRect" parent="PanelContainer/HBoxContainer/MarginContainer2"]
 layout_mode = 2
 texture = ExtResource("7_2glmo")
-
-[connection signal="pressed" from="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer/SignIN/SignIN" to="." method="_on_sign_in_send"]
-[connection signal="pressed" from="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer/SignIN/SignUP" to="." method="_on_sign_up_switch"]
-[connection signal="pressed" from="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer/SignUP/SignUP" to="." method="_on_sign_up_send"]
-[connection signal="pressed" from="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer/SignUP/SignIN" to="." method="_on_sign_in_switch"]
-
-[editable path="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer/SignIN"]
-[editable path="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer/SignIN/Email"]
-[editable path="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer/SignIN/Password"]
-[editable path="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer/SignUP"]
-[editable path="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer/SignUP/Username"]
-[editable path="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer/SignUP/Email"]
-[editable path="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer/SignUP/Password"]
-[editable path="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer/SignUP/Password2"]
