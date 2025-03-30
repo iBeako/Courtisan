@@ -4,8 +4,8 @@ extends PlayZone
 func _ready() -> void:
 	super._ready()
 	# Connect the 'updated_score_board' signal from the Grace and Disgrace zones
-	get_parent().get_node("PlayZone_Grace").connect("updated_score_board", update_labels)
-	get_parent().get_node("PlayZone_Disgrace").connect("updated_score_board", update_labels)
+	#get_parent().get_node("PlayZone_Grace").connect("updated_score_board", update_labels)
+	#get_parent().get_node("PlayZone_Disgrace").connect("updated_score_board", update_labels)
 
 	# Adjust the labels' orientation if necessary
 	#adjust_labels()
