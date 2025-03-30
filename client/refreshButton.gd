@@ -1,7 +1,7 @@
 extends Control
 
 @onready var button = $Refresh
-@onready var vbox = $VBoxContainer
+@onready var vbox = $ScrollContainer/VBoxContainer
 var lobby_count = 0  # Compteur pour incrémenter les labels
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -13,17 +13,17 @@ func _process(delta: float) -> void:
 	pass
 
 
-# Cette fonction instancie la scène LigneLobby et modifie les labels
 func _on_refresh_pressed():
 	# Instancier la scène LigneLobby
 	var scene_to_instance = load("res://Scene/LigneLobby.tscn").instantiate()
 
-	# Ajouter la scène instanciée au parent (par exemple à un VBoxContainer ou autre)
-	$VBoxContainer.add_child(scene_to_instance)
+	# Ajouter la scène instanciée au ScrollContainer (assure-toi que c'est bien un ScrollContainer)
+	$ScrollContainer/VBoxContainer.add_child(scene_to_instance)
 
 	# Accéder aux labels dans la scène instanciée
 	var lobby_label = scene_to_instance.get_node("HBoxContainer/MarginContainer/LobbyName")
 	var creator_label = scene_to_instance.get_node("HBoxContainer/MarginContainer2/CreatorName")
+
 
 	# Modifier le texte des labels
 	lobby_label.text = "Lobby " + str(lobby_count)  # Exemple de texte dynamique
