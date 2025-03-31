@@ -1,5 +1,7 @@
 extends PlayZone
 
+var id_player : int = -1
+
 # Called when the node enters the scene tree
 func _ready() -> void:
 	super._ready()
