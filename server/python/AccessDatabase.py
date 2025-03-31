@@ -16,7 +16,7 @@ SSH_CONFIG_FILE = os.path.expanduser("/app/.ssh/config")
 # Configuration de la base Oracle
 DB_USER = 'sys'
 DB_PASSWORD = '"C@uRT1$4n5"'
-DB_REMOTE_HOST = 'courtisans-database'
+DB_REMOTE_HOST = '172.18.0.2'
 DB_REMOTE_PORT = 1521
 DB_SERVICE_NAME = "FREE"  # à adapter selon votre service Oracle
 
