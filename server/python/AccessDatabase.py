@@ -30,8 +30,10 @@ def get_db_connection():
         remote_bind_address=(DB_REMOTE_HOST, DB_REMOTE_PORT)
     )
     tunnel.start()
+    print("Tunnel SSH ouvert sur le port:", tunnel.local_bind_port)
     local_port = tunnel.local_bind_port
     dsn = f"127.0.0.1:{local_port}/{DB_SERVICE_NAME}"
+    print("connexion à la base de données avec DSN:", dsn)
     connection = cx_Oracle.connect(
         DB_USER,
         DB_PASSWORD,
