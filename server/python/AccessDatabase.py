@@ -24,7 +24,7 @@ def get_db_connection():
     # Utilisation de la clé privée pour l'authentification SSH
     tunnel = SSHTunnelForwarder(
         (SSH_HOST, SSH_PORT),
-        #ssh_username=SSH_USERNAME,
+        ssh_username=SSH_USERNAME,
         ssh_pkey=SSH_PKEY,
         ssh_config_file=SSH_CONFIG_FILE,
         remote_bind_address=(DB_REMOTE_HOST, DB_REMOTE_PORT)
