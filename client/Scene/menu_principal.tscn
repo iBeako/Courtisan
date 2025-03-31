@@ -45,46 +45,54 @@ text = "Menu Principal
 label_settings = SubResource("LabelSettings_m767v")
 horizontal_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="Control" type="Control" parent="."]
+layout_mode = 2
+anchors_preset = 0
+offset_left = 767.0
+offset_top = 497.0
+offset_right = 1153.0
+offset_bottom = 497.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
 layout_mode = 1
-anchors_preset = 7
+anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -193.0
-offset_top = -317.0
+offset_top = 20.0
 offset_right = 193.0
-offset_bottom = -143.0
+offset_bottom = 440.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_constants/separation = 20
 
-[node name="Play" type="Button" parent="VBoxContainer"]
+[node name="Play" type="Button" parent="Control/VBoxContainer"]
 custom_minimum_size = Vector2(600, 90)
 layout_mode = 2
 theme = ExtResource("3_i1lxy")
 text = "CREATE A GAME"
 
-[node name="Join" type="Button" parent="VBoxContainer"]
+[node name="Join" type="Button" parent="Control/VBoxContainer"]
 custom_minimum_size = Vector2(0, 90)
 layout_mode = 2
 theme = ExtResource("4_7ryuf")
 text = "JOIN A GAME"
 
-[node name="Rule" type="Button" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 90)
-layout_mode = 2
-theme = ExtResource("3_1qxdg")
-text = "RULES"
-
-[node name="Button" type="Button" parent="VBoxContainer"]
+[node name="Button" type="Button" parent="Control/VBoxContainer"]
 custom_minimum_size = Vector2(0, 90)
 layout_mode = 2
 theme = ExtResource("3_1qxdg")
 text = "Settings"
 
-[node name="QuitButton" type="Button" parent="VBoxContainer"]
+[node name="Rule" type="Button" parent="Control/VBoxContainer"]
+custom_minimum_size = Vector2(0, 90)
+layout_mode = 2
+theme = ExtResource("3_1qxdg")
+text = "RULES"
+
+[node name="QuitButton" type="Button" parent="Control/VBoxContainer"]
 custom_minimum_size = Vector2(0, 90)
 layout_mode = 2
 theme = ExtResource("6_hbyqo")
@@ -103,10 +111,18 @@ grow_horizontal = 2
 texture = ExtResource("7_qspyc")
 expand_mode = 1
 
-[connection signal="button_down" from="VBoxContainer/Play" to="." method="_on_start_button_button_down"]
-[connection signal="mouse_entered" from="VBoxContainer/Play" to="." method="_on_play_mouse_entered"]
-[connection signal="mouse_exited" from="VBoxContainer/Play" to="." method="_on_play_mouse_exited"]
-[connection signal="button_down" from="VBoxContainer/Join" to="." method="_on_join_button_down"]
-[connection signal="button_down" from="VBoxContainer/Rule" to="." method="_on_start_button_button_down"]
-[connection signal="button_down" from="VBoxContainer/Button" to="." method="_on_button_button_down"]
-[connection signal="button_down" from="VBoxContainer/QuitButton" to="." method="_on_quit_button_button_down"]
+[connection signal="button_down" from="Control/VBoxContainer/Play" to="." method="_on_start_button_button_down"]
+[connection signal="mouse_entered" from="Control/VBoxContainer/Play" to="." method="_on_play_mouse_entered"]
+[connection signal="mouse_exited" from="Control/VBoxContainer/Play" to="." method="_on_play_mouse_exited"]
+[connection signal="button_down" from="Control/VBoxContainer/Join" to="." method="_on_join_button_down"]
+[connection signal="mouse_entered" from="Control/VBoxContainer/Join" to="." method="_on_join_mouse_entered"]
+[connection signal="mouse_exited" from="Control/VBoxContainer/Join" to="." method="_on_join_mouse_exited"]
+[connection signal="button_down" from="Control/VBoxContainer/Button" to="." method="_on_button_button_down"]
+[connection signal="mouse_entered" from="Control/VBoxContainer/Button" to="." method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="Control/VBoxContainer/Button" to="." method="_on_button_mouse_exited"]
+[connection signal="button_down" from="Control/VBoxContainer/Rule" to="." method="_on_start_button_button_down"]
+[connection signal="mouse_entered" from="Control/VBoxContainer/Rule" to="." method="_on_rule_mouse_entered"]
+[connection signal="mouse_exited" from="Control/VBoxContainer/Rule" to="." method="_on_rule_mouse_exited"]
+[connection signal="button_down" from="Control/VBoxContainer/QuitButton" to="." method="_on_quit_button_button_down"]
+[connection signal="mouse_entered" from="Control/VBoxContainer/QuitButton" to="." method="_on_quit_button_mouse_entered"]
+[connection signal="mouse_exited" from="Control/VBoxContainer/QuitButton" to="." method="_on_quit_button_mouse_exited"]
