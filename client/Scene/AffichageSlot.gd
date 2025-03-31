@@ -2,7 +2,8 @@ extends Control
 
 const TYPES = preload("res://Script/card.gd").TYPES
 const CARD_COLORS = ["Papillons", "Crapauds", "Rossignols", "Lièvres", "Cerfs", "Carpes"]
-
+enum PlayZoneType { Joueur, Ennemie }
+var play_zone_type: PlayZoneType  # Stocke le type reçu
 var paused : bool = false
 var menu_scene : PackedScene = load("res://Scene/menu_principal.tscn")
 
@@ -38,7 +39,7 @@ func _on_button_pressed() -> void:
 	#var random_type = randi() % TYPES.size()  # Choix aléatoire parmi les types
 	#var random_color = CARD_COLORS[randi() % CARD_COLORS.size()]  # Choix aléatoire parmi les couleurs
 	#instantiate_card(random_type, random_color)  # Instancie la carte avec les paramètres choisis
-	instantiate_all_cards()
+	instantiate_all_cards(play_zone_type)
 
 # Fonction pour instancier une carte et l'ajouter au GridContainer
 func instantiate_card(card_type: TYPES, card_color: String) -> void:
@@ -55,23 +56,37 @@ func instantiate_card(card_type: TYPES, card_color: String) -> void:
 	$Panel/MarginContainer2/ScrollContainer/GridContainer.add_child(card_instance)
 
 # Fonction pour instancier toutes les cartes dans le GridContainer
-func instantiate_all_cards() -> void:
-	# Récupère la PlayZone (ajuste le chemin si nécessaire)
-	var play_zone = get_node_or_null("/root/Main/PlayZone_Joueur")  # Remplace le chemin si nécessaire
-	var play_zone2 = get_node_or_null("/root/Main/PlayZone_Ennemie")
+func instantiate_all_cards(zone_type: PlayZoneType) -> void:
+	# Récupère les PlayZones (ajuste les chemins si nécessaire)
+	var play_zone_joueur = get_node_or_null("/root/Main/PlayZone_Joueur")
+	var play_zone_ennemie = get_node_or_null("/root/Main/PlayZone_Ennemie")
+
+	# Vérifie si les PlayZones existent
+	if play_zone_joueur == null or play_zone_ennemie == null:
+		print("Erreur : Une ou plusieurs PlayZones sont introuvables!")
+		return  
+
+	# Sélectionne la bonne PlayZone en fonction du type
+	var play_zone = null
+	if zone_type == PlayZoneType.Joueur:
+		play_zone = play_zone_joueur
+	elif zone_type == PlayZoneType.Ennemie:
+		play_zone = play_zone_ennemie
+
 	if play_zone == null:
-		print("Erreur : PlayZone_Joueur non trouvée!")
-		return  # Si PlayZone_Joueur n'est pas trouvée, on arrête la fonction
-	
-	# On parcourt chaque couleur dans la liste des couleurs possibles
+		print("Erreur : Type de PlayZone invalide!")
+		return
+
+	# Parcourt chaque couleur dans la liste des couleurs possibles
 	for color in CARD_COLORS:
-		# Récupère le CardSlot par le nom de la couleur (par exemple, "Papillons", "Crapauds", etc.)
-		var card_slot = play_zone.get_node(color)  # Trouve le CardSlot par couleur
+		var card_slot = play_zone.get_node_or_null(color)  # Trouve le CardSlot par couleur
 		
 		if card_slot:  # Si le CardSlot existe
-			# Parcours toutes les cartes dans le CardSlot
 			for card in card_slot.cards_in_slot:
-				# Instancie la carte et l'ajoute au GridContainer
 				instantiate_card(card.card_type, card.card_color)
 		else:
 			print("CardSlot ", color, " non trouvé.")
+
+
+func set_play_zone_type(zone_type: PlayZoneType):
+	play_zone_type = zone_type
