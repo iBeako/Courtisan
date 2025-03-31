@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException, WebSocket, Depends
 import cx_Oracle
 from sshtunnel import SSHTunnelForwarder
 from contextlib import contextmanager
+import os
 
 app = FastAPI()
 
