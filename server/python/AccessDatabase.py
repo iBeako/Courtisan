@@ -11,7 +11,7 @@ SSH_HOST = '192.168.100.119'
 SSH_PORT = 22
 SSH_USERNAME = 'ubuntu'  # Remplacez par votre nom d'utilisateur SSH
 SSH_PKEY = "/app/private.pem"  # Assurez-vous que le fichier private.pem est copié dans le container
-SSH_CONFIG_FILE = os.path.expanduser("~/.ssh/config")
+SSH_CONFIG_FILE = os.path.expanduser("/app/.ssh/config")
 
 # Configuration de la base Oracle
 DB_USER = 'sys'
