@@ -179,8 +179,8 @@ func check_id_player_domain(id_player_domain: int) :
 func check_player_id(player_id: int) -> bool:
 	return player_id >= 0 and player_id < players.size()
 
-func check_player_turn(player_id : int, _id_in_message: int) -> bool:
-	return (player_id == _id_in_message) and (current_player_id == player_id)
+func check_player_turn(player_id : int) -> bool:
+	return current_player_id == player_id
 	
 func check_player_hand(_player_id: int, card_type: int, family: String) -> bool:
 	var is_valid = false

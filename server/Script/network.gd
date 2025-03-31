@@ -15,6 +15,7 @@ var tls_key: CryptoKey
 var server_tls_options
 var session = load("res://Script/session.gd").new(MAX_CLIENT) # a session specific to a port
 var global = preload("res://Script/global.gd").new()
+var AIs = []
 
 func _onready():
 	tls_key = load("res://certificates/private.key")
@@ -42,6 +43,14 @@ func _process(_delta):
 
 
 func _on_peer_disconnected(peer_id: int):
+	var _id = clients_peer.find(peer_id)
+	print("Player ", _id, " has disconnected")
+	var AI = load("res://Script/AI.gd").new()
+	AI.id_player = _id
+	AI.id_AI = AIs.size()
+	add_child(AI)
+	AIs.append(AI)
+	
 	clients.erase(peer_id)
 	number_of_client -= 1
 
@@ -124,7 +133,7 @@ func process_message(data : Dictionary,sender_id:int):
 		_process_error(data)
 	#action message
 	elif data["message_type"] == "card_played":
-		if _validate_card_played(sender_id,data):
+		if _validate_card_played(data):
 			send_message_to_everyone.rpc(data)
 		else:
 			var error_card_played = {
@@ -145,7 +154,6 @@ func process_message(data : Dictionary,sender_id:int):
 		print("invalid message")
 		
 	if session.check_end_game() :
-		session.display_session_status()
 		var scores = session.get_final_score()
 		print(scores)
 		send_message_to_everyone.rpc(scores)
@@ -178,7 +186,7 @@ func _validate_message(message: Dictionary) -> bool:
 		return true
 	return false
 
-func _validate_card_played(_sender_id :int,message: Dictionary) -> bool:
+func _validate_card_played(message: Dictionary) -> bool:
 	
 	# The game has not yet begun
 	if session.check_status() == false :
@@ -199,7 +207,7 @@ func _validate_card_played(_sender_id :int,message: Dictionary) -> bool:
 			return false
 			
 		# validate action if it is the good player that have played the card (same client id and same game id)
-		is_valid_action = is_valid_action and session.check_player_turn(clients_peer.find(_sender_id), message["player"])
+		is_valid_action = is_valid_action and session.check_player_turn(message["player"])
 		if !is_valid_action :
 			print("SERVER - Error : Wrong player who is currently playing")
 			return false

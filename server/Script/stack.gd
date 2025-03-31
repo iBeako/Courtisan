@@ -17,7 +17,7 @@ func _init() -> void:
 
 func _set_card_number(player_max: int) -> void:
 	if player_max == 2 :
-		card_number = 6
+		card_number = 60
 	elif player_max == 3 :
 		card_number = 72
 	elif player_max == 4 :
