@@ -42,18 +42,16 @@ def get_db_connection():
         encoding="UTF-8",
         nencoding="UTF-8"
     )
-    # On attache le tunnel à la connexion pour pouvoir le fermer ensuite
-    connection.tunnel = tunnel
-    return connection
+    return connection, tunnel
 
 @contextmanager
 def get_db():
-    connection = get_db_connection()
+    connection,tunnel = get_db_connection()
     try:
         yield connection
     finally:
         connection.close()
-        connection.tunnel.stop()
+        tunnel.stop()
 
 def insert_account(data: dict, connection):
     cursor = connection.cursor()
