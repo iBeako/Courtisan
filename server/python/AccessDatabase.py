@@ -7,9 +7,9 @@ import os
 app = FastAPI()
 
 # Configuration SSH pour la VM distante avec clé privée
-SSH_HOST = 'vmProjetIntegrateur1'
+SSH_HOST = '192.168.100.119'
 SSH_PORT = 22
-SSH_USERNAME = 'votre_utilisateur_ssh'  # Remplacez par votre nom d'utilisateur SSH
+SSH_USERNAME = 'ubuntu'  # Remplacez par votre nom d'utilisateur SSH
 SSH_PKEY = "/app/private.pem"  # Assurez-vous que le fichier private.pem est copié dans le container
 SSH_CONFIG_FILE = os.path.expanduser("~/.ssh/config")
 
@@ -25,7 +25,7 @@ def get_db_connection():
     tunnel = SSHTunnelForwarder(
         (SSH_HOST, SSH_PORT),
         #ssh_username=SSH_USERNAME,
-        #ssh_pkey=SSH_PKEY,
+        ssh_pkey=SSH_PKEY,
         ssh_config_file=SSH_CONFIG_FILE,
         remote_bind_address=(DB_REMOTE_HOST, DB_REMOTE_PORT)
     )
