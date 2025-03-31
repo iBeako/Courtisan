@@ -10,20 +10,22 @@ SSH_HOST = 'vmProjetIntegrateur1'
 SSH_PORT = 22
 SSH_USERNAME = 'votre_utilisateur_ssh'  # Remplacez par votre nom d'utilisateur SSH
 SSH_PKEY = "/app/private.pem"  # Assurez-vous que le fichier private.pem est copié dans le container
+SSH_CONFIG_FILE = os.path.expanduser("~/.ssh/config")
 
 # Configuration de la base Oracle
 DB_USER = 'sys'
 DB_PASSWORD = '"C@uRT1$4n5"'
-DB_REMOTE_HOST = 'vmProjetIntegrateur9-1'
+DB_REMOTE_HOST = 'courtisans-database'
 DB_REMOTE_PORT = 1521
-DB_SERVICE_NAME = "orcl"  # à adapter selon votre service Oracle
+DB_SERVICE_NAME = "FREE"  # à adapter selon votre service Oracle
 
 def get_db_connection():
     # Utilisation de la clé privée pour l'authentification SSH
     tunnel = SSHTunnelForwarder(
         (SSH_HOST, SSH_PORT),
-        ssh_username=SSH_USERNAME,
-        ssh_pkey=SSH_PKEY,
+        #ssh_username=SSH_USERNAME,
+        #ssh_pkey=SSH_PKEY,
+        ssh_config_file=SSH_CONFIG_FILE,
         remote_bind_address=(DB_REMOTE_HOST, DB_REMOTE_PORT)
     )
     tunnel.start()
