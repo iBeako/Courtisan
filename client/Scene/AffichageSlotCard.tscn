@@ -152,6 +152,7 @@ theme = ExtResource("4_quyo3")
 text = "Resume"
 
 [node name="Button" type="Button" parent="Panel/MarginContainer/HBoxContainer"]
+visible = false
 layout_mode = 2
 theme = ExtResource("4_quyo3")
 text = "Instantiate"

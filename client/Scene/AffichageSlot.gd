@@ -2,7 +2,7 @@ extends Control
 
 const TYPES = preload("res://Script/card.gd").TYPES
 const CARD_COLORS = ["Papillons", "Crapauds", "Rossignols", "Lièvres", "Cerfs", "Carpes"]
-enum PlayZoneType { Joueur, Ennemie }
+enum PlayZoneType { Joueur, Ennemie, Grace, Disgrace }
 var play_zone_type: PlayZoneType  # Stocke le type reçu
 var paused : bool = false
 var menu_scene : PackedScene = load("res://Scene/menu_principal.tscn")
@@ -35,11 +35,11 @@ func _on_resume_pressed() -> void:
 	resume()  # Relance le menu et supprime les cartes
 
 # Fonction exécutée lorsque le bouton est pressé pour générer une carte
-func _on_button_pressed() -> void:
+#func _on_button_pressed() -> void:
 	#var random_type = randi() % TYPES.size()  # Choix aléatoire parmi les types
 	#var random_color = CARD_COLORS[randi() % CARD_COLORS.size()]  # Choix aléatoire parmi les couleurs
 	#instantiate_card(random_type, random_color)  # Instancie la carte avec les paramètres choisis
-	instantiate_all_cards(play_zone_type)
+	#instantiate_all_cards(play_zone_type)
 
 # Fonction pour instancier une carte et l'ajouter au GridContainer
 func instantiate_card(card_type: TYPES, card_color: String) -> void:
@@ -60,22 +60,28 @@ func instantiate_all_cards(zone_type: PlayZoneType) -> void:
 	# Récupère les PlayZones (ajuste les chemins si nécessaire)
 	var play_zone_joueur = get_node_or_null("/root/Main/PlayZone_Joueur")
 	var play_zone_ennemie = get_node_or_null("/root/Main/PlayZone_Ennemie")
+	var play_zone_grace = get_node_or_null("/root/Main/PlayZone_Grace")
+	var play_zone_disgrace = get_node_or_null("/root/Main/PlayZone_Disgrace")
 
-	# Vérifie si les PlayZones existent
-	if play_zone_joueur == null or play_zone_ennemie == null:
+	# Vérifie si toutes les PlayZones existent
+	if play_zone_joueur == null or play_zone_ennemie == null or play_zone_grace == null or play_zone_disgrace == null:
 		print("Erreur : Une ou plusieurs PlayZones sont introuvables!")
 		return  
 
 	# Sélectionne la bonne PlayZone en fonction du type
 	var play_zone = null
-	if zone_type == PlayZoneType.Joueur:
-		play_zone = play_zone_joueur
-	elif zone_type == PlayZoneType.Ennemie:
-		play_zone = play_zone_ennemie
-
-	if play_zone == null:
-		print("Erreur : Type de PlayZone invalide!")
-		return
+	match zone_type:
+		PlayZoneType.Joueur:
+			play_zone = play_zone_joueur
+		PlayZoneType.Ennemie:
+			play_zone = play_zone_ennemie
+		PlayZoneType.Grace:
+			play_zone = play_zone_grace
+		PlayZoneType.Disgrace:
+			play_zone = play_zone_disgrace
+		_:
+			print("Erreur : Type de PlayZone invalide!")
+			return
 
 	# Parcourt chaque couleur dans la liste des couleurs possibles
 	for color in CARD_COLORS:
@@ -86,6 +92,7 @@ func instantiate_all_cards(zone_type: PlayZoneType) -> void:
 				instantiate_card(card.card_type, card.card_color)
 		else:
 			print("CardSlot ", color, " non trouvé.")
+
 
 
 func set_play_zone_type(zone_type: PlayZoneType):

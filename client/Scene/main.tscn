@@ -132,12 +132,10 @@ offset_right = 771.0
 offset_bottom = 260.0
 
 [node name="PlayZone_Grace" parent="." instance=ExtResource("10_gln5c")]
-visible = false
 position = Vector2(459, 381)
 Play_ZoneType = 2
 
 [node name="PlayZone_Disgrace" parent="." instance=ExtResource("10_gln5c")]
-visible = false
 position = Vector2(459, 539)
 Play_ZoneType = 3
 
