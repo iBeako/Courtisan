@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://57g2yl4fsfpt"]
+[gd_scene load_steps=8 format=3 uid="uid://57g2yl4fsfpt"]
 
 [ext_resource type="Texture2D" uid="uid://dgcdevknlk732" path="res://Assets/Join_Game.png" id="1_ohbm4"]
 [ext_resource type="Script" path="res://refreshButton.gd" id="2_pp54t"]
 [ext_resource type="Texture2D" uid="uid://moika2rm8x7n" path="res://Assets/background.png" id="2_vk6xo"]
 [ext_resource type="Texture2D" uid="uid://dp7rxbav2clb2" path="res://Assets/arrow-small-left 2.svg" id="3_xoh4a"]
 [ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/general.tres" id="4_ovxt2"]
+[ext_resource type="Texture2D" uid="uid://dc4tm6ehl4x4x" path="res://Assets/arrow-small-left.svg" id="6_1lqbg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mv0a1"]
 bg_color = Color(0.0156863, 0.156863, 0.2, 1)
@@ -38,6 +39,7 @@ offset_left = 357.0
 offset_top = 39.0
 offset_right = 1560.0
 offset_bottom = 1041.0
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_mv0a1")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Control"]
@@ -46,9 +48,11 @@ offset_left = 368.0
 offset_top = 339.0
 offset_right = 1548.0
 offset_bottom = 1029.0
+mouse_filter = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/ScrollContainer"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 100
 
 [node name="JoinGame" type="Sprite2D" parent="Control"]
@@ -56,26 +60,20 @@ visible = false
 position = Vector2(960, 540)
 texture = ExtResource("1_ohbm4")
 
-[node name="TextureButton" type="TextureButton" parent="Control"]
-layout_mode = 0
-offset_left = 390.0
-offset_top = 71.0
-offset_right = 524.0
-offset_bottom = 205.0
-texture_normal = ExtResource("3_xoh4a")
-
 [node name="MarginContainer" type="MarginContainer" parent="Control"]
 layout_mode = 2
 offset_left = 360.0
 offset_top = 49.0
-offset_right = 1556.0
+offset_right = 1564.0
 offset_bottom = 302.0
+mouse_filter = 2
 theme_override_constants/margin_left = 130
 theme_override_constants/margin_top = 120
 theme_override_constants/margin_right = 130
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 200
 
 [node name="Label" type="Label" parent="Control/MarginContainer/HBoxContainer"]
@@ -110,4 +108,18 @@ grow_vertical = 2
 theme = ExtResource("4_ovxt2")
 text = "Refresh"
 
+[node name="TextureButton" type="TextureButton" parent="Control"]
+offset_left = 390.0
+offset_top = 71.0
+offset_right = 524.0
+offset_bottom = 205.0
+mouse_filter = 2
+action_mode = 0
+texture_normal = ExtResource("3_xoh4a")
+texture_pressed = ExtResource("3_xoh4a")
+texture_hover = ExtResource("6_1lqbg")
+texture_disabled = ExtResource("6_1lqbg")
+texture_focused = ExtResource("3_xoh4a")
+
 [connection signal="pressed" from="Control/Refresh" to="Control" method="_on_refresh_pressed"]
+[connection signal="pressed" from="Control/TextureButton" to="Control" method="_on_texture_button_pressed"]

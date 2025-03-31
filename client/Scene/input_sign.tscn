@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://bl1kbnd8lx55d" path="res://Assets/user.svg" id="1_hps6c"]
 [ext_resource type="Script" path="res://Script/input_sign.gd" id="1_mavrx"]
-[ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/Sign/sign_title.tres" id="2_4m5to"]
+[ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/general.tres" id="2_4m5to"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ffix6"]
 bg_color = Color(0.85098, 0.85098, 0.85098, 1)

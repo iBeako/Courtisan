@@ -135,6 +135,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_8owhj")
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 30
 theme_override_constants/margin_top = 30
 theme_override_constants/margin_right = 30
@@ -143,6 +144,7 @@ theme_override_constants/margin_bottom = 600
 [node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
+mouse_filter = 2
 theme_override_constants/separation = 50
 
 [node name="Resume" type="Button" parent="Panel/MarginContainer/HBoxContainer"]

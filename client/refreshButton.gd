@@ -2,10 +2,14 @@ extends Control
 
 @onready var button = $Refresh
 @onready var vbox = $ScrollContainer/VBoxContainer
+@onready var menu = preload("res://Scene/menu_principal.tscn")
+@onready var arrow = $TextureButton
 var lobby_count = 0  # Compteur pour incrémenter les labels
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	get_tree().debug_collisions_hint = true  # Visualiser les zones cliquables
 	button.pressed.connect(_on_refresh_pressed)
+	arrow.pressed.connect(_on_texture_button_pressed)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -29,3 +33,8 @@ func _on_refresh_pressed():
 	lobby_label.text = "Lobby " + str(lobby_count)  # Exemple de texte dynamique
 	creator_label.text = "Creator " + str(lobby_count)  # Exemple de texte dynamique
 	lobby_count=lobby_count+1
+
+
+func _on_texture_button_pressed() -> void:
+	print("click on texture button")
+	get_tree().change_scene_to_packed(menu)
