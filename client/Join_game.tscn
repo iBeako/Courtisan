@@ -109,6 +109,7 @@ theme = ExtResource("4_ovxt2")
 text = "Refresh"
 
 [node name="TextureButton" type="TextureButton" parent="Control"]
+layout_mode = 0
 offset_left = 390.0
 offset_top = 71.0
 offset_right = 524.0

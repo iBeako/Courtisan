@@ -6,6 +6,7 @@ enum PlayZoneType { Joueur, Ennemie, Grace, Disgrace }
 var play_zone_type: PlayZoneType  # Stocke le type reçu
 var paused : bool = false
 var menu_scene : PackedScene = load("res://Scene/menu_principal.tscn")
+var AssassinMenue : bool = false
 
 # Fonction exécutée au démarrage de la scène
 func _ready() -> void:
@@ -16,7 +17,7 @@ func resume() -> void:
 	# Supprime toutes les cartes dans le GridContainer
 	for card in $Panel/MarginContainer2/ScrollContainer/GridContainer.get_children():
 		card.queue_free()  # Supprime proprement chaque carte
-	
+	AssassinMenue = false
 	# Lance l'animation "blur" à l'envers
 	$AnimationPlayer.play_backwards("blur")
 	paused = false
@@ -58,6 +59,8 @@ func instantiate_card(card_type: TYPES, card_color: String) -> void:
 # Fonction pour instancier toutes les cartes dans le GridContainer
 func instantiate_all_cards(zone_type: PlayZoneType) -> void:
 	# Récupère les PlayZones (ajuste les chemins si nécessaire)
+	if(AssassinMenue==true):
+		print("Il s'agit de l'assassin Menu")
 	var play_zone_joueur = get_node_or_null("/root/Main/PlayZone_Joueur")
 	var play_zone_ennemie = get_node_or_null("/root/Main/PlayZone_Ennemie")
 	var play_zone_grace = get_node_or_null("/root/Main/PlayZone_Grace")
@@ -92,7 +95,7 @@ func instantiate_all_cards(zone_type: PlayZoneType) -> void:
 				instantiate_card(card.card_type, card.card_color)
 		else:
 			print("CardSlot ", color, " non trouvé.")
-
+	
 
 
 func set_play_zone_type(zone_type: PlayZoneType):

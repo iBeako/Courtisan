@@ -3,7 +3,7 @@ class_name Card
 
 # Signals emitted when the card is hovered or the hover ends
 signal start_drag
-
+@onready var affichage_slot_card = get_node("/root/Main/slotMenuCanvas/SlotMenu")
 var is_hovered : bool = false
 var is_draggable : bool = true
 var is_dragging : bool = false
@@ -217,3 +217,17 @@ func card_placed():
 func _on_button_down() -> void:
 	if is_draggable:
 		start_drag.emit(self)
+
+
+func _gui_input(event):  # Pour Control
+	if event is InputEventMouseButton and event.pressed and affichage_slot_card.AssassinMenue == true:
+		print("Carte tuée :", self.name)
+
+		# Vérifie si c'est un Garde (ne peut pas être tué)
+		if self.card_type == TYPES.Garde:
+			print("Un garde ne peut pas être tué")
+
+		# Supprime la carte de la scène
+		queue_free()
+
+		affichage_slot_card.resume()
