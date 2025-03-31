@@ -22,10 +22,3 @@ static func loginAccount(email:String,password:String) :
 		"password" : strip_edges_password
 	}
 	return message
-
-static func hashData(data:String):
-	var hashContext = HashingContext.new()
-	hashContext.start(HashingContext.HASH_SHA256)
-	hashContext.update(data.to_utf8_buffer())
-	var hashed = hashContext.finish()
-	return hashed.hex_encode()

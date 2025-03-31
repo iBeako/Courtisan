@@ -1,51 +1,43 @@
-from fastapi import FastAPI, WebSocket
-
-app = FastAPI()
-
-@app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
-    await websocket.accept()
-    try:
-        while True:
-            data = await websocket.receive_json()  # Receive JSON message
-            print(f"Received: {data}")
-            response = {"message": "Received your data!", "data": data}
-            await websocket.send_json(response)  # Send a response
-    except Exception as e:
-        print("WebSocket error:", str(e))
-        await websocket.close()
-
-""" 
 from fastapi import FastAPI, HTTPException, WebSocket, Depends
 import cx_Oracle
-from sshtunnel import SSHTunnelForwarder  # pip install sshtunnel
+from sshtunnel import SSHTunnelForwarder
 from contextlib import contextmanager
 
 app = FastAPI()
 
-# SSH tunnel configuration for remote DB access
-SSH_HOST = 'vmProjetIntegrateur9-1'
+# Configuration SSH pour la VM distante avec clé privée
+SSH_HOST = 'vmProjetIntegrateur1'
 SSH_PORT = 22
-# Removed SSH_USER and SSH_PASSWORD for auto SSH connection via SSH config
+SSH_USERNAME = 'votre_utilisateur_ssh'  # Remplacez par votre nom d'utilisateur SSH
+SSH_PKEY = "/app/private.pem"  # Assurez-vous que le fichier private.pem est copié dans le container
 
-# Remote database configuration
+# Configuration de la base Oracle
 DB_USER = 'sys'
 DB_PASSWORD = '"C@uRT1$4n5"'
 DB_REMOTE_HOST = 'vmProjetIntegrateur9-1'
-DB_REMOTE_PORT = 1521  # ensure this port is correct for your Oracle DB
+DB_REMOTE_PORT = 1521
+DB_SERVICE_NAME = "orcl"  # à adapter selon votre service Oracle
 
 def get_db_connection():
-    # Establish SSH tunnel to the remote VM using your SSH config
+    # Utilisation de la clé privée pour l'authentification SSH
     tunnel = SSHTunnelForwarder(
         (SSH_HOST, SSH_PORT),
-        use_ssh_config=True,
+        ssh_username=SSH_USERNAME,
+        ssh_pkey=SSH_PKEY,
         remote_bind_address=(DB_REMOTE_HOST, DB_REMOTE_PORT)
     )
     tunnel.start()
     local_port = tunnel.local_bind_port
     dsn = f"127.0.0.1:{local_port}/{DB_SERVICE_NAME}"
-    connection = cx_Oracle.connect(DB_USER, DB_PASSWORD, dsn,mode=cx_Oracle.SYSDBA, encoding="UTF-8", nencoding="UTF-8")
-    # Attach the tunnel for later cleanup
+    connection = cx_Oracle.connect(
+        DB_USER,
+        DB_PASSWORD,
+        dsn,
+        mode=cx_Oracle.SYSDBA,
+        encoding="UTF-8",
+        nencoding="UTF-8"
+    )
+    # On attache le tunnel à la connexion pour pouvoir le fermer ensuite
     connection.tunnel = tunnel
     return connection
 
@@ -58,20 +50,20 @@ def get_db():
         connection.close()
         connection.tunnel.stop()
 
-# Business logic helper functions
 def insert_account(data: dict, connection):
     cursor = connection.cursor()
     query = """
-        #INSERT INTO users (username, email, password_hash, is_active, total_games_played)
-        #VALUES (:username, :email, :password_hash, :is_active, :total_games_played)
-"""
+        -- Exemple d'insertion (à décommenter et adapter si besoin)
+        -- INSERT INTO users (username, email, password_hash, is_active, total_games_played)
+        -- VALUES (:username, :email, :password_hash, :is_active, :total_games_played)
+    """
     cursor.execute(
         query,
-        username=data['login'],
-        email=data['email'],
-        password_hash=data['password'],
-        is_active=data['is_active'],
-        total_games_played=data['total_games_played']
+        username=data.get('login'),
+        email=data.get('email'),
+        password_hash=data.get('password'),
+        is_active=data.get('is_active'),
+        total_games_played=data.get('total_games_played')
     )
     connection.commit()
     cursor.close()
@@ -88,7 +80,14 @@ def get_account(email: str, connection):
     else:
         return {"message": "User not found."}
 
-# HTTP endpoints using dependency injection
+def get_all_users(connection):
+    cursor = connection.cursor()
+    query = "SELECT * FROM users"
+    cursor.execute(query)
+    results = cursor.fetchall()
+    cursor.close()
+    return results
+
 @app.post("/insert_database")
 async def insert_database(data: dict, connection=Depends(get_db)):
     try:
@@ -105,10 +104,16 @@ async def get_database(email: str, connection=Depends(get_db)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-# WebSocket endpoint: since dependency injection is not automatically applied here,
-# we create a new connection per operation using our context manager.
+@app.get("/get_all_users")
+async def get_all_users_endpoint(connection=Depends(get_db)):
+    try:
+        users = get_all_users(connection)
+        return {"users": users}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
+async def websocket_endpoint(websocket, connection=Depends(get_db)):
     await websocket.accept()
     try:
         while True:
@@ -128,7 +133,19 @@ async def websocket_endpoint(websocket: WebSocket):
     except Exception as e:
         await websocket.send_json({"status": "error", "message": str(e)})
         await websocket.close()
-""" 
+
+# Test en ligne de commande
 if __name__ == '__main__':
-    import uvicorn
-    uvicorn.run(app, host='0.0.0.0', port=12345)
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == 'test':
+        try:
+            with get_db() as connection:
+                users = get_all_users(connection)
+                print("Test réussi. Voici les utilisateurs:")
+                for user in users:
+                    print(user)
+        except Exception as e:
+            print("Test échoué:", e)
+    else:
+        import uvicorn
+        uvicorn.run(app, host='0.0.0.0', port=12345)

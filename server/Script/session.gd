@@ -1,5 +1,4 @@
 extends Node
-signal turn(turn)
 ## Fields of class
 
 # to enhance with the beta version with dynamic lobby

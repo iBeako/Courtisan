@@ -2,7 +2,7 @@ extends Node
 
 var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
 var db_peer: WebSocketPeer = WebSocketPeer.new()
-var db_url: String = "ws://127.0.0.1:12345"
+var db_url: String = "ws://127.0.0.1:12345/ws"
 var port: int = 10001
 const MAX_CLIENT: int = 2
 var number_of_client: int = 0
@@ -15,7 +15,7 @@ var tls_key: CryptoKey
 var server_tls_options
 var session = load("res://Script/session.gd").new(MAX_CLIENT) # a session specific to a port
 var global = preload("res://Script/global.gd").new()
-
+var HashPassword = preload("res://Script/password.gd")
 func _onready():
 	tls_key = load("res://certificates/private.key")
 	tls_cert = load("res://certificates/certificate.crt")
@@ -252,6 +252,7 @@ func insertDatabase(data: Dictionary):
 func getDatabase(data: Dictionary):
 	if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
 		var search = {
+			"action" = "get",
 			"email" = data["email"]
 		}
 		var json_string = JSON.stringify(search)
@@ -280,25 +281,28 @@ func validate_login(data: Dictionary) -> bool:
 	var client_data = await getDatabase(data)
 	
 	if client_data.has("password") and client_data.has("salt"):
-		var data_hashed = Account.new()
-		data_hashed.HashPassword(data["password"],client_data["salt"])
+		var data_hashed = HashPassword.HashPassword(data["password"],client_data["salt"])
 		if data_hashed == client_data["password"]:
 			return true
 	#if  data["password"] == "password":
 		#return true
 	return false
 
+func receive_all_lobby():
+	pass
+	
+func test_if_is_empty():
+	pass
+
 func connect_to_database():
 	var err = db_peer.connect_to_url(db_url)
+	var state = db_peer.get_ready_state()
+	while state == WebSocketPeer.STATE_CONNECTING:
+		state = db_peer.get_ready_state()
+		db_peer.poll()
 	if err == OK:
-		await get_tree().create_timer(5.0).timeout
-		print (db_peer.get)
 		if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
 			print("Connected to python API server!")
-			var data = {"message_type":"test","message":"hello_world"}
-			var json_string = JSON.stringify(data)  # Convert Dictionary to JSON string
-			db_peer.send_text(json_string)
-			print("Sent:", json_string)
 		else: 
 			print("no connection to database")
 	else:
