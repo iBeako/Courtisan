@@ -2,7 +2,7 @@ extends Control
 
 # Load the main game scene
 @onready var game = preload("res://Scene/main.tscn")
-
+@onready var join_game = preload("res://Join_game.tscn")
 # Load the parameter/settings scene
 @onready var param = preload("res://Scene/param.tscn")
 
@@ -32,3 +32,7 @@ func _on_play_mouse_entered() -> void:
 func _on_play_mouse_exited() -> void:
 	var tween = create_tween()
 	tween.tween_property($VBoxContainer/Play, "scale", Vector2(1,1), 0.2).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+
+
+func _on_join_button_down() -> void:
+	get_tree().change_scene_to_packed(join_game)
