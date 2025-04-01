@@ -1,8 +1,6 @@
 extends Node
 class_name MessageManager
 
-signal message_sent(message)
-
 signal card_played()
 
 const CARD_SCENE_PATH = "res://Scene/card.tscn"
@@ -93,5 +91,5 @@ func add_card_to_zone(card_color : String, card_type : int, area : int) -> void:
 
 
 func _send_message(message: Dictionary):
-	emit_signal("message_sent", message)
+	Network.send_message_to_server.rpc_id(1, message)
 	# Ici, vous pouvez ajouter la logique pour envoyer le message via le réseau

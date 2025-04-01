@@ -1,6 +1,8 @@
 extends Node
 signal error_card_played(message)
 
+@onready var game = preload("res://Scene/main.tscn")
+
 enum family {
 	butterfly = 0,
 	frog = 1,
@@ -14,6 +16,28 @@ var card_types = ["normal", "noble", "spy", "guard", "assassin"]
 var families = ["butterfly", "frog", "bird", "bunny", "deer", "fish"]
 enum PlayZoneType {PLAYER, ENEMY, FAVOR, DISFAVOR}
 
+#connexion:
+#{"message_type:"connexion","login":"login","password":"password"}
+#create_account:
+#{"message_type":"create_account","username":"username","email":"email",password":"password","is_active": 0,	"total_games_played" : 0"pic_profile":0}
+#id:
+#{"message_type":"id","your_id":}
+#change_profile
+#{"message_type:"change_profile","username":"username","pic_profile":1}
+
+#find_lobby:
+#{"message_type:"find_lobby"}
+#create_lobby:
+#{"message_type:"create_lobby","id_player":id,"name":"name","number_of_player":number_of_player,"have_password":1}
+#{"message_type:"create_lobby","id_player":id,"name":"name","number_of_player":number_of_player,"have_password":0,"password":"password"}
+#join_lobby:
+#{"message_type:"join_lobby","id_lobby":id_lobby}
+#{"message_type:"join_lobby","id_lobby":id_lobby,"password":"password"}
+#start_lobby:
+#{"message_type:"start_lobby","id_lobby":id_lobby}
+#quit_lobby:
+#{"message_type:"quit_lobby","id_lobby":id_lobby,id_player":id}
+
 #card_played:
 #{"message_type":"card_played","player":1,"card_type":"normal","family":"deer","area":"queen_table","position":1} card in the light
 #{"message_type":"card_played","player":1,"card_type":"normal","family":"deer","area":"queen_table","position":-1} card out of favor
@@ -21,22 +45,13 @@ enum PlayZoneType {PLAYER, ENEMY, FAVOR, DISFAVOR}
 #{"message_type":"card_played","player":1,"card_type":"normal","family":"deer","area":"domain","id_player_domain":"2"}
 #action:
 #{"message_type":"action","player":1,"card_type":"assassin","family":"deer",area":"queen_table","card_killed_type":"normal","card_killed_family":"deer"}
-#{"message_type":"action","player":1,"card_type":"spy","family":"deer",area":"our_domain"}
-#{"message_type":"action","player":1,"card":78,"card_type":"spy","family":"deer","area":"adversary_domain","id_adversary":"2""}
-#table:
-#{"message_type":"table","area":"queen_table","position":1,"card_type":"normal","family":"deer"}
-#{"message_type":"table","area":"domain","player":1,"card_type":"normal","family":"deer"}
 #message:
 #{"message_type":"message","player":1,"message":1}
-#id:
-#{"message_type":"id","your_id":}
 #error:
 #{"message_type":"error","error_type":"action"} -> unknown action : ask to redo action
 #{"message_type":"error","error_type":"message"} ->  unknown message: do nothing
 #{"message_type":"error","error_type":"connection"} -> connection not down: no connection
 #{"message_type":"error","error_type":"command"} -> unknown command : do nothing
-#connexion:
-#{"message_type:"connexion","login":"login","password":"password"}
 #player_turn:
 #{"message_type:"player_turn","id_player":id}
 
@@ -46,14 +61,18 @@ var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
 var port: int = 10001
 #var address: String = "wss://185.155.93.105:%d" % port #connection to VM when connected to eduroam or osiris
 var address: String = "wss://localhost:%d" % port
-var turn_player
-var deck_reference
-var message_manager
-var id: int
-var username
 var tls_options
 
+var turn_player: int
+var id_lobby: int
+var in_game = false
 
+var deck_reference
+var message_manager
+
+var id: int
+var username
+var game_started = false
 
 func _ready():
 	var client_trusted_cas = load("res://certificates/certificate.crt")
@@ -61,27 +80,17 @@ func _ready():
 	peer.create_client(address, client_tls_options)
 	multiplayer.multiplayer_peer = peer
 	print("Client connected to server at %s" % address)
-	message_manager = $"/root/Main/MessageManager"
-	message_manager.connect("message_sent", Callable(self, "_on_message_sent"))
-	deck_reference = $"/root/Main/Deck"
+	
 	
 func close_connection():
 	if peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
 		peer.close()
 		print("Client connection closed")
 
-func _on_message_sent(message: Dictionary) -> void:
-	send_message_to_server.rpc_id(1, message)
-
-
 @rpc("any_peer")
 func send_message_to_server(data: Dictionary):
 	print("error cannot receive this type of message only server can")
 	print(" ", data)
-	#var sender_id = multiplayer.get_remote_sender_id()
-	#print("Client %d sent a %s" % [data.player, data.message_type])
-	#print(" ", data)
-	#process_message(data)
 	
 @rpc("authority")
 func send_message_to_peer(data: Dictionary):
@@ -105,49 +114,74 @@ func send_message_to_everyone(data : Dictionary):
 		else:
 			print("error send_message_to_peer")
 			
-			
 func process_message(data:Dictionary):
-	if data["message_type"] == "id":
-		id = data.your_id
-	elif data["message_type"] == "card_played":
-		process_card_played(data)
-	elif data["message_type"] == "message":
-		put_message_in_chat(data)	
-	elif  data["message_type"] == "table":
-		process_table(data)
-	elif data["message_type"] == "error":
-		process_error(data)
-	elif data["message_type"] == "connexion":
+	if data["message_type"] == "connexion":
 		process_connexion(data)
-	elif data["message_type"] == "player_turn":
-		print("player turn : ", data)
-		deck_reference.number_of_cards = data["number_of_cards"]
-		turn_player = data["id_player"]
-	elif data["message_type"] == "hand":
-		hand.clear()
-		var cards = [
-			["first_card_family", "first_card_type"],
-			["second_card_family", "second_card_type"],
-			["third_card_family", "third_card_type"]
-		]
-
-		for card in cards:
-			var new_card = [data[card[0]], data[card[1]]]
-			hand.append(new_card)
-			
-		print("CLIENT : As player ",id,", I received hand : ", hand)
-		deck_reference.draw_cards(hand)
+	elif data["message_type"] == "create_account":
+		print("account created")
+	elif data["message_type"] == "all lobby":
+		print("...")
+	elif data["message_type"] == "join_lobby":
+		id_lobby = data["id_lobby"]
+		id = data["id_player"]
+		print("....")
+	elif data["message_type"] == "start_game":
+		in_game = true
+		get_tree().change_scene_to_packed(game)
+		if_start_game()
+	elif data["message_type"] == "quit_game":
+		in_game = false
+		if_end_game()
+		
+	elif in_game == true:
+		if data["message_type"] == "card_played":
+			process_card_played(data)
+		elif data["message_type"] == "message":
+			put_message_in_chat(data)	
+		elif data["message_type"] == "error":
+			process_error(data)
+		elif data["message_type"] == "player_turn":
+			print("player turn : ", data)
+			deck_reference.number_of_cards = data["number_of_cards"]
+			turn_player = data["id_player"]
+		elif data["message_type"] == "hand":
+			hand.clear()
+			var cards = [
+				["first_card_family", "first_card_type"],
+				["second_card_family", "second_card_type"],
+				["third_card_family", "third_card_type"]
+			]
+			for card in cards:
+				var new_card = [data[card[0]], data[card[1]]]
+				hand.append(new_card)
+				
+			print("CLIENT : As player ",id,", I received hand : ", hand)
+			deck_reference.draw_cards(hand)
+		else:
+			print("invalid message")
 	else:
 		print("invalid message")
 		
+	
 func on_create_Account(login:String,email:String,password:String):
-	var account = Account.createAccount(login,email,password)
-	send_message_to_server.rpc_id(1,account)
+	var message = Account.createAccount(login,email,password)
+	send_message_to_server.rpc_id(1,message)
 	
 func on_login_Account(email:String,password:String):
-	var account = Account.loginAccount(email,password)
-	send_message_to_server.rpc_id(1,account)
+	var message = Account.loginAccount(email,password)
+	send_message_to_server.rpc_id(1,message)
 
+func change_profile_picture(login:String,picture_id:int):
+	var message = Account.changePic(login,picture_id)
+	send_message_to_server.rpc_id(1,message)
+	
+func if_start_game():
+	message_manager = $"/root/Main/MessageManager"
+	deck_reference = $"/root/Main/Deck"
+
+func if_end_game():
+	message_manager.clear()
+	deck_reference.clear()
 		
 func put_message_in_chat(_data:Dictionary):
 	pass
@@ -165,7 +199,6 @@ func process_card_played(data:Dictionary):
 			writting_message = writting_message + data["id_adversary"]
 	print(writting_message)
 	if data["player"] != id:
-		
 		message_manager.add_card_to_zone(data["family"],data["card_type"],data["area"])
 		
 func get_hand() -> Array:
@@ -203,9 +236,6 @@ func _play_card( type_card, family, area, id_domain: int = -1):
 	send_message_to_server(message)
 
 
-func process_table(_data:Dictionary):
-	pass
-
 func process_connexion(data:Dictionary):
 	username = data["login"]
 	id = data["id"]
@@ -214,7 +244,7 @@ func process_connexion(data:Dictionary):
 func process_error(data:Dictionary):
 	
 	if data["error_type"] == "unconnected":
-		print("error on password or loggin, retry")
+		print("error on password or login, retry")
 	if data["error_type"] == "card_played":
 		print("card can not be played")
 		emit_signal("error_card_played", data)
