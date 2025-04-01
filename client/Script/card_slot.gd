@@ -23,13 +23,26 @@ func _ready() -> void:
 func determine_zone_type() -> PlayZoneType:
 	return get_parent().Play_ZoneType  # Get the play zone type from the parent node
 
-# Function to remove a card from the slot
 func remove_card(card: Card) -> void:
-	if card in cards_in_slot:
-		cards_in_slot.erase(card)  # Remove the card from the list
-		update_card_positions()  # Update the positions of remaining cards
-		#print("Card count updated")  # Uncomment if needed
-		print("Card removed from ", self.name, ". Remaining cards: ", cards_in_slot.size())
+	# Afficher la carte à supprimer
+	print("=== Tentative de suppression ===")
+	# Deuxième parcours pour la suppression
+	var found = false
+	for c in cards_in_slot:
+		print(c.name)
+		print(card.name)
+		if (c.TYPES == card.TYPES and card.card_colors == c.card_colors):
+			found = true
+			print("Avant suppression : ", cards_in_slot)
+			cards_in_slot.erase(c)
+			print("Après suppression : ", cards_in_slot)
+			print("Carte supprimée de ", self.name, ". Restantes : ", cards_in_slot.size())
+			break
+	
+	if not found:
+		print("Échec : aucune carte correspondante trouvée dans le slot (ID cible : ", card.get_instance_id(), ")")
+
+
 
 # Function to reposition cards after one is removed
 func update_card_positions() -> void:

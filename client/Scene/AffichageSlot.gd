@@ -43,7 +43,7 @@ func _on_resume_pressed() -> void:
 	#instantiate_all_cards(play_zone_type)
 
 # Fonction pour instancier une carte et l'ajouter au GridContainer
-func instantiate_card(card_type: TYPES, card_color: String) -> void:
+func instantiate_card(card_type: TYPES, card_color: String, parent_slot: CardSlot) -> void:
 	# Précharge la scène de la carte
 	var card_scene = preload("res://Scene/card.tscn")
 	
@@ -52,15 +52,19 @@ func instantiate_card(card_type: TYPES, card_color: String) -> void:
 	card_instance.custom_minimum_size = Vector2(164, 300)  # Définit la taille minimale de la carte
 	card_instance.card_color = card_color  # Assigne la couleur de la carte
 	card_instance.card_type = card_type  # Assigne le type de la carte
+	card_instance.parent_slot = parent_slot
+	
 	
 	# Ajoute la carte au GridContainer dans le menu
 	$Panel/MarginContainer2/ScrollContainer/GridContainer.add_child(card_instance)
 
 # Fonction pour instancier toutes les cartes dans le GridContainer
+# Fonction pour instancier toutes les cartes dans le GridContainer
 func instantiate_all_cards(zone_type: PlayZoneType) -> void:
 	# Récupère les PlayZones (ajuste les chemins si nécessaire)
-	if(AssassinMenue==true):
+	if AssassinMenue == true:
 		print("Il s'agit de l'assassin Menu")
+		
 	var play_zone_joueur = get_node_or_null("/root/Main/PlayZone_Joueur")
 	var play_zone_ennemie = get_node_or_null("/root/Main/PlayZone_Ennemie")
 	var play_zone_grace = get_node_or_null("/root/Main/PlayZone_Grace")
@@ -86,15 +90,34 @@ func instantiate_all_cards(zone_type: PlayZoneType) -> void:
 			print("Erreur : Type de PlayZone invalide!")
 			return
 
+	# Vérifie que la PlayZone est bien définie
+	if play_zone == null:
+		print("❌ Erreur : PlayZone invalide ! Impossible d'instancier les cartes.")
+		return
+
 	# Parcourt chaque couleur dans la liste des couleurs possibles
 	for color in CARD_COLORS:
 		var card_slot = play_zone.get_node_or_null(color)  # Trouve le CardSlot par couleur
 		
-		if card_slot:  # Si le CardSlot existe
-			for card in card_slot.cards_in_slot:
-				instantiate_card(card.card_type, card.card_color)
-		else:
-			print("CardSlot ", color, " non trouvé.")
+		if card_slot == null:
+			print("⚠ CardSlot non trouvé pour la couleur :", color)
+			continue  # Passe à la prochaine couleur
+
+		if card_slot.cards_in_slot.is_empty():
+			print("ℹ Aucun carte dans le slot :", color)
+			continue  # Passe au prochain slot
+
+		# Instancie toutes les cartes présentes dans le slot
+		for card in card_slot.cards_in_slot:
+			if card == null:
+				print("⚠ Erreur : Une carte dans", color, "est NULL, vérifie ton code !")
+				continue
+			card.parent_slot = card_slot
+			instantiate_card(card.card_type, card.card_color,card.parent_slot)
+			
+
+	print("✅ Toutes les cartes ont été instanciées.")
+
 	
 
 

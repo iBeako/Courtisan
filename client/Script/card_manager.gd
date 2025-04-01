@@ -106,7 +106,6 @@ func end_drag():
 			
 			# Add the card to the play zone
 			card_zone_found.add_card(card_is_dragged)
-			
 			if card_is_dragged.card_type == TYPES.Espion:
 				card_is_dragged.hide_card()
 			can_play[id_can_play] = 0  # Mark the zone as played
