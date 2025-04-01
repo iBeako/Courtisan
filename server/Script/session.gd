@@ -27,11 +27,13 @@ var global = preload("res://Script/global.gd").new()
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
 ## On creation of session
-func _init(_player_max: int = 2) -> void:
-	self.session_id = 12345
+func _init(id_session:int,_player_max: int,name: String) -> void:
+	self.session_id = id_session
 	self.player_max = _player_max
+	self.name = name
+	self.player.append()
 	self.current_player_id = 0 # could be picked radomly or from connection order
-	card_stack._set_card_number(_player_max)
+	self.card_stack._set_card_number(player_max)
 	print("Initilization of a new session success")
 	card_stack.print_stack_state()
 
@@ -53,7 +55,7 @@ func _add_player(_id_peer) -> int:
 		[[], [], []], # current cards in hands
 	] )
 	clients_peer.append(_id_peer)
-	print("Client '", _id_peer, "' registered as Player ", count_players)
+	print("Client '", _id_peer, "' registered as Player '", count_players, "' in session ", session_id)
 	return count_players # id tab is 0 but id is 1
 
 # PRECOND : Lobby must not be empty

@@ -116,7 +116,7 @@ async def get_all_users_endpoint(connection=Depends(get_db)):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.websocket("/ws")
-async def websocket_endpoint(websocket, connection=Depends(get_db)):
+async def websocket_endpoint(websocket):
     await websocket.accept()
     try:
         while True:

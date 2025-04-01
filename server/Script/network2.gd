@@ -1,0 +1,171 @@
+extends Node
+
+var db_peer: WebSocketPeer = WebSocketPeer.new()
+var db_url: String = "ws://pdocker:12345/ws"
+
+var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
+var port: int = 10001
+
+const MAX_CLIENT: int = 2
+var number_of_client: int = 0
+
+var return_database: String = ""
+var clients = []
+
+var tls_cert: X509Certificate
+var tls_key: CryptoKey
+var server_tls_options
+
+var session = []
+var number_of_session: int = 0
+#load("res://Script/session.gd").new(MAX_CLIENT) # a session specific to a port
+var global = preload("res://Script/global.gd").new()
+var HashPassword = preload("res://Script/password.gd")
+
+
+
+
+
+
+func _onready():
+	tls_key = load("res://certificates/private.key")
+	tls_cert = load("res://certificates/certificate.crt")
+	server_tls_options = TLSOptions.server(tls_key, tls_cert)
+
+func _ready():
+	_onready()
+	#peer.create_server(port, "0.0.0.0", server_tls_options) #connection to VM when connected to eduroam or osiris
+	peer.create_server(port, "*", server_tls_options)
+	multiplayer.multiplayer_peer = peer
+	multiplayer.peer_connected.connect(_on_peer_connected)
+	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+	print("Server started and listening on port %d" % port)
+	connect_to_database()
+
+func _process(_delta):
+	if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
+		db_peer.poll()
+		while db_peer.get_available_packet_count() > 0:
+			var packet = db_peer.get_packet()
+			return_database = packet.get_string_from_utf8()
+			
+func _on_peer_disconnected(peer_id: int):
+	var client_indice
+	for i in range(number_of_client):
+		if clients[i]["peer_id"] == peer_id:
+			client_indice = i
+	clients.remove_at(client_indice)
+	number_of_client -= 1
+
+func _on_peer_connected(peer_id: int):
+	print("New client connected with id: %d" % peer_id)
+	clients[number_of_client] = {
+		"peer_id":peer_id,
+		"status":"unlogged",
+		"session_id":-1,
+		"id_client_in_game":-1
+	}
+	number_of_client += 1
+
+func connect_to_database():
+	await get_tree().create_timer(5.0).timeout
+	var err = db_peer.connect_to_url(db_url)
+	var state = db_peer.get_ready_state()
+	while state == WebSocketPeer.STATE_CONNECTING:
+		state = db_peer.get_ready_state()
+		db_peer.poll()
+	if err == OK:
+		if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
+			print("Connected to python API server!")
+		else: 
+			print("no connection to database")
+	else:
+		print("Failed to connect to python API server")
+
+func getDatabase(data: Dictionary):
+	if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
+		var json_string = JSON.stringify(data)
+		db_peer.send_text(json_string)
+		var timeout = 5.0
+		var elapsed = 0.0
+		while elapsed < timeout:
+			db_peer.poll()
+			if return_database != "":
+				break
+			await get_tree().create_timer(0.1).timeout
+			elapsed += 0.1
+		if return_database != "":
+			var response = JSON.parse_string(return_database)
+			return_database = ""
+			if response != null:
+				return response
+			else:
+				return {"message_type":"error","error_type":"JSON_parse"}
+		return {"message_type":"error","error_type":"database_connexion"}
+
+func validate_login(data: Dictionary) -> bool:
+	var client_data = await getDatabase(data)
+	if client_data.has("password") and client_data.has("salt"):
+		var data_hashed = HashPassword.HashPassword(data["password"],client_data["salt"])
+		if data_hashed == client_data["password"]:
+			return true
+	#if  data["password"] == "password":
+		#return true
+	return false
+	
+func login(data: Dictionary,client_number:int):
+	if await validate_login(data):
+		var login_success_data = {
+			"message_type" = "connexion",
+			"login" = data["login"],
+			"id" = client_number
+		}
+		clients[client_number]["status"] = "connected"
+		send_message_to_peer.rpc_id(multiplayer.get_remote_sender_id(),login_success_data)
+	else:
+		var error_login = {
+			"message_type" = "error",
+			"error_type" = "login",
+		}
+		send_message_to_peer.rpc_id(multiplayer.get_remote_sender_id(),error_login)
+
+func insertDatabase(data: Dictionary):
+	if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
+		var json_string = JSON.stringify(data)
+		db_peer.send_text(json_string)
+		
+@rpc("any_peer")
+func send_message_to_server(data: Dictionary):
+	if data != null and data.has("message_type"):
+		var sender_id = multiplayer.get_remote_sender_id()
+		var i = find_indice_client(sender_id)
+		if i != -1 and clients[i]["status"] == "connected":
+			print("Client %d sent a %s", [data["player"], data["message_type"]])
+			print(" ", data)
+			if clients[i]["session_id"] != -1:
+				process_message(data,sender_id,i)
+			else:
+				process_message_lobby(data,sender_id)
+		elif data["message_type"] == "connexion":
+			login(data,i)
+		elif data["message_type"] == "createAccount":
+			insertDatabase(data)
+		else:
+			var error_login = {
+			"message_type" = "error",
+			"error_type" = "unconnected",
+		}
+			send_message_to_peer.rpc_id(sender_id,error_login)
+			
+	else:
+		print("error send_message_to_server")
+
+@rpc("authority")
+func send_message_to_peer(data: Dictionary):
+	print("error cannot receive this type of message only client can")
+	print(" ", data)
+
+@rpc("authority")
+func send_message_to_everyone(data : Dictionary):
+	print("error cannot receive this type of message only client can")
+	print(" ", data)
