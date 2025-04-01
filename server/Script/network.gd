@@ -295,6 +295,7 @@ func test_if_is_empty():
 	pass
 
 func connect_to_database():
+	await get_tree().create_timer(5.0).timeout
 	var err = db_peer.connect_to_url(db_url)
 	var state = db_peer.get_ready_state()
 	while state == WebSocketPeer.STATE_CONNECTING:
