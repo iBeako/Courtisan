@@ -105,10 +105,6 @@ func end_drag():
 			message_manager_reference.send_card_played(player_id, card_is_dragged.card_type, card_is_dragged.card_color, area)
 			
 			# Add the card to the play zone
-			card_zone_found.add_card(card_is_dragged)
-			if card_is_dragged.card_type == TYPES.Espion:
-				card_is_dragged.hide_card()
-			can_play[id_can_play] = 0  # Mark the zone as played
 			if card_is_dragged.card_type == TYPES.Assassin:
 				print("Assassin")
 				affichage_slot_card.AssassinMenue = true
@@ -116,6 +112,10 @@ func end_drag():
 				affichage_slot_card.pause()  # Affiche le menu
 				affichage_slot_card.instantiate_all_cards(affichage_slot_card.play_zone_type)  # Charge les cartes
 				
+			card_zone_found.add_card(card_is_dragged)
+			if card_is_dragged.card_type == TYPES.Espion:
+				card_is_dragged.hide_card()
+			can_play[id_can_play] = 0  # Mark the zone as played
 				
 		else:
 			# If the player can't play in this zone, return the card to their hand

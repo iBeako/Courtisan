@@ -26,20 +26,38 @@ func determine_zone_type() -> PlayZoneType:
 func remove_card(card: Card) -> void:
 	# Afficher la carte à supprimer
 	print("=== Tentative de suppression ===")
-	# Deuxième parcours pour la suppression
+	
+	# Variable pour vérifier si la carte a été trouvée
 	var found = false
+	
+	# Parcourt les cartes dans le slot pour trouver celle à supprimer
 	for c in cards_in_slot:
-		print(c.name)
-		print(card.name)
-		if (c.TYPES == card.TYPES and card.card_colors == c.card_colors):
-			found = true
+		print("Carte actuelle : ", c.name)
+		print("Carte cible : ", card.name)
+		
+		# Vérifie si les propriétés correspondent (TYPES et card_colors)
+		if (c.TYPES == card.TYPES and c.card_colors == card.card_colors):
+			found = true  # La carte a été trouvée
+			
+			# Affiche l'état avant suppression
 			print("Avant suppression : ", cards_in_slot)
+			
+			# Supprime la carte de la liste
 			cards_in_slot.erase(c)
+			
+			# Affiche l'état après suppression
 			print("Après suppression : ", cards_in_slot)
 			print("Carte supprimée de ", self.name, ". Restantes : ", cards_in_slot.size())
-			if cards_in_slot.is_empty():
-				c.queue_free()
-			break
+			
+			# Supprime visuellement la carte
+			c.queue_free()
+			
+			# Met à jour le label après suppression
+			update_count_label(1)  # Passez 1 si vous voulez recalculer normalement
+			
+			break  # Arrête la boucle une fois la carte trouvée et supprimée
+	
+	# Si aucune carte correspondante n'a été trouvée
 	if not found:
 		print("Échec : aucune carte correspondante trouvée dans le slot (ID cible : ", card.get_instance_id(), ")")
 
