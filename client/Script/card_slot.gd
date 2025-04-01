@@ -37,8 +37,9 @@ func remove_card(card: Card) -> void:
 			cards_in_slot.erase(c)
 			print("Après suppression : ", cards_in_slot)
 			print("Carte supprimée de ", self.name, ". Restantes : ", cards_in_slot.size())
+			if cards_in_slot.is_empty():
+				c.queue_free()
 			break
-	
 	if not found:
 		print("Échec : aucune carte correspondante trouvée dans le slot (ID cible : ", card.get_instance_id(), ")")
 
