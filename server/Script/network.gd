@@ -2,7 +2,7 @@ extends Node
 
 var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
 var db_peer: WebSocketPeer = WebSocketPeer.new()
-var db_url: String = "ws://127.0.0.1:12345/ws"
+var db_url: String = "ws://pdocker:12345/ws"
 var port: int = 10001
 const MAX_CLIENT: int = 2
 var number_of_client: int = 0

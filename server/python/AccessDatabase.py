@@ -120,19 +120,10 @@ async def websocket_endpoint(websocket, connection=Depends(get_db)):
     await websocket.accept()
     try:
         while True:
-            data = await websocket.receive_json()
-            action = data.get("action")
-            if action == "insert":
-                with get_db() as connection:
-                    response = insert_account(data, connection)
-                await websocket.send_json(response)
-            elif action == "get":
-                email = data.get("email")
-                with get_db() as connection:
-                    response = get_account(email, connection)
-                await websocket.send_json(response)
-            else:
-                await websocket.send_json({"message": "Unknown action"})
+            data = await websocket.receive_json()  # Receive JSON message
+            print(f"Received: {data}")
+            response = {"message": "Received your data!", "data": data}
+            await websocket.send_json(response)  # Send a response
     except Exception as e:
         await websocket.send_json({"status": "error", "message": str(e)})
         await websocket.close()
