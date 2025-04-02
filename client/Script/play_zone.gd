@@ -20,7 +20,7 @@ func update_player(id_p : int, name_p : String, id_img : int):
 	name_player = name_p
 	id_img = id_image
 	
-	$Control/Label.text=name_player
+	$VBoxContainer/Label.text=name_player
 
 # Function to adjust labels' orientation for the player zone
 func adjust_labels() -> void:

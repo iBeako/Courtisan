@@ -172,6 +172,7 @@ func process_card_played(data:Dictionary):
 	if data["player"] != id:
 		
 		message_manager.add_card_to_zone(data["family"],data["card_type"],data["area"])
+		print("----",data)
 		
 func get_hand() -> Array:
 	return hand

@@ -82,7 +82,7 @@ func add_card_to_zone(card_color : String, card_type : int, area : int, id_playe
 		0:
 			zone = $"../PlayZone_Joueur"
 		1:
-			zone = $"../PlayZone"
+			zone = get_parent().search_zone_by_id(id_player)
 		2:
 			zone = $"../PlayZone_Grace"
 		3:

@@ -26,8 +26,7 @@ var zone_pos = {
 	]
 }
 
-
-
+var zones : Array
 
 func _ready() -> void:
 	client = load("res://Script/network.gd").new()
@@ -35,7 +34,7 @@ func _ready() -> void:
 	await get_tree().create_timer(3.0).timeout
 	var login = {"message_type":"connexion","login":"login","password":"password"}
 	client.send_message_to_server.rpc_id(1,login)
-	print(create_zones([0,-1]))
+	zones=create_zones([0,-1])
 
 func create_zones(id_players : Array[int]) -> Array:
 	if id_players.size() < 2: return []
@@ -49,7 +48,7 @@ func create_zones(id_players : Array[int]) -> Array:
 		var zone : PlayZone = zone_scene.instantiate()
 		zone.position = Vector2(z.x, z.y)
 		zone.rotation_degrees = z.rotate
-		zone.id_player = id_players[i]
+		zone.update_player(id_players[i], "nametest", 0)
 		zone.Play_ZoneType = PlayZone.PlayZoneType.Ennemie
 		zone.scale = Vector2(0.8, 0.8)
 		print(zone.Play_ZoneType)
@@ -57,3 +56,9 @@ func create_zones(id_players : Array[int]) -> Array:
 		list_zones.append(zone)
 	
 	return list_zones
+
+func search_zone_by_id(id : int):
+	for z in zones:
+		if z.id_player == id:
+			return z
+	return null
