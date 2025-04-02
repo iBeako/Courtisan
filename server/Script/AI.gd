@@ -8,6 +8,7 @@ var network: Node
 var session: Node
 var global = preload("res://Script/global.gd").new()
 
+
 func _ready() -> void:
 	print("AI takes turn as player ",id_player)
 	network = get_parent()
@@ -15,63 +16,71 @@ func _ready() -> void:
 	check_move()
 	
 func check_move() :
-	check_turn()
+	if session.check_status() :
+		if check_turn() :
+			print("<<<<<<<<<<<<<<<<<<")
+			play()
+			print(">>>>>>>>>>>>>>>>>>")
 	
 func check_turn() :
 	if session.check_player_turn(id_player) :
-		play()
+		return true
 	else :
-		print("AI wait turn")
-		
+		return false
+	
 func play() :
 	var zones = [0,1,2,3]
+	zones.shuffle()
 	for card in session.players[id_player][7] :
 		if card[0] == true :
 			var zone = zones.pop_front()
+			if  (zone == 2 and zones.find(3) == -1) or (zone == 3 and zones.find(2) == -1) : 
+				break
 			var id_enemy = -1
 			if zone == 1 :
 				id_enemy = (id_player+1)%session.players.size()
-			if session.place_card(id_player, zone, card[2][0], card[2][1], id_enemy) and session.check_player_turn(id_player):
-				broadcast(card[2][0], card[2][1], zone, id_enemy)
-				await get_tree().create_timer(3.0).timeout
-		else :
-			zones.erase(card[1])
-	check_end()
-	await get_tree().create_timer(3.0).timeout
-
-func broadcast(card_type: int, family: String, area: int, id_enemy: int):
+			send_action_to_server(id_player, zone, card[2][0], card[2][1], id_enemy)
+		zones.erase(card[1])
+	
+func send_action_to_server(id_player, area, card_type, card_family, id_player_domain) :
 	var message = {
 		"message_type": "card_played",
 		"player": id_player,
 		"card_type": card_type,
-		"family": family,
+		"family": card_family,
 		"area": area
 	}
-	if area == 1: # cas ou joue chez un joueur
-		message["id_player_domain"] = id_enemy
-	network.send_message_to_everyone.rpc(message)
+	if area == 1: # case in player's domain
+		message["id_player_domain"] = id_player_domain
+	if card_type == 1 : # card is assassin
+		message["message_type"] = "action"
+		var card = get_card_to_remove(id_player, area, id_player_domain)
+		print(card)
+		if card != [] and card != null:
+			message["target_family"] = card[1]
+			message["id_card"] = 0
+	print(message)
+	network.process_message(message, 1)
 
-func check_end():
-	if session.check_end_game() :
-		var scores = session.get_final_score()
-		print(scores)
-		network.send_message_to_everyone.rpc(scores)
-		status = false
-
-	elif session.check_next_player(id_player) :
-		_get_hand_cards_for_AI()
-		var turn = {"message_type":"player_turn","id_player":session.current_player_id}
-		print("turn :" ,turn["id_player"])
-		network.send_message_to_everyone.rpc(turn)
-		
-
-func _get_hand_cards_for_AI() :
-	if !session.card_stack._no_more_card_in_stack():
-		var cards = session.card_stack._retrieve_three_cards()
-		session.players[id_player][7][0] = ([true, -1, cards[0]])
-		session.players[id_player][7][1] = ([true, -1, cards[1]])
-		session.players[id_player][7][2] = ([true, -1, cards[2]])
+func get_card_to_remove(id_player, area, id_player_domain):
+	if area == global.PlayZoneType.FAVOR :
+		for i in range(7) :
+			if !session.queen_table[i][0].is_empty() :
+				return session.queen_table[i][0][0]
+	elif area == global.PlayZoneType.DISFAVOR :
+		for i in range(7) :
+			if !session.queen_table[i][1].is_empty() :
+				return session.queen_table[i][1][0]
+	elif area == global.PlayZoneType.PLAYER :
+		for i in range(7) :
+			if !session.players[id_player][i].is_empty() :
+				return session.players[id_player][i][0]
+	elif area == global.PlayZoneType.ENEMY :
+		for i in range(7) :
+			if !session.players[id_player_domain][i].is_empty() :
+				return session.players[id_player_domain][i][0]
+	else :
+		printerr("get_card_to_remove : No area selected")
 
 func _process(_delta):
-	if session.check_player_turn(id_player) and status == true:
-		play()
+	check_move()

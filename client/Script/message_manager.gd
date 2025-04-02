@@ -18,24 +18,19 @@ func send_card_played(player: int, card_type: int, family: String, area: int, id
 
 	if area == 1: # cas ou joue chez un joueur
 		message["id_player_domain"] = id_player_domain
-	
 	_send_message(message)
 
-func send_action(player: int, card_type: int, family: String, area: String, card_killed_type: String = "", card_killed_family: String = "", id_adversary: String = ""):
+func send_action(player: int, id_card: int, family: String, area: String, card_killed_type: String = "", card_killed_family: String = "", id_adversary: String = ""):
 	# uniquement appelee lorsqu'un assassin est joue
 	
 	var message = {
 		"message_type": "action",
 		"player": player,
-		"card_type": card_type,
-		"family": family,
-		"area": area
+		"id_card": id_card, # -1 if no card to remove
+		"family": family, # if a spy change into "Spy" in purpus to do not revele the family
+		"area": area,
+		"target_family": family
 	}
-	
-	
-	message["card_killed_type"] = card_killed_type
-	message["card_killed_family"] = card_killed_family
-
 	_send_message(message)
 
 #func send_table_update(area: String, card_type: String, family: String, position: int = 0, player: int = 0):

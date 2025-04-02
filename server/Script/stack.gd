@@ -25,7 +25,7 @@ func _set_card_number(player_max: int) -> void:
 	elif player_max == 5 :
 		card_number = 90
 	else :
-		print("Error : number of player invalid")
+		printerr("Error : number of player invalid")
 
 func _get_card_number():
 	return card_stack.size()

@@ -15,6 +15,8 @@ var tls_key: CryptoKey
 var server_tls_options
 var session = load("res://Script/session.gd").new(MAX_CLIENT) # a session specific to a port
 var global = preload("res://Script/global.gd").new()
+
+var AI_class = load("res://Script/AI.gd")
 var AIs = []
 
 func _onready():
@@ -45,7 +47,7 @@ func _process(_delta):
 func _on_peer_disconnected(peer_id: int):
 	var _id = clients_peer.find(peer_id)
 	print("Player ", _id, " has disconnected")
-	var AI = load("res://Script/AI.gd").new()
+	var AI = AI_class.new()
 	AI.id_player = _id
 	AI.id_AI = AIs.size()
 	add_child(AI)
@@ -73,6 +75,9 @@ func _on_peer_connected(peer_id: int):
 			"your_id"= session._add_player(peer_id)
 		}
 		send_message_to_peer.rpc_id(peer_id,data_id)
+		
+		number_of_client += 1
+		
 		if session.check_game_start():
 			session.load_game() # load game of the session
 			_send_cards_set_to_each_player()
@@ -80,8 +85,6 @@ func _on_peer_connected(peer_id: int):
 			print("turn :" ,turn["id_player"])
 			send_message_to_everyone.rpc(turn)
 			
-		number_of_client += 1
-		
 		
 		
 		
@@ -149,17 +152,31 @@ func process_message(data : Dictionary,sender_id:int):
 				"message_type" = "error",
 				"error_type" = "card_played"
 			}
-			send_message_to_peer.rpc_id(sender_id,error_message)	
+			send_message_to_peer.rpc_id(sender_id,error_message)
+	elif data["message_type"] == "action":
+		if _validate_action(data):
+			send_message_to_everyone.rpc(data)
+		else:
+			var error_message = {
+				"message_type" = "error",
+				"error_type" = "action"
+			}
+			send_message_to_peer.rpc_id(sender_id,error_message)
 	else:
 		print("invalid message")
 		
+	if sender_id == 1 : # if AI sent message
+		check_turn(data["player"])
+	else :
+		check_turn(find_lobby_number_client(sender_id))
+	
+func check_turn(id_player) -> void :
 	if session.check_end_game() :
 		var scores = session.get_final_score()
 		print(scores)
 		send_message_to_everyone.rpc(scores)
-
-	elif session.check_next_player(find_lobby_number_client(sender_id)) :
-		_send_hand_cards_to_a_player(sender_id)
+	elif session.check_next_player(id_player) :
+		_send_hand_cards_to_a_player(clients[id_player]["peer_id"])
 		var turn = {"message_type":"player_turn","id_player":session.current_player_id}
 		print("turn :" ,turn["id_player"])
 		send_message_to_everyone.rpc(turn)
@@ -172,11 +189,11 @@ func _send_cards_set_to_each_player():
 		_send_mission_to_a_player(peer_id)
 	
 func _send_hand_cards_to_a_player(peer_id):
-	var cards_as_dict = session.distribute_hand_cards(clients_peer.find(peer_id))
+	var cards_as_dict = session.distribute_hand_cards(find_lobby_number_client(peer_id))
 	send_message_to_peer.rpc_id(peer_id,cards_as_dict)
 
 func _send_mission_to_a_player(peer_id):
-	var mission_as_dict = session.distribute_missions(clients_peer.find(peer_id))
+	var mission_as_dict = session.distribute_missions(find_lobby_number_client(peer_id))
 	send_message_to_peer.rpc_id(peer_id,mission_as_dict)
 
 
@@ -188,40 +205,42 @@ func _validate_message(message: Dictionary) -> bool:
 
 func _validate_card_played(message: Dictionary) -> bool:
 	
+	if message.has("id_player_domain") :
+		message["id_player_domain"] = (message["player"]+1)%2
+	
 	# The game has not yet begun
 	if session.check_status() == false :
-		print("SERVER - Error : The game has not yet begun")
+		printerr("SERVER - Error : The game has not yet begun")
 		return false
 		
 	else :
 		var is_valid_action = true
-
 		# message has the good format
 		is_valid_action = is_valid_action and ( message.has("area") and message.has("card_type") and message.has("family") and message.has("player") )
 		if  !is_valid_action :
-			print("SERVER - Error : message has not right format")
+			printerr("SERVER - Error : message has not right format")
 			return false
 			
 		if  message.has("id_player_domain") and !session.check_id_player_domain(message["id_player_domain"]):
-			print("SERVER - Error : adversary id is the player or does not exist")
+			printerr("SERVER - Error : adversary id is the player or does not exist")
 			return false
 			
 		# validate action if it is the good player that have played the card (same client id and same game id)
 		is_valid_action = is_valid_action and session.check_player_turn(message["player"])
 		if !is_valid_action :
-			print("SERVER - Error : Wrong player who is currently playing")
+			printerr("SERVER - Error : Wrong player who is currently playing")
 			return false
 		
 		# player has a card in hand and it is the right card
 		is_valid_action = is_valid_action and session.check_player_hand(message["player"], message["card_type"], message["family"])
 		if !is_valid_action :
-			print("SERVER - Error : Player has no card or wrong one")
+			printerr("SERVER - Error : Player has no card or wrong one")
 			return false
 		
 		# he did not put a card in the same area in the turn
 		is_valid_action = is_valid_action and session.check_player_area(message["player"], message["area"])
 		if !is_valid_action :
-			print("SERVER - Error : Player can play this card in this area again")
+			printerr("SERVER - Error : Player can play this card in this area again")
 			return false
 		
 		if is_valid_action :
@@ -231,9 +250,24 @@ func _validate_card_played(message: Dictionary) -> bool:
 				session.place_card(message["player"], message["area"], message["card_type"], message["family"])
 			elif message["area"] == 1:
 				session.place_card(message["player"], message["area"], message["card_type"], message["family"], message["id_player_domain"])
-
+	
 		
-	return true	
+	return true
+	
+	
+func _validate_action(message: Dictionary) -> bool:
+	var is_valid = true
+	
+	if message["area"] == 1:
+		print("_validate_action: area == 1")
+		is_valid = is_valid and session.remove_card(message["player"], message["area"], message["id_card"], message["family"], message["target_family"], message["id_player_domain"])
+	else :
+		print("_validate_action: area != 1")
+		is_valid = is_valid and session.remove_card(message["player"], message["area"], message["id_card"], message["family"], message["target_family"])
+	
+	if is_valid :
+		return true
+	return false
 
 func _process_error(_data: Dictionary):
 	pass

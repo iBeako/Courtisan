@@ -170,8 +170,8 @@ func distribute_missions(player_id:int) -> Dictionary:
 
 # checking
 func check_id_player_domain(id_player_domain: int) :
-	return id_player_domain == -1
-	#return (id_player_domain >= 0 and id_player_domain < players.size()) and id_player_domain != current_player_id
+	#return id_player_domain == -1
+	return (id_player_domain >= 0 and id_player_domain < players.size()) and id_player_domain != current_player_id
 	#when more than 1 player
 
 # Check player id regarding a session
@@ -201,28 +201,26 @@ func place_card(_id_player: int, _area: int, _card_type: int, _family: String, _
 	
 	if _area == global.PlayZoneType.FAVOR or _area == global.PlayZoneType.DISFAVOR :
 		var pos = 0 if _area == global.PlayZoneType.FAVOR else 1
-		print("SERVER : Action saved as card placed at Queen's table ", global.play_zone_type[_area])
 		if _card_type == 2 : # case is spy
 			queen_table[6][pos].append([_card_type, _family])
 		else :
 			queen_table[global.families.find(_family)][pos].append([_card_type, _family])		
+		print("SERVER : Action saved as card placed at Queen's table ", global.play_zone_type[_area])
 	elif _area == global.PlayZoneType.PLAYER:
-		print("SERVER : Action saved as card placed in player's domain")
 		if _card_type == 2 : # case is spy
 			players[_id_player][6].append([_card_type, _family])
 		else :
 			players[_id_player][global.families.find(_family)].append([_card_type, _family])
+		print("SERVER : Action saved as card placed in player's domain")
 				
 	elif _area == global.PlayZoneType.ENEMY:
-		print("SERVER : Action saved as card placed in enemy's domain ", _id_player_domain)
-		# to change 
-		var id = (_id_player + 1)%players.size()
 		if _card_type == 2 : # case is spy
-			players[id][6].append([_card_type, _family])
+			players[_id_player_domain][6].append([_card_type, _family])
 		else :
-			players[id][global.families.find(_family)].append([_card_type, _family])
+			players[_id_player_domain][global.families.find(_family)].append([_card_type, _family])
+		print("SERVER : Action saved as card placed in enemy's domain ", _id_player_domain)
 	else :
-		print("SERVER - Error : wrong area name")
+		printerr("SERVER - Error : wrong area name")
 		return false
 	
 	for card in players[_id_player][7] :
@@ -248,10 +246,74 @@ func place_card(_id_player: int, _area: int, _card_type: int, _family: String, _
 	display_session_status()
 	return true
 	
+	
+# implementation with id card
+func remove_card(_id_player: int, _target_area: int, _target_id_card: int, _assassin_family: String, _target_family: String, _id_player_domain: int = -1) -> bool:
+	var card = [] # only for debbuging
+	print("remove_card:")
+	if _target_id_card != -1 :
+		if _target_area == global.PlayZoneType.FAVOR or _target_area == global.PlayZoneType.DISFAVOR :
+			var pos = 0 if _target_area == global.PlayZoneType.FAVOR else 1
+			if _target_family == "Spy" : # case is spy
+				##----------------------------------------------
+				queen_table[6][pos].pop_at(_target_id_card)
+				##----------------------------------------------
+			else :
+				##----------------------------------------------
+				card = queen_table[global.families.find(_target_family)][pos][_target_id_card]
+				if card[0] == 3: 
+					return false
+				queen_table[global.families.find(_target_family)][pos].pop_at(_target_id_card)
+				##----------------------------------------------
+			print("SERVER : One card removed from queen's table ", global.play_zone_type[_target_area])
+		elif _target_area == global.PlayZoneType.PLAYER:
+			if _target_family == "Spy" : # case is spy
+				##----------------------------------------------
+				players[_id_player][6].pop_at(_target_id_card)
+				##----------------------------------------------
+			else :
+				##----------------------------------------------
+				card = players[_id_player][global.families.find(_target_family)][_target_id_card]
+				if card[0] == 3: 
+					return false
+				players[_id_player][global.families.find(_target_family)].pop_at(_target_id_card)
+				##----------------------------------------------
+				
+			print("SERVER : One card removed in player's domain")
+					
+		elif _target_area == global.PlayZoneType.ENEMY:
+			# to change 
+			var id = (_id_player + 1)%players.size()
+			if _target_family == "Spy" : # case is spy
+				##----------------------------------------------
+				players[id][6].pop_at(_target_id_card)
+				##----------------------------------------------
+			else :
+				##----------------------------------------------
+				card = players[id][global.families.find(_target_family)][_target_id_card]
+				if card[0] == 3: 
+					return false
+				players[id][global.families.find(_target_family)].pop_at(_target_id_card)
+				##----------------------------------------------
+			print("SERVER : One card removed in enemy's domain ", _id_player_domain)
+		else :
+			print("SERVER - Error : wrong area name")
+			return false
+			
+		print("removed : [", card[0]," ,", card[1],"]")
+	
+	#----------------------------------------------
+	## Place assasin card in right place
+	place_card(_id_player, _target_area, 1, _assassin_family, _id_player_domain)
+	##----------------------------------------------
+
+	
+	return true
+	
 func check_next_player(player_id) -> bool :
 	return current_player_id != player_id
 	
-
+	
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
