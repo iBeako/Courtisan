@@ -127,7 +127,7 @@ func apply_particle_color():
 	# DUPLIQUER le matériau pour éviter qu’il soit partagé entre toutes les cartes
 	particles.process_material = particles.process_material.duplicate()
 
-	var material : Material = particles.process_material  # Récupérer le matériau unique
+	var mat : Material = particles.process_material  # Récupérer le matériau unique
 
 	# Création d'un dégradé de couleur
 	var gradient = Gradient.new()
@@ -138,7 +138,7 @@ func apply_particle_color():
 	gradient_texture.gradient = gradient
 
 	# Appliquer le dégradé au matériau des particules
-	material.set("color_ramp", gradient_texture)
+	mat.set("color_ramp", gradient_texture)
 
 	# Redémarrer les particules pour voir les changements
 	particles.emitting = false
@@ -210,6 +210,7 @@ func dragging(val : bool):
 func card_placed():
 	shadow.visible = false
 	is_draggable = false
+	$CardPlacedSound.play()
 	$AnimationPlayer.stop()
 	
 

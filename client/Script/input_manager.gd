@@ -23,10 +23,10 @@ func _input(event):
 	# Handle left mouse button events
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
-			emit_signal("left_mouse_button_clicked")
+			left_mouse_button_clicked.emit()
 			raycast_at_cursor()
 		else:
-			emit_signal("left_mouse_button_released")
+			left_mouse_button_released.emit()
 	#
 	# Handle Escape key press to return to the main menu
 	if event is InputEventKey:

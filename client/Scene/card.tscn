@@ -1,8 +1,9 @@
-[gd_scene load_steps=25 format=3 uid="uid://bq3favtvip0wd"]
+[gd_scene load_steps=26 format=3 uid="uid://bq3favtvip0wd"]
 
 [ext_resource type="Script" path="res://Script/card.gd" id="1_rh58d"]
 [ext_resource type="Texture2D" uid="uid://fhkf5psmaq6c" path="res://dingbats-489.png" id="2_5fdet"]
 [ext_resource type="Texture2D" uid="uid://dc7jese687boj" path="res://Assets/dos_carte.jpg" id="3_rg1yq"]
+[ext_resource type="AudioStream" uid="uid://ixajgg8jyxnl" path="res://Assets/536764__egomassive__toss.ogg" id="4_lpq4m"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_es0fm"]
 
@@ -187,6 +188,9 @@ expand_mode = 3
 libraries = {
 "": SubResource("AnimationLibrary_2pvps")
 }
+
+[node name="CardPlacedSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_lpq4m")
 
 [connection signal="button_down" from="." to="." method="_on_button_down"]
 [connection signal="button_up" from="." to="." method="_on_button_up"]
