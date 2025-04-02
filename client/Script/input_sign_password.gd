@@ -1,6 +1,6 @@
 extends PanelContainer
 
-@onready var btn : TextureButton = $MarginContainer/HBoxContainer/MarginContainer/HideButton
+@onready var btn : TextureButton = $MarginContainer/HBoxContainer/HideButton
 
 @onready var txt : LineEdit = $MarginContainer/HBoxContainer/LineEdit
 

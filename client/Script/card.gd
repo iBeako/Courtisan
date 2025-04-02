@@ -8,6 +8,8 @@ var is_hovered : bool = false
 var is_draggable : bool = true
 var is_dragging : bool = false
 
+var base_scale : Vector2 = Vector2(1,1) #scale de base de la carte (pour la sortie du hover)
+
 # Enum for different card types
 enum TYPES {
 	Normal,
@@ -19,28 +21,28 @@ enum TYPES {
 
 var palette_courtisans = {
 	"rossignols": {
-		"light": "#EF9E84",  # Rouge clair
-		"dark": "#960C2B"    # Rouge foncé
+		"light": "#CA2D48",  # Rouge clair
+		"dark": "#920F29"    # Rouge foncé
 	},
 	"cerfs": {
-		"light": "#219B66",  # Vert olive
-		"dark": "#113C28"    # Vert foncé
+		"light": "#177456",  # Vert olive
+		"dark": "#133C26"    # Vert foncé
 	},
 	"carpes": {
-		"light": "#909DCC",  # Bleu acier
-		"dark": "#375F7B"    # Bleu foncé
+		"light": "#4875B1",  # Bleu acier
+		"dark": "#3A5977"    # Bleu foncé
 	},
 	"lièvres": {
-		"light": "#F2D368",  # Or
-		"dark": "#CA9516"    # Brun doré
+		"light": "#F0BC30",  # Or
+		"dark": "#D39814"    # Brun doré
 	},
 	"crapauds": {
-		"light": "#B5B359",  # Vert clair
-		"dark": "#6C7226"    # Vert forêt
+		"light": "#8D911F",  # Vert clair
+		"dark": "#6A7826"    # Vert forêt
 	},
 	"papillons": {
-		"light": "#D8E6E5",  # Gris clair
-		"dark": "#949C97"    # Gris foncé
+		"light": "#B0C5C4",  # Gris clair
+		"dark": "#9C9C96"    # Gris foncé
 	}
 }
 
@@ -175,7 +177,6 @@ func _on_mouse_entered() -> void:
 	if not is_draggable : return 
 	print("entered")
 	is_hovered = true
-	emit_signal("hovered", self)
 	if tween_hover and tween_hover.is_running():
 		tween_hover.kill()
 	tween_hover = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
@@ -186,14 +187,13 @@ func _on_mouse_entered() -> void:
 func _on_mouse_exited() -> void:
 	if is_dragging : return
 	is_hovered = false
-	emit_signal("hovered_off", self)
 	# Reset rotation
 	if tween_rot and tween_rot.is_running():
 		tween_rot.kill()
 	tween_rot = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK).set_parallel(true)
 	tween_rot.tween_property(sprite.material, "shader_parameter/x_rot", 0.0, 0.5)
 	tween_rot.tween_property(sprite.material, "shader_parameter/y_rot", 0.0, 0.5)
-	shadow.scale = Vector2(1, 1)
+	shadow.scale = base_scale
 	
 	
 	# Reset scale

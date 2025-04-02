@@ -5,6 +5,7 @@ var paused : bool = false
 var menu_scene : PackedScene = load("res://Scene/menu_principal.tscn")
 
 func _ready() -> void:
+	hide()
 	resume()
 
 func resume():

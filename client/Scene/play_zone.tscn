@@ -1,7 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://c64rbytxpt4j6"]
+[gd_scene load_steps=11 format=3 uid="uid://c64rbytxpt4j6"]
 
 [ext_resource type="PackedScene" uid="uid://hxhhmah7l5fw" path="res://Scene/card_slot.tscn" id="1_bpis3"]
 [ext_resource type="Script" path="res://Script/play_zone.gd" id="1_ofgpd"]
+[ext_resource type="Texture2D" uid="uid://c2ernukex2t6p" path="res://Assets/icon.svg" id="3_76t8h"]
+[ext_resource type="FontFile" uid="uid://dim3hkmopleo2" path="res://Assets/Mighty Souly.otf" id="3_oaquq"]
+[ext_resource type="Texture2D" uid="uid://bst24vriteyae" path="res://Assets/Rectangle 122.png" id="4_jlrvx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t84a7"]
 size = Vector2(728, 180)
@@ -19,6 +22,20 @@ corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rmrrx"]
+texture = ExtResource("4_jlrvx")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1b24u"]
+bg_color = Color(0.741176, 0.592157, 0.12549, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+expand_margin_top = 5.0
+expand_margin_right = 5.0
+expand_margin_bottom = 5.0
 
 [node name="PlayZone" type="Node2D"]
 script = ExtResource("1_ofgpd")
@@ -66,3 +83,26 @@ position = Vector2(562, 90)
 
 [node name="Espions" parent="." instance=ExtResource("1_bpis3")]
 position = Vector2(662, 90)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_left = 762.0
+offset_top = 2.0
+offset_right = 890.0
+offset_bottom = 174.0
+pivot_offset = Vector2(64, 86)
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_oaquq")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxTexture_rmrrx")
+text = "Hello"
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1b24u")
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/PanelContainer"]
+layout_mode = 2
+texture = ExtResource("3_76t8h")

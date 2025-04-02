@@ -80,6 +80,9 @@ func add_card(card: Card) -> void:
 		var tween_pos: Tween = get_tree().create_tween().set_ease(Tween.EASE_IN)
 		tween_pos.tween_property(card, "global_position", target_position, 0.2)
 		
+		card.base_scale = self.scale
+		card.scale = self.scale
+		
 		# Disable card's collision shape to prevent unwanted interactions
 		if card.has_node("Area2D/CollisionShape2D"):
 			card.get_node("Area2D/CollisionShape2D").disabled = true

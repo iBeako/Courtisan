@@ -32,11 +32,10 @@ var zone_pos = {
 func _ready() -> void:
 	client = load("res://Script/network.gd").new()
 	add_child(client)
-	#await get_tree().create_timer(3.0).timeout
+	await get_tree().create_timer(3.0).timeout
 	var login = {"message_type":"connexion","login":"login","password":"password"}
 	client.send_message_to_server.rpc_id(1,login)
-	#await get_tree().create_timer(2.0).timeout
-	print(create_zones([1,2,3,4,5]))
+	print(create_zones([0,-1]))
 
 func create_zones(id_players : Array[int]) -> Array:
 	if id_players.size() < 2: return []
@@ -52,6 +51,7 @@ func create_zones(id_players : Array[int]) -> Array:
 		zone.rotation_degrees = z.rotate
 		zone.id_player = id_players[i]
 		zone.Play_ZoneType = PlayZone.PlayZoneType.Ennemie
+		zone.scale = Vector2(0.8, 0.8)
 		print(zone.Play_ZoneType)
 		add_child(zone)
 		list_zones.append(zone)

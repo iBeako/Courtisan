@@ -96,7 +96,7 @@ func end_drag():
 		# Check if the player can still play in this zone
 		if can_play[id_can_play] == 1:
 			# Send a message to the server about the played card
-			message_manager_reference.send_card_played(player_id, card_is_dragged.card_type, card_is_dragged.card_color, area)
+			message_manager_reference.send_card_played(player_id, card_is_dragged.card_type, card_is_dragged.card_color, area, card_zone_found.id_player if area == 1 else -1)
 			
 			# Add the card to the play zone
 			card_zone_found.add_card(card_is_dragged)
