@@ -1,34 +1,72 @@
 extends Control
 
-# Load the main game scene
+# Scènes
 @onready var game = preload("res://Scene/main.tscn")
-
-# Load the parameter/settings scene
+@onready var join_game = preload("res://Join_game.tscn")
 @onready var param = preload("res://Scene/param.tscn")
 
-# Function triggered when the Start button is pressed
-func _on_start_button_button_down() -> void:
-	# Change to the game scene
+# Configuration manuelle des pivots (exemple pour Play)
+func _ready():
+	$Control/VBoxContainer/Play.pivot_offset = Vector2(300, 50)
+	$Control/VBoxContainer/Join.pivot_offset = Vector2(300, 50)
+	$Control/VBoxContainer/Button.pivot_offset = Vector2(300, 50)
+	$Control/VBoxContainer/Rule.pivot_offset = Vector2(300, 50)
+	$Control/VBoxContainer/QuitButton.pivot_offset = Vector2(300, 50)
+
+# Fonction d'animation réutilisable
+func animate_button(button_path: String, target_scale: Vector2):
+	var button = get_node(button_path)
+	var tween = create_tween()
+	tween.tween_property(button, "scale", target_scale, 0.2)\
+		.set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+
+# Handlers pour Play
+func _on_play_mouse_entered():
+	animate_button("Control/VBoxContainer/Play", Vector2(1.1, 1.1))
+
+func _on_play_mouse_exited():
+	animate_button("Control/VBoxContainer/Play", Vector2(1, 1))
+
+# Handlers pour Join
+func _on_join_mouse_entered():
+	animate_button("Control/VBoxContainer/Join", Vector2(1.1, 1.1))
+
+func _on_join_mouse_exited():
+	animate_button("Control/VBoxContainer/Join", Vector2(1, 1))
+
+# Handlers pour Button
+func _on_button_mouse_entered():
+	animate_button("Control/VBoxContainer/Button", Vector2(1.1, 1.1))
+
+func _on_button_mouse_exited():
+	animate_button("Control/VBoxContainer/Button", Vector2(1, 1))
+
+# Handlers pour Rule
+func _on_rule_mouse_entered():
+	animate_button("Control/VBoxContainer/Rule", Vector2(1.1, 1.1))
+
+func _on_rule_mouse_exited():
+	animate_button("Control/VBoxContainer/Rule", Vector2(1, 1))
+
+# Handlers pour QuitButton
+func _on_quit_button_mouse_entered():
+	animate_button("Control/VBoxContainer/QuitButton", Vector2(1.1, 1.1))
+
+func _on_quit_button_mouse_exited():
+	animate_button("Control/VBoxContainer/QuitButton", Vector2(1, 1))
+
+# Gestion des clics (conservée comme avant)
+func _on_start_button_button_down():
 	get_tree().change_scene_to_packed(game)
 
-# Function triggered when the Quit button is pressed
-func _on_quit_button_button_down() -> void:
-	# Quit the game
+func _on_quit_button_button_down():
 	get_tree().quit()
 
-# Function triggered when another button (presumably for settings) is pressed
-func _on_button_button_down() -> void:
-	# Print the parameter scene reference (for debugging purposes)
-	print(param)
-	# Change to the parameter/settings scene
+func _on_button_button_down():
 	get_tree().change_scene_to_packed(param)
 
+func _on_join_button_down():
+	get_tree().change_scene_to_packed(join_game)
 
-func _on_play_mouse_entered() -> void:
-	var tween = create_tween()
-	tween.tween_property($VBoxContainer/Play, "scale", Vector2(1.1,1.1), 0.2).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
-
-
-func _on_play_mouse_exited() -> void:
-	var tween = create_tween()
-	tween.tween_property($VBoxContainer/Play, "scale", Vector2(1,1), 0.2).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+func _on_rule_button_down():
+	pass  # À implémenter si besoin

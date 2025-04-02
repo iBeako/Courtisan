@@ -23,13 +23,45 @@ func _ready() -> void:
 func determine_zone_type() -> PlayZoneType:
 	return get_parent().Play_ZoneType  # Get the play zone type from the parent node
 
-# Function to remove a card from the slot
 func remove_card(card: Card) -> void:
-	if card in cards_in_slot:
-		cards_in_slot.erase(card)  # Remove the card from the list
-		update_card_positions()  # Update the positions of remaining cards
-		#print("Card count updated")  # Uncomment if needed
-		print("Card removed from ", self.name, ". Remaining cards: ", cards_in_slot.size())
+	# Afficher la carte à supprimer
+	print("=== Tentative de suppression ===")
+	
+	# Variable pour vérifier si la carte a été trouvée
+	var found = false
+	
+	# Parcourt les cartes dans le slot pour trouver celle à supprimer
+	for c in cards_in_slot:
+		print("Carte actuelle : ", c.name)
+		print("Carte cible : ", card.name)
+		
+		# Vérifie si les propriétés correspondent (TYPES et card_colors)
+		if (c.TYPES == card.TYPES and c.card_colors == card.card_colors):
+			found = true  # La carte a été trouvée
+			
+			# Affiche l'état avant suppression
+			print("Avant suppression : ", cards_in_slot)
+			
+			# Supprime la carte de la liste
+			cards_in_slot.erase(c)
+			
+			# Affiche l'état après suppression
+			print("Après suppression : ", cards_in_slot)
+			print("Carte supprimée de ", self.name, ". Restantes : ", cards_in_slot.size())
+			
+			# Supprime visuellement la carte
+			c.queue_free()
+			
+			# Met à jour le label après suppression
+			update_count_label(1)  # Passez 1 si vous voulez recalculer normalement
+			
+			break  # Arrête la boucle une fois la carte trouvée et supprimée
+	
+	# Si aucune carte correspondante n'a été trouvée
+	if not found:
+		print("Échec : aucune carte correspondante trouvée dans le slot (ID cible : ", card.get_instance_id(), ")")
+
+
 
 # Function to reposition cards after one is removed
 func update_card_positions() -> void:
@@ -43,6 +75,7 @@ func update_card_positions() -> void:
 
 # Function to update the count label based on the number of cards
 func update_count_label(value : int) -> int:  # 'value' is used to adjust the count based on special card effects
+	print()
 	if count_label:
 		var cpt: int = 0
 
@@ -58,7 +91,8 @@ func update_count_label(value : int) -> int:  # 'value' is used to adjust the co
 		else:
 			$PanelContainer.hide()
 			
-		
+		for card in cards_in_slot:
+			print("Card Name: ", card.name, ", Card Value: ", card.get_value())  # Adjust based on your card properties
 		return cpt
 	else:
 		print("CountLabel not found in CardSlot: ", self.name)

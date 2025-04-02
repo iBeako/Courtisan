@@ -30,6 +30,12 @@ var can_play: Array[int] = [1, 1, 1]
 # Enum des types de zones de jeu
 enum PlayZoneType { Joueur, Ennemie, Grace, Disgrace }
 
+@onready var affichage_slot_card = get_node("/root/Main/slotMenuCanvas/SlotMenu")
+var play_zone_joueur = get_node_or_null("/root/Main/PlayZone_Joueur")
+var play_zone_ennemie = get_node_or_null("/root/Main/PlayZone_Ennemie")
+var play_zone_grace = get_node_or_null("/root/Main/PlayZone_Grace")
+var play_zone_disgrace = get_node_or_null("/root/Main/PlayZone_Disgrace")
+
 # Références aux autres nodes avec typage
 @onready var input_manager_reference: Node = $"../inputManager"
 @onready var player_hand_reference: PlayerHand = $"../PlayerHand"
@@ -99,10 +105,18 @@ func end_drag():
 			message_manager_reference.send_card_played(player_id, card_is_dragged.card_type, card_is_dragged.card_color, area)
 			
 			# Add the card to the play zone
+			if card_is_dragged.card_type == TYPES.Assassin:
+				print("Assassin")
+				affichage_slot_card.AssassinMenue = true
+				affichage_slot_card.set_play_zone_type(card_zone_found.Play_ZoneType)
+				affichage_slot_card.pause()  # Affiche le menu
+				affichage_slot_card.instantiate_all_cards(affichage_slot_card.play_zone_type)  # Charge les cartes
+				
 			card_zone_found.add_card(card_is_dragged)
 			if card_is_dragged.card_type == TYPES.Espion:
 				card_is_dragged.hide_card()
 			can_play[id_can_play] = 0  # Mark the zone as played
+				
 		else:
 			# If the player can't play in this zone, return the card to their hand
 			player_hand_reference.add_card_to_hand(card_is_dragged)
@@ -151,8 +165,6 @@ func check_zone() -> PlayZone:
 			#highest_z_index = current_card.z_index
 			#highest_z_card = current_card
 	#return highest_z_card
-
-# Function triggered when the left mouse button is released
 
 
 

@@ -6,18 +6,12 @@ extends Control
 
 
 
-func _on_sign_in_switch() -> void:
-	#changer de page pour aller au sign in
-	tab.current_tab = 0
+func _ready() -> void:
+	signup.connect("switch_tab", switch_tab)
+	signin.connect("switch_tab", switch_tab)
 
 
-func _on_sign_up_switch() -> void:
-	tab.current_tab = 1
+func switch_tab() -> void:
+	print("received emit")
 
-
-func _on_sign_up_send() -> void:
-	print(signup.send_infos())
-
-
-func _on_sign_in_send() -> void:
-	print(signin.send_infos())
+	tab.current_tab = (tab.current_tab + 1) % tab.get_tab_count()
