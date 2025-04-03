@@ -71,6 +71,7 @@ func add_card(card: Card) -> void:
 	
 	# Add card to the zone
 	cards_in_zone.append(card)
+
 	var card_slot : CardSlot = find_card_slot(card.card_color, card.card_type)
 	
 	if card_slot:
@@ -107,7 +108,7 @@ func add_card(card: Card) -> void:
 		card.parent_slot = card_slot
 		print("✅ parent_slot assigné :", card.parent_slot)
 	else:
-		print("Failed to add card: CardSlot not found")
+		print("Failed to add card: CardSlot not found",card.card_color, card.card_type)
 
 # Function to update labels (not implemented yet)
 func update_labels(emit_signal : bool = true, values : Dictionary = {}) -> Dictionary:
