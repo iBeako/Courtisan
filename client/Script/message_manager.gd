@@ -68,7 +68,11 @@ func send_error(error_type: String):
 	}
 	_send_message(message)
 
+<<<<<<< HEAD
 func add_card_to_zone(card_color : String, card_type : int, area : int) -> void:
+=======
+func add_card_to_zone(card_color : String, card_type : int, area : int, id_player : int = -1) -> void:
+>>>>>>> feat/multijoueur_a_5
 	var card_scene = preload(CARD_SCENE_PATH)
 
 	var new_card : Card = card_scene.instantiate()  # Instancier la carte
@@ -82,7 +86,11 @@ func add_card_to_zone(card_color : String, card_type : int, area : int) -> void:
 		0:
 			zone = $"../PlayZone_Joueur"
 		1:
+<<<<<<< HEAD
 			zone = $"../PlayZone_Ennemie"
+=======
+			zone = get_parent().search_zone_by_id(id_player)
+>>>>>>> feat/multijoueur_a_5
 		2:
 			zone = $"../PlayZone_Grace"
 		3:

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 [gd_scene load_steps=12 format=3 uid="uid://bw6ntenrqw1vi"]
+=======
+[gd_scene load_steps=16 format=3 uid="uid://bw6ntenrqw1vi"]
+>>>>>>> feat/multijoueur_a_5
 
 [ext_resource type="Script" path="res://Script/main.gd" id="1_q15hj"]
 [ext_resource type="Texture2D" uid="uid://yn6givliy0yr" path="res://Assets/background_board.png" id="2_racv5"]
@@ -11,17 +15,34 @@
 [ext_resource type="Script" path="res://Script/input_manager.gd" id="9_327nj"]
 [ext_resource type="PackedScene" uid="uid://dpfp7ed8iupiu" path="res://Scene/play_zone_board.tscn" id="10_gln5c"]
 [ext_resource type="Script" path="res://Script/message_manager.gd" id="11_oehsl"]
+<<<<<<< HEAD
+=======
+[ext_resource type="PackedScene" uid="uid://c6pe3aj31r8w2" path="res://Scene/pause_menu.tscn" id="12_j7emy"]
+[ext_resource type="PackedScene" uid="uid://bh50trycnjge0" path="res://Scene/taskbar.tscn" id="13_aom1t"]
+[ext_resource type="PackedScene" uid="uid://dyjc6rpnebosj" path="res://Scene/controlParam.tscn" id="14_7ujh6"]
+[ext_resource type="PackedScene" uid="uid://cmahvw0fibdqa" path="res://Scene/AffichageSlotCard.tscn" id="15_dc6ue"]
+>>>>>>> feat/multijoueur_a_5
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_q15hj")
 
 [node name="TextureRect" type="TextureRect" parent="."]
+<<<<<<< HEAD
 custom_minimum_size = Vector2(1920, 1080)
+=======
+z_index = -10
+custom_minimum_size = Vector2(1920, 1080)
+offset_right = 1920.0
+offset_bottom = 1080.0
+>>>>>>> feat/multijoueur_a_5
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("2_racv5")
 expand_mode = 3
+<<<<<<< HEAD
 metadata/_edit_use_anchors_ = true
+=======
+>>>>>>> feat/multijoueur_a_5
 
 [node name="Board" type="Sprite2D" parent="."]
 visible = false
@@ -33,24 +54,33 @@ position = Vector2(960.344, 540)
 scale = Vector2(0.667542, 0.815217)
 texture = ExtResource("8_ffjsa")
 
+<<<<<<< HEAD
 [node name="PlayZone_Ennemie" parent="." instance=ExtResource("8_0gqd0")]
 light_mask = 2
 visibility_layer = 2
 position = Vector2(368, 48)
 Play_ZoneType = 1
 
+=======
+>>>>>>> feat/multijoueur_a_5
 [node name="PlayZone_Joueur" parent="." instance=ExtResource("8_0gqd0")]
 light_mask = 2
 visibility_layer = 2
 position = Vector2(777, 868)
 
 [node name="PlayZone_Grace" parent="." instance=ExtResource("10_gln5c")]
+<<<<<<< HEAD
 visible = false
+=======
+>>>>>>> feat/multijoueur_a_5
 position = Vector2(459, 381)
 Play_ZoneType = 2
 
 [node name="PlayZone_Disgrace" parent="." instance=ExtResource("10_gln5c")]
+<<<<<<< HEAD
 visible = false
+=======
+>>>>>>> feat/multijoueur_a_5
 position = Vector2(459, 539)
 Play_ZoneType = 3
 
@@ -61,9 +91,14 @@ script = ExtResource("2_rmro5")
 script = ExtResource("5_e645g")
 
 [node name="Deck" parent="." instance=ExtResource("8_asgfb")]
+<<<<<<< HEAD
 position = Vector2(166, 489)
 rotation = -0.509042
 scale = Vector2(1.2, 1.2)
+=======
+position = Vector2(341, 546)
+rotation = -0.509042
+>>>>>>> feat/multijoueur_a_5
 
 [node name="inputManager" type="Node2D" parent="."]
 script = ExtResource("9_327nj")
@@ -71,4 +106,32 @@ script = ExtResource("9_327nj")
 [node name="MessageManager" type="Node2D" parent="."]
 script = ExtResource("11_oehsl")
 
+<<<<<<< HEAD
 [node name="Network" type="Node2D" parent="."]
+=======
+[node name="Taskbar" parent="." instance=ExtResource("13_aom1t")]
+offset_left = 635.0
+offset_top = 301.0
+offset_right = 635.0
+offset_bottom = 301.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("12_j7emy")]
+
+[node name="Control" parent="." instance=ExtResource("14_7ujh6")]
+offset_right = 1858.0
+offset_bottom = 155.0
+
+[node name="slotMenuCanvas" type="CanvasLayer" parent="."]
+
+[node name="SlotMenu" parent="slotMenuCanvas" instance=ExtResource("15_dc6ue")]
+visible = false
+offset_left = -419.0
+offset_top = -17.0
+offset_right = -379.0
+offset_bottom = 23.0
+
+[connection signal="child_entered_tree" from="CardManager" to="CardManager" method="_on_child_entered_tree"]
+>>>>>>> feat/multijoueur_a_5

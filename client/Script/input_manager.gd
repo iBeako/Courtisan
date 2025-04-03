@@ -13,7 +13,11 @@ var card_manager_reference
 var deck_reference
 
 # Load the main menu scene
+<<<<<<< HEAD
 var menu_scene : PackedScene = load("res://Scene/menu_principal.tscn")
+=======
+
+>>>>>>> feat/multijoueur_a_5
 
 func _ready() -> void:
 	# Initialize references to CardManager and Deck
@@ -23,6 +27,7 @@ func _input(event):
 	# Handle left mouse button events
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
+<<<<<<< HEAD
 			emit_signal("left_mouse_button_clicked")
 			raycast_at_cursor()
 		else:
@@ -31,6 +36,17 @@ func _input(event):
 	# Handle Escape key press to return to the main menu
 	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
 		get_tree().change_scene_to_packed(menu_scene)
+=======
+			left_mouse_button_clicked.emit()
+			raycast_at_cursor()
+		else:
+			left_mouse_button_released.emit()
+	#
+	# Handle Escape key press to return to the main menu
+	if event is InputEventKey:
+		$"../CanvasLayer/PauseMenu".escape()
+		
+>>>>>>> feat/multijoueur_a_5
 
 # Function to perform a raycast at the cursor position
 func raycast_at_cursor():

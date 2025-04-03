@@ -10,9 +10,16 @@ enum family {
 	fish = 5
 }
 var hand = []
+<<<<<<< HEAD
 var card_types = ["normal", "noble", "spy", "guard", "assassin"]
 var families = ["butterfly", "frog", "bird", "bunny", "deer", "fish"]
 enum PlayZoneType {PLAYER, ENEMY, FAVOR, DISFAVOR}
+=======
+var card_types = ["normal", "noble", "espion", "garde", "assassin"]
+var families = ["butterfly", "frog", "bird", "bunny", "deer", "fish"]
+enum PlayZoneType {PLAYER, ENEMY, FAVOR, DISFAVOR}
+var zone = ["Joueur","Ennemie","Faveur","Disgrâce"]
+>>>>>>> feat/multijoueur_a_5
 
 #card_played:
 #{"message_type":"card_played","player":1,"card_type":"normal","family":"deer","area":"queen_table","position":1} card in the light
@@ -42,19 +49,32 @@ enum PlayZoneType {PLAYER, ENEMY, FAVOR, DISFAVOR}
 
 var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
 
+<<<<<<< HEAD
 var port: int = 19001 #connection to VM when connected to eduroam or osiris
 #var port: int = 10001
 var address: String = "wss://185.155.93.105:%d" % port #connection to VM when connected to eduroam or osiris
 #var address: String = "wss://localhost:%d" % port
 var turn_player
 var deck_reference
+=======
+#var port: int = 19001 #connection to VM when connected to eduroam or osiris
+var port: int = 10001
+#var address: String = "wss://185.155.93.105:%d" % port #connection to VM when connected to eduroam or osiris
+var address: String = "wss://localhost:%d" % port
+var turn_player
+var deck_reference
+var taskbar_reference
+>>>>>>> feat/multijoueur_a_5
 var message_manager
 var id: int
 var username
 var tls_options
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> feat/multijoueur_a_5
 func _ready():
 	var client_trusted_cas = load("res://certificates/certificate.crt")
 	var client_tls_options = TLSOptions.client(client_trusted_cas, "Courtisans")
@@ -64,6 +84,10 @@ func _ready():
 	message_manager = $"/root/Main/MessageManager"
 	message_manager.connect("message_sent", Callable(self, "_on_message_sent"))
 	deck_reference = $"/root/Main/Deck"
+<<<<<<< HEAD
+=======
+	taskbar_reference = $"/root/Main/Taskbar"
+>>>>>>> feat/multijoueur_a_5
 	
 func close_connection():
 	if peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
@@ -121,6 +145,10 @@ func process_message(data:Dictionary):
 		process_connexion(data)
 	elif data["message_type"] == "player_turn":
 		print("player turn : ", data)
+<<<<<<< HEAD
+=======
+		deck_reference.update_card_count(data["number_of_cards"])
+>>>>>>> feat/multijoueur_a_5
 		turn_player = data["id_player"]
 	elif data["message_type"] == "hand":
 		hand.clear()
@@ -152,12 +180,21 @@ func put_message_in_chat(_data:Dictionary):
 	pass
 	
 func process_card_played(data:Dictionary):
+<<<<<<< HEAD
+=======
+	
+>>>>>>> feat/multijoueur_a_5
 	if data["player"] != id:
 		if data["area"] == 0:
 			data["area"] = 1
 		elif data["area"] == 1:
 			data["area"] = 0
 	var writting_message = "CLIENT - Player %d" % id + " : player %d "  % data["player"] + " has put %s" % data["card_type"] + " %s" % data["family"]+ " in %s" % data["area"]
+<<<<<<< HEAD
+=======
+	taskbar_reference.print_action("Le joueur %d a placé un %s %s dans %s" % [data["player"] + 1, card_types[data["card_type"]], data["family"], zone[data["area"]]])
+	
+>>>>>>> feat/multijoueur_a_5
 	if data.has("position"):
 		if data["position"] > 0:
 			writting_message = writting_message + " in the light"
@@ -166,6 +203,10 @@ func process_card_played(data:Dictionary):
 	if data["player"] != id:
 		
 		message_manager.add_card_to_zone(data["family"],data["card_type"],data["area"])
+<<<<<<< HEAD
+=======
+		print("----",data)
+>>>>>>> feat/multijoueur_a_5
 		
 func get_hand() -> Array:
 	return hand
