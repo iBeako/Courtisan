@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://dydwgqc1d7h2k" path="res://Assets/envelope.svg" id="3_1odxc"]
 [ext_resource type="PackedScene" uid="uid://c3oiwppnr4cxt" path="res://Scene/input_sign_password.tscn" id="4_erawd"]
 
-
 [node name="SignUP" type="VBoxContainer"]
 offset_right = 300.0
 offset_bottom = 589.0

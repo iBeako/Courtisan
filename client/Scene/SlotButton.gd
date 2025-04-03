@@ -1,9 +1,9 @@
 extends Control
 # Référence à votre nœud PauseMenu
-enum PlayZoneType { Joueur, Ennemie, Grace, Disgrace }
+
 var param_button : Button
 @onready var slotMenu : Control = get_node("/root/Main/slotMenuCanvas/SlotMenu")  # Chemin absolu vers SlotMenu
-@onready var playZone : Node = get_node("/root/Main/PlayZone")  # Chemin vers PlayZone
+
 # Fonction appelée au démarrage de la scène
 func _ready() -> void:
 	# Récupérer les nœuds nécessaires dans la scène
@@ -19,10 +19,10 @@ func _ready() -> void:
 # Fonction appelée lorsque le bouton Param est pressé
 func _on_param_button_pressed() -> void:
 	# Inverse la visibilité du menu de pause
-	slotMenu.set_play_zone_type(determine_zone_type())
+
 	slotMenu.pause()
-	slotMenu.instantiate_all_cards(slotMenu.play_zone_type)
+	slotMenu.instantiate_all_cards(get_zone())
 
 # Function to determine the type of play zone
-func determine_zone_type() -> PlayZoneType:
-	return get_parent().Play_ZoneType  # Get the play zone type from the parent node
+func get_zone() -> PlayZone:
+	return get_parent()  # Get the play zone type from the parent node

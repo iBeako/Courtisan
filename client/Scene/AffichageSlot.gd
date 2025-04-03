@@ -5,7 +5,6 @@ const CARD_COLORS = ["Papillons", "Crapauds", "Rossignols", "Lièvres", "Cerfs",
 enum PlayZoneType { Joueur, Ennemie, Grace, Disgrace }
 var play_zone_type: PlayZoneType  # Stocke le type reçu
 var paused : bool = false
-var menu_scene : PackedScene = load("res://Scene/menu_principal.tscn")
 var AssassinMenue : bool = false
 
 # Fonction exécutée au démarrage de la scène
@@ -60,36 +59,11 @@ func instantiate_card(card_type: TYPES, card_color: String, parent_slot: CardSlo
 
 # Fonction pour instancier toutes les cartes dans le GridContainer
 # Fonction pour instancier toutes les cartes dans le GridContainer
-func instantiate_all_cards(zone_type: PlayZoneType) -> void:
+func instantiate_all_cards(play_zone: PlayZone) -> void:
 	# Récupère les PlayZones (ajuste les chemins si nécessaire)
 	if AssassinMenue == true:
 		print("Il s'agit de l'assassin Menu")
-		
-	var play_zone_joueur = get_node_or_null("/root/Main/PlayZone_Joueur")
-	var play_zone_ennemie = get_node_or_null("/root/Main/PlayZone_Ennemie")
-	var play_zone_grace = get_node_or_null("/root/Main/PlayZone_Grace")
-	var play_zone_disgrace = get_node_or_null("/root/Main/PlayZone_Disgrace")
-
-	# Vérifie si toutes les PlayZones existent
-	if play_zone_joueur == null or play_zone_ennemie == null or play_zone_grace == null or play_zone_disgrace == null:
-		print("Erreur : Une ou plusieurs PlayZones sont introuvables!")
-		return  
-
-	# Sélectionne la bonne PlayZone en fonction du type
-	var play_zone = null
-	match zone_type:
-		PlayZoneType.Joueur:
-			play_zone = play_zone_joueur
-		PlayZoneType.Ennemie:
-			play_zone = play_zone_ennemie
-		PlayZoneType.Grace:
-			play_zone = play_zone_grace
-		PlayZoneType.Disgrace:
-			play_zone = play_zone_disgrace
-		_:
-			print("Erreur : Type de PlayZone invalide!")
-			return
-
+	
 	# Vérifie que la PlayZone est bien définie
 	if play_zone == null:
 		print("❌ Erreur : PlayZone invalide ! Impossible d'instancier les cartes.")
@@ -119,7 +93,3 @@ func instantiate_all_cards(zone_type: PlayZoneType) -> void:
 	print("✅ Toutes les cartes ont été instanciées.")
 
 	
-
-
-func set_play_zone_type(zone_type: PlayZoneType):
-	play_zone_type = zone_type

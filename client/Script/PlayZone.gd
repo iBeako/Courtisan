@@ -10,6 +10,9 @@ enum PlayZoneType { Joueur, Ennemie, Grace, Disgrace }
 # Reference to the ColorRect node in the scene
 @onready var color_rect: ColorRect = $ColorRect
 
+var param_button : Button
+@onready var slotMenu : Control = get_node("/root/Main/slotMenuCanvas/SlotMenu")  # Chemin absolu vers SlotMenu
+
 # List of family names used in the game
 var family_names = ["Papillons", "Crapauds", "Rossignols", "Lièvres", "Cerfs", "Carpes"]
 
@@ -30,6 +33,13 @@ func _ready() -> void:
 	update_color_rect()
 	# Sets the collision layer for the area (shifting 1 to the left by 2 places)
 	$Area2D.collision_layer = 1 << 2
+	
+	# Récupérer les nœuds nécessaires dans la scène
+
+	param_button = $Button  # Accède au bouton ParamButton
+	
+	# Connecter le signal 'pressed' du bouton Param
+	param_button.pressed.connect(self._on_param_button_pressed)
 
 # Function to update the color of the ColorRect based on the play zone type
 func update_color_rect() -> void:
@@ -116,6 +126,12 @@ func find_card_slot(card_color: String, card_type : int) -> Node2D:
 
 
 
+# Fonction appelée lorsque le bouton Param est pressé
+func _on_param_button_pressed() -> void:
+	# Inverse la visibilité du menu de pause
+
+	slotMenu.pause()
+	slotMenu.instantiate_all_cards(self)
 
 
 

@@ -12,7 +12,8 @@ func resume():
 	$AnimationPlayer.play_backwards("blur")
 	paused = false
 	await $AnimationPlayer.animation_finished
-	self.visible = false
+	if !$AnimationPlayer.is_playing():
+		self.visible = false
 	
 	
 func pause():

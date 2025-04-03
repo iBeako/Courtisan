@@ -10,7 +10,6 @@ var is_dragging : bool = false
 
 var base_scale : Vector2 = Vector2(1,1) #scale de base de la carte (pour la sortie du hover)
 
-var base_scale : Vector2 = Vector2(1,1) #scale de base de la carte (pour la sortie du hover)
 
 var parent_slot = null  # Référence au slot qui contient la carte
 # Enum for different card types
@@ -64,13 +63,14 @@ var tween_rot : Tween
 @export var angle_y_max: float = 7.0
 @export var max_offset_shadow: float = 15.0
 
+const cards_theme : String = "cards_new"
 
 
 # Dictionary storing the textures for different card colors
 
 var card_colors = ["Papillons", "Crapauds", "Rossignols", "Lièvres", "Cerfs", "Carpes"]  
 
-var back_texture = preload("res://Assets/dos_carte.jpg")
+var back_texture = preload("res://Assets/"+cards_theme+"/back.png")
 
 func _process(delta: float) -> void:
 	handle_shadow()
@@ -80,7 +80,7 @@ func _process(delta: float) -> void:
 #Function to apply the correct texture based on the card's color
 func apply_card_texture() -> void:
 	#print("→ Assigning texture for:", "'" + card_color + "'")  # Debugging output
-	var card_texture : Texture = load("res://Assets/"+card_color.to_lower()+"/"+TYPES.find_key(card_type).to_lower()+".png")
+	var card_texture : Texture = load("res://Assets/"+cards_theme+"/"+card_color.to_lower()+"/"+TYPES.find_key(card_type).to_lower()+".png")
 	
 	var shader_mat = ShaderMaterial.new()
 	shader_mat.shader = preload("res://Assets/Shaders/fake_3d.gdshader")

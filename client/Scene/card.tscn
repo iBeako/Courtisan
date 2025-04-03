@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Script/card.gd" id="1_rh58d"]
 [ext_resource type="Texture2D" uid="uid://fhkf5psmaq6c" path="res://dingbats-489.png" id="2_5fdet"]
-[ext_resource type="Texture2D" uid="uid://dc7jese687boj" path="res://Assets/dos_carte.jpg" id="3_rg1yq"]
+[ext_resource type="Texture2D" uid="uid://lut65w8k17oo" path="res://Assets/cards_scan/dos_carte.jpg" id="3_r8qm5"]
 [ext_resource type="AudioStream" uid="uid://ixajgg8jyxnl" path="res://Assets/536764__egomassive__toss.ogg" id="4_lpq4m"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_es0fm"]
@@ -181,7 +181,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(41, 75)
 mouse_filter = 2
-texture = ExtResource("3_rg1yq")
+texture = ExtResource("3_r8qm5")
 expand_mode = 3
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

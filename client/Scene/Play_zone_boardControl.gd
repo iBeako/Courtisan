@@ -18,9 +18,8 @@ func _ready() -> void:
 # Fonction appelée lorsque le bouton Param est pressé
 func _on_param_button_pressed() -> void:
 	# Inverse la visibilité du menu de pause
-	slotMenu.set_play_zone_type(determine_zone_type())
 	slotMenu.pause()
-	slotMenu.instantiate_all_cards(slotMenu.play_zone_type)
+	slotMenu.instantiate_all_cards(determine_zone_type())
 
 # Function to determine the type of play zone
 func determine_zone_type() -> PlayZoneType:
