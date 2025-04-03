@@ -31,14 +31,6 @@ visibility_layer = 4
 position = Vector2(500.75, 80)
 shape = SubResource("RectangleShape2D_glm01")
 
-<<<<<<< HEAD
-[node name="Area2D" type="Area2D" parent="Area2D"]
-light_mask = 4
-visibility_layer = 4
-position = Vector2(0, 204)
-
-=======
->>>>>>> feat/multijoueur_a_5
 [node name="ColorRect" type="ColorRect" parent="."]
 visible = false
 offset_right = 730.0
@@ -67,10 +59,7 @@ position = Vector2(910, 77)
 
 [node name="Espions" parent="." instance=ExtResource("2_xa725")]
 position = Vector2(499, 77)
-<<<<<<< HEAD
-=======
 
 [node name="Button" type="Button" parent="."]
 offset_right = 1001.0
 offset_bottom = 161.0
->>>>>>> feat/multijoueur_a_5

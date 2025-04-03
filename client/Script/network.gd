@@ -10,16 +10,10 @@ enum family {
 	fish = 5
 }
 var hand = []
-<<<<<<< HEAD
-var card_types = ["normal", "noble", "spy", "guard", "assassin"]
-var families = ["butterfly", "frog", "bird", "bunny", "deer", "fish"]
-enum PlayZoneType {PLAYER, ENEMY, FAVOR, DISFAVOR}
-=======
 var card_types = ["normal", "noble", "espion", "garde", "assassin"]
 var families = ["butterfly", "frog", "bird", "bunny", "deer", "fish"]
 enum PlayZoneType {PLAYER, ENEMY, FAVOR, DISFAVOR}
 var zone = ["Joueur","Ennemie","Faveur","Disgrâce"]
->>>>>>> feat/multijoueur_a_5
 
 #card_played:
 #{"message_type":"card_played","player":1,"card_type":"normal","family":"deer","area":"queen_table","position":1} card in the light

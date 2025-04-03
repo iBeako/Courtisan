@@ -1,24 +1,13 @@
 extends PlayZone
 
-<<<<<<< HEAD
-=======
 var id_player : int = -1
 var name_player : String = ""
 var id_image : int = 0
 
->>>>>>> feat/multijoueur_a_5
 # Called when the node enters the scene tree
 func _ready() -> void:
 	super._ready()
 	# Connect the 'updated_score_board' signal from the Grace and Disgrace zones
-<<<<<<< HEAD
-	get_parent().get_node("PlayZone_Grace").connect("updated_score_board", update_labels)
-	get_parent().get_node("PlayZone_Disgrace").connect("updated_score_board", update_labels)
-
-	# Adjust the labels' orientation if necessary
-	#adjust_labels()
-
-=======
 	#get_parent().get_node("PlayZone_Grace").connect("updated_score_board", update_labels)
 	#get_parent().get_node("PlayZone_Disgrace").connect("updated_score_board", update_labels)
 
@@ -33,7 +22,6 @@ func update_player(id_p : int, name_p : String, id_img : int):
 	
 	$VBoxContainer/Label.text=name_player
 
->>>>>>> feat/multijoueur_a_5
 # Function to adjust labels' orientation for the player zone
 func adjust_labels() -> void:
 	if Play_ZoneType == PlayZoneType.Joueur:

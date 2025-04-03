@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-[gd_scene load_steps=6 format=3 uid="uid://c64rbytxpt4j6"]
-
-[ext_resource type="PackedScene" uid="uid://hxhhmah7l5fw" path="res://Scene/card_slot.tscn" id="1_bpis3"]
-[ext_resource type="Script" path="res://Script/play_zone.gd" id="1_ofgpd"]
-[ext_resource type="Texture2D" uid="uid://diq2mulbgvlxx" path="res://Assets/playboardZonePadd20.png" id="2_1ilcw"]
-=======
 [gd_scene load_steps=11 format=3 uid="uid://c64rbytxpt4j6"]
 
 [ext_resource type="PackedScene" uid="uid://hxhhmah7l5fw" path="res://Scene/card_slot.tscn" id="1_bpis3"]
@@ -12,7 +5,6 @@
 [ext_resource type="Texture2D" uid="uid://c2ernukex2t6p" path="res://Assets/icon.svg" id="3_76t8h"]
 [ext_resource type="FontFile" uid="uid://dim3hkmopleo2" path="res://Assets/Mighty Souly.otf" id="3_oaquq"]
 [ext_resource type="Texture2D" uid="uid://bst24vriteyae" path="res://Assets/Rectangle 122.png" id="4_jlrvx"]
->>>>>>> feat/multijoueur_a_5
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t84a7"]
 size = Vector2(728, 180)
@@ -24,16 +16,6 @@ corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 
-<<<<<<< HEAD
-[node name="PlayZone" type="Node2D"]
-script = ExtResource("1_ofgpd")
-
-[node name="PlayboardZonePadd20" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(381, 101)
-texture = ExtResource("2_1ilcw")
-
-=======
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_whtmj"]
 bg_color = Color(0.741176, 0.592157, 0.12549, 1)
 corner_radius_top_left = 5
@@ -58,7 +40,6 @@ expand_margin_bottom = 5.0
 [node name="PlayZone" type="Node2D"]
 script = ExtResource("1_ofgpd")
 
->>>>>>> feat/multijoueur_a_5
 [node name="Area2D" type="Area2D" parent="."]
 light_mask = 4
 visibility_layer = 4
@@ -69,44 +50,12 @@ visibility_layer = 4
 position = Vector2(366, 89)
 shape = SubResource("RectangleShape2D_t84a7")
 
-<<<<<<< HEAD
-[node name="ColorRect" type="ColorRect" parent="."]
-visible = false
-offset_right = 730.0
-offset_bottom = 146.0
-color = Color(0.0185693, 0.657099, 0.410049, 1)
-metadata/_edit_use_anchors_ = true
-
-=======
->>>>>>> feat/multijoueur_a_5
 [node name="Panel" type="Panel" parent="."]
 offset_top = -1.0
 offset_right = 730.0
 offset_bottom = 179.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_oc2q4")
 
-<<<<<<< HEAD
-[node name="Papillons" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(664, 92)
-
-[node name="Crapauds" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(564, 92)
-
-[node name="Rossignols" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(464, 92)
-
-[node name="Lièvres" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(364, 92)
-
-[node name="Cerfs" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(264, 92)
-
-[node name="Carpes" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(164, 92)
-
-[node name="Espions" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(64, 92)
-=======
 [node name="Panel2" type="Panel" parent="."]
 offset_left = 612.0
 offset_top = 5.0
@@ -161,4 +110,3 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_1b24u")
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/PanelContainer"]
 layout_mode = 2
 texture = ExtResource("3_76t8h")
->>>>>>> feat/multijoueur_a_5

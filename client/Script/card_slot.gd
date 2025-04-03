@@ -17,30 +17,11 @@ enum PlayZoneType { Joueur, Ennemie, Grace, Disgrace }
 func _ready() -> void:
 	#print("CardSlot ready: ", self.name)  # Debug message when the slot is ready
 	$PanelContainer.hide()
-<<<<<<< HEAD
-	# Check if the label exists
-	if count_label:
-		#print("Label found for ", self.name)
-		count_label.z_index = 10  # Ensure the label appears on top
-	else:
-		print("Label NOT found for ", self.name)
-=======
-
->>>>>>> feat/multijoueur_a_5
 
 # Function to determine the type of play zone
 func determine_zone_type() -> PlayZoneType:
 	return get_parent().Play_ZoneType  # Get the play zone type from the parent node
 
-<<<<<<< HEAD
-# Function to remove a card from the slot
-func remove_card(card: Card) -> void:
-	if card in cards_in_slot:
-		cards_in_slot.erase(card)  # Remove the card from the list
-		update_card_positions()  # Update the positions of remaining cards
-		#print("Card count updated")  # Uncomment if needed
-		print("Card removed from ", self.name, ". Remaining cards: ", cards_in_slot.size())
-=======
 func remove_card(card: Card) -> void:
 	# Afficher la carte à supprimer
 	print("=== Tentative de suppression ===")
@@ -80,7 +61,6 @@ func remove_card(card: Card) -> void:
 		print("Échec : aucune carte correspondante trouvée dans le slot (ID cible : ", card.get_instance_id(), ")")
 
 
->>>>>>> feat/multijoueur_a_5
 
 # Function to reposition cards after one is removed
 func update_card_positions() -> void:
@@ -94,10 +74,6 @@ func update_card_positions() -> void:
 
 # Function to update the count label based on the number of cards
 func update_count_label(value : int) -> int:  # 'value' is used to adjust the count based on special card effects
-<<<<<<< HEAD
-=======
-	print()
->>>>>>> feat/multijoueur_a_5
 	if count_label:
 		var cpt: int = 0
 
@@ -107,22 +83,14 @@ func update_count_label(value : int) -> int:  # 'value' is used to adjust the co
 
 		# Update the label text, hide it if count is zero
 		count_label.text = str(cpt) if cpt != 0 else ""
-<<<<<<< HEAD
-		count_label.add_theme_color_override("font_color", Color(1, 0, 0))  # Set text color to red
-=======
 		#count_label.add_theme_color_override("font_color", Color(1, 0, 0))  # Set text color to red
->>>>>>> feat/multijoueur_a_5
 		if cpt != 0:
 			$PanelContainer.show()
 		else:
 			$PanelContainer.hide()
 			
-<<<<<<< HEAD
-		
-=======
 		for card in cards_in_slot:
 			print("Card Name: ", card.name, ", Card Value: ", card.get_value())  # Adjust based on your card properties
->>>>>>> feat/multijoueur_a_5
 		return cpt
 	else:
 		print("CountLabel not found in CardSlot: ", self.name)

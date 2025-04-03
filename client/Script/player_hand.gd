@@ -1,8 +1,5 @@
 extends Node2D
-<<<<<<< HEAD
-=======
 class_name PlayerHand
->>>>>>> feat/multijoueur_a_5
 
 # Signal emitted when the player's hand is empty
 signal hand_emptied  
@@ -23,14 +20,7 @@ func add_card_to_hand(card):
 	if card not in player_hand:
 		# Insert the card at the beginning of the hand
 		player_hand.insert(0, card)
-<<<<<<< HEAD
-		update_hand_position()
-	else:
-		# Animate card back to its starting position if it's already in hand
-		animate_card_position(card, card.starting_position)
-=======
 	update_hand_position()
->>>>>>> feat/multijoueur_a_5
 
 # Function to check if the player's hand is empty
 func is_hand_empty():
@@ -39,13 +29,8 @@ func is_hand_empty():
 # Function to update the position of cards in the hand
 func update_hand_position():
 	for i in range(player_hand.size()):
-<<<<<<< HEAD
-		var new_position = Vector2(calculate_card_position(i), HAND_Y_POSITION)
-		var card = player_hand[i]
-=======
 		var card = player_hand[i]
 		var new_position = Vector2(calculate_card_position(i), HAND_Y_POSITION)-card.size/2
->>>>>>> feat/multijoueur_a_5
 		card.starting_position = new_position
 		animate_card_position(card, new_position)
 

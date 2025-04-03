@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-extends Node2D
-class_name Card
-
-# Signals emitted when the card is hovered or the hover ends
-signal hovered
-signal hovered_off
-
-=======
 extends Button
 class_name Card
 
@@ -21,7 +12,6 @@ var base_scale : Vector2 = Vector2(1,1) #scale de base de la carte (pour la sort
 
 
 var parent_slot = null  # Référence au slot qui contient la carte
->>>>>>> feat/multijoueur_a_5
 # Enum for different card types
 enum TYPES {
 	Normal,
@@ -31,13 +21,6 @@ enum TYPES {
 	Noble
 }
 
-<<<<<<< HEAD
-# Card properties
-var starting_position : Vector2  # Initial position of the card
-var card_type : TYPES  # Type of the card
-var card_color : String  # Color/faction of the card
-var sprite : TextureRect  # Reference to the card's sprite
-=======
 var palette_courtisans = {
 	"rossignols": {
 		"light": "#CA2D48",  # Rouge clair
@@ -81,22 +64,12 @@ var tween_rot : Tween
 @export var max_offset_shadow: float = 15.0
 
 const cards_theme : String = "cards_new"
->>>>>>> feat/multijoueur_a_5
 
 
 # Dictionary storing the textures for different card colors
 
 var card_colors = ["Papillons", "Crapauds", "Rossignols", "Lièvres", "Cerfs", "Carpes"]  
 
-<<<<<<< HEAD
-var back_texture = preload("res://Assets/dos_carte.jpg")
-
-
-# Function to apply the correct texture based on the card's color
-func apply_card_texture() -> void:
-	#print("→ Assigning texture for:", "'" + card_color + "'")  # Debugging output
-	var card_texture : Texture = load("res://Assets/"+card_color.to_lower()+"/"+TYPES.find_key(card_type).to_lower()+".png")
-=======
 var back_texture = preload("res://Assets/"+cards_theme+"/back.png")
 
 func _process(delta: float) -> void:
@@ -118,7 +91,6 @@ func apply_card_texture() -> void:
 	#shadow.material.set_shader_parameter("rect_size", shadow.size)
 	sprite.material.set_shader_parameter("rect_size", sprite.size)
 	
->>>>>>> feat/multijoueur_a_5
 	
 	if card_texture!=null:
 		sprite.texture = card_texture  # Set the correct texture
@@ -137,19 +109,6 @@ func hide_card() -> void:
 # Ready function: runs when the node is added to the scene
 func _ready() -> void:
 	sprite = $TextureRect  # Get the TextureRect node
-<<<<<<< HEAD
-	$Area2D.collision_layer = 1 << 3  # Set the collision layer
-	get_parent().connect_card_signals(self)  # Connect hover signals
-	apply_card_texture()  # Apply the texture when the card is initialized
-
-# Signal function: triggers when the mouse enters the card's area
-func _on_area_2d_mouse_entered() -> void:
-	emit_signal("hovered", self)
-
-# Signal function: triggers when the mouse exits the card's area
-func _on_area_2d_mouse_exited() -> void:
-	emit_signal("hovered_off", self)
-=======
 	apply_card_texture()  # Apply the texture when the card is initialized
 	var anim_player = $AnimationPlayer
 	anim_player.play("rotate")  # Joue l'animation
@@ -289,4 +248,3 @@ func _gui_input(event):
 		queue_free()
 
 		affichage_slot_card.resume()
->>>>>>> feat/multijoueur_a_5

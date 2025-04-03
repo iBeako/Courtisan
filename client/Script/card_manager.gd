@@ -11,39 +11,12 @@ enum TYPES {
 const CARD_SCENE_PATH = "res://Scene/card.tscn"
 
 # Variables for screen size and collision masks
-<<<<<<< HEAD
-var screen_size
-=======
-
->>>>>>> feat/multijoueur_a_5
 const COLLISION_MASK_CARD = 1 << 0
 const COLLISION_MASK_CARD_SLOT = 1 << 1
 const COLLISION_MASK_ZONE = 1 << 2
 
 # Variables for card dragging and interactions
 var card_is_dragged : Card
-<<<<<<< HEAD
-var is_hovered : bool
-var player_hand_reference
-var message_manager_reference : MessageManager
-var deck
-# Card color types
-var card_colors = ["Papillons", "Crapauds", "Rossignols", "Lièvres", "Cerfs", "Carpes"]
-# Array to track where the player can play cards (player zone, enemy zone, middle zone)
-var can_play = [1, 1, 1] 
-
-# Enum for different play zones
-enum PlayZoneType { Joueur, Ennemie, Grace, Disgrace }
-
-func _ready() -> void:
-	screen_size = get_viewport_rect().size  # Get screen size
-	player_hand_reference = $"../PlayerHand"  # Reference to the player's hand
-	message_manager_reference = $"../MessageManager"  # Reference to the message manager
-	deck = $"../Deck"
-	
-	# Connect the input manager's signal for left mouse button release
-	$"../inputManager".connect("left_mouse_button_released", on_left_mouse_button_released)
-=======
 var is_hovered: bool = false
 var card_hovered: Card
 
@@ -74,7 +47,6 @@ func _ready() -> void:
 	
 	# Connect the input manager's signal for left mouse button release
 
->>>>>>> feat/multijoueur_a_5
 
 	
 # Update function called every frame
