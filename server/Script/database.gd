@@ -1,0 +1,29 @@
+extends Node
+
+var return_database: String = ""
+
+func insertDatabase(data: Dictionary):
+	if Network.db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
+		var json_string = JSON.stringify(data)
+		Network.db_peer.send_text(json_string)
+
+func getDatabase(data: Dictionary):
+	if Network.db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
+		var json_string = JSON.stringify(data)
+		Network.db_peer.send_text(json_string)
+		var timeout = 5.0
+		var elapsed = 0.0
+		while elapsed < timeout:
+			Network.db_peer.poll()
+			if return_database != "":
+				break
+			await get_tree().create_timer(0.1).timeout
+			elapsed += 0.1
+		if return_database != "":
+			var response = JSON.parse_string(return_database)
+			return_database = ""
+			if response != null:
+				return response
+			else:
+				return {"message_type":"error","error_type":"JSON_parse"}
+		return {"message_type":"error","error_type":"database_connexion"}

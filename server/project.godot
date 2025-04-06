@@ -18,6 +18,10 @@ config/icon="res://icon.svg"
 [autoload]
 
 Network="*res://Script/network.gd"
+ProcessMessage="*res://Script/process_message.gd"
+Login="*res://Script/login.gd"
+Database="*res://Script/database.gd"
+global="*res://Script/global.gd"
 
 [dotnet]
 

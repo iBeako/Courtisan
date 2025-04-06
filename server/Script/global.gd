@@ -2,7 +2,7 @@ extends Node
 
 class_name Global
 
-const MAX_CLIENT:int = 2 # 2, 3, 4, 5
+const MAX_CLIENT:int = 5 # 2, 3, 4, 5
 
 # for tests
 const LOOP_COUNT = 10 # 10, 8, 7, 6 (according client count)

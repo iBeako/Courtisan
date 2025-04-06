@@ -169,3 +169,8 @@ func send_message_to_peer(data: Dictionary):
 func send_message_to_everyone(data : Dictionary):
 	print("error cannot receive this type of message only client can")
 	print(" ", data)
+
+@rpc("authority")
+func send_message_to_lobby(data : Dictionary):
+	print("error cannot receive this type of message only client can")
+	print(" ", data)

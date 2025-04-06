@@ -21,17 +21,15 @@ var queen_table = [
 var card_stack = load("res://Script/stack.gd").new()
 var current_player_id : int
 
-var global = preload("res://Script/global.gd").new()
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
 ## On creation of session
-func _init(id_session:int,_player_max: int,name: String) -> void:
+func init(id_session:int,_player_max: int,_name: String) -> void:
 	self.session_id = id_session
 	self.player_max = _player_max
-	self.name = name
-	self.player.append()
+	self.name = _name
 	self.current_player_id = 0 # could be picked radomly or from connection order
 	self.card_stack._set_card_number(player_max)
 	print("Initilization of a new session success")
@@ -119,7 +117,7 @@ func load_game() -> bool :
 	card_stack.generate_card()
 	card_stack._set_card_stack()
 	card_stack.print_stack_state()
-	
+	send_three_cards_to_each_player()
 	return true
 	
 func distribute_three_cards(player_id:int) -> Dictionary:
@@ -197,18 +195,30 @@ func place_card(_id_player: int, _area: int, _card_type: int, _family: String) -
 	card_stack._retrieve_card(_card_type, _family)
 	card_stack._one_card_played()
 	
-	# check player trun
+	# check player turn
 	var still_current = false
 	for card in players[_id_player][6] :
 		still_current = still_current or card[0]
 	if !still_current :
+		if check_end_game() :
+			display_session_status()
+			var stat = get_stat()
+			Network.send_message_to_lobby(session_id,stat)
 		print("SERVER : Move to next player")
+		var sender_id = clients_peer[current_player_id]
+		send_three_cards_to_a_player(sender_id)
+		display_session_status()
+		var turn = {"message_type":"player_turn","id_player":current_player_id,"number_of_cards":card_stack._get_card_number()}
+		print("turn :" ,turn["id_player"])
+		Network.send_message_to_lobby(session_id,turn)
 		current_player_id = (current_player_id + 1) % players.size()
 		print("player %d turn" % current_player_id)
 		print("\n")
-	
+		
 	return true
 	
+
+
 func check_next_player(player_id) -> bool :
 	return current_player_id != player_id
 	
@@ -273,6 +283,14 @@ func get_stat() -> Dictionary :
 	print("Game stat",data_dict)
 	return data_dict
 	
+func send_three_cards_to_each_player():
+	for peer_id in clients_peer:
+		send_three_cards_to_a_player(peer_id)
+	
+func send_three_cards_to_a_player(peer_id):
+	var cards_as_dict = distribute_three_cards(clients_peer.find(peer_id))
+	Network.send_message_to_peer.rpc_id(peer_id,cards_as_dict)
+
 func check_end_game() -> bool:
 	if card_stack._no_more_card_to_play() :
 		print("---\nSERVER : ============ End game ============ \n---")

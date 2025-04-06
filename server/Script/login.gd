@@ -1,5 +1,4 @@
-extends RefCounted
-class_name Account
+extends Node
 
 func GenerateSalt(length = 32):
 	var crypto = Crypto.new()

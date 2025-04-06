@@ -2,6 +2,7 @@ extends Node
 signal error_card_played(message)
 
 @onready var game = preload("res://Scene/main.tscn")
+@onready var menu_principal = preload("res://Scene/menu_principal.tscn")
 
 enum family {
 	butterfly = 0,
@@ -66,6 +67,7 @@ var tls_options
 var turn_player: int
 var id_lobby: int
 var in_game = false
+var my_profil_pic: int
 
 var deck_reference
 var message_manager
@@ -119,16 +121,20 @@ func process_message(data:Dictionary):
 		process_connexion(data)
 	elif data["message_type"] == "create_account":
 		print("account created")
-	elif data["message_type"] == "all lobby":
-		print("...")
-	elif data["message_type"] == "join_lobby":
-		id_lobby = data["id_lobby"]
-		id = data["id_player"]
-		print("....")
-	elif data["message_type"] == "start_game":
-		in_game = true
-		get_tree().change_scene_to_packed(game)
-		if_start_game()
+	if in_game == false:
+		if data["message_type"] == "all lobby":
+			print("...")
+		elif data["message_type"] == "join_lobby":
+			id_lobby = data["id_lobby"]
+			id = data["id_player"]
+			print("....")
+		elif data["message_type"] == "start_game":
+			in_game = true
+			get_tree().change_scene_to_packed(game)
+			if_start_game()
+		elif data["message_type"]  == "change_profile_picture":
+			my_profil_pic = data["pic_profile"]
+			
 	elif data["message_type"] == "quit_game":
 		in_game = false
 		if_end_game()
@@ -209,6 +215,7 @@ func _play_card( type_card, family, area, id_domain: int = -1):
 	if area == PlayZoneType.PLAYER :
 		message = {
 			"message_type": "card_played",
+			"id_lobby":id_lobby,
 			"player": id,
 			"family": family,
 			"card_type": type_card,
@@ -217,6 +224,7 @@ func _play_card( type_card, family, area, id_domain: int = -1):
 	elif area == PlayZoneType.FAVOR or area == PlayZoneType.DISFAVOR :
 		message = {
 			"message_type": "card_played",
+			"id_lobby":id_lobby,
 			"player": id,
 			"family": family,
 			"card_type": type_card,
@@ -225,6 +233,7 @@ func _play_card( type_card, family, area, id_domain: int = -1):
 	elif area == PlayZoneType.ENEMY :
 		message = {
 			"message_type": "card_played",
+			"id_lobby":id_lobby,
 			"player": id,
 			"family": family,
 			"card_type": type_card,
@@ -240,6 +249,7 @@ func process_connexion(data:Dictionary):
 	username = data["login"]
 	id = data["id"]
 	print("has been logged")
+	get_tree().change_scene_to_packed(menu_principal)
 
 func process_error(data:Dictionary):
 	
