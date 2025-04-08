@@ -186,20 +186,28 @@ async def websocket_endpoint(websocket: WebSocket):
             try:
                 if message_type == "createAccount":
                     await handle_create_account(websocket, data, connection)
+                    print("Account created.")
                 elif message_type == "connexion":
                     await handle_connexion(websocket, data, connection)
+                    print("User connected.")
                 elif message_type == "change_profile":
                     await handle_change_profile(websocket, data, connection)
+                    print("Profile picture changed.")
                 elif message_type == "find_lobby":
                     await handle_find_lobby(websocket, connection)
+                    print("Lobbies found.")
                 elif message_type == "create_lobby":
                     await handle_create_lobby(websocket, data, connection)
+                    print("Lobby created.")
                 elif message_type == "join_lobby":
                     await handle_join_lobby(websocket, data, connection)
+                    print("Joined lobby.")
                 elif message_type == "start_lobby":
                     await handle_start_lobby(websocket, data, connection)
+                    print("Lobby started.")
                 elif message_type == "quit_lobby":
                     await handle_quit_lobby(websocket, data, connection)
+                    print("Player quit lobby.")
                 else:
                     await websocket.send_json({"status": "error", "message": "Unknown message_type."})
             except Exception as e:

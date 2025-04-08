@@ -2,15 +2,13 @@ extends Node
 
 var return_database: String = ""
 
-func insertDatabase(data: Dictionary):
+func sendDatabase(data: Dictionary):
 	if Network.db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
 		var json_string = JSON.stringify(data)
 		Network.db_peer.send_text(json_string)
 
-func getDatabase(data: Dictionary):
+func getDatabase():
 	if Network.db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
-		var json_string = JSON.stringify(data)
-		Network.db_peer.send_text(json_string)
 		var timeout = 5.0
 		var elapsed = 0.0
 		while elapsed < timeout:

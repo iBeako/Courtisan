@@ -89,25 +89,22 @@ func findLobby():
 		var message = {
 			"action" = "getAllLobby"
 		}
-		var json_string = JSON.stringify(message)
-		db_peer.send_text(json_string)
-		var allLobby = await Database.getDatabase(message)
+		Database.sendDatabase(message)
+		var allLobby = await Database.getDatabase()
 		if allLobby != null :
 			return allLobby
 
 func addLobbyDatabase(message: Dictionary):
 	if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
-		var json_string = JSON.stringify(message)
-		db_peer.send_text(json_string)
-		var return_message = await Database.getDatabase(message)
+		Database.sendDatabase(message)
+		var return_message = await Database.getDatabase()
 		if return_message != null and return_message.has("id_lobby"):
 			return return_message["id_lobby"]
 		
 func joinLobby(message: Dictionary,peer_id:int):
 	if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
-		var json_string = JSON.stringify(message)
-		db_peer.send_text(json_string)
-		var return_message = await Database.getDatabase(message)
+		Database.sendDatabase(message)
+		var return_message = await Database.getDatabase()
 		if(return_message != null  and return_message.has("id_lobby")):
 			var ind_player_in_session = session[return_message["id_lobby"]]._add_player(peer_id)
 			clients[peer_id]["session_id"] = return_message["id_lobby"]
@@ -203,7 +200,23 @@ func insert_Account(data:Dictionary,peer_id:int):
 	data["salt"] = salt
 	data["password"] = Login.HashPassword(data["password"],salt)
 	print(data)
-	Database.insertDatabase(data)
+	Database.sendDatabase(data)
+	var return_data = await Database.getDatabase()
+	if return_data.has("status") :
+		if return_data["status"] == "success":
+			send_message_to_peer.rpc_id(peer_id,return_data)
+		else:
+			var message = {
+				"type_of_message":"error",
+				"type_of_error":"account not created"
+			}
+			send_message_to_peer.rpc_id(peer_id,message)
+	else:
+		var message = {
+			"type_of_message":"error",
+			"type_of_error":"error in message received"
+		}
+		print(message)
 	
 func validate_login(data: Dictionary) -> Dictionary:
 	var client_data
@@ -215,7 +228,8 @@ func validate_login(data: Dictionary) -> Dictionary:
 			"image_profil" = 0
 		}
 	else:
-		client_data = await Database.getDatabase(data)
+		Database.sendDatabase(data)
+		client_data = await Database.getDatabase()
 	if client_data.has("password") and client_data.has("salt"):
 		var data_hashed = Login.HashPassword(data["password"],client_data["salt"])
 		if data_hashed == client_data["password"]:

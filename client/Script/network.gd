@@ -3,6 +3,7 @@ signal error_card_played(message)
 
 @onready var game = preload("res://Scene/main.tscn")
 @onready var menu_principal = preload("res://Scene/menu_principal.tscn")
+@onready var signin_page = preload("res://Scene/signin_page.tscn")
 
 enum family {
 	butterfly = 0,
@@ -156,8 +157,9 @@ func send_message_to_everyone(data : Dictionary):
 func process_message(data:Dictionary):
 	if data["message_type"] == "connexion":
 		process_connexion(data)
-	elif data["message_type"] == "create_account":
+	elif data["status"] == "success":
 		print("account created")
+		get_tree().change_scene_to_packed(signin_page)
 	if in_game == false:
 		if data["message_type"] == "all lobby":
 			print("...")
