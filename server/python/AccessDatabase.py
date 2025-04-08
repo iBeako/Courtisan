@@ -56,77 +56,156 @@ def get_db():
 def insert_account(data: dict, connection):
     cursor = connection.cursor()
     query = """
-        -- Exemple d'insertion (à décommenter et adapter si besoin)
-        -- INSERT INTO users (username, email, password_hash, is_active, total_games_played)
-        -- VALUES (:username, :email, :password_hash, :is_active, :total_games_played)
+        INSERT INTO users (username, email, password_hash, is_active, total_games_played, pic_profile)
+        VALUES (:username, :email, :password_hash, :is_active, :total_games_played, :pic_profile)
     """
     cursor.execute(
         query,
-        username=data.get('login'),
+        username=data.get('username'),
         email=data.get('email'),
         password_hash=data.get('password'),
         is_active=data.get('is_active'),
-        total_games_played=data.get('total_games_played')
+        total_games_played=data.get('total_games_played'),
+        pic_profile=data.get('pic_profile')
     )
     connection.commit()
     cursor.close()
-    return {"status": "success", "message": "Account created."}
+    if result:
+        return {"status": "success", "message": "Account created."}
+    else:
+        return {"status": "error", "message": "Failed to create account."}
 
 def get_account(email: str, connection):
     cursor = connection.cursor()
-    query = "SELECT username, password FROM users WHERE email = :email"
+    query = "SELECT username, password, salt, pic_profile FROM users WHERE email = :email"
     cursor.execute(query, email=email)
     result = cursor.fetchone()
     cursor.close()
     if result:
-        return {"login": result[0], "password": result[1]}
+        return {"username": result[0], "password": result[1], "salt": result[2], "pic_profile": result[3]}
     else:
-        return {"message": "User not found."}
+        return {"status": "error", "message": "Account not found."}
 
-def get_all_users(connection):
+async def handle_create_account(websocket, data, connection):
+    result = insert_account(data, connection)
+    await websocket.send_json(result)
+
+async def handle_connexion(websocket, data, connection):
+    result = get_account(data.get("email"), connection)
+    await websocket.send_json(result)
+
+async def handle_change_profile(websocket, data, connection):
+    email = data.get("email")
     cursor = connection.cursor()
-    query = "SELECT * FROM users"
-    cursor.execute(query)
-    results = cursor.fetchall()
+    cursor.execute("UPDATE users SET pic_profile = :pic WHERE email = :email", email=email)
+    connection.commit()
     cursor.close()
-    return results
+    await websocket.send_json({"status": "success", "message": "Profile picture updated.","email":data.get("email"),"pic_profile": data.get("pic_profile")})
 
-@app.post("/insert_database")
-async def insert_database(data: dict, connection=Depends(get_db)):
-    try:
-        result = insert_account(data, connection)
-        return result
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+async def handle_find_lobby(websocket, connection):
+    cursor = connection.cursor()
+    cursor.execute("SELECT game_id, num_players, name, password FROM games WHERE status = 'open'")
+    lobbies = cursor.fetchall()
+    cursor.close()
+    await websocket.send_json({"status": "success", "lobbies": lobbies})
 
-@app.get("/get_database")
-async def get_database(email: str, connection=Depends(get_db)):
-    try:
-        result = get_account(email, connection)
-        return result
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+async def handle_create_lobby(websocket, data, connection):
+    id_player = data.get("id_player")
+    name = data.get("name")
+    num_players = data.get("number_of_player")
+    have_password = data.get("have_password")
+    password = data.get("password") if have_password == 0 else None
+    date = datetime.now().strftime("%Y-%m-%d")
 
-@app.get("/get_all_users")
-async def get_all_users_endpoint(connection=Depends(get_db)):
-    try:
-        users = get_all_users(connection)
-        return {"users": users}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    cursor = connection.cursor()
+    cursor.execute("""
+        INSERT INTO games (num_players, password, game_date, status, name)
+        VALUES (:np, :pwd, :date, 'open', :name)
+    """, np=num_players, pwd=password, date=date, name=name)
+    connection.commit()
+    cursor.execute("SELECT game_id FROM games WHERE name = :name AND game_date = :date", name=name, date=date)
+    game_id = cursor.fetchone()[0]
+    cursor.execute("INSERT INTO game_players (game_id, peer_id) VALUES (:gid, :pid)", gid=game_id, pid=id_player)
+    connection.commit()
+    cursor.close()
+    await websocket.send_json({"status": "success", "game_id": game_id})
+
+async def handle_join_lobby(websocket, data, connection):
+    id_lobby = data.get("id_lobby")
+    password = data.get("password")
+
+    cursor = connection.cursor()
+    cursor.execute("SELECT password, num_players FROM games WHERE game_id = :id AND status = 'open'", id=id_lobby)
+    game = cursor.fetchone()
+    if not game:
+        await websocket.send_json({"status": "error", "message": "Game not found or not open."})
+        return
+    if game[0] and game[0] != password:
+        await websocket.send_json({"status": "error", "message": "Incorrect password."})
+        return
+    cursor.execute("SELECT COUNT(*) FROM game_players WHERE game_id = :id", id=id_lobby)
+    count = cursor.fetchone()[0]
+    if count >= game[1]:
+        await websocket.send_json({"status": "error", "message": "Lobby is full."})
+        return
+    cursor.execute("INSERT INTO game_players (game_id, peer_id) VALUES (:gid, :pid)", gid=id_lobby, pid=data.get("id_player"))
+    connection.commit()
+    if count + 1 == game[1]:
+        cursor.execute("UPDATE games SET status = 'full' WHERE game_id = :id", id=id_lobby)
+        connection.commit()
+    cursor.close()
+    await websocket.send_json({"status": "success", "message": "Joined lobby."})
+
+async def handle_start_lobby(websocket, data, connection):
+    id_lobby = data.get("id_lobby")
+    cursor = connection.cursor()
+    cursor.execute("UPDATE games SET status = 'ingame' WHERE game_id = :id", id=id_lobby)
+    connection.commit()
+    cursor.close()
+    await websocket.send_json({"status": "success", "message": "Game started."})
+
+async def handle_quit_lobby(websocket, data, connection):
+    id_lobby = data.get("id_lobby")
+    id_player = data.get("id_player")
+    cursor = connection.cursor()
+    cursor.execute("DELETE FROM game_players WHERE game_id = :gid AND peer_id = :pid", gid=id_lobby, pid=id_player)
+    connection.commit()
+    cursor.close()
+    await websocket.send_json({"status": "success", "message": "Player removed from lobby."})
+
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     try:
         while True:
-            data = await websocket.receive_json()  # Receive JSON message
+            data = await websocket.receive_json()
             print(f"Received: {data}")
-            response = {"message": "Received your data!", "data": data}
-            await websocket.send_json(response)  # Send a response
+            message_type = data.get("message_type")
+
+            try:
+                if message_type == "createAccount":
+                    await handle_create_account(websocket, data, connection)
+                elif message_type == "connexion":
+                    await handle_connexion(websocket, data, connection)
+                elif message_type == "change_profile":
+                    await handle_change_profile(websocket, data, connection)
+                elif message_type == "find_lobby":
+                    await handle_find_lobby(websocket, connection)
+                elif message_type == "create_lobby":
+                    await handle_create_lobby(websocket, data, connection)
+                elif message_type == "join_lobby":
+                    await handle_join_lobby(websocket, data, connection)
+                elif message_type == "start_lobby":
+                    await handle_start_lobby(websocket, data, connection)
+                elif message_type == "quit_lobby":
+                    await handle_quit_lobby(websocket, data, connection)
+                else:
+                    await websocket.send_json({"status": "error", "message": "Unknown message_type."})
+            except Exception as e:
+                await websocket.send_json({"status": "error", "message": str(e)})
     except Exception as e:
         await websocket.send_json({"status": "error", "message": str(e)})
-        await websocket.close()
 
 # Test en ligne de commande
 if __name__ == '__main__':
