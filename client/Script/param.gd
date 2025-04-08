@@ -2,6 +2,8 @@ extends Control
 
 @onready var menu = load("res://Scene/menu_principal.tscn")
 
+@onready var button_pp = preload("res://Scene/bouton_changement_pp.tscn")
+
 @onready var tab_container : TabContainer = $PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer
 
 @onready var tabs : VBoxContainer = $PanelContainer2/HBoxContainer/PanelContainer/Tabs
@@ -18,7 +20,13 @@ func _ready() -> void:
 		tabs.move_child(btn,2+i) #place le bouton dans le bon ordre 
 		
 		btn.pressed.connect(btn_func[i])
-
+	
+	for p in Global.profile_pictures.size():
+		var button : Control = button_pp.instantiate()
+		button.texture = load(Global.profile_pictures[p])
+		button.id=p
+		button.pressed.connect(change_pp)
+		$PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Profile/GridContainer.add_child(button)
 
 func change_to_sound():
 	tab_container.current_tab=0
@@ -30,9 +38,16 @@ func change_to_privacy():
 	tab_container.current_tab=2
 	
 
-
+func change_pp(btn_clicked : Control) -> void:
+	$PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Profile/VBoxContainer/PanelContainer/CurrentPP.texture = btn_clicked.texture
+	#TODO envoyer message
+	print(btn_clicked.id)
 
 
 func _on_texture_button_pressed() -> void:
-	print(menu)
 	get_tree().change_scene_to_packed(menu)
+
+func _on_text_edit_text_submitted(new_text: String) -> void:
+	$PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Profile/VBoxContainer/NameEdit.release_focus()
+	print(new_text)
+	#TODO envoyer message

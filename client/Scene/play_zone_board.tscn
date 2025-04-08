@@ -43,22 +43,22 @@ metadata/_edit_use_anchors_ = true
 position = Vector2(101, 79)
 
 [node name="Crapauds" parent="." instance=ExtResource("2_xa725")]
-position = Vector2(238, 77)
+position = Vector2(238, 79)
 
 [node name="Rossignols" parent="." instance=ExtResource("2_xa725")]
-position = Vector2(382, 77)
+position = Vector2(382, 79)
 
 [node name="Lièvres" parent="." instance=ExtResource("2_xa725")]
-position = Vector2(639, 77)
+position = Vector2(639, 79)
 
 [node name="Cerfs" parent="." instance=ExtResource("2_xa725")]
-position = Vector2(777, 77)
+position = Vector2(777, 79)
 
 [node name="Carpes" parent="." instance=ExtResource("2_xa725")]
-position = Vector2(910, 77)
+position = Vector2(910, 79)
 
 [node name="Espions" parent="." instance=ExtResource("2_xa725")]
-position = Vector2(499, 77)
+position = Vector2(499, 79)
 
 [node name="Button" type="Button" parent="."]
 offset_right = 1001.0

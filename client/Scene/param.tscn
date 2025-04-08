@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bw1vf4q3v1shj"]
+[gd_scene load_steps=19 format=3 uid="uid://bw1vf4q3v1shj"]
 
 [ext_resource type="Script" path="res://Script/param.gd" id="1_5hj5w"]
 [ext_resource type="Texture2D" uid="uid://moika2rm8x7n" path="res://Assets/background.png" id="2_w1ci7"]
@@ -6,6 +6,7 @@
 [ext_resource type="FontFile" uid="uid://dim3hkmopleo2" path="res://Assets/Mighty Souly.otf" id="4_clmdb"]
 [ext_resource type="Theme" uid="uid://cx2oobyhw0tvn" path="res://Assets/Themes/main_menu_buttons_blank.tres" id="4_rh3wl"]
 [ext_resource type="PackedScene" uid="uid://ds7n7yxtp1klb" path="res://Scene/sound.tscn" id="6_hp66s"]
+[ext_resource type="Texture2D" uid="uid://c2ernukex2t6p" path="res://Assets/icon.svg" id="7_v0t7n"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_065ae"]
 bg_color = Color(0.0156863, 0.156863, 0.2, 1)
@@ -43,6 +44,18 @@ anti_aliasing = false
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_th0gr"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dr8ea"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_20igs"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.741176, 0.592157, 0.12549, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [node name="Param" type="Control"]
 layout_mode = 3
@@ -139,16 +152,49 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_fxy5b")
 theme_override_styles/tab_selected = SubResource("StyleBoxEmpty_huk2d")
 theme_override_styles/tab_hovered = SubResource("StyleBoxEmpty_th0gr")
 theme_override_styles/tab_unselected = SubResource("StyleBoxEmpty_dr8ea")
-current_tab = 0
+current_tab = 1
 tabs_visible = false
 
 [node name="Sound" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer" instance=ExtResource("6_hp66s")]
-layout_mode = 2
-
-[node name="Profile" type="Control" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer"]
 visible = false
 layout_mode = 2
+
+[node name="Profile" type="HBoxContainer" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer"]
+layout_mode = 2
+theme_override_constants/separation = 60
 metadata/_tab_index = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Profile"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 30
+
+[node name="NameEdit" type="LineEdit" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Profile/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_clmdb")
+theme_override_font_sizes/font_size = 40
+text = "Name"
+placeholder_text = "Name"
+alignment = 1
+flat = true
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Profile/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_20igs")
+
+[node name="CurrentPP" type="TextureRect" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Profile/VBoxContainer/PanelContainer"]
+layout_mode = 2
+texture = ExtResource("7_v0t7n")
+expand_mode = 4
+
+[node name="GridContainer" type="GridContainer" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Profile"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.3
+theme_override_constants/h_separation = 30
+theme_override_constants/v_separation = 40
+columns = 4
 
 [node name="Privacy" type="Control" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer"]
 visible = false
@@ -156,3 +202,4 @@ layout_mode = 2
 metadata/_tab_index = 2
 
 [connection signal="pressed" from="PanelContainer2/HBoxContainer/PanelContainer/Tabs/TextureButton" to="." method="_on_texture_button_pressed"]
+[connection signal="text_submitted" from="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Profile/VBoxContainer/NameEdit" to="." method="_on_text_edit_text_submitted"]
