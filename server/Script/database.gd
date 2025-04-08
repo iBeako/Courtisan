@@ -20,6 +20,7 @@ func getDatabase():
 		if return_database != "":
 			var response = JSON.parse_string(return_database)
 			return_database = ""
+			print(response)
 			if response != null:
 				return response
 			else:
