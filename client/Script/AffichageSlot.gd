@@ -1,9 +1,8 @@
 extends Control
 
-const TYPES = preload("res://Script/card.gd").TYPES
-const CARD_COLORS = ["Papillons", "Crapauds", "Rossignols", "Lièvres", "Cerfs", "Carpes"]
-enum PlayZoneType { Joueur, Ennemie, Grace, Disgrace }
-var play_zone_type: PlayZoneType  # Stocke le type reçu
+
+
+var play_zone_type: Global.PlayZoneType  # Stocke le type reçu
 var paused : bool = false
 var AssassinMenue : bool = false
 
@@ -42,7 +41,7 @@ func _on_resume_pressed() -> void:
 	#instantiate_all_cards(play_zone_type)
 
 # Fonction pour instancier une carte et l'ajouter au GridContainer
-func instantiate_card(card_type: TYPES, card_color: String, parent_slot: CardSlot) -> void:
+func instantiate_card(card_type: Global.CardType, card_color: String, parent_slot: CardSlot) -> void:
 	# Précharge la scène de la carte
 	var card_scene = preload("res://Scene/card.tscn")
 	
@@ -70,7 +69,7 @@ func instantiate_all_cards(play_zone: PlayZone) -> void:
 		return
 
 	# Parcourt chaque couleur dans la liste des couleurs possibles
-	for color in CARD_COLORS:
+	for color in Global.Family:
 		var card_slot = play_zone.get_node_or_null(color)  # Trouve le CardSlot par couleur
 		
 		if card_slot == null:

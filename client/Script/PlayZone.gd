@@ -1,11 +1,9 @@
 extends Node
 class_name PlayZone
 
-# Enumeration defining different play zone types
-enum PlayZoneType { Joueur, Ennemie, Grace, Disgrace }
 
 # Exported variable to set the type of play zone (default is 'Joueur')
-@export var Play_ZoneType: PlayZoneType = PlayZoneType.Joueur
+@export var Play_ZoneType: Global.PlayZoneType = Global.PlayZoneType.PLAYER
 
 # Reference to the ColorRect node in the scene
 @onready var color_rect: ColorRect = $ColorRect
@@ -19,14 +17,7 @@ var family_names = ["Papillons", "Crapauds", "Rossignols", "Lièvres", "Cerfs", 
 # Array to store cards currently in this play zone
 var cards_in_zone : Array = []
 
-# Enumeration defining different card types
-enum TYPES {
-	Normal,
-	Assassin,
-	Espion,
-	Garde,
-	Noble
-}
+
 
 # Called when the node is added to the scene
 func _ready() -> void:
@@ -49,13 +40,13 @@ func update_color_rect() -> void:
 
 	# Assign colors based on the type of play zone
 	match Play_ZoneType:
-		PlayZoneType.Grace:
+		Global.PlayZoneType.FAVOR:
 			color_rect.color = Color(0, 1, 0)  # Green for Grace
-		PlayZoneType.Disgrace:
+		Global.PlayZoneType.DISFAVOR:
 			color_rect.color = Color(1, 0, 0)  # Red for Disgrace
-		PlayZoneType.Joueur:
+		Global.PlayZoneType.PLAYER:
 			color_rect.color = Color(0, 0, 1)  # Blue for Player
-		PlayZoneType.Ennemie:
+		Global.PlayZoneType.ENEMY:
 			color_rect.color = Color(1, 1, 0)  # Yellow for Enemy
 		_:
 			color_rect.color = Color(1, 1, 1)  # Default to White
@@ -118,7 +109,7 @@ func update_labels(emit_signal : bool = true, values : Dictionary = {}) -> Dicti
 # Function to find the appropriate card slot based on the card's color and type
 func find_card_slot(card_color: String, card_type : int) -> Node2D:
 	# If the card is an 'Espion', assign it to the 'Espions' slot
-	if card_type == TYPES.Espion:
+	if card_type == Global.CardType.SPY:
 		return get_node_or_null("Espions")
 	# Otherwise, find a slot matching the card color
 	return get_node_or_null(card_color)

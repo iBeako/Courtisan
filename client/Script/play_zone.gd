@@ -7,13 +7,9 @@ var id_image : int = 0
 # Called when the node enters the scene tree
 func _ready() -> void:
 	super._ready()
-	# Connect the 'updated_score_board' signal from the Grace and Disgrace zones
-	#get_parent().get_node("PlayZone_Grace").connect("updated_score_board", update_labels)
-	#get_parent().get_node("PlayZone_Disgrace").connect("updated_score_board", update_labels)
 
 	$VBoxContainer.rotation = -self.rotation
-	# Adjust the labels' orientation if necessary
-	#adjust_labels()
+
 
 func update_player(id_p : int, name_p : String, id_img : int):
 	id_player = id_p
@@ -24,7 +20,7 @@ func update_player(id_p : int, name_p : String, id_img : int):
 
 # Function to adjust labels' orientation for the player zone
 func adjust_labels() -> void:
-	if Play_ZoneType == PlayZoneType.Joueur:
+	if Play_ZoneType == Global.PlayZoneType.PLAYER:
 		for node_base_name in family_names:  # Example: player 1
 			var slot = get_node_or_null(node_base_name)
 			if slot:

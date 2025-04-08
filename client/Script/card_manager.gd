@@ -1,12 +1,6 @@
 extends Node2D
 
-enum TYPES {
-	Normal,
-	Assassin,
-	Espion,
-	Garde,
-	Noble
-}
+
 
 const CARD_SCENE_PATH = "res://Scene/card.tscn"
 
@@ -26,8 +20,6 @@ var card_colors: Array[String] = ["Papillons", "Crapauds", "Rossignols", "Lièvr
 # Définition des zones où le joueur peut jouer
 var can_play: Array[int] = [1, 1, 1] 
 
-# Enum des types de zones de jeu
-enum PlayZoneType { Joueur, Ennemie, Grace, Disgrace }
 
 @onready var affichage_slot_card = get_node("/root/Main/slotMenuCanvas/SlotMenu")
 var play_zone_joueur = get_node_or_null("/root/Main/PlayZone_Joueur")
@@ -104,14 +96,14 @@ func end_drag():
 			message_manager_reference.send_card_played(player_id, card_is_dragged.card_type, card_is_dragged.card_color, area, card_zone_found.id_player if area == 1 else -1)
 			
 			# Add the card to the play zone
-			if card_is_dragged.card_type == TYPES.Assassin:
+			if card_is_dragged.card_type == Global.CardType.ASSASSIN:
 				print("Assassin")
 				affichage_slot_card.AssassinMenue = true
 				affichage_slot_card.pause()  # Affiche le menu
 				affichage_slot_card.instantiate_all_cards(card_zone_found)  # Charge les cartes
 				
 			card_zone_found.add_card(card_is_dragged)
-			if card_is_dragged.card_type == TYPES.Espion:
+			if card_is_dragged.card_type == Global.CardType.SPY:
 				card_is_dragged.hide_card()
 			can_play[id_can_play] = 0  # Mark the zone as played
 				
