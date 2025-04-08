@@ -29,10 +29,12 @@ var zone_pos = {
 var zones : Array
 
 func _ready() -> void:
-	#print_tree_pretty()
+	
 	print("debut script")
 	client = load("res://Script/network.gd").new()
+	client.name = "network"
 	add_child(client)
+	print_tree()
 	await get_tree().create_timer(3.0).timeout
 	var login = {"message_type":"connexion","login":"login","password":"password"}
 	client.send_message_to_server.rpc_id(1,login)

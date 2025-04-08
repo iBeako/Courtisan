@@ -1,9 +1,6 @@
 extends Node
 signal error_card_played(message)
 
-func send_message_to_server(data: Dictionary):
-	print(data)
-
 enum family {
 	butterfly = 0,
 	frog = 1,
@@ -79,14 +76,12 @@ func _on_message_sent(message: Dictionary) -> void:
 	send_message_to_server.rpc_id(1, message)
 
 
-#@rpc("any_peer")
-#func send_message_to_server(data: Dictionary):
-	#print("error cannot receive this type of message only server can")
-	#print(" ", data)
-	#var sender_id = multiplayer.get_remote_sender_id()
-	#print("Client %d sent a %s" % [data.player, data.message_type])
-	#print(" ", data)
-	#process_message(data)
+@rpc("any_peer")
+func send_message_to_server(data: Dictionary):
+	print("error cannot receive this type of message only server can")
+	print(" ", data)
+	var sender_id = multiplayer.get_remote_sender_id()
+	print("Client %d sent a %s" % [data.player, data.message_type])
 
 @rpc("authority")
 func send_message_to_peer(data: Dictionary):
