@@ -94,6 +94,22 @@ async def handle_connexion(websocket, data, connection):
     result = get_account(data.get("email"), connection)
     await websocket.send_json(result)
 
+async def handle_change_user_status(websocket, data, connection):
+    username = data.get("username")
+    is_active = data.get("is_active")
+    cursor = connection.cursor()
+    cursor.execute(
+        "UPDATE users SET is_active = :active WHERE username = :username",
+        active=is_active,
+        username=username
+    )
+    connection.commit()
+    cursor.close()
+    if is_active:
+        await websocket.send_json({"status": "success", "message": f" {username} is now active."})
+    else:
+        await websocket.send_json({"status": "success", "message": f" {username} is now inactive."})
+
 async def handle_change_profile(websocket, data, connection):
     email = data.get("email")
     cursor = connection.cursor()
@@ -191,6 +207,9 @@ async def websocket_endpoint(websocket: WebSocket):
                 elif message_type == "connexion":
                     await handle_connexion(websocket, data, connection)
                     print("User connected.")
+                elif message_type == "change_status":
+                    await handle_change_user_status(websocket, data, connection)
+                    print("User status changed.")
                 elif message_type == "change_profile":
                     await handle_change_profile(websocket, data, connection)
                     print("Profile picture changed.")

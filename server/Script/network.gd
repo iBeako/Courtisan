@@ -49,13 +49,24 @@ func _process(_delta):
 func _on_peer_disconnected(peer_id: int):
 	var _id = clients[peer_id]
 	print("Player ", _id, " has disconnected")
-	#var ai = AI_class.new()
-	#ai.id_player = _id
-	#ai.id_AI = AIs.size()
-	#add_child(ai)
-	#AIs.append(ai)
-	clients.erase(peer_id)
-	number_of_client -= 1
+	if clients["peer_id"]["status"] == "in_game":
+		pass #ai not work for now
+		#var ai = AI_class.new()
+		#ai.id_player = _id
+		#ai.id_AI = AIs.size()
+		#add_child(ai)
+		#AIs.append(ai)
+	else:
+		clients.erase(peer_id)
+		number_of_client -= 1
+	var message_to_database = {
+		"message_type" = "change_status",
+		"username" = clients[peer_id]["username"],
+		"is_active" = 1
+	}
+	Database.sendDatabase(message_to_database)
+	var return_message = await Database.getDatabase()
+	print(return_message)
 
 func _on_peer_connected(peer_id: int):
 	print("New client connected with id: %d" % peer_id)
@@ -117,6 +128,9 @@ func startLobby(message:Dictionary,peer_id:int):
 	var id_lobby = message["id_lobby"]
 	if session[id_lobby].check_game_start():
 		session[id_lobby].load_game() # load game of the session
+		for client in clients:
+			if client["id_lobby"] == id_lobby:
+				client["status"] = "in_game"
 		var turn = {"message_type":"player_turn","id_player":session[id_lobby].current_player_id,"number_of_cards":session[id_lobby].card_stack._get_card_number()}
 		print("turn :" ,turn["id_player"])
 		send_message_to_lobby(id_lobby,turn) 
@@ -190,8 +204,19 @@ func login(data: Dictionary,peer_id:int):
 			"username" = log["username"],
 			"image_profil" = log["image_profil"]
 		}
-		clients[peer_id]["status"] = "connected"
-		clients[peer_id]["image_profil"] = log["image_profil"]
+		if clients[peer_id]["status"] != "in_game":
+			clients[peer_id]["status"] = "connected"
+			clients[peer_id]["image_profil"] = log["image_profil"]
+		else:
+			pass
+		var message_to_database = {
+			"message_type" = "change_status",
+			"username" = clients[peer_id]["username"],
+			"is_active" = 0
+		}
+		Database.sendDatabase(message_to_database)
+		var return_message = await Database.getDatabase()
+		print(return_message)
 		send_message_to_peer.rpc_id(peer_id,login_success_data)
 	else:
 		send_message_to_peer.rpc_id(peer_id,log)
