@@ -17,6 +17,9 @@ var session = {}
 var number_of_session: int = 0
 #load("res://Script/session.gd").new(MAX_CLIENT) # a session specific to a port
 
+var AI_class = load("res://Script/AI.gd")
+var AIs = []
+
 func _onready():
 	tls_key = load("res://certificates/private.key")
 	tls_cert = load("res://certificates/certificate.crt")
@@ -42,7 +45,13 @@ func _process(_delta):
 # connexion function
 ## between client and server
 func _on_peer_disconnected(peer_id: int):
-			
+	var _id = clients[peer_id]
+	print("Player ", _id, " has disconnected")
+	var ai = AI_class.new()
+	ai.id_player = _id
+	ai.id_AI = AIs.size()
+	add_child(ai)
+	AIs.append(ai)
 	clients.erase(peer_id)
 	number_of_client -= 1
 
@@ -169,7 +178,8 @@ func send_message_to_lobby(id_lobby:int,data:Dictionary):
 	for peer_id in session[id_lobby].client_peer:
 		send_message_to_peer.rpc_id(peer_id,id_lobby,data)
 
-
+func _process_error(_data: Dictionary):
+	pass
 
 func login(data: Dictionary,peer_id:int):
 	if await validate_login(data):

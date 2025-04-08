@@ -1,10 +1,13 @@
 extends Node
+class_name Stack
 
 var card_number: int
 var card_played_count = 0
 
 var all_cards = []
 var card_stack = []
+
+
 
 var global = preload("res://Script/global.gd").new()
 
@@ -22,7 +25,7 @@ func _set_card_number(player_max: int) -> void:
 	elif player_max == 5 :
 		card_number = 90
 	else :
-		print("Error : number of player invalid")
+		printerr("Error : number of player invalid")
 
 func _get_card_number():
 	return card_stack.size()
@@ -34,10 +37,11 @@ func print_stack_state() -> void:
 func generate_card() -> bool :
 	# 90 times
 	for family in global.families :
-		for card_type_number in global.card_type_numbers :
-			for i in range(card_type_number) :
-				all_cards.append([i, family])
-	
+		var card_type = 0
+		for number in global.card_type_numbers :
+			for i in range(number) :
+				all_cards.append([card_type, family])
+			card_type = card_type + 1
 	return !all_cards.is_empty()
 	
 func _set_card_stack() -> void:
@@ -63,6 +67,7 @@ func _retrieve_card(card_type: int, family: String) -> bool :
 		all_cards.remove_at(id)
 		return true
 	return false
+
 	
 func _one_card_played() -> void:
 	card_played_count += 1

@@ -45,9 +45,24 @@ func process_message_for_client_ingame(data : Dictionary,sender_id:int):
 				"error_type" = "card_played"
 			}
 			Network.send_message_to_peer.rpc_id(sender_id,error_message)	
+	elif data["message_type"] == "action":
+		if validate_action(data):
+			Network.send_message_to_lobby(data["id_lobby"],data)
+		else:
+			var error_message = {
+				"message_type" = "error",
+				"error_type" = "action"
+			}
+			Network.send_message_to_peer.rpc_id(sender_id,error_message)
 	else:
 		print("invalid message")
-
+		
+	if sender_id == 1 : # if AI sent message
+		Network.session[data["id_lobby"]].check_turn(data["player"])
+	else :
+		Network.session[data["id_lobby"]].check_turn(sender_id)
+		
+	
 
 func process_error(_data: Dictionary):
 	pass	
@@ -103,3 +118,17 @@ func validate_card_played(id_lobby:int,sender_id :int,message: Dictionary) -> bo
 			elif message["area"] == 1:
 				Network.session[id_lobby].place_card(message["player"], message["area"], message["card_type"], message["family"])#, 0, message["id_player_domain"])
 	return true	
+
+func validate_action(message: Dictionary) -> bool:
+	var is_valid = true
+	
+	if message["area"] == 1:
+		print("_validate_action: area == 1")
+		is_valid = is_valid and Network.session[message["id_lobby"]].remove_card(message["player"], message["area"], message["id_card"], message["family"], message["target_family"], message["id_player_domain"])
+	else :
+		print("_validate_action: area != 1")
+		is_valid = is_valid and Network.session[message["id_lobby"]].remove_card(message["player"], message["area"], message["id_card"], message["family"], message["target_family"])
+	
+	if is_valid :
+		return true
+	return false
