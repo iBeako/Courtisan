@@ -187,10 +187,11 @@ func login(data: Dictionary,peer_id:int):
 	if (! log.has("error")):
 		var login_success_data = {
 			"message_type" = "connexion",
-			"username" = data["username"],
+			"username" = log["username"],
 			"image_profil" = log["image_profil"]
 		}
 		clients[peer_id]["status"] = "connected"
+		clients[peer_id]["image_profil"] = log["image_profil"]
 		send_message_to_peer.rpc_id(peer_id,login_success_data)
 	else:
 		send_message_to_peer.rpc_id(peer_id,log)
