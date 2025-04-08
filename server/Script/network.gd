@@ -184,7 +184,7 @@ func _process_error(_data: Dictionary):
 
 func login(data: Dictionary,peer_id:int):
 	var log = await validate_login(data)
-	if (! log.has("error")):
+	if (log.has("status") and log["status"] == "success"):
 		var login_success_data = {
 			"message_type" = "connexion",
 			"username" = log["username"],
