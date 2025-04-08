@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://c64rbytxpt4j6"]
+[gd_scene load_steps=11 format=3 uid="uid://c64rbytxpt4j6"]
 
 [ext_resource type="PackedScene" uid="uid://hxhhmah7l5fw" path="res://Scene/card_slot.tscn" id="1_bpis3"]
 [ext_resource type="Script" path="res://Script/play_zone.gd" id="1_ofgpd"]
-[ext_resource type="Texture2D" uid="uid://diq2mulbgvlxx" path="res://Assets/playboardZonePadd20.png" id="2_1ilcw"]
+[ext_resource type="Texture2D" uid="uid://c2ernukex2t6p" path="res://Assets/icon.svg" id="3_76t8h"]
+[ext_resource type="FontFile" uid="uid://dim3hkmopleo2" path="res://Assets/Mighty Souly.otf" id="3_oaquq"]
+[ext_resource type="Texture2D" uid="uid://bst24vriteyae" path="res://Assets/Rectangle 122.png" id="4_jlrvx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t84a7"]
 size = Vector2(728, 180)
@@ -14,13 +16,29 @@ corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_whtmj"]
+bg_color = Color(0.741176, 0.592157, 0.12549, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rmrrx"]
+texture = ExtResource("4_jlrvx")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1b24u"]
+bg_color = Color(0.741176, 0.592157, 0.12549, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+expand_margin_top = 5.0
+expand_margin_right = 5.0
+expand_margin_bottom = 5.0
+
 [node name="PlayZone" type="Node2D"]
 script = ExtResource("1_ofgpd")
-
-[node name="PlayboardZonePadd20" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(381, 101)
-texture = ExtResource("2_1ilcw")
 
 [node name="Area2D" type="Area2D" parent="."]
 light_mask = 4
@@ -32,36 +50,63 @@ visibility_layer = 4
 position = Vector2(366, 89)
 shape = SubResource("RectangleShape2D_t84a7")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-visible = false
-offset_right = 730.0
-offset_bottom = 146.0
-color = Color(0.0185693, 0.657099, 0.410049, 1)
-metadata/_edit_use_anchors_ = true
-
 [node name="Panel" type="Panel" parent="."]
 offset_top = -1.0
 offset_right = 730.0
 offset_bottom = 179.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_oc2q4")
 
+[node name="Panel2" type="Panel" parent="."]
+offset_left = 612.0
+offset_top = 5.0
+offset_right = 712.0
+offset_bottom = 174.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_whtmj")
+
 [node name="Papillons" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(664, 92)
+position = Vector2(62, 90)
 
 [node name="Crapauds" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(564, 92)
+position = Vector2(162, 90)
 
 [node name="Rossignols" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(464, 92)
+position = Vector2(262, 90)
 
 [node name="Lièvres" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(364, 92)
+position = Vector2(362, 90)
 
 [node name="Cerfs" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(264, 92)
+position = Vector2(462, 90)
 
 [node name="Carpes" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(164, 92)
+position = Vector2(562, 90)
 
 [node name="Espions" parent="." instance=ExtResource("1_bpis3")]
-position = Vector2(64, 92)
+position = Vector2(662, 90)
+
+[node name="Button" type="Button" parent="."]
+offset_right = 728.0
+offset_bottom = 180.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_left = 762.0
+offset_top = 2.0
+offset_right = 890.0
+offset_bottom = 174.0
+pivot_offset = Vector2(64, 86)
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_oaquq")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxTexture_rmrrx")
+text = "Hello"
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1b24u")
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/PanelContainer"]
+layout_mode = 2
+texture = ExtResource("3_76t8h")

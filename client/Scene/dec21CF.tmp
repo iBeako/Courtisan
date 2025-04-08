@@ -1,0 +1,78 @@
+[gd_scene load_steps=6 format=3 uid="uid://825pe2ngj4he"]
+
+[ext_resource type="Script" path="res://Script/deck.gd" id="1_6dfoh"]
+[ext_resource type="Texture2D" uid="uid://dc7jese687boj" path="res://Assets/dos_carte.jpg" id="2_55av3"]
+[ext_resource type="FontFile" uid="uid://dim3hkmopleo2" path="res://Assets/Mighty Souly.otf" id="3_qg8rv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v7si8"]
+size = Vector2(86, 162)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i4ej4"]
+bg_color = Color(0, 0, 0, 0.611765)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[node name="Deck" type="Node2D"]
+script = ExtResource("1_6dfoh")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_left = -43.0
+offset_top = -81.0
+offset_right = 43.0
+offset_bottom = 81.0
+texture = ExtResource("2_55av3")
+expand_mode = 1
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_v7si8")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -13.0
+offset_top = -13.0
+offset_right = 13.0
+offset_bottom = 13.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_i4ej4")
+
+[node name="CardCountLabel" type="Label" parent="PanelContainer"]
+z_index = 10
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_qg8rv")
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/CardCountLabel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -13.0
+offset_top = -13.0
+offset_right = 13.0
+offset_bottom = 13.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_i4ej4")
+
+[node name="CountLabel" type="Label" parent="PanelContainer/CardCountLabel/PanelContainer"]
+z_index = 10
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_qg8rv")
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+vertical_alignment = 1

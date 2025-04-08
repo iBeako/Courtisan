@@ -1,0 +1,92 @@
+[gd_scene load_steps=12 format=3 uid="uid://t5g0uidnc5o7"]
+
+[ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/general.tres" id="1_5d8kw"]
+[ext_resource type="Script" path="res://Script/signin_page.gd" id="1_xebut"]
+[ext_resource type="PackedScene" uid="uid://d053ssckadw1i" path="res://Scene/input_sign.tscn" id="2_idw5c"]
+[ext_resource type="PackedScene" uid="uid://c3oiwppnr4cxt" path="res://Scene/input_sign_password.tscn" id="3_ep1yl"]
+[ext_resource type="FontFile" uid="uid://dim3hkmopleo2" path="res://Assets/Mighty Souly.otf" id="4_dcmhl"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xi42k"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gf3d2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e0i61"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0y1ib"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_og31f"]
+
+[sub_resource type="Theme" id="Theme_js0p0"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 20
+Button/fonts/font = ExtResource("4_dcmhl")
+Button/styles/disabled = SubResource("StyleBoxEmpty_xi42k")
+Button/styles/focus = SubResource("StyleBoxEmpty_gf3d2")
+Button/styles/hover = SubResource("StyleBoxEmpty_e0i61")
+Button/styles/normal = SubResource("StyleBoxEmpty_0y1ib")
+Button/styles/pressed = SubResource("StyleBoxEmpty_og31f")
+
+[node name="SignIN" type="VBoxContainer"]
+theme_override_constants/separation = 20
+script = ExtResource("1_xebut")
+metadata/_tab_index = 0
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+theme = ExtResource("1_5d8kw")
+text = "SIGN IN"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Email" parent="." instance=ExtResource("2_idw5c")]
+layout_mode = 2
+
+[node name="LineEdit" parent="Email/MarginContainer/HBoxContainer" index="2"]
+placeholder_text = "E-MAIL"
+
+[node name="Password" parent="." instance=ExtResource("3_ep1yl")]
+layout_mode = 2
+
+[node name="LineEdit" parent="Password/MarginContainer/HBoxContainer" index="2"]
+placeholder_text = "Password"
+
+[node name="Forgot" type="Button" parent="."]
+layout_mode = 2
+theme = SubResource("Theme_js0p0")
+text = "Forgot password?"
+
+[node name="SignIN" type="Button" parent="."]
+layout_mode = 2
+theme = ExtResource("1_5d8kw")
+text = "SIGN IN"
+
+[node name="HSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="SignUP" type="Button" parent="."]
+layout_mode = 2
+theme = ExtResource("1_5d8kw")
+text = "SIGN UP
+"
+
+[connection signal="pressed" from="SignIN" to="." method="send_infos"]
+[connection signal="pressed" from="SignUP" to="." method="_on_sign_up_pressed"]
+
+[editable path="Email"]
+[editable path="Password"]

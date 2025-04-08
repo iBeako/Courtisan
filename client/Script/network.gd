@@ -13,9 +13,10 @@ enum family {
 	fish = 5
 }
 var hand = []
-var card_types = ["normal", "noble", "spy", "guard", "assassin"]
+var card_types = ["normal", "noble", "espion", "garde", "assassin"]
 var families = ["butterfly", "frog", "bird", "bunny", "deer", "fish"]
 enum PlayZoneType {PLAYER, ENEMY, FAVOR, DISFAVOR}
+var zone = ["Joueur","Ennemie","Faveur","Disgrâce"]
 
 #connexion:
 #{"message_type:"connexion","login":"login","password":"password"}
@@ -101,6 +102,7 @@ var my_profil_pic: int
 
 var deck_reference
 var message_manager
+var taskbar_reference 
 
 var id: int
 var username
@@ -197,8 +199,6 @@ func process_message(data:Dictionary):
 				
 			print("CLIENT : As player ",id,", I received hand : ", hand)
 			deck_reference.draw_cards(hand)
-		else:
-			print("invalid message")
 		elif data["message_type"] == "mission":
 			print("white mission : ", white_missions[data["white_mission"]])
 			print("blue mission : ", blue_missions[data["blue_mission"]])
@@ -223,6 +223,7 @@ func change_profile_picture(login:String,picture_id:int):
 func if_start_game():
 	message_manager = $"/root/Main/MessageManager"
 	deck_reference = $"/root/Main/Deck"
+	taskbar_reference = $"/root/Main/Taskbar"
 
 func if_end_game():
 	message_manager.clear()
@@ -232,12 +233,15 @@ func put_message_in_chat(_data:Dictionary):
 	pass
 	
 func process_card_played(data:Dictionary):
+	
 	if data["player"] != id:
 		if data["area"] == 0:
 			data["area"] = 1
 		elif data["area"] == 1:
 			data["area"] = 0
 	var writting_message = "CLIENT - Player %d" % id + " : player %d "  % data["player"] + " has put %s" % data["card_type"] + " %s" % data["family"]+ " in %s" % data["area"]
+	taskbar_reference.print_action("Le joueur %d a placé un %s %s dans %s" % [data["player"] + 1, card_types[data["card_type"]], data["family"], zone[data["area"]]])
+	
 	if data.has("position"):
 		if data["position"] > 0:
 			writting_message = writting_message + " in the light"
@@ -245,6 +249,7 @@ func process_card_played(data:Dictionary):
 	print(writting_message)
 	if data["player"] != id:
 		message_manager.add_card_to_zone(data["family"],data["card_type"],data["area"])
+		print("----",data)
 		
 func get_hand() -> Array:
 	return hand
