@@ -31,13 +31,13 @@ func print_stack_state() -> void:
 	print("	Card stack number : ", card_number)
 	print("	Card stack :", card_stack, "\n")
 	
-func generate_card() -> bool :
-	# 90 times
-	for family in global.families :
-		for card_type_number in global.card_type_numbers :
-			for i in range(card_type_number) :
-				all_cards.append([i, family])
-	
+func generate_card() -> bool:
+	for family in global.families:
+		for card_type in range(len(global.card_type_numbers)):
+			var count = global.card_type_numbers[card_type]
+			for i in range(count):
+				all_cards.append([card_type, family])
+
 	return !all_cards.is_empty()
 	
 func _set_card_stack() -> void:
