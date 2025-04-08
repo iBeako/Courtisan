@@ -177,6 +177,7 @@ async def handle_quit_lobby(websocket, data, connection):
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
+    connection, tunnel = get_db_connection()
     try:
         while True:
             data = await websocket.receive_json()
