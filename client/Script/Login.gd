@@ -1,35 +1,17 @@
-extends Node
-class_name Account
+extends Control
+
+@onready var tab : TabContainer = $PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer
+@onready var signup : VBoxContainer = $PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer/SignUP
+@onready var signin : VBoxContainer = $PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer/SignIN
 
 
 
-static func createAccount(login:String,email:String,password:String,):
-	var strip_edges_password = password.strip_edges(true, true)
-	var message = {
-		"message_type":"createAccount",
-		
-		"login": login.strip_edges(true,true),
-		"email": email.strip_edges(true,true),
-		"password" : strip_edges_password,
-		"is_active": 0,
-		"total_games_played" : 0,
-		"pic_profile": 0
-	}
-	return message	
-	
-static func loginAccount(email:String,password:String) :
-	var strip_edges_password = password.strip_edges(true, true)
-	var message = {
-		"message_type":"connexion",
-		"login": email.strip_edges(true,true),
-		"password" : strip_edges_password
-	}
-	return message
+func _ready() -> void:
+	signup.connect("switch_tab", switch_tab)
+	signin.connect("switch_tab", switch_tab)
 
-static func changePic(login:String,pic_id:int) :
-	var message = {
-		"message_type":"change_profile",
-		"login": login.strip_edges(true,true),
-		"pic_profile" : pic_id
-	}
-	return message
+
+func switch_tab() -> void:
+	print("received emit")
+
+	tab.current_tab = (tab.current_tab + 1) % tab.get_tab_count()
