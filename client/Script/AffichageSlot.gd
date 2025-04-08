@@ -69,24 +69,27 @@ func instantiate_all_cards(play_zone: PlayZone) -> void:
 		return
 
 	# Parcourt chaque couleur dans la liste des couleurs possibles
-	for color in Global.Family:
-		var card_slot = play_zone.get_node_or_null(color)  # Trouve le CardSlot par couleur
-		
-		if card_slot == null:
-			print("⚠ CardSlot non trouvé pour la couleur :", color)
-			continue  # Passe à la prochaine couleur
+	#for color in Global.Family:
+		#var card_slot = play_zone.get_node_or_null(color)  # Trouve le CardSlot par couleur
+		#
+		#if card_slot == null:
+			#print("⚠ CardSlot non trouvé pour la couleur :", color)
+			#continue  # Passe à la prochaine couleur
+#
+		#if card_slot.cards_in_slot.is_empty():
+			#print("ℹ Aucun carte dans le slot :", color)
+			#continue  # Passe au prochain slot
 
-		if card_slot.cards_in_slot.is_empty():
-			print("ℹ Aucun carte dans le slot :", color)
-			continue  # Passe au prochain slot
+	# Instancie toutes les cartes présentes dans le slot
+	play_zone.cards_in_zone.sort_custom(
+		func(a : Card, b : Card)-> bool: return a.card_color<b.card_color
+	)
+	for card in play_zone.cards_in_zone:
+		if card == null:
+			print("⚠ Erreur : Une carte est NULL, vérifie ton code !")
+			continue
 
-		# Instancie toutes les cartes présentes dans le slot
-		for card in card_slot.cards_in_slot:
-			if card == null:
-				print("⚠ Erreur : Une carte dans", color, "est NULL, vérifie ton code !")
-				continue
-			card.parent_slot = card_slot
-			instantiate_card(card.card_type, card.card_color,card.parent_slot)
+		instantiate_card(card.card_type, card.card_color,card.parent_slot)
 			
 
 	print("✅ Toutes les cartes ont été instanciées.")

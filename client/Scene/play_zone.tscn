@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://c64rbytxpt4j6"]
 
 [ext_resource type="PackedScene" uid="uid://hxhhmah7l5fw" path="res://Scene/card_slot.tscn" id="1_bpis3"]
-[ext_resource type="Script" path="res://Script/play_zone.gd" id="1_ofgpd"]
+[ext_resource type="Script" path="res://Script/play_zone_player.gd" id="1_ofgpd"]
 [ext_resource type="Texture2D" uid="uid://c2ernukex2t6p" path="res://Assets/icon.svg" id="3_76t8h"]
 [ext_resource type="FontFile" uid="uid://dim3hkmopleo2" path="res://Assets/Mighty Souly.otf" id="3_oaquq"]
 [ext_resource type="Texture2D" uid="uid://bst24vriteyae" path="res://Assets/Rectangle 122.png" id="4_jlrvx"]

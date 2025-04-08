@@ -29,6 +29,8 @@ var zone_pos = {
 var zones : Array
 
 func _ready() -> void:
+	#print_tree_pretty()
+	print("debut script")
 	client = load("res://Script/network.gd").new()
 	add_child(client)
 	await get_tree().create_timer(3.0).timeout
@@ -51,7 +53,6 @@ func create_zones(id_players : Array[int]) -> Array:
 		zone.update_player(id_players[i], "nametest", 0)
 		zone.Play_ZoneType = Global.PlayZoneType.ENEMY
 		zone.scale = Vector2(0.8, 0.8)
-		print(zone.Play_ZoneType)
 		add_child(zone)
 		move_child(zone,3)
 		list_zones.append(zone)

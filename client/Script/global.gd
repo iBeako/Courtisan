@@ -21,4 +21,6 @@ enum CardType {NORMAL=0, NOBLE, SPY, GUARD, ASSASSIN}
 enum Family {BUTTERFLY=0, FROG, BIRD, BUNNY, DEER, FISH}
 
 enum PlayZoneType {PLAYER, ENEMY, FAVOR, DISFAVOR}
-var profile_pictures : Array = ["res://Assets/profile/1.png","res://Assets/profile/2.png","res://Assets/profile/3.png","res://Assets/profile/4.png","res://Assets/profile/5.png","res://Assets/profile/6.png","res://Assets/profile/7.png"]
+const profile_pictures : Array = ["res://Assets/profile/1.png","res://Assets/profile/2.png","res://Assets/profile/3.png","res://Assets/profile/4.png","res://Assets/profile/5.png","res://Assets/profile/6.png","res://Assets/profile/7.png"]
+
+var cards_theme : String = "cards_new"
