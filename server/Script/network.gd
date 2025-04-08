@@ -5,6 +5,8 @@ var db_url: String = "ws://pdocker:12345/ws"
 
 var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
 var port: int = 10001
+var addr: String = "0.0.0.0" #connection to VM when connected to eduroam or osiris
+#var addr: String = "*" #for localhost
 
 var number_of_client: int = 0
 var clients = {}
@@ -27,8 +29,8 @@ func _onready():
 
 func _ready():
 	_onready()
-	#peer.create_server(port, "0.0.0.0", server_tls_options) #connection to VM when connected to eduroam or osiris
-	peer.create_server(port, "*", server_tls_options)
+	 
+	peer.create_server(port, addr, server_tls_options)
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
@@ -47,11 +49,11 @@ func _process(_delta):
 func _on_peer_disconnected(peer_id: int):
 	var _id = clients[peer_id]
 	print("Player ", _id, " has disconnected")
-	var ai = AI_class.new()
-	ai.id_player = _id
-	ai.id_AI = AIs.size()
-	add_child(ai)
-	AIs.append(ai)
+	#var ai = AI_class.new()
+	#ai.id_player = _id
+	#ai.id_AI = AIs.size()
+	#add_child(ai)
+	#AIs.append(ai)
 	clients.erase(peer_id)
 	number_of_client -= 1
 
@@ -65,6 +67,7 @@ func _on_peer_connected(peer_id: int):
 		"id_client_in_game":-1,
 		"image_profil":-1
 	}
+	print(clients[peer_id])
 	number_of_client += 1
 
 func createLobby(message: Dictionary,peer_id:int):
@@ -141,6 +144,7 @@ func connect_to_database():
 #message between server and client
 @rpc("any_peer")
 func send_message_to_server(data: Dictionary):
+	print(data)
 	if data != null and data.has("message_type"):
 		var sender_id = multiplayer.get_remote_sender_id()
 		if  clients[sender_id] != null and clients[sender_id]["status"] == "connected":
@@ -153,7 +157,7 @@ func send_message_to_server(data: Dictionary):
 		elif data["message_type"] == "connexion":
 			login(data,sender_id)
 		elif data["message_type"] == "createAccount":
-			Database.insertDatabase(data)
+			insert_Account(data,sender_id)
 		else:
 			var error_login = {
 			"message_type" = "error",
@@ -182,28 +186,51 @@ func _process_error(_data: Dictionary):
 	pass
 
 func login(data: Dictionary,peer_id:int):
-	if await validate_login(data):
+	var log = await validate_login(data)
+	if (! log.has("error")):
 		var login_success_data = {
 			"message_type" = "connexion",
 			"login" = data["login"],
+			"image_profil" = log["image_profil"]
 		}
 		clients[peer_id]["status"] = "connected"
 		send_message_to_peer.rpc_id(peer_id,login_success_data)
 	else:
-		var error_login = {
-			"message_type" = "error",
-			"error_type" = "login",
-		}
-		send_message_to_peer.rpc_id(peer_id,error_login)
+		send_message_to_peer.rpc_id(peer_id,log)
 
-func validate_login(data: Dictionary) -> bool:
-	var client_data = await Database.getDatabase(data)
+func insert_Account(data:Dictionary,peer_id:int):
+	var salt = Login.GenerateSalt()
+	data["salt"] = salt
+	data["password"] = Login.HashPassword(data["password"],salt)
+	print(data)
+	Database.insertDatabase(data)
+	
+func validate_login(data: Dictionary) -> Dictionary:
+	var client_data
+	if addr == "*" :
+		var salt = Login.GenerateSalt()
+		client_data = {
+			"salt" = salt,
+			"password" =  Login.HashPassword(data["password"],salt),
+			"image_profil" = 0
+		}
+	else:
+		client_data = await Database.getDatabase(data)
 	if client_data.has("password") and client_data.has("salt"):
 		var data_hashed = Login.HashPassword(data["password"],client_data["salt"])
 		if data_hashed == client_data["password"]:
-			return true
-	#if  data["password"] == "password":
-		#return true
-	return false
+			return client_data
+		else:
+			var mes_error = {
+				"message_type":"error",
+				"error_type":"not the good password"
+			}
+			return mes_error
+	else:
+		var mes_error = {
+			"message_type":"error",
+			"error_type":"account not found"
+		}
+		return mes_error
 
 	

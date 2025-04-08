@@ -89,23 +89,24 @@ const blue_missions = [
 
 var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
 
-#var port: int = 19001 #connection to VM when connected to eduroam or osiris
-var port: int = 10001
-#var address: String = "wss://185.155.93.105:%d" % port #connection to VM when connected to eduroam or osiris
-var address: String = "wss://localhost:%d" % port
+var port: int = 19001 #connection to VM when connected to eduroam or osiris
+#var port: int = 10001
+var address: String = "wss://185.155.93.105:%d" % port #connection to VM when connected to eduroam or osiris
+#var address: String = "wss://localhost:%d" % port
 var tls_options
 
 var turn_player: int
 var id_lobby: int
 var in_game = false
-var my_profil_pic: int
+
 
 var deck_reference
 var message_manager
 var taskbar_reference 
 
 var id: int
-var username
+var username: String
+var my_profil_pic: int
 var game_started = false
 
 func _ready():
@@ -291,7 +292,7 @@ func _play_card( type_card, family, area, id_domain: int = -1):
 
 func process_connexion(data:Dictionary):
 	username = data["login"]
-	id = data["id"]
+	my_profil_pic = data["image_profil"]
 	print("has been logged")
 	get_tree().change_scene_to_packed(menu_principal)
 
