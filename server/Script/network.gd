@@ -187,7 +187,7 @@ func login(data: Dictionary,peer_id:int):
 	if (! log.has("error")):
 		var login_success_data = {
 			"message_type" = "connexion",
-			"login" = data["login"],
+			"username" = data["username"],
 			"image_profil" = log["image_profil"]
 		}
 		clients[peer_id]["status"] = "connected"

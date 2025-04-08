@@ -31,10 +31,10 @@ static func hashData(data:String):
 	var hashed = hashContext.finish()
 	return hashed.hex_encode()
 
-static func changePic(login:String,pic_id:int) :
+static func changePic(email:String,pic_id:int) :
 	var message = {
 		"message_type":"change_profile",
-		"login": login.strip_edges(true,true),
+		"email": email.strip_edges(true,true),
 		"pic_profile" : pic_id
 	}
 	return message
