@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://825pe2ngj4he"]
 
 [ext_resource type="Script" path="res://Script/deck.gd" id="1_6dfoh"]
-[ext_resource type="Texture2D" uid="uid://dc7jese687boj" path="res://Assets/dos_carte.jpg" id="2_55av3"]
+[ext_resource type="Texture2D" uid="uid://c57l2yfj7ntwh" path="res://Assets/cards_scan/back.png" id="2_c73cc"]
 [ext_resource type="FontFile" uid="uid://dim3hkmopleo2" path="res://Assets/Mighty Souly.otf" id="3_wm12l"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v7si8"]
@@ -30,7 +30,7 @@ offset_bottom = 75.0
 grow_horizontal = 2
 grow_vertical = 2
 rotation = 0.194177
-texture = ExtResource("2_55av3")
+texture = ExtResource("2_c73cc")
 expand_mode = 1
 metadata/_edit_use_anchors_ = true
 
@@ -39,7 +39,7 @@ offset_left = -41.0
 offset_top = -75.0
 offset_right = 41.0
 offset_bottom = 75.0
-texture = ExtResource("2_55av3")
+texture = ExtResource("2_c73cc")
 expand_mode = 1
 metadata/_edit_use_anchors_ = true
 

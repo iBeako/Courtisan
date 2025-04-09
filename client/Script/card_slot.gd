@@ -1,6 +1,6 @@
 extends Node2D
 class_name CardSlot
-
+var card_type: Global.CardType
 # Array to store cards currently in the slot
 var cards_in_slot: Array = []
 
@@ -11,15 +11,14 @@ const CARD_SPACING: int = 10
 @onready var main_node: Node2D = get_node("/root/Main")  # Reference to the main node
 @onready var count_label: Label = $PanelContainer/CountLabel  # Reference to the label displaying card count
 
-# Enumeration defining different play zone types
-enum PlayZoneType { Joueur, Ennemie, Grace, Disgrace }
+
 
 func _ready() -> void:
 	#print("CardSlot ready: ", self.name)  # Debug message when the slot is ready
 	$PanelContainer.hide()
 
 # Function to determine the type of play zone
-func determine_zone_type() -> PlayZoneType:
+func determine_zone_type() -> Global.PlayZoneType:
 	return get_parent().Play_ZoneType  # Get the play zone type from the parent node
 
 func remove_card(card: Card) -> void:
@@ -35,7 +34,7 @@ func remove_card(card: Card) -> void:
 		print("Carte cible : ", card.name)
 		
 		# Vérifie si les propriétés correspondent (TYPES et card_colors)
-		if (c.TYPES == card.TYPES and c.card_colors == card.card_colors):
+		if (c.card_type == card.card_type and c.card_color == card.card_color):
 			found = true  # La carte a été trouvée
 			
 			# Affiche l'état avant suppression
@@ -89,8 +88,7 @@ func update_count_label(value : int) -> int:  # 'value' is used to adjust the co
 		else:
 			$PanelContainer.hide()
 			
-		for card in cards_in_slot:
-			print("Card Name: ", card.name, ", Card Value: ", card.get_value())  # Adjust based on your card properties
+
 		return cpt
 	else:
 		print("CountLabel not found in CardSlot: ", self.name)

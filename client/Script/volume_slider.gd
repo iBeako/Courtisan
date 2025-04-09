@@ -25,6 +25,7 @@ func _ready() -> void:
 	# Retrieve the index of the specified audio bus
 	bus_index = AudioServer.get_bus_index(bus_name)
 	
+	audio_player.bus = bus_name
 	# Connect the slider's value_changed signal to the custom handler function
 	slider.value_changed.connect(_on_value_changed)
 	

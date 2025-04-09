@@ -106,13 +106,6 @@ func send_message_to_server(data: Dictionary):
 	else:
 		print("error send_message_to_server")
 
-func find_lobby_number_client(id:int) ->int:
-	for i in range(number_of_client):
-		if clients[i]["peer_id"] == id:
-			return i
-	return -1
-
-
 @rpc("authority")
 func send_message_to_peer(data: Dictionary):
 	print("error cannot receive this type of message only client can")
@@ -122,6 +115,12 @@ func send_message_to_peer(data: Dictionary):
 func send_message_to_everyone(data : Dictionary):
 	print("error cannot receive this type of message only client can")
 	print(" ", data)
+
+func find_lobby_number_client(id:int) ->int:
+	for i in range(number_of_client):
+		if clients[i]["peer_id"] == id:
+			return i
+	return -1
 		
 func process_message(data : Dictionary,sender_id:int):
 	if data["message_type"] == "error":

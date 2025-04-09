@@ -10,7 +10,7 @@ func _ready() -> void:
 	$Area2D.collision_layer = 1 << 2
 
 # Function to update the labels of the zone
-func update_labels(emit_signal : bool = true, values : Dictionary = {
+func update_labels(values : Dictionary = {
 	"Papillons" : 1, 
 	"Crapauds" : 1, 
 	"Rossignols" : 1, 
@@ -18,10 +18,6 @@ func update_labels(emit_signal : bool = true, values : Dictionary = {
 	"Cerfs" : 1, 
 	"Carpes" : 1
 }) -> Dictionary:
-	# Emit the updated_score_board signal if enabled
-	if emit_signal:
-		updated_score_board.emit()
-	
 	# Iterate through family names to update their respective labels
 	for node_name : String in family_names:
 		var nd : CardSlot = get_node_or_null(node_name)  # Retrieve the node if it exists

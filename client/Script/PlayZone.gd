@@ -1,14 +1,9 @@
 extends Node
 class_name PlayZone
 
-# Enumeration defining different play zone types
-enum PlayZoneType { Joueur, Ennemie, Grace, Disgrace }
 
 # Exported variable to set the type of play zone (default is 'Joueur')
-@export var Play_ZoneType: PlayZoneType = PlayZoneType.Joueur
-
-# Reference to the ColorRect node in the scene
-@onready var color_rect: ColorRect = $ColorRect
+@export var Play_ZoneType: Global.PlayZoneType = Global.PlayZoneType.PLAYER
 
 var param_button : Button
 @onready var slotMenu : Control = get_node("/root/Main/slotMenuCanvas/SlotMenu")  # Chemin absolu vers SlotMenu
@@ -19,18 +14,10 @@ var family_names = ["Papillons", "Crapauds", "Rossignols", "Lièvres", "Cerfs", 
 # Array to store cards currently in this play zone
 var cards_in_zone : Array = []
 
-# Enumeration defining different card types
-enum TYPES {
-	Normal,
-	Assassin,
-	Espion,
-	Garde,
-	Noble
-}
+
 
 # Called when the node is added to the scene
 func _ready() -> void:
-	update_color_rect()
 	# Sets the collision layer for the area (shifting 1 to the left by 2 places)
 	$Area2D.collision_layer = 1 << 2
 	
@@ -41,28 +28,11 @@ func _ready() -> void:
 	# Connecter le signal 'pressed' du bouton Param
 	param_button.pressed.connect(self._on_param_button_pressed)
 
-# Function to update the color of the ColorRect based on the play zone type
-func update_color_rect() -> void:
-	if not color_rect:
-		print("Error: ColorRect not found!")
-		return
 
-	# Assign colors based on the type of play zone
-	match Play_ZoneType:
-		PlayZoneType.Grace:
-			color_rect.color = Color(0, 1, 0)  # Green for Grace
-		PlayZoneType.Disgrace:
-			color_rect.color = Color(1, 0, 0)  # Red for Disgrace
-		PlayZoneType.Joueur:
-			color_rect.color = Color(0, 0, 1)  # Blue for Player
-		PlayZoneType.Ennemie:
-			color_rect.color = Color(1, 1, 0)  # Yellow for Enemy
-		_:
-			color_rect.color = Color(1, 1, 1)  # Default to White
 
 # Function to add a card to the play zone
 func add_card(card: Card) -> void:
-	print("Adding card to slot: ", self.name)
+	#print("Adding card to slot: ", self.name)
 	card.card_placed()
 	
 	# Prevent duplicate cards in the zone
@@ -103,22 +73,22 @@ func add_card(card: Card) -> void:
 		card.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		# Update the UI labels
 		update_labels()
-		print("Card added to ", card_slot.name, ". Total cards: ", card_slot.cards_in_slot.size())
-		print("Card slot :",card_slot)
+		#print("Card added to ", card_slot.name, ". Total cards: ", card_slot.cards_in_slot.size())
+		#print("Card slot :",card_slot)
 		card.parent_slot = card_slot
-		print("✅ parent_slot assigné :", card.parent_slot)
+		#print("✅ parent_slot assigné :", card.parent_slot)
 	else:
 		print("Failed to add card: CardSlot not found",card.card_color, card.card_type)
 
 # Function to update labels (not implemented yet)
-func update_labels(emit_signal : bool = true, values : Dictionary = {}) -> Dictionary:
+func update_labels(values : Dictionary = {}) -> Dictionary:
 	push_error("Class update_labels not implemented")
 	return {}
 
 # Function to find the appropriate card slot based on the card's color and type
 func find_card_slot(card_color: String, card_type : int) -> Node2D:
 	# If the card is an 'Espion', assign it to the 'Espions' slot
-	if card_type == TYPES.Espion:
+	if card_type == Global.CardType.SPY:
 		return get_node_or_null("Espions")
 	# Otherwise, find a slot matching the card color
 	return get_node_or_null(card_color)
@@ -132,6 +102,7 @@ func _on_param_button_pressed() -> void:
 	# Inverse la visibilité du menu de pause
 
 	slotMenu.pause()
+	print("heyyyyyyyyyyyy")
 	slotMenu.instantiate_all_cards(self)
 
 

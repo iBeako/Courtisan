@@ -1,12 +1,6 @@
 extends Node2D
 
-enum TYPES {
-	Normal,
-	Assassin,
-	Espion,
-	Garde,
-	Noble
-}
+signal card_played
 
 const CARD_SCENE_PATH = "res://Scene/card.tscn"
 
@@ -26,27 +20,26 @@ var card_colors: Array[String] = ["Papillons", "Crapauds", "Rossignols", "Lièvr
 # Définition des zones où le joueur peut jouer
 var can_play: Array[int] = [1, 1, 1] 
 
-# Enum des types de zones de jeu
-enum PlayZoneType { Joueur, Ennemie, Grace, Disgrace }
 
 @onready var affichage_slot_card = get_node("/root/Main/slotMenuCanvas/SlotMenu")
-var play_zone_joueur = get_node_or_null("/root/Main/PlayZone_Joueur")
-var play_zone_ennemie = get_node_or_null("/root/Main/PlayZone_Ennemie")
-var play_zone_grace = get_node_or_null("/root/Main/PlayZone_Grace")
-var play_zone_disgrace = get_node_or_null("/root/Main/PlayZone_Disgrace")
+
 
 # Références aux autres nodes avec typage
 @onready var input_manager_reference: Node = $"../inputManager"
 @onready var player_hand_reference: PlayerHand = $"../PlayerHand"
 @onready var message_manager_reference: MessageManager = $"../MessageManager"
-@onready var deck: Node = $"../Deck"  # Remplace `Node` par `Deck` si c'est une classe spécifique
-@onready var screen_size: Vector2 = get_viewport_rect().size  # Récupération de la taille de l'écran
+@onready var change_theme_reference: OptionButton = $"../CanvasLayer/PauseMenu/Panel/MarginContainer/VBoxContainer/Sound/HBoxContainer/LinkButton"
+
 
 func _ready() -> void:
 	input_manager_reference.connect("left_mouse_button_released", end_drag)
-	
-	# Connect the input manager's signal for left mouse button release
+	change_theme_reference.connect("item_selected",update_cards_texture)
 
+
+func update_cards_texture(item) -> void:
+	print("changement")
+	for card : Card in get_children():
+		card.apply_card_texture()
 
 	
 # Update function called every frame
@@ -81,11 +74,13 @@ func end_drag():
 	var card_zone_found : PlayZone = check_zone()
 	
 	if card_zone_found and not card_is_dragged in card_zone_found.cards_in_zone:
+
+		
 		player_hand_reference.remove_card_from_hand(card_is_dragged)  # Remove the card from the player's hand
 		
 		# Determine the play area and position
 		var area = card_zone_found.Play_ZoneType
-		print("Zone type: " + str(area))
+		#print("Zone type: " + str(area))
 		var player_id = get_parent().client.turn_player
 		
 		# Determine which play zone the card was placed in
@@ -104,14 +99,16 @@ func end_drag():
 			message_manager_reference.send_card_played(player_id, card_is_dragged.card_type, card_is_dragged.card_color, area, card_zone_found.id_player if area == 1 else -1)
 			
 			# Add the card to the play zone
-			if card_is_dragged.card_type == TYPES.Assassin:
-				print("Assassin")
+			if card_is_dragged.card_type == Global.CardType.ASSASSIN:
+				#print("Assassin")
 				affichage_slot_card.AssassinMenue = true
 				affichage_slot_card.pause()  # Affiche le menu
 				affichage_slot_card.instantiate_all_cards(card_zone_found)  # Charge les cartes
 				
 			card_zone_found.add_card(card_is_dragged)
-			if card_is_dragged.card_type == TYPES.Espion:
+			card_played.emit() #for labels update
+			
+			if card_is_dragged.card_type == Global.CardType.SPY:
 				card_is_dragged.hide_card()
 			can_play[id_can_play] = 0  # Mark the zone as played
 				

@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://cmahvw0fibdqa"]
 
-[ext_resource type="Script" path="res://Scene/AffichageSlot.gd" id="1_i2r0v"]
+[ext_resource type="Script" path="res://Script/AffichageSlot.gd" id="1_i2r0v"]
 [ext_resource type="Shader" path="res://Assets/Shaders/pause_menu.gdshader" id="2_sglnp"]
 [ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/general.tres" id="4_quyo3"]
 
