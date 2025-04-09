@@ -75,23 +75,32 @@ def insert_account(data: dict, connection):
     else:
         return {"status": "error", "message": "Failed to create account."}
 
-def get_account(email: str, connection):
+def get_account(login: str, connection, mode: int):
     cursor = connection.cursor()
-    query = "SELECT username, password, salt, pic_profile FROM users WHERE email = :email"
-    cursor.execute(query, email=email)
+    if mode == 0:
+        query = "SELECT pseudo, password, salt, pic_profile FROM users WHERE email = :email"
+        cursor.execute(query, email=login)
+    else:
+        query = "SELECT pseudo, password, salt, pic_profile FROM users WHERE username = :username"
+        cursor.execute(query, username=login)
     result = cursor.fetchone()
     cursor.close()
     if result:
-        return {"username": result[0], "password": result[1], "salt": result[2], "pic_profile": result[3]}
+        return {"status": "success","pseudo": result[0], "password": result[1], "salt": result[2], "pic_profile": result[3]}
     else:
         return {"status": "error", "message": "Account not found."}
+
+
 
 async def handle_create_account(websocket, data, connection):
     result = insert_account(data, connection)
     await websocket.send_json(result)
 
 async def handle_connexion(websocket, data, connection):
-    result = get_account(data.get("email"), connection)
+    if "email" in data:
+        result = get_account(data.get("email"), connection, 0)
+    else:
+        result = get_account(data.get("username"), connection, 1)
     await websocket.send_json(result)
 
 async def handle_change_user_status(websocket, data, connection):

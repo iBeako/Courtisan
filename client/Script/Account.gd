@@ -15,13 +15,16 @@ static func createAccount(login:String,email:String,password:String,):
 	}
 	return message	
 	
-static func loginAccount(email:String,password:String) :
+static func loginAccount(login:String,password:String) :
 	var strip_edges_password = password.strip_edges(true, true)
 	var message = {
 		"message_type":"connexion",
-		"email": email.strip_edges(true,true),
 		"password" : strip_edges_password
 	}
+	if '@' in login:
+		message["email"] = login.strip_edges(true,true)
+	else:
+		message["username"] = login.strip_edges(true,true)
 	return message
 
 static func hashData(data:String):

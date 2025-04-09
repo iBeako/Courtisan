@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://dp7rxbav2clb2" path="res://Assets/arrow-small-left 2.svg" id="3_nhjh7"]
 [ext_resource type="FontFile" uid="uid://dim3hkmopleo2" path="res://Assets/Mighty Souly.otf" id="4_clmdb"]
 [ext_resource type="Theme" uid="uid://cx2oobyhw0tvn" path="res://Assets/Themes/main_menu_buttons_blank.tres" id="4_rh3wl"]
-[ext_resource type="PackedScene" uid="uid://ds7n7yxtp1klb" path="res://Scene/param_glob.tscn" id="6_hp66s"]
+[ext_resource type="PackedScene" path="res://Scene/param_glob.tscn" id="6_hp66s"]
 [ext_resource type="Texture2D" uid="uid://c2ernukex2t6p" path="res://Assets/icon.svg" id="7_v0t7n"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_065ae"]

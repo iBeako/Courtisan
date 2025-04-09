@@ -21,6 +21,18 @@ session = {
 		card_stack # pioche
 }
 
+db_peer: WebSocketPeer = WebSocketPeer.new()
+db_url: String = "ws://pdocker:12345/ws"
+
+var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
+var port: int = 10001
+
+var tls_cert: X509Certificate
+var tls_key: CryptoKey
+var server_tls_options
+
+
+
 #envoie message au serveur
 func send_message_to_server(message: Dictionary) -> void
 
@@ -34,9 +46,12 @@ func send_message_to_everyone(message: Dictionary) -> void
 func send_message_to_lobby(id_lobby:int,message: Dictionary) ->void
 #pre send_message_to_lobby : session[id_lobby] != null
 
+
+func connect_to_database()
+
 process_message.gd ? = autoload
 func process_message_for_client_unconnected(message,sender_id) -> void
-
+	
 func process_message_for_client_not_ingame(message,sender_id) -> void
 
 func process_message_for_client_ingame(message,sender_id) -> void

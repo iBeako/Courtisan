@@ -14,12 +14,15 @@ signal switch_tab
 func send_infos():
 	# --- envoi au serveur
 	if pswd.get_value() == c_pswd.get_value():
-		if "@" in mail.get_value():
+		if "@" in mail.get_value() and "@" not in username.get_value():
 			var mes =Account.createAccount(username.get_value(),mail.get_value(),pswd.get_value())
 			print(mes)
 			Network.send_message_to_server.rpc_id(1,mes)
 		else:
-			print("email not valid")
+			if  "@" not in mail.get_value():
+				print("email not valid")
+			else:
+				print("username cannot have @ character")
 	else:
 		print("password not the same")
 

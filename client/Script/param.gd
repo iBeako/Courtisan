@@ -7,7 +7,8 @@ extends Control
 @onready var tab_container : TabContainer = $PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer
 
 @onready var tabs : VBoxContainer = $PanelContainer2/HBoxContainer/PanelContainer/Tabs
-
+var pic_image: int
+var pseudo: String
 var btn_func = [change_to_sound, change_to_profile, change_to_privacy]
 
 func _ready() -> void:
@@ -45,6 +46,7 @@ func change_pp(btn_clicked : Control) -> void:
 
 
 func _on_texture_button_pressed() -> void:
+	
 	get_tree().change_scene_to_packed(menu)
 
 func _on_text_edit_text_submitted(new_text: String) -> void:
