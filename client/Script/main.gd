@@ -30,20 +30,16 @@ var zones : Array
 
 func _ready() -> void:
 	# Connect signals for each play zone
-	for zone_name in ["PlayZone_Joueur", "PlayZone_Grace", "PlayZone_Disgrace", "PlayZone_Ennemie"]:
-		if has_node(zone_name):
-			var zone = get_node(zone_name)
-			# Assuming each zone has 6 slots
-			for i in range(1, 7):
-				var slot_name = "CardSlot" + str(i)  # Ensure slots are correctly named
-				if zone.has_node(slot_name):
-					var slot = zone.get_node(slot_name)
-					# Initialize the card count for this slot
-					slot_card_counts[zone_name + "/" + slot_name] = 0 
-
-	await get_tree().create_timer(3.0).timeout
-	var login_mes = {"message_type":"connexion","login":"login","password":"password"}
-	client.send_message_to_server.rpc_id(1,login_mes)
+	#for zone_name in ["PlayZone_Joueur", "PlayZone_Grace", "PlayZone_Disgrace", "PlayZone_Ennemie"]:
+	#	if has_node(zone_name):
+	#		var zone = get_node(zone_name)
+	#		# Assuming each zone has 6 slots
+	#		for i in range(1, 7):
+	#			var slot_name = "CardSlot" + str(i)  # Ensure slots are correctly named
+	#			if zone.has_node(slot_name):
+	#				var slot = zone.get_node(slot_name)
+	#				# Initialize the card count for this slot
+	#				slot_card_counts[zone_name + "/" + slot_name] = 0 
 	zones=create_zones([0,-1])
 
 func create_zones(id_players : Array[int]) -> Array:
@@ -59,10 +55,10 @@ func create_zones(id_players : Array[int]) -> Array:
 		zone.position = Vector2(z.x, z.y)
 		zone.rotation_degrees = z.rotate
 		zone.update_player(id_players[i], "nametest", 0)
-		zone.Play_ZoneType = PlayZone.PlayZoneType.Ennemie
+		zone.Play_ZoneType = Global.PlayZoneType.ENEMY
 		zone.scale = Vector2(0.8, 0.8)
-		print(zone.Play_ZoneType)
 		add_child(zone)
+		move_child(zone,3)
 		list_zones.append(zone)
 	
 	return list_zones

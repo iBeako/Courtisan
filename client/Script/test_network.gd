@@ -3,7 +3,7 @@ extends Node
 const CLIENT_COUNT = 5
 var clients: Array
 
-enum PlayZoneType {PLAYER, ENEMY, FAVOR, DISFAVOR}
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -23,7 +23,7 @@ func _ready() -> void:
 			"player": 1,
 			"card_type": _card_types[randi() % _card_types.size()],
 			"family": _families[randi() % _families.size()],
-			"area": PlayZoneType.PLAYER,
+			"area": Global.PlayZoneType.PLAYER,
 		}
 	client.send_message_to_server.rpc_id(1,message)
 	client.send_message_to_server.rpc_id(1,message)

@@ -12,14 +12,7 @@ var base_scale : Vector2 = Vector2(1,1) #scale de base de la carte (pour la sort
 
 
 var parent_slot = null  # Référence au slot qui contient la carte
-# Enum for different card types
-enum TYPES {
-	Normal,
-	Assassin,
-	Espion,
-	Garde,
-	Noble
-}
+
 
 var palette_courtisans = {
 	"rossignols": {
@@ -51,10 +44,10 @@ var palette_courtisans = {
 
 # Card properties
 var starting_position : Vector2 = Vector2.ZERO
-var card_type : TYPES  # Type of the card
-@export var card_color : String  # Color/faction of the card
+var card_type : Global.CardType  # Type of the card
+var card_color : String  # Color/faction of the card
 @onready var sprite : TextureRect = $TextureRect  # Reference to the card's sprite
-@onready var shadow : ColorRect = $Shadow
+@onready var shadow : TextureRect = $Shadow
 
 var tween_hover : Tween
 var tween_rot : Tween
@@ -63,14 +56,24 @@ var tween_rot : Tween
 @export var angle_y_max: float = 7.0
 @export var max_offset_shadow: float = 15.0
 
-const cards_theme : String = "cards_new"
 
 
-# Dictionary storing the textures for different card colors
+var back_texture = load("res://Assets/"+Global.cards_theme+"/back.png")
 
-var card_colors = ["Papillons", "Crapauds", "Rossignols", "Lièvres", "Cerfs", "Carpes"]  
 
-var back_texture = preload("res://Assets/"+cards_theme+"/back.png")
+
+# Ready function: runs when the node is added to the scene
+func _ready() -> void:
+	print("nouvelle caer")
+	sprite = $TextureRect  # Get the TextureRect node
+	apply_card_texture()  # Apply the texture when the card is initialized
+	var anim_player = $AnimationPlayer
+	anim_player.play("rotate")  # Joue l'animation
+	var random_time = randf() * anim_player.current_animation_length  # Temps aléatoire dans l'animation
+	anim_player.seek(random_time, true)  # Décale à ce moment
+	
+	apply_particle_color()
+
 
 func _process(delta: float) -> void:
 	handle_shadow()
@@ -80,7 +83,6 @@ func _process(delta: float) -> void:
 #Function to apply the correct texture based on the card's color
 func apply_card_texture() -> void:
 	#print("→ Assigning texture for:", "'" + card_color + "'")  # Debugging output
-	var card_texture : Texture = load("res://Assets/"+cards_theme+"/"+card_color.to_lower()+"/"+TYPES.find_key(card_type).to_lower()+".png")
 	
 	var shader_mat = ShaderMaterial.new()
 	shader_mat.shader = preload("res://Assets/Shaders/fake_3d.gdshader")
@@ -91,31 +93,29 @@ func apply_card_texture() -> void:
 	#shadow.material.set_shader_parameter("rect_size", shadow.size)
 	sprite.material.set_shader_parameter("rect_size", sprite.size)
 	
+	if card_color == "Spy":
+		hide_card()
+		return
+	
+	var card_texture : Texture = load("res://Assets/"+Global.cards_theme+"/"+card_color.to_lower()+"/"+Global.CardType.find_key(card_type).to_lower()+".png")
+	
 	
 	if card_texture!=null:
 		sprite.texture = card_texture  # Set the correct texture
 	else:
 		print("⚠ Error: Texture not found for '" + card_color + "'")  # Error handling
-		print("res://Assets/"+card_color.to_lower()+"/"+TYPES.find_key(card_type).to_lower()+".png")
+		print("res://Assets/"+card_color.to_lower()+"/"+Global.CardType.find_key(card_type).to_lower()+".png")
 		
 
 func get_value():
-	return 2 if card_type == TYPES.Noble else 1
+	return 2 if card_type == Global.CardType.NOBLE else 1
 
 # Function to hide the card (show the back texture)
 func hide_card() -> void:
 	sprite.texture = back_texture
+	card_color = "Spy"
 
-# Ready function: runs when the node is added to the scene
-func _ready() -> void:
-	sprite = $TextureRect  # Get the TextureRect node
-	apply_card_texture()  # Apply the texture when the card is initialized
-	var anim_player = $AnimationPlayer
-	anim_player.play("rotate")  # Joue l'animation
-	var random_time = randf() * anim_player.current_animation_length  # Temps aléatoire dans l'animation
-	anim_player.seek(random_time, true)  # Décale à ce moment
-	
-	apply_particle_color()
+
 
 
 func apply_particle_color():
@@ -228,7 +228,7 @@ func _gui_input(event):
 		print("Carte tuée :", self.name)
 
 		# Vérifie si c'est un Garde (ne peut pas être tué)
-		if self.card_type == TYPES.Garde:
+		if self.card_type == Global.CardType.GUARD:
 			print("Un garde ne peut pas être tué")
 			return  # Ne pas supprimer la carte
 
