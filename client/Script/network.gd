@@ -97,7 +97,7 @@ var address: String = "wss://185.155.93.105:%d" % port #connection to VM when co
 var tls_options
 
 var turn_player: int
-var id_lobby: int
+var id_lobby: int = -1
 var in_game = false
 
 
@@ -156,8 +156,11 @@ func send_message_to_everyone(data : Dictionary):
 			
 func process_message(data:Dictionary):
 	if data["message_type"] == "connexion":
-		process_connexion(data)
-	elif data["status"] == "success":
+		username = data["login"]
+		my_profil_pic = data["image_profil"]
+		print("has been logged")
+		get_tree().change_scene_to_packed(menu_principal)
+	elif data["message_type"] == "account_created":
 		print("account created")
 		get_tree().change_scene_to_packed(signin_page)
 	if in_game == false:
@@ -172,13 +175,12 @@ func process_message(data:Dictionary):
 			get_tree().change_scene_to_packed(game)
 			if_start_game()
 		elif data["message_type"]  == "change_profile_picture":
-			my_profil_pic = data["pic_profile"]
-			
-	elif data["message_type"] == "quit_game":
-		in_game = false
-		if_end_game()
-		
-	elif in_game == true:
+			my_profil_pic = data["pic_profile"]	
+		elif data["message_type"] == "quit_game":
+			in_game = false
+			id_lobby = -1
+			if_end_game()
+	elif in_game == true and id_lobby > 0:
 		if data["message_type"] == "card_played":
 			process_card_played(data)
 		elif data["message_type"] == "message":
@@ -207,6 +209,7 @@ func process_message(data:Dictionary):
 			print("blue mission : ", blue_missions[data["blue_mission"]])
 		elif data["message_type"] == "final_score":
 			print("Final scores : ", data)
+			#get_tree().change_scene_to_packed(menu_principal)
 		else:
 			print("invalid message")
 		
@@ -290,13 +293,6 @@ func _play_card( type_card, family, area, id_domain: int = -1):
 	else :
 		print("CLIENT Error : Action unknown")
 	send_message_to_server(message)
-
-
-func process_connexion(data:Dictionary):
-	username = data["login"]
-	my_profil_pic = data["image_profil"]
-	print("has been logged")
-	get_tree().change_scene_to_packed(menu_principal)
 
 func process_error(data:Dictionary):
 	

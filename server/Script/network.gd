@@ -193,9 +193,6 @@ func send_message_to_lobby(id_lobby:int,data:Dictionary):
 	for peer_id in session[id_lobby].client_peer:
 		send_message_to_peer.rpc_id(peer_id,id_lobby,data)
 
-func _process_error(_data: Dictionary):
-	pass
-
 func login(data: Dictionary,peer_id:int):
 	var log = await validate_login(data)
 	if (log.has("status") and log["status"] == "success"):
@@ -230,6 +227,7 @@ func insert_Account(data:Dictionary,peer_id:int):
 	var return_data = await Database.getDatabase()
 	if return_data.has("status") :
 		if return_data["status"] == "success":
+			return_data["message_type"] = "account_created"
 			send_message_to_peer.rpc_id(peer_id,return_data)
 		else:
 			var message = {
