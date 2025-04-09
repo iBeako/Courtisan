@@ -134,8 +134,8 @@ func apply_particle_color():
 
 	# Création d'un dégradé de couleur
 	var gradient = Gradient.new()
-	gradient.add_point(0.0, palette_courtisans[card_color.to_lower()]["light"])
-	gradient.add_point(1.0, palette_courtisans[card_color.to_lower()]["dark"])
+	gradient.add_point(0.7, palette_courtisans[card_color.to_lower()]["light"])
+	gradient.add_point(0.0, palette_courtisans[card_color.to_lower()]["dark"])
 
 	var gradient_texture = GradientTexture2D.new()
 	gradient_texture.gradient = gradient
