@@ -105,6 +105,7 @@ var deck_reference
 var message_manager
 var taskbar_reference 
 
+var pseudo: String
 var id: int
 var username: String
 var my_profil_pic: int
@@ -174,8 +175,9 @@ func process_message(data:Dictionary):
 			in_game = true
 			get_tree().change_scene_to_packed(game)
 			if_start_game()
-		elif data["message_type"]  == "change_profile_picture":
+		elif data["message_type"]  == "change_profil":
 			my_profil_pic = data["pic_profile"]	
+			pseudo = data["pseudo"]	
 		elif data["message_type"] == "quit_game":
 			in_game = false
 			id_lobby = -1

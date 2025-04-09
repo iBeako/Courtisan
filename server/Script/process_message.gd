@@ -1,6 +1,5 @@
 extends Node
 
-
 func process_message_for_client_not_ingame(data: Dictionary,sender_id:int):
 	if data.has("message_type"):
 		if data["message_type"] == "create_lobby":
@@ -13,6 +12,10 @@ func process_message_for_client_not_ingame(data: Dictionary,sender_id:int):
 			Network.send_message_to_peer.rpc_id(sender_id,message)
 		elif data["message_type"] == "start_lobby":
 			Network.startLobby(data,sender_id)
+		elif data["message_type"] == "change_profil":
+			Database.sendDatabase(data)
+			var message = await Database.getDatabase()
+			Network.send_message_to_peer.rpc_id(sender_id,message)
 	else:
 		var error_message = {
 				"message_type" = "error",

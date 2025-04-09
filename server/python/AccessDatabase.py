@@ -56,19 +56,22 @@ def get_db():
 def insert_account(data: dict, connection):
     cursor = connection.cursor()
     query = """
-        INSERT INTO users (username, email, password_hash, is_active, total_games_played, pic_profile)
-        VALUES (:username, :email, :password_hash, :is_active, :total_games_played, :pic_profile)
+        INSERT INTO users (username, email, pseudo, password_hash, salt, is_active, total_games_played, pic_profile)
+        VALUES (:username, :email, :pseudo,:password_hash, :salt, :is_active, :total_games_played, :pic_profile)
     """
     cursor.execute(
         query,
         username=data.get('username'),
         email=data.get('email'),
+        pseudo=data.get('pseudo'),
         password_hash=data.get('password'),
+        salt=data.get('salt'),
         is_active=data.get('is_active'),
         total_games_played=data.get('total_games_played'),
         pic_profile=data.get('pic_profile')
     )
     connection.commit()
+    result = cursor.rowcount > 0
     cursor.close()
     if result:
         return {"status": "success", "message": "Account created."}
@@ -119,13 +122,33 @@ async def handle_change_user_status(websocket, data, connection):
     else:
         await websocket.send_json({"status": "success", "message": f" {username} is now inactive."})
 
-async def handle_change_profile(websocket, data, connection):
-    email = data.get("email")
-    cursor = connection.cursor()
-    cursor.execute("UPDATE users SET pic_profile = :pic WHERE email = :email", email=email)
-    connection.commit()
-    cursor.close()
-    await websocket.send_json({"status": "success", "message": "Profile picture updated.","email":data.get("email"),"pic_profile": data.get("pic_profile")})
+async def handle_change_profil(websocket, data, connection):
+    username = data.get("username")
+    pic = data.get("pic_profile")
+    pseudo = data.get("pseudo")
+    if username:
+        if pic and pseudo:
+            cursor = connection.cursor()
+            cursor.execute("UPDATE users SET pic_profile = :pic, pseudo =:pseudo WHERE username = :username", pic_profile=pic, pseudo=pseudo, username=username)
+            connection.commit()
+            cursor.close()
+            await websocket.send_json({"status": "success", "message": "Profil updated.","username":data.get("username"),"pic_profile": data.get("pic_profile"),"pseudo": data.get("pseudo")})
+        elif pic:
+            cursor = connection.cursor()
+            cursor.execute("UPDATE users SET pic_profile = :pic WHERE username = :username", pic_profile=pic, username=username)
+            connection.commit()
+            cursor.close()
+            await websocket.send_json({"status": "success", "message": "Profil picture updated.","pic_profile": data.get("pic_profile")})
+        elif pseudo:
+            cursor = connection.cursor()
+            cursor.execute("UPDATE users SET pseudo = :pseudo WHERE username = :username", pseudo=pseudo, username=username)
+            connection.commit()
+            cursor.close()
+            await websocket.send_json({"status": "success", "message": "Pseudo updated.","pseudo": data.get("pseudo")})
+        else:
+            await websocket.send_json({"status": "error", "message": "No data to update."})
+    else:
+        await websocket.send_json({"status": "error", "message": "Username not provided."})
 
 async def handle_find_lobby(websocket, connection):
     cursor = connection.cursor()

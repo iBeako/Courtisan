@@ -42,14 +42,22 @@ func change_to_privacy():
 func change_pp(btn_clicked : Control) -> void:
 	$PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Profile/VBoxContainer/PanelContainer/CurrentPP.texture = btn_clicked.texture
 	#TODO envoyer message
+	pic_image = btn_clicked.id
 	print(btn_clicked.id)
 
 
 func _on_texture_button_pressed() -> void:
-	
+	var message = {
+		"message_type":"change_profil",
+		"username":Network.username,
+		"pseudo":pseudo,
+		"pic_profile":pic_image
+	}
+	Network.send_message_to_server.rpc_id(1,message)
 	get_tree().change_scene_to_packed(menu)
 
 func _on_text_edit_text_submitted(new_text: String) -> void:
 	$PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Profile/VBoxContainer/NameEdit.release_focus()
+	pseudo = new_text
 	print(new_text)
 	#TODO envoyer message
