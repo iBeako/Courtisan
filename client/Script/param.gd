@@ -34,10 +34,9 @@ func change_to_sound():
 
 func change_to_profile():
 	tab_container.current_tab=1
-	
+
 func change_to_privacy():
 	tab_container.current_tab=2
-	
 
 func change_pp(btn_clicked : Control) -> void:
 	$PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Profile/VBoxContainer/PanelContainer/CurrentPP.texture = btn_clicked.texture
@@ -53,6 +52,7 @@ func _on_texture_button_pressed() -> void:
 		"pseudo":pseudo,
 		"pic_profile":pic_image
 	}
+	print(message)
 	Network.send_message_to_server.rpc_id(1,message)
 	get_tree().change_scene_to_packed(menu)
 
