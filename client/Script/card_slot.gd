@@ -1,6 +1,6 @@
 extends Node2D
 class_name CardSlot
-
+var card_type: Global.CardType
 # Array to store cards currently in the slot
 var cards_in_slot: Array = []
 
@@ -34,7 +34,7 @@ func remove_card(card: Card) -> void:
 		print("Carte cible : ", card.name)
 		
 		# Vérifie si les propriétés correspondent (TYPES et card_colors)
-		if (c.TYPES == card.TYPES and c.card_colors == card.card_colors):
+		if (c.card_type == card.card_type and c.card_color == card.card_color):
 			found = true  # La carte a été trouvée
 			
 			# Affiche l'état avant suppression

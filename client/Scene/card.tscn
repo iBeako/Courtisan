@@ -36,8 +36,8 @@ point_count = 2
 curve = SubResource("Curve_xldud")
 
 [sub_resource type="Gradient" id="Gradient_t7cnw"]
-offsets = PackedFloat32Array(0, 0.755556, 1)
-colors = PackedColorArray(1, 0.788235, 0, 1, 1, 0.372549, 0, 1, 1, 0.2, 0, 0.690196)
+offsets = PackedFloat32Array(0, 0.755556)
+colors = PackedColorArray(1, 0.788235, 0, 1, 1, 0.372549, 0, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_sydqq"]
 gradient = SubResource("Gradient_t7cnw")
@@ -142,8 +142,7 @@ expand_mode = 3
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
 position = Vector2(41, 73)
-emitting = false
-amount = 100
+amount = 80
 process_material = SubResource("ParticleProcessMaterial_fpqqr")
 texture = ExtResource("2_5fdet")
 lifetime = 1.5

@@ -28,14 +28,18 @@ var can_play: Array[int] = [1, 1, 1]
 @onready var input_manager_reference: Node = $"../inputManager"
 @onready var player_hand_reference: PlayerHand = $"../PlayerHand"
 @onready var message_manager_reference: MessageManager = $"../MessageManager"
-
+@onready var change_theme_reference: OptionButton = $"../CanvasLayer/PauseMenu/Panel/MarginContainer/VBoxContainer/Sound/HBoxContainer/LinkButton"
 
 
 func _ready() -> void:
 	input_manager_reference.connect("left_mouse_button_released", end_drag)
-	
-	# Connect the input manager's signal for left mouse button release
+	change_theme_reference.connect("item_selected",update_cards_texture)
 
+
+func update_cards_texture(item) -> void:
+	print("changement")
+	for card : Card in get_children():
+		card.apply_card_texture()
 
 	
 # Update function called every frame
@@ -70,7 +74,6 @@ func end_drag():
 	var card_zone_found : PlayZone = check_zone()
 	
 	if card_zone_found and not card_is_dragged in card_zone_found.cards_in_zone:
-		card_played.emit() #for labels update
 
 		
 		player_hand_reference.remove_card_from_hand(card_is_dragged)  # Remove the card from the player's hand
@@ -103,6 +106,8 @@ func end_drag():
 				affichage_slot_card.instantiate_all_cards(card_zone_found)  # Charge les cartes
 				
 			card_zone_found.add_card(card_is_dragged)
+			card_played.emit() #for labels update
+			
 			if card_is_dragged.card_type == Global.CardType.SPY:
 				card_is_dragged.hide_card()
 			can_play[id_can_play] = 0  # Mark the zone as played
