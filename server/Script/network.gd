@@ -222,7 +222,7 @@ func login(data: Dictionary,peer_id:int):
 		else:
 			clients[peer_id] = clients[last_peer_id]
 			clients[peer_id]["peer_id"]= peer_id
-		session[clients[peer_id]["id_lobby"]].client.replace
+		#session[clients[peer_id]["id_lobby"]].client.replace
 			
 			clients.erase(last_peer_id)
 			
