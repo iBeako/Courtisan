@@ -14,8 +14,8 @@ SSH_PKEY = "/app/private.pem"  # Assurez-vous que le fichier private.pem est cop
 SSH_CONFIG_FILE = os.path.expanduser("/app/.ssh/config")
 
 # Configuration de la base Oracle
-DB_USER = 'sys'
-DB_PASSWORD = '"C@uRT1$4n5"'
+DB_USER = 'COURTISANSJEU'
+DB_PASSWORD = 'el3ebyidneghRoyalCardsDB'
 DB_REMOTE_HOST = '172.18.0.2'
 DB_REMOTE_PORT = 1521
 DB_SERVICE_NAME = "FREE"  # à adapter selon votre service Oracle
@@ -84,12 +84,12 @@ def get_account(login: str, connection, mode: int):
         query = "SELECT pseudo, password, salt, pic_profile FROM users WHERE email = :email"
         cursor.execute(query, email=login)
     else:
-        query = "SELECT pseudo, password, salt, pic_profile FROM users WHERE username = :username"
+        query = "SELECT pseudo, password, salt, pic_profile, username FROM users WHERE username = :username"
         cursor.execute(query, username=login)
     result = cursor.fetchone()
     cursor.close()
     if result:
-        return {"status": "success","pseudo": result[0], "password": result[1], "salt": result[2], "pic_profile": result[3]}
+        return {"status": "success","pseudo": result[0], "password": result[1], "salt": result[2], "pic_profile": result[3],"username":result[4]}
     else:
         return {"status": "error", "message": "Account not found."}
 
@@ -207,7 +207,7 @@ async def handle_join_lobby(websocket, data, connection):
 async def handle_start_lobby(websocket, data, connection):
     id_lobby = data.get("id_lobby")
     cursor = connection.cursor()
-    cursor.execute("UPDATE games SET status = 'ingame' WHERE game_id = :id", id=id_lobby)
+    cursor.execute("UPDATE games SET status = 'close' WHERE game_id = :id", id=id_lobby)
     connection.commit()
     cursor.close()
     await websocket.send_json({"status": "success", "message": "Game started."})

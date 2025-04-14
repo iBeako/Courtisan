@@ -50,7 +50,8 @@ func _on_peer_disconnected(peer_id: int):
 	var _id = clients[peer_id]
 	print("Player ", _id, " has disconnected")
 	if clients["peer_id"]["status"] == "in_game":
-		pass #ai not work for now
+		clients["peer_id"]["status"] = "replaced_by_ai"
+		#ai not work for now
 		#var ai = AI_class.new()
 		#ai.id_player = _id
 		#ai.id_AI = AIs.size()
@@ -76,7 +77,9 @@ func _on_peer_connected(peer_id: int):
 		"status":"unlogged",
 		"session_id":-1,
 		"id_client_in_game":-1,
-		"image_profil":-1
+		"image_profil":-1,
+		"pseudo":"not_connected",
+		"username":"not_connected"
 	}
 	print(clients[peer_id])
 	number_of_client += 1
@@ -92,7 +95,7 @@ func createLobby(message: Dictionary,peer_id:int):
 		clients[peer_id]["id_client_in_game"] = ind_player_in_session
 		number_of_session += 1
 	else:
-		print("error, lobby not created")
+		print("error, lobby not created error database")
 
 # trouve tous les lobbys ouvert du jeu
 func findLobby():
@@ -104,6 +107,8 @@ func findLobby():
 		var allLobby = await Database.getDatabase()
 		if allLobby != null :
 			return allLobby
+		else:
+			print("no lobby found")
 
 func addLobbyDatabase(message: Dictionary):
 	if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
@@ -127,7 +132,14 @@ func joinLobby(message: Dictionary,peer_id:int):
 func startLobby(message:Dictionary,peer_id:int):
 	var id_lobby = message["id_lobby"]
 	if session[id_lobby].check_game_start():
-		session[id_lobby].load_game() # load game of the session
+		var start_lobby_message_database = {
+			"type_of_message":"start_game",
+			"id_lobby":id_lobby
+		}
+		Database.sendDatabase(start_lobby_message_database)
+		var return_message = await Database.getDatabase()
+		session[id_lobby].load_game()
+		 # load game of the session
 		for client in clients:
 			if client["id_lobby"] == id_lobby:
 				client["status"] = "in_game"
@@ -198,14 +210,22 @@ func login(data: Dictionary,peer_id:int):
 	if (log.has("status") and log["status"] == "success"):
 		var login_success_data = {
 			"message_type" = "connexion",
-			"username" = log["username"],
+			"pseudo" = log["pseudo"],
 			"image_profil" = log["image_profil"]
 		}
-		if clients[peer_id]["status"] != "in_game":
+		var last_peer_id = search_peer_id_by_username(log["username"])
+		if last_peer_id != -1 and clients[peer_id]["status"] != "replaced_by_ai":
 			clients[peer_id]["status"] = "connected"
 			clients[peer_id]["image_profil"] = log["image_profil"]
+			clients[peer_id]["username"] = log["username"]
+			clients[peer_id]["pseudo"] = log["pseudo"]
 		else:
-			pass
+			clients[peer_id] = clients[last_peer_id]
+			clients[peer_id]["peer_id"]= peer_id
+		session[clients[peer_id]["id_lobby"]].client.replace
+			
+			clients.erase(last_peer_id)
+			
 		var message_to_database = {
 			"message_type" = "change_status",
 			"username" = clients[peer_id]["username"],
@@ -217,6 +237,12 @@ func login(data: Dictionary,peer_id:int):
 		send_message_to_peer.rpc_id(peer_id,login_success_data)
 	else:
 		send_message_to_peer.rpc_id(peer_id,log)
+
+func search_peer_id_by_username(username:String):
+	for client in clients:
+		if client.username == username:
+			return client.peer_id
+	return -1
 
 func insert_Account(data:Dictionary,peer_id:int):
 	var salt = Login.GenerateSalt()
