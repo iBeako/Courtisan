@@ -3,7 +3,7 @@ signal error_card_played(message)
 
 @onready var game = preload("res://Scene/main.tscn")
 @onready var menu_principal = preload("res://Scene/menu_principal.tscn")
-@onready var signin_page = preload("res://Scene/signin_page.tscn")
+@onready var signin_page = preload("res://Scene/login.tscn")
 
 enum family {
 	butterfly = 0,

@@ -38,7 +38,6 @@ def get_db_connection():
         DB_USER,
         DB_PASSWORD,
         dsn,
-        mode=cx_Oracle.SYSDBA,
         encoding="UTF-8",
         nencoding="UTF-8"
     )
@@ -81,10 +80,10 @@ def insert_account(data: dict, connection):
 def get_account(login: str, connection, mode: int):
     cursor = connection.cursor()
     if mode == 0:
-        query = "SELECT pseudo, password, salt, pic_profile FROM users WHERE email = :email"
+        query = "SELECT pseudo, password_hash, salt, pic_profile FROM users WHERE email = :email"
         cursor.execute(query, email=login)
     else:
-        query = "SELECT pseudo, password, salt, pic_profile, username FROM users WHERE username = :username"
+        query = "SELECT pseudo, password_hash, salt, pic_profile, username FROM users WHERE username = :username"
         cursor.execute(query, username=login)
     result = cursor.fetchone()
     cursor.close()
