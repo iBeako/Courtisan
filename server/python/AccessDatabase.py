@@ -18,7 +18,7 @@ DB_USER = 'COURTISANSJEU'
 DB_PASSWORD = 'el3ebyidneghRoyalCardsDB'
 DB_REMOTE_HOST = '172.18.0.2'
 DB_REMOTE_PORT = 1521
-DB_SERVICE_NAME = "FREE"  # à adapter selon votre service Oracle
+DB_SERVICE_NAME = "FREEPDB1"  # à adapter selon votre service Oracle
 
 def get_db_connection():
     # Utilisation de la clé privée pour l'authentification SSH
