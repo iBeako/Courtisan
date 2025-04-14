@@ -158,7 +158,7 @@ func send_message_to_everyone(data : Dictionary):
 func process_message(data:Dictionary):
 	if data["message_type"] == "connexion":
 		username = data["login"]
-		my_profil_pic = data["image_profil"]
+		my_profil_pic = data["pic_profile"]
 		print("has been logged")
 		get_tree().change_scene_to_packed(menu_principal)
 	elif data["message_type"] == "account_created":
