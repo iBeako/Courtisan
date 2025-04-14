@@ -77,7 +77,7 @@ func _on_peer_connected(peer_id: int):
 		"status":"unlogged",
 		"session_id":-1,
 		"id_client_in_game":-1,
-		"image_profil":-1,
+		"pic_profile":-1,
 		"pseudo":"not_connected",
 		"username":"not_connected"
 	}
@@ -211,12 +211,12 @@ func login(data: Dictionary,peer_id:int):
 		var login_success_data = {
 			"message_type" = "connexion",
 			"pseudo" = log["pseudo"],
-			"image_profil" = log["image_profil"]
+			"pic_profile" = log["pic_profile"]
 		}
 		var last_peer_id = search_peer_id_by_username(log["username"])
 		if last_peer_id != -1 and clients[peer_id]["status"] != "replaced_by_ai":
 			clients[peer_id]["status"] = "connected"
-			clients[peer_id]["image_profil"] = log["image_profil"]
+			clients[peer_id]["pic_profile"] = log["pic_profile"]
 			clients[peer_id]["username"] = log["username"]
 			clients[peer_id]["pseudo"] = log["pseudo"]
 		else:
@@ -275,7 +275,7 @@ func validate_login(data: Dictionary) -> Dictionary:
 		client_data = {
 			"salt" = salt,
 			"password" =  Login.HashPassword(data["password"],salt),
-			"image_profil" = 0
+			"pic_profile" = 0
 		}
 	else:
 		Database.sendDatabase(data)
