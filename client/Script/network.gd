@@ -167,9 +167,10 @@ func process_card_played(data:Dictionary):
 			writting_message = writting_message + " in the light"
 			writting_message = writting_message + data["id_adversary"]
 	print(writting_message)
+	message_manager.add_card_to_zone(data["family"],data["card_type"],data["area"])
+	
 	if data["player"] != id:
 		
-		message_manager.add_card_to_zone(data["family"],data["card_type"],data["area"])
 		print("----",data)
 		
 func get_hand() -> Array:

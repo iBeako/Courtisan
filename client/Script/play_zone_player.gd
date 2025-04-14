@@ -20,6 +20,7 @@ func update_player(id_p : int, name_p : String, id_img : int):
 	id_img = id_image
 	
 	$VBoxContainer/Label.text=name_player
+	var img = load(Global.profile_pictures[id_img])
 
 # Function to adjust labels' orientation for the player zone
 func adjust_labels() -> void:
