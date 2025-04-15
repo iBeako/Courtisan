@@ -61,3 +61,11 @@ func _on_text_edit_text_submitted(new_text: String) -> void:
 	pseudo = new_text
 	print(new_text)
 	#TODO envoyer message
+
+
+func _on_btn_change_pswrd_pressed() -> void:
+	print("pressed")
+
+
+func _on_btn_change_mail_pressed() -> void:
+	print("pressed2")

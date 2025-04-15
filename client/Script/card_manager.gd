@@ -102,10 +102,11 @@ func end_drag():
 			if card_is_dragged.card_type == Global.CardType.ASSASSIN:
 				#print("Assassin")
 				affichage_slot_card.AssassinMenue = true
-				affichage_slot_card.pause()  # Affiche le menu
-				affichage_slot_card.instantiate_all_cards(card_zone_found)  # Charge les cartes
+				affichage_slot_card.pause(card_zone_found)  # Affiche le menu
+				affichage_slot_card.instantiate_all_cards()  # Charge les cartes
 				
-			card_zone_found.add_card(card_is_dragged)
+			#card_zone_found.add_card(card_is_dragged)
+			remove_child(card_is_dragged)
 			card_played.emit() #for labels update
 			
 			if card_is_dragged.card_type == Global.CardType.SPY:
@@ -141,6 +142,6 @@ func check_zone() -> PlayZone:
 
 
 func _on_child_entered_tree(node: Card) -> void:
-	node.connect("start_drag", start_drag)
+	node.card_pressed.connect(start_drag)
 
 	

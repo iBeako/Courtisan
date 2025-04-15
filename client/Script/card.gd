@@ -2,7 +2,7 @@ extends Button
 class_name Card
 
 # Signals emitted when the card is hovered or the hover ends
-signal start_drag
+signal card_pressed
 @onready var affichage_slot_card = get_node("/root/Main/slotMenuCanvas/SlotMenu")
 var is_hovered : bool = false
 var is_draggable : bool = true
@@ -220,31 +220,4 @@ func card_placed():
 
 func _on_button_down() -> void:
 	if is_draggable:
-		start_drag.emit(self)
-
-
-func _gui_input(event):  
-	if event is InputEventMouseButton and event.pressed and affichage_slot_card.AssassinMenue == true:
-		print("Carte tuée :", self.name)
-
-		# Vérifie si c'est un Garde (ne peut pas être tué)
-		if self.card_type == Global.CardType.GUARD:
-			print("Un garde ne peut pas être tué")
-			return  # Ne pas supprimer la carte
-
-		# Supprime la carte de la liste du cardSlot
-		if parent_slot == null:
-			print("⚠ Erreur : parent_slot est NULL avant d'accéder à cards !")
-			print("Nom de la carte :", self.name)
-			print("Carte encore dans un slot ? :", self.get_parent())
-		else:
-			print("✅ parent_slot existe :", parent_slot.name, parent_slot)
-			print(self)
-			parent_slot.remove_card(self)
-			print("🗑 Carte supprimée du slot :", parent_slot.name)
-
-		
-		# Supprime la carte de la scène
-		queue_free()
-
-		affichage_slot_card.resume()
+		card_pressed.emit(self)

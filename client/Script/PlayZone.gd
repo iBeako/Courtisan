@@ -101,9 +101,8 @@ func find_card_slot(card_color: String, card_type : int) -> Node2D:
 func _on_param_button_pressed() -> void:
 	# Inverse la visibilité du menu de pause
 
-	slotMenu.pause()
-	print("heyyyyyyyyyyyy")
-	slotMenu.instantiate_all_cards(self)
+	slotMenu.pause(self)
+	slotMenu.instantiate_all_cards()
 
 
 

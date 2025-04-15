@@ -250,15 +250,18 @@ func process_card_played(data:Dictionary):
 		elif data["area"] == 1:
 			data["area"] = 0
 	var writting_message = "CLIENT - Player %d" % id + " : player %d "  % data["player"] + " has put %s" % data["card_type"] + " %s" % data["family"]+ " in %s" % data["area"]
-	taskbar_reference.print_action("Le joueur %d a placé un %s %s dans %s" % [data["player"] + 1, card_types[data["card_type"]], data["family"], zone[data["area"]]])
+	taskbar_reference.print_action("Le joueur %d a placé un %s %s dans %s" % [data["player"] + 1, card_types[data["card_type"]], data["family"] if data["card_type"] != Global.CardType.SPY else "", zone[data["area"]]])
 	
 	if data.has("position"):
 		if data["position"] > 0:
 			writting_message = writting_message + " in the light"
 			writting_message = writting_message + data["id_adversary"]
 	print(writting_message)
+	message_manager.add_card_to_zone(data["family"],data["card_type"],data["area"])
+	
 	if data["player"] != id:
-		message_manager.add_card_to_zone(data["family"],data["card_type"],data["area"])
+		#message_manager.add_card_to_zone(data["family"],data["card_type"],data["area"])
+		
 		print("----",data)
 		
 func get_hand() -> Array:
