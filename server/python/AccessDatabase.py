@@ -243,7 +243,7 @@ async def websocket_endpoint(websocket: WebSocket):
                     print("User status changed.")
                 elif message_type == "change_profil":
                     await handle_change_profil(websocket, data, connection)
-                    print("Profile picture changed.")
+                    print("Profil picture changed.")
                 elif message_type == "find_lobby":
                     await handle_find_lobby(websocket, connection)
                     print("Lobbies found.")
