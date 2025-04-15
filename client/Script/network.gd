@@ -158,6 +158,7 @@ func send_message_to_everyone(data : Dictionary):
 func process_message(data:Dictionary):
 	print(data)
 	if data["message_type"] == "connexion":
+		username = data["username"]
 		pseudo = data["pseudo"]
 		my_profil_pic = data["pic_profile"]
 		print("has been logged")

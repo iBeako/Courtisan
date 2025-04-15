@@ -240,9 +240,9 @@ func login(data: Dictionary,peer_id:int):
 		send_message_to_peer.rpc_id(peer_id,log)
 
 func search_peer_id_by_username(username:String):
-	for client in clients:
-		if client.username == username:
-			return client.peer_id
+	for client in clients.values():
+		if client["username"] == username:
+			return client["peer_id"]
 	return -1
 
 func insert_Account(data:Dictionary,peer_id:int):
