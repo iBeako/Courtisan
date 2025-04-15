@@ -63,7 +63,7 @@ func _on_peer_disconnected(peer_id: int):
 	var message_to_database = {
 		"message_type" = "change_status",
 		"username" = clients[peer_id]["username"],
-		"is_active" = 1
+		"is_active" = 0
 	}
 	Database.sendDatabase(message_to_database)
 	var return_message = await Database.getDatabase()
@@ -210,6 +210,7 @@ func login(data: Dictionary,peer_id:int):
 	if (log.has("status") and log["status"] == "success"):
 		var login_success_data = {
 			"message_type" = "connexion",
+			"username" = log["username"],
 			"pseudo" = log["pseudo"],
 			"pic_profile" = log["pic_profile"]
 		}
@@ -229,7 +230,7 @@ func login(data: Dictionary,peer_id:int):
 		var message_to_database = {
 			"message_type" = "change_status",
 			"username" = clients[peer_id]["username"],
-			"is_active" = 0
+			"is_active" = 1
 		}
 		Database.sendDatabase(message_to_database)
 		var return_message = await Database.getDatabase()

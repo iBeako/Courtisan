@@ -156,8 +156,9 @@ func send_message_to_everyone(data : Dictionary):
 			print("error send_message_to_peer")
 			
 func process_message(data:Dictionary):
+	print(data)
 	if data["message_type"] == "connexion":
-		username = data["login"]
+		pseudo = data["pseudo"]
 		my_profil_pic = data["pic_profile"]
 		print("has been logged")
 		get_tree().change_scene_to_packed(menu_principal)
