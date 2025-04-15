@@ -173,7 +173,7 @@ func send_message_to_server(data: Dictionary):
 		if  clients[sender_id] != null and clients[sender_id]["status"] == "connected":
 			print("Client %d sent a %s", [data["username"], data["message_type"]])
 			print(" ", data)
-			if clients[sender_id]["session_id"] != -1:
+			if clients[sender_id]["session_id"] == -1:
 				ProcessMessage.process_message_not_ingame(data,sender_id)
 			else:
 				ProcessMessage.process_message_ingame(data,sender_id)
