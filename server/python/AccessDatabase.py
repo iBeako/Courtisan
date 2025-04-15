@@ -158,7 +158,7 @@ async def handle_find_lobby(websocket, connection):
     await websocket.send_json({"status": "success", "lobbies": lobbies})
 
 async def handle_create_lobby(websocket, data, connection):
-    id_player = data.get("id_player")
+    username = data.get("username")
     name = data.get("name")
     num_players = data.get("number_of_player")
     have_password = data.get("have_password")
@@ -173,7 +173,9 @@ async def handle_create_lobby(websocket, data, connection):
     connection.commit()
     cursor.execute("SELECT game_id FROM games WHERE name = :name AND game_date = :date", name=name, date=date)
     game_id = cursor.fetchone()[0]
-    cursor.execute("INSERT INTO game_players (game_id, peer_id) VALUES (:gid, :pid)", gid=game_id, pid=id_player)
+    cursor.execute("SELECT user_id  FROM games WHERE username = :username", username=username)
+    user_id  = cursor.fetchone()[0]
+    cursor.execute("INSERT INTO game_players (game_id, user_id) VALUES (:gid, :pid)", gid=game_id, pid=user_id)
     connection.commit()
     cursor.close()
     await websocket.send_json({"status": "success", "game_id": game_id})
