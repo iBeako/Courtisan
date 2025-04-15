@@ -1,7 +1,8 @@
 extends Control
 
-# Scènes
-@onready var game = preload("res://Scene/main.tscn")
+# ScènesC
+
+@onready var create_lobby = preload("res://Scene/Create_lobby.tscn")
 @onready var join_game = preload("res://Join_game.tscn")
 @onready var param = preload("res://Scene/param.tscn")
 
@@ -57,7 +58,7 @@ func _on_quit_button_mouse_exited():
 
 # Gestion des clics (conservée comme avant)
 func _on_start_button_button_down():
-	get_tree().change_scene_to_packed(game)
+	get_tree().change_scene_to_packed(create_lobby)
 
 func _on_quit_button_button_down():
 	get_tree().quit()

@@ -1,6 +1,6 @@
 extends TextureRect
 
-@export var id : int = Network.my_profil_pic
+@export var id : int = -1
 
 signal pressed
 
