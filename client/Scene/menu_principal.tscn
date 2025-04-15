@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://ghnhxtw8ow2v"]
+[gd_scene load_steps=10 format=3 uid="uid://ghnhxtw8ow2v"]
 
 [ext_resource type="Script" path="res://Script/menu_principal.gd" id="1_odear"]
 [ext_resource type="Texture2D" uid="uid://moika2rm8x7n" path="res://Assets/background.png" id="2_6j14x"]
@@ -7,6 +7,7 @@
 [ext_resource type="Theme" uid="uid://crok16l33fj87" path="res://Assets/Themes/main_menu_buttons_blue.tres" id="4_7ryuf"]
 [ext_resource type="Theme" uid="uid://dguhy8epkrih3" path="res://Assets/Themes/main_menu_buttons_red.tres" id="6_hbyqo"]
 [ext_resource type="Texture2D" uid="uid://daaytla5qql0r" path="res://Assets/Logo.svg" id="7_qspyc"]
+[ext_resource type="PackedScene" uid="uid://d0vhqmteaqftt" path="res://Scene/friend_list.tscn" id="8_n03lg"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_m767v"]
 font_size = 50
@@ -110,6 +111,10 @@ offset_bottom = 323.0
 grow_horizontal = 2
 texture = ExtResource("7_qspyc")
 expand_mode = 1
+
+[node name="FriendList" parent="." instance=ExtResource("8_n03lg")]
+layout_mode = 1
+offset_left = -519.0
 
 [connection signal="button_down" from="Control/VBoxContainer/Play" to="." method="_on_start_button_button_down"]
 [connection signal="mouse_entered" from="Control/VBoxContainer/Play" to="." method="_on_play_mouse_entered"]

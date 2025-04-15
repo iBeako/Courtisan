@@ -1,0 +1,144 @@
+[gd_scene load_steps=12 format=3 uid="uid://d0vhqmteaqftt"]
+
+[ext_resource type="Script" path="res://Scene/friend_list.gd" id="1_mfv6b"]
+[ext_resource type="Texture2D" uid="uid://dlyhcyp3reuu8" path="res://Assets/Rectangle 182.svg" id="2_7mjfe"]
+[ext_resource type="Texture2D" uid="uid://cc44d1hc4rxgn" path="res://Assets/Vector.svg" id="3_jw88e"]
+[ext_resource type="Texture2D" uid="uid://fsvql5ugcv4e" path="res://Assets/profile/1.png" id="3_k0x3p"]
+[ext_resource type="FontFile" uid="uid://dim3hkmopleo2" path="res://Assets/Mighty Souly.otf" id="4_s0424"]
+[ext_resource type="Texture2D" uid="uid://c5s64vakga6dk" path="res://Assets/search.png" id="5_ixd7i"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_h21q4"]
+texture = ExtResource("2_7mjfe")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eu68n"]
+bg_color = Color(0.0156863, 0.156863, 0.2, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.741176, 0.592157, 0.12549, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_js261"]
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.741176, 0.592157, 0.12549, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_870xo"]
+color = Color(1, 1, 1, 1)
+grow_begin = -20.0
+grow_end = -20.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sphag"]
+bg_color = Color(0.0352941, 0.27451, 0.345098, 1)
+
+[node name="FriendList" type="HBoxContainer"]
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -417.0
+grow_horizontal = 0
+grow_vertical = 2
+pivot_offset = Vector2(417, 0)
+theme_override_constants/separation = 0
+script = ExtResource("1_mfv6b")
+
+[node name="PanelContainer2" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(119, 82)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxTexture_h21q4")
+
+[node name="Button" type="TextureButton" parent="PanelContainer2"]
+custom_minimum_size = Vector2(67, 67)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+texture_normal = ExtResource("3_jw88e")
+ignore_texture_size = true
+stretch_mode = 4
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_eu68n")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_js261")
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/PanelContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+texture = ExtResource("3_k0x3p")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_s0424")
+theme_override_font_sizes/font_size = 40
+text = "name"
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 40
+theme_override_styles/separator = SubResource("StyleBoxLine_870xo")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sphag")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("5_ixd7i")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_placeholder_color = Color(0.807843, 0.854902, 0.870588, 1)
+theme_override_fonts/font = ExtResource("4_s0424")
+theme_override_font_sizes/font_size = 24
+placeholder_text = "FIND PLAYER BY DISPLAY NAME"
+flat = true
+
+[connection signal="pressed" from="PanelContainer2/Button" to="." method="_on_button_pressed"]
+[connection signal="text_submitted" from="PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/LineEdit" to="." method="_on_line_edit_text_submitted"]

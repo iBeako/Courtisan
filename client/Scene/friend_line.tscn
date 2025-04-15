@@ -1,0 +1,47 @@
+[gd_scene load_steps=5 format=3 uid="uid://bubv7qfgxvpli"]
+
+[ext_resource type="Theme" uid="uid://daf482hdxg6di" path="res://Assets/Themes/friend_offline.tres" id="1_26tga"]
+[ext_resource type="Texture2D" uid="uid://c2ernukex2t6p" path="res://Assets/icon.svg" id="2_5q1jh"]
+[ext_resource type="Script" path="res://Script/friend_line.gd" id="2_o8gte"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ottki"]
+
+[node name="FriendLine" type="PanelContainer"]
+custom_minimum_size = Vector2(400, 0)
+offset_right = 400.0
+offset_bottom = 80.0
+theme = ExtResource("1_26tga")
+script = ExtResource("2_o8gte")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+texture = ExtResource("2_5q1jh")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Name"
+
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+text = "..."
+
+[node name="VSeparator2" type="VSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+theme_override_styles/separator = SubResource("StyleBoxEmpty_ottki")
