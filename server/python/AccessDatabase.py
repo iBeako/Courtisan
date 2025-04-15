@@ -237,12 +237,12 @@ async def websocket_endpoint(websocket: WebSocket):
                     print("Account created.")
                 elif message_type == "connexion":
                     await handle_connexion(websocket, data, connection)
-                    print("User connected.")
+                    print("asked for connection info")
                 elif message_type == "change_status":
                     await handle_change_user_status(websocket, data, connection)
                     print("User status changed.")
-                elif message_type == "change_profile":
-                    await handle_change_profile(websocket, data, connection)
+                elif message_type == "change_profil":
+                    await handle_change_profil(websocket, data, connection)
                     print("Profile picture changed.")
                 elif message_type == "find_lobby":
                     await handle_find_lobby(websocket, connection)
