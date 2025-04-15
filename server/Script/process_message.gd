@@ -1,6 +1,6 @@
 extends Node
 
-func process_message_for_client_not_ingame(data: Dictionary,sender_id:int):
+func process_message_not_ingame(data: Dictionary,sender_id:int):
 	if data.has("message_type"):
 		if data["message_type"] == "create_lobby":
 			Network.createLobby(data,sender_id)
@@ -24,7 +24,7 @@ func process_message_for_client_not_ingame(data: Dictionary,sender_id:int):
 		Network.send_message_to_peer.rpc_id(sender_id,error_message)	
 
 #process message
-func process_message_for_client_ingame(data : Dictionary,sender_id:int):
+func process_message_ingame(data : Dictionary,sender_id:int):
 	
 	if data["message_type"] == "error":
 		print("Error from client: ", data["error_type"])
