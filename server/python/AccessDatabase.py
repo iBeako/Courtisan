@@ -128,13 +128,13 @@ async def handle_change_profil(websocket, data, connection):
     if username:
         if pic and pseudo:
             cursor = connection.cursor()
-            cursor.execute("UPDATE users SET pic_profile = :pic, pseudo =:pseudo WHERE username = :username", pic_profile=pic, pseudo=pseudo, username=username)
+            cursor.execute("UPDATE users SET pic_profile = :pic_profile, pseudo =:pseudo WHERE username = :username", pic_profile=pic, pseudo=pseudo, username=username)
             connection.commit()
             cursor.close()
             await websocket.send_json({"status": "success", "message": "Profil updated.","username":data.get("username"),"pic_profile": data.get("pic_profile"),"pseudo": data.get("pseudo")})
         elif pic:
             cursor = connection.cursor()
-            cursor.execute("UPDATE users SET pic_profile = :pic WHERE username = :username", pic_profile=pic, username=username)
+            cursor.execute("UPDATE users SET pic_profile = :pic_profile WHERE username = :username", pic_profile=pic, username=username)
             connection.commit()
             cursor.close()
             await websocket.send_json({"status": "success", "message": "Profil picture updated.","pic_profile": data.get("pic_profile")})
