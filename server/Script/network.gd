@@ -215,7 +215,7 @@ func login(data: Dictionary,peer_id:int):
 			"pic_profile" = log["pic_profile"]
 		}
 		var last_peer_id = search_peer_id_by_username(log["username"])
-		if last_peer_id != -1 and clients[peer_id]["status"] != "replaced_by_ai":
+		if last_peer_id == -1 or clients[last_peer_id]["status"] != "replaced_by_ai":
 			clients[peer_id]["status"] = "connected"
 			clients[peer_id]["pic_profile"] = log["pic_profile"]
 			clients[peer_id]["username"] = log["username"]
