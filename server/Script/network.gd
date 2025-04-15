@@ -171,7 +171,7 @@ func send_message_to_server(data: Dictionary):
 	if data != null and data.has("message_type"):
 		var sender_id = multiplayer.get_remote_sender_id()
 		if  clients[sender_id] != null and clients[sender_id]["status"] == "connected":
-			print("Client %d sent a %s", [data["player"], data["message_type"]])
+			print("Client %d sent a %s", [data["username"], data["message_type"]])
 			print(" ", data)
 			if clients[sender_id]["session_id"] != -1:
 				ProcessMessage.process_message_not_ingame(data,sender_id)
