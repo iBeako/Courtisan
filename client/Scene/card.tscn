@@ -1,9 +1,18 @@
-[gd_scene load_steps=26 format=3 uid="uid://3la7ijwco18f"]
+[gd_scene load_steps=28 format=3 uid="uid://3la7ijwco18f"]
 
+[ext_resource type="FontFile" uid="uid://dim3hkmopleo2" path="res://Assets/Mighty Souly.otf" id="1_mdeu4"]
 [ext_resource type="Script" path="res://Script/card.gd" id="1_rh58d"]
 [ext_resource type="Texture2D" uid="uid://fhkf5psmaq6c" path="res://dingbats-489.png" id="2_5fdet"]
 [ext_resource type="Texture2D" uid="uid://3g132qikbh2w" path="res://Assets/cards_new/back.png" id="2_wp77g"]
 [ext_resource type="AudioStream" uid="uid://ixajgg8jyxnl" path="res://Assets/536764__egomassive__toss.ogg" id="4_lpq4m"]
+
+[sub_resource type="Theme" id="Theme_g8v7m"]
+TooltipLabel/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+TooltipLabel/constants/outline_size = 0
+TooltipLabel/constants/shadow_offset_x = 1
+TooltipLabel/constants/shadow_offset_y = 1
+TooltipLabel/font_sizes/font_size = 24
+TooltipLabel/fonts/font = ExtResource("1_mdeu4")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_es0fm"]
 
@@ -107,6 +116,8 @@ _data = {
 offset_right = 82.0
 offset_bottom = 150.0
 pivot_offset = Vector2(41, 75)
+tooltip_text = "Carte"
+theme = SubResource("Theme_g8v7m")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_es0fm")
 theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_j2o8h")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_xrjsg")
@@ -142,7 +153,8 @@ expand_mode = 3
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
 position = Vector2(41, 73)
-amount = 80
+emitting = false
+amount = 70
 process_material = SubResource("ParticleProcessMaterial_fpqqr")
 texture = ExtResource("2_5fdet")
 lifetime = 1.5

@@ -25,9 +25,7 @@ func _ready() -> void:
 	closed_position = position
 	print(size.x)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+
 
 func initialize(friends : Array) -> void:
 	var line_scene = load("res://Scene/friend_line.tscn")

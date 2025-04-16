@@ -63,3 +63,4 @@ position = Vector2(499, 79)
 [node name="Button" type="Button" parent="."]
 offset_right = 1001.0
 offset_bottom = 161.0
+flat = true

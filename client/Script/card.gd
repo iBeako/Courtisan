@@ -14,7 +14,7 @@ var base_scale : Vector2 = Vector2(1,1) #scale de base de la carte (pour la sort
 var parent_slot = null  # Référence au slot qui contient la carte
 
 
-var palette_courtisans = {
+const palette_courtisans = {
 	"rossignols": {
 		"light": "#CA2D48",  # Rouge clair
 		"dark": "#920F29"    # Rouge foncé
@@ -40,6 +40,14 @@ var palette_courtisans = {
 		"dark": "#9C9C96"    # Gris foncé
 	}
 }
+
+const tooltips_texts =[
+	"Aucun effet spécial",
+	"Compte double",
+	"Sera cachée une fois placée",
+	"Ne peut pas etre tuée",
+	"Permet de tuer une autre carte"
+]
 
 
 # Card properties
@@ -73,7 +81,7 @@ func _ready() -> void:
 	anim_player.seek(random_time, true)  # Décale à ce moment
 	
 	apply_particle_color()
-
+	update_tooltip()
 
 func _process(delta: float) -> void:
 	handle_shadow()
@@ -215,9 +223,13 @@ func card_placed():
 	is_draggable = false
 	$CardPlacedSound.play()
 	$AnimationPlayer.stop()
-	
+	tooltip_text = ""
 
 
 func _on_button_down() -> void:
 	if is_draggable:
 		card_pressed.emit(self)
+		
+		
+func update_tooltip() -> void:
+	tooltip_text = tooltips_texts[card_type]
