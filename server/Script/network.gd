@@ -86,12 +86,12 @@ func _on_peer_connected(peer_id: int):
 
 func createLobby(message: Dictionary,peer_id:int):
 	var return_message = await addLobbyDatabase(message)
-	if return_message != null and return_message.has("id_lobby"):
+	if return_message != null and return_message.has("game_id"):
 		var new_session = load("res://Script/session.gd").new()
-		new_session.init(return_message["id_lobby"], message["number_of_player"], message["name"], clients[peer_id]["pseudo"])
-		session[return_message["id_lobby"]] = new_session
-		var ind_player_in_session = session[return_message["id_lobby"]]._add_player(peer_id)
-		clients[peer_id]["session_id"] = return_message["id_lobby"]
+		new_session.init(return_message["game_id"], message["number_of_player"], message["name"], clients[peer_id]["pseudo"])
+		session[return_message["game_id"]] = new_session
+		var ind_player_in_session = session[return_message["game_id"]]._add_player(peer_id)
+		clients[peer_id]["session_id"] = return_message["game_id"]
 		clients[peer_id]["id_client_in_game"] = ind_player_in_session
 		number_of_session += 1
 	else:
