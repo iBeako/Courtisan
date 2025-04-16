@@ -161,7 +161,7 @@ async def handle_find_lobby(websocket, connection):
             COUNT(gp.user_id) AS current_players
         FROM games g
         LEFT JOIN game_players gp ON g.game_id = gp.game_id
-        WHERE g.status = 'open'
+        WHERE g.status = 'active'
         GROUP BY g.game_id, g.num_players, g.name, g.password
     """)
     rows = cursor.fetchall()
@@ -184,7 +184,7 @@ async def handle_create_lobby(websocket, data, connection):
     cursor = connection.cursor()
     cursor.execute("""
         INSERT INTO games (num_players, password, game_date, status, name)
-        VALUES (:num_players, :password, to_date(:game_date, 'YYYY-MM-DD'), 'open', :name)
+        VALUES (:num_players, :password, to_date(:game_date, 'YYYY-MM-DD'), 'active', :name)
     """, num_players=num_players, password=password, game_date=date_str, name=name)
     connection.commit()
     cursor.execute("SELECT game_id FROM games WHERE name = :name AND game_date = to_date(:game_date, 'YYYY-MM-DD')", name=name, game_date=date_str)
