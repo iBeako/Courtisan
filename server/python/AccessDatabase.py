@@ -261,7 +261,7 @@ async def websocket_endpoint(websocket: WebSocket):
                     await handle_connexion(websocket, data, connection)
                     print("asked for connection info")
                 elif message_type == "change_status":
-                    print(message received)
+                    print("message received")
                     await handle_change_user_status(websocket, data, connection)
                     print("User status changed.")
                 elif message_type == "change_profil":
