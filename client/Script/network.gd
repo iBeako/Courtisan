@@ -4,6 +4,7 @@ signal error_card_played(message)
 @onready var game = preload("res://Scene/main.tscn")
 @onready var menu_principal = preload("res://Scene/menu_principal.tscn")
 @onready var signin_page = preload("res://Scene/login.tscn")
+@onready var waiting = preload("res://Scene/Waiting.tscn")
 
 enum family {
 	butterfly = 0,
@@ -179,7 +180,7 @@ func process_message(data:Dictionary):
 		elif data["message_type"] == "join_lobby":
 			id_lobby = data["id_lobby"]
 			id = data["id_player"]
-			print("....")
+			get_tree().change_scene_to_packed(waiting)
 		elif data["message_type"] == "start_game":
 			in_game = true
 			get_tree().change_scene_to_packed(game)

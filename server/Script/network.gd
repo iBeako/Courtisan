@@ -97,6 +97,13 @@ func createLobby(message: Dictionary,peer_id:int):
 		clients[peer_id]["session_id"] = return_message["game_id"]
 		clients[peer_id]["id_client_in_game"] = ind_player_in_session
 		number_of_session += 1
+		var forclient = {
+			"message_type":"join_lobby",
+			"id_lobby":return_message["game_id"],
+			"id_player":ind_player_in_session
+		}
+		return forclient
+		
 	else:
 		print("error, lobby not created error database")
 
