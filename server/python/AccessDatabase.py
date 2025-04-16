@@ -152,9 +152,25 @@ async def handle_change_profil(websocket, data, connection):
 
 async def handle_find_lobby(websocket, connection):
     cursor = connection.cursor()
-    cursor.execute("SELECT game_id, num_players, name, password FROM games WHERE status = 'open'")
-    lobbies = cursor.fetchall()
+    cursor.execute("""
+        SELECT 
+            g.game_id,
+            g.num_players,
+            g.name,
+            g.password,
+            COUNT(gp.user_id) AS current_players
+        FROM games g
+        LEFT JOIN game_players gp ON g.game_id = gp.game_id
+        WHERE g.status = 'open'
+        GROUP BY g.game_id, g.num_players, g.name, g.password
+    """)
+    rows = cursor.fetchall()
     cursor.close()
+
+    # Convert result to list of dictionaries
+    columns = ["game_id", "num_players", "name", "password", "current_players"]
+    lobbies = [dict(zip(columns, row)) for row in rows]
+
     await websocket.send_json({"status": "success", "lobbies": lobbies})
 
 async def handle_create_lobby(websocket, data, connection):
@@ -163,15 +179,15 @@ async def handle_create_lobby(websocket, data, connection):
     num_players = data.get("number_of_player")
     have_password = data.get("have_password")
     password = data.get("password") if have_password == 0 else None
-    date = datetime.now().strftime("%Y-%m-%d")
+    date_str = datetime.now().strftime("%Y-%m-%d")
 
     cursor = connection.cursor()
     cursor.execute("""
         INSERT INTO games (num_players, password, game_date, status, name)
-        VALUES (:num_players, :password, :game_date, 'open', :name)
-    """, num_players=num_players, password=password, game_date=date, name=name)
+        VALUES (:num_players, :password, to_date(:game_date, 'YYYY-MM-DD'), 'open', :name)
+    """, num_players=num_players, password=password, game_date=date_str, name=name)
     connection.commit()
-    cursor.execute("SELECT game_id FROM games WHERE name = :name AND game_date = :game_date", name=name, game_date=date)
+    cursor.execute("SELECT game_id FROM games WHERE name = :name AND game_date = to_date(:game_date, 'YYYY-MM-DD')", name=name, game_date=date_str)
     game_id = cursor.fetchone()[0]
     cursor.execute("SELECT user_id FROM users WHERE username = :username", username=username)
     user_id  = cursor.fetchone()[0]
