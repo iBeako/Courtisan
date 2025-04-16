@@ -213,6 +213,7 @@ theme_override_font_sizes/font_size = 34
 theme_override_styles/normal = SubResource("StyleBoxFlat_dleh7")
 text = "Create a room"
 
+[connection signal="pressed" from="PanelContainer/MarginContainer/arrow" to="." method="_on_arrow_pressed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/CheckBox" to="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/CheckBox" method="_on_pressed"]
 [connection signal="radio_pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/CheckBox" to="." method="_on_check_box_radio_pressed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/CheckBox2" to="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/CheckBox2" method="_on_pressed"]
