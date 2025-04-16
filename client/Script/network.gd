@@ -117,10 +117,12 @@ func _ready():
 	peer.create_client(address, client_tls_options)
 	multiplayer.multiplayer_peer = peer
 	print("Client connected to server at %s" % address)
-	
+
+func _process(delta: float) -> void:
+	if peer.get_ready_state() == WebSocketPeer.STATE_CLOSING:
+		close_connection()
 	
 func close_connection():
-	if peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
 		peer.close()
 		pseudo = ""
 		username = ""

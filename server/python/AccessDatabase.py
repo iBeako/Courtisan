@@ -111,8 +111,8 @@ async def handle_change_user_status(websocket, data, connection):
     is_active = data.get("is_active")
     cursor = connection.cursor()
     cursor.execute(
-        "UPDATE users SET is_active = :active WHERE username = :username",
-        active=is_active,
+        "UPDATE users SET is_active = :is_active WHERE username = :username",
+        is_active=is_active,
         username=username
     )
     connection.commit()

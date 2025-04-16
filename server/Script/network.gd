@@ -51,9 +51,10 @@ func _exit_tree():
 ## between client and server
 func _on_peer_disconnected(peer_id: int):
 	var _id = clients[peer_id]
+	var username = _id["username"]
 	print("Player ", _id, " has disconnected")
-	if clients[peer_id]["status"] == "in_game":
-		clients[peer_id]["status"] = "replaced_by_ai"
+	if _id["status"] == "in_game":
+		_id["status"] = "replaced_by_ai"
 		#ai not work for now
 		#var ai = AI_class.new()
 		#ai.id_player = _id
@@ -65,7 +66,7 @@ func _on_peer_disconnected(peer_id: int):
 		number_of_client -= 1
 	var message_to_database = {
 		"message_type" = "change_status",
-		"username" = clients[peer_id]["username"],
+		"username" = username,
 		"is_active" = 0
 	}
 	Database.sendDatabase(message_to_database)
