@@ -117,10 +117,13 @@ async def handle_change_user_status(websocket, data, connection):
     )
     connection.commit()
     cursor.close()
+    print("before if")
     if is_active:
         await websocket.send_json({"status": "success", "message": f" {username} is now active."})
+        print("after sending active")
     else:
         await websocket.send_json({"status": "success", "message": f" {username} is now inactive."})
+        print("after sending inactive")
 
 async def handle_change_profil(websocket, data, connection):
     username = data.get("username")
