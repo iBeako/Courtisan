@@ -44,6 +44,9 @@ func _process(_delta):
 			var packet = db_peer.get_packet()
 			Database.return_database = packet.get_string_from_utf8()
 
+func _exit_tree():
+	pass
+
 # connexion function
 ## between client and server
 func _on_peer_disconnected(peer_id: int):

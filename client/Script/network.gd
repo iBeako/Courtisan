@@ -109,7 +109,6 @@ var pseudo: String
 var id: int
 var username: String
 var my_profil_pic: int
-var game_started = false
 
 func _ready():
 	var client_trusted_cas = load("res://certificates/certificate.crt")
@@ -122,6 +121,14 @@ func _ready():
 func close_connection():
 	if peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
 		peer.close()
+		pseudo = ""
+		username = ""
+		id = 0
+		my_profil_pic = 0
+		in_game = false
+		id_lobby = -1
+		turn_player = 0
+		get_tree().change_scene_to_packed(signin_page)
 		print("Client connection closed")
 
 func _on_message_sent(message: Dictionary) -> void:

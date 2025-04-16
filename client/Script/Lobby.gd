@@ -27,6 +27,7 @@ static func createPrivateLobby(id_player:int,name:String,number_of_player:int,pa
 static func findLobby():
 	var message = {
 		"message_type":"find_lobby",
+		"username":Network.username
 	}
 	return message	
 	
