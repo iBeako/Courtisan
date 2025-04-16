@@ -85,6 +85,9 @@ theme_override_fonts/font = ExtResource("3_cp4tu")
 theme_override_font_sizes/font_size = 36
 text = "Lobby 1"
 
+[node name="NumberofPlayerName" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+
 [node name="Button" type="Button" parent="HBoxContainer"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2

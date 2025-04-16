@@ -27,10 +27,11 @@ var current_player_id : int
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
 ### ----------------------------------------------------------------------------------------------------------------------------------------------
 ## On creation of session
-func init(id_session:int,_player_max: int,_name: String) -> void:
+func init(id_session:int,_player_max: int,_name: String, username: String) -> void:
 	self.session_id = id_session
 	self.player_max = _player_max
 	self.name = _name
+	self.creator = username
 	self.current_player_id = 0 # could be picked radomly or from connection order
 	self.card_stack._set_card_number(player_max)
 	print("Initilization of a new session success")

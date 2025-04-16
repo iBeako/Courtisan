@@ -88,7 +88,7 @@ func createLobby(message: Dictionary,peer_id:int):
 	var return_message = await addLobbyDatabase(message)
 	if return_message != null and return_message.has("id_lobby"):
 		var new_session = load("res://Script/session.gd").new()
-		new_session.init(return_message["id_lobby"], message["number_of_player"], message["name"])
+		new_session.init(return_message["id_lobby"], message["number_of_player"], message["name"], clients[peer_id]["pseudo"])
 		session[return_message["id_lobby"]] = new_session
 		var ind_player_in_session = session[return_message["id_lobby"]]._add_player(peer_id)
 		clients[peer_id]["session_id"] = return_message["id_lobby"]
@@ -98,17 +98,18 @@ func createLobby(message: Dictionary,peer_id:int):
 		print("error, lobby not created error database")
 
 # trouve tous les lobbys ouvert du jeu
-func findLobby():
+func findLobby(message):
 	if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
-		var message = {
-			"action" = "getAllLobby"
-		}
 		Database.sendDatabase(message)
 		var allLobby = await Database.getDatabase()
 		if allLobby != null :
-			return allLobby
+			for i in range (allLobby["lobbies"].size()):
+				allLobby["lobbies"][i]["creator"] = session[allLobby["lobbies"][i]["game_id"]]["creator"]
+			return allLobby["lobbies"]
 		else:
 			print("no lobby found")
+	else:
+		print("no connection to database")
 
 func addLobbyDatabase(message: Dictionary):
 	if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:

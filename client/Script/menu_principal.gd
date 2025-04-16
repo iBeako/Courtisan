@@ -3,7 +3,7 @@ extends Control
 # ScènesC
 
 @onready var create_lobby = preload("res://Scene/Create_lobby.tscn")
-@onready var join_game = preload("res://Join_game.tscn")
+@onready var join_game = preload("res://Scene/Join_game.tscn")
 @onready var param = preload("res://Scene/param.tscn")
 
 # Configuration manuelle des pivots (exemple pour Play)

@@ -1,11 +1,11 @@
 [gd_scene load_steps=8 format=3 uid="uid://57g2yl4fsfpt"]
 
-[ext_resource type="Texture2D" uid="uid://dgcdevknlk732" path="res://Assets/Join_Game.png" id="1_ohbm4"]
-[ext_resource type="Script" path="res://refreshButton.gd" id="2_pp54t"]
-[ext_resource type="Texture2D" uid="uid://moika2rm8x7n" path="res://Assets/background.png" id="2_vk6xo"]
-[ext_resource type="Texture2D" uid="uid://dp7rxbav2clb2" path="res://Assets/arrow-small-left 2.svg" id="3_xoh4a"]
-[ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/general.tres" id="4_ovxt2"]
-[ext_resource type="Texture2D" uid="uid://dc4tm6ehl4x4x" path="res://Assets/arrow-small-left.svg" id="6_1lqbg"]
+[ext_resource type="Texture2D" uid="uid://moika2rm8x7n" path="res://Assets/background.png" id="1_hb6bk"]
+[ext_resource type="Script" path="res://refreshButton.gd" id="2_aetqh"]
+[ext_resource type="Texture2D" uid="uid://dgcdevknlk732" path="res://Assets/Join_Game.png" id="3_rdqvy"]
+[ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/general.tres" id="4_3q36x"]
+[ext_resource type="Texture2D" uid="uid://dp7rxbav2clb2" path="res://Assets/arrow-small-left 2.svg" id="5_sprdu"]
+[ext_resource type="Texture2D" uid="uid://dc4tm6ehl4x4x" path="res://Assets/arrow-small-left.svg" id="6_ngygm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mv0a1"]
 bg_color = Color(0.0156863, 0.156863, 0.2, 1)
@@ -24,14 +24,14 @@ corner_radius_bottom_left = 50
 [node name="TextureRect" type="TextureRect" parent="."]
 offset_right = 1920.0
 offset_bottom = 1080.0
-texture = ExtResource("2_vk6xo")
+texture = ExtResource("1_hb6bk")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
-script = ExtResource("2_pp54t")
+script = ExtResource("2_aetqh")
 
 [node name="Panel" type="Panel" parent="Control"]
 layout_mode = 2
@@ -58,7 +58,7 @@ theme_override_constants/separation = 100
 [node name="JoinGame" type="Sprite2D" parent="Control"]
 visible = false
 position = Vector2(960, 540)
-texture = ExtResource("1_ohbm4")
+texture = ExtResource("3_rdqvy")
 
 [node name="MarginContainer" type="MarginContainer" parent="Control"]
 layout_mode = 2
@@ -78,21 +78,21 @@ theme_override_constants/separation = 200
 
 [node name="Label" type="Label" parent="Control/MarginContainer/HBoxContainer"]
 layout_mode = 2
-theme = ExtResource("4_ovxt2")
+theme = ExtResource("4_3q36x")
 theme_override_colors/font_color = Color(0.741176, 0.592157, 0.12549, 1)
 text = "ROOMS
 "
 
 [node name="Label2" type="Label" parent="Control/MarginContainer/HBoxContainer"]
 layout_mode = 2
-theme = ExtResource("4_ovxt2")
+theme = ExtResource("4_3q36x")
 theme_override_colors/font_color = Color(0.741176, 0.592157, 0.12549, 1)
 text = "Creator
 "
 
 [node name="Label3" type="Label" parent="Control/MarginContainer/HBoxContainer"]
 layout_mode = 2
-theme = ExtResource("4_ovxt2")
+theme = ExtResource("4_3q36x")
 theme_override_colors/font_color = Color(0.741176, 0.592157, 0.12549, 1)
 text = "player
 "
@@ -105,7 +105,7 @@ offset_right = 1530.0
 offset_bottom = 188.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("4_ovxt2")
+theme = ExtResource("4_3q36x")
 text = "Refresh"
 
 [node name="TextureButton" type="TextureButton" parent="Control"]
@@ -116,11 +116,11 @@ offset_right = 524.0
 offset_bottom = 205.0
 mouse_filter = 2
 action_mode = 0
-texture_normal = ExtResource("3_xoh4a")
-texture_pressed = ExtResource("3_xoh4a")
-texture_hover = ExtResource("6_1lqbg")
-texture_disabled = ExtResource("6_1lqbg")
-texture_focused = ExtResource("3_xoh4a")
+texture_normal = ExtResource("5_sprdu")
+texture_pressed = ExtResource("5_sprdu")
+texture_hover = ExtResource("6_ngygm")
+texture_disabled = ExtResource("6_ngygm")
+texture_focused = ExtResource("5_sprdu")
 
 [connection signal="pressed" from="Control/Refresh" to="Control" method="_on_refresh_pressed"]
 [connection signal="pressed" from="Control/TextureButton" to="Control" method="_on_texture_button_pressed"]

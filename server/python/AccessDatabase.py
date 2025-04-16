@@ -168,12 +168,12 @@ async def handle_create_lobby(websocket, data, connection):
     cursor = connection.cursor()
     cursor.execute("""
         INSERT INTO games (num_players, password, game_date, status, name)
-        VALUES (:np, :pwd, :date, 'open', :name)
-    """, np=num_players, pwd=password, date=date, name=name)
+        VALUES (:num_players, :password, :game_date, 'open', :name)
+    """, num_players=num_players, password=password, game_date=date, name=name)
     connection.commit()
-    cursor.execute("SELECT game_id FROM games WHERE name = :name AND game_date = :date", name=name, date=date)
+    cursor.execute("SELECT game_id FROM games WHERE name = :name AND game_date = :game_date", name=name, game_date=date)
     game_id = cursor.fetchone()[0]
-    cursor.execute("SELECT user_id  FROM users WHERE username = :username", username=username)
+    cursor.execute("SELECT user_id FROM users WHERE username = :username", username=username)
     user_id  = cursor.fetchone()[0]
     cursor.execute("INSERT INTO game_players (game_id, user_id) VALUES (:gid, :pid)", gid=game_id, pid=user_id)
     connection.commit()

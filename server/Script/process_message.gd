@@ -5,7 +5,7 @@ func process_message_not_ingame(data: Dictionary,sender_id:int):
 		if data["message_type"] == "create_lobby":
 			Network.createLobby(data,sender_id)
 		elif data["message_type"] == "find_lobby":
-			var message = await Network.findLobby()
+			var message = await Network.findLobby(data)
 			Network.send_message_to_peer.rpc_id(sender_id,message)
 		elif data["message_type"] == "join_lobby":
 			var message = await Network.joinLobby(data,sender_id)
