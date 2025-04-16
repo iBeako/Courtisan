@@ -52,8 +52,8 @@ func _exit_tree():
 func _on_peer_disconnected(peer_id: int):
 	var _id = clients[peer_id]
 	print("Player ", _id, " has disconnected")
-	if clients["peer_id"]["status"] == "in_game":
-		clients["peer_id"]["status"] = "replaced_by_ai"
+	if clients[peer_id]["status"] == "in_game":
+		clients[peer_id]["status"] = "replaced_by_ai"
 		#ai not work for now
 		#var ai = AI_class.new()
 		#ai.id_player = _id
