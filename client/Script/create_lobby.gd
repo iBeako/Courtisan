@@ -2,6 +2,8 @@ extends Control
 
 @onready var name_edit_reference : LineEdit = $PanelContainer/VBoxContainer/MarginContainer2/VBoxContainer/MarginContainer/LineEdit
 @onready var my_checkbox: CheckBox = $PanelContainer/VBoxContainer/MarginContainer3/CheckBox
+@onready var menu = preload("res://Scene/menu_principal.tscn")
+
 var nb_player : int = 5
 
 
@@ -30,3 +32,7 @@ func _on_button_pressed():
 		message["have_password"]=1
 	print(message)
 	Network.send_message_to_server.rpc_id(1,message)
+
+
+func _on_arrow_pressed() -> void:
+	get_tree().change_scene_to_packed(menu)
