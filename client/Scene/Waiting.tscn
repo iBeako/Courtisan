@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://brny0075urkro"]
+[gd_scene load_steps=7 format=3 uid="uid://bse5wf7pm3ma4"]
 
 [ext_resource type="Script" path="res://Scene/waiting.gd" id="1_dwk4n"]
 [ext_resource type="Texture2D" uid="uid://moika2rm8x7n" path="res://Assets/background.png" id="2_5ec0v"]
