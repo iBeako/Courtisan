@@ -19,7 +19,7 @@ DB_USER = 'COURTISANSJEU'
 DB_PASSWORD = 'el3ebyidneghRoyalCardsDB'
 DB_REMOTE_HOST = '172.18.0.2'
 DB_REMOTE_PORT = 1521
-DB_SERVICE_NAME = "FREEPDB1"  # à adapter selon votre service Oracle
+DB_SERVICE_NAME = 'FREEPDB1'  # à adapter selon votre service Oracle
 
 def get_db_connection():
     # Utilisation de la clé privée pour l'authentification SSH
@@ -261,6 +261,7 @@ async def websocket_endpoint(websocket: WebSocket):
                     await handle_connexion(websocket, data, connection)
                     print("asked for connection info")
                 elif message_type == "change_status":
+                    print(message received)
                     await handle_change_user_status(websocket, data, connection)
                     print("User status changed.")
                 elif message_type == "change_profil":
