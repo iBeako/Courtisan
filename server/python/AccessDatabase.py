@@ -81,17 +81,23 @@ def insert_account(data: dict, connection):
 def get_account(login: str, connection, mode: int):
     cursor = connection.cursor()
     if mode == 0:
-        query = "SELECT pseudo, password_hash, salt, pic_profile FROM users WHERE email = :email"
+        query = "SELECT pseudo, password_hash, salt, pic_profile FROM users WHERE email = :email is_active = 0"
         cursor.execute(query, email=login)
     else:
-        query = "SELECT pseudo, password_hash, salt, pic_profile, username FROM users WHERE username = :username"
+        query = "SELECT pseudo, password_hash, salt, pic_profile, username FROM users WHERE username = :username AND is_active = 0"
         cursor.execute(query, username=login)
     result = cursor.fetchone()
     cursor.close()
     if result:
         return {"status": "success","pseudo": result[0], "password": result[1], "salt": result[2], "pic_profile": result[3],"username":result[4]}
     else:
-        return {"status": "error", "message": "Account not found."}
+        query = "SELECT pseudo, password_hash, salt, pic_profile FROM users WHERE email = :email"
+        cursor.execute(query, email=login)
+        second_result = cursor.fetchone()
+        if second_result:
+            return {"status": "error", "message": "Already connected."}
+        else:
+            return {"status": "error", "message": "Account not found."}
 
 
 
@@ -247,6 +253,7 @@ async def handle_quit_lobby(websocket, data, connection):
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     connection, tunnel = get_db_connection()
+
     try:
         while True:
             data = await websocket.receive_json()
