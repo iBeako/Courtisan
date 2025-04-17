@@ -15,6 +15,12 @@ func instantiate_waiting_scene(text: String) -> void:
 
 func _on_arrow_2_pressed() -> void:
 	print("clicked")
+	var message = {
+		"message_type":"start_lobby",
+		"id_lobby":Network.id_lobby,
+		"username":Network.username
+	}
+	Network.send_message_to_server.rpc_id(1,message)
 	#----------------------------------------------------------------------------
 	# Ici tu met ta fonction pour lancer ta partie 
 #-------------------------------------------------
@@ -22,4 +28,10 @@ func _on_arrow_2_pressed() -> void:
 
 func _on_arrow_pressed() -> void:
 	print("clicked")
+	var message = {
+		"message_type":"quit_lobby",
+		"id_lobby":Network.id_lobby,
+		"username":Network.username
+	}
+	Network.send_message_to_server.rpc_id(1,message)
 	get_tree().change_scene_to_packed(menu)

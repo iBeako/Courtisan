@@ -131,8 +131,8 @@ func addLobbyDatabase(message: Dictionary):
 	if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
 		Database.sendDatabase(message)
 		var return_message = await Database.getDatabase()
-		if return_message != null and return_message.has("id_lobby"):
-			return return_message["id_lobby"]
+		if return_message != null and return_message.has("game_id"):
+			return return_message["game_id"]
 		
 func joinLobby(message: Dictionary,peer_id:int):
 	if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:

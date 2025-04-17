@@ -3,7 +3,7 @@ extends Control
 @onready var lobby_label = get_node("HBoxContainer/MarginContainer/LobbyName")
 @onready var creator_label = get_node("HBoxContainer/MarginContainer2/CreatorName")
 @onready var nb_of_player_label = get_node("HBoxContainer/MarginContainer3/NumberofPlayer")
-
+@onready var join_button = get_node("HBoxContainer/Button")
 var game_id: int = -1
 
 func set_lobby_data(lobby_name: String,creator_name:String,number_of_player:String,id_lobby:int):
