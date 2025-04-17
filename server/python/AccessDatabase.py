@@ -248,6 +248,13 @@ async def handle_quit_lobby(websocket, data, connection):
     cursor.close()
     await websocket.send_json({"status": "success", "message": "Player removed from lobby."})
 
+async def handle_destroy_lobby(websocket, data, connection):
+    id_lobby = data.get("id_lobby")
+    cursor = connection.cursor()
+    cursor.execute("DELETE FROM game WHERE game_id = :gid", gid=id_lobby)
+    connection.commit()
+    cursor.close()
+    await websocket.send_json({"status": "success", "message": "game removed."})
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
@@ -289,6 +296,9 @@ async def websocket_endpoint(websocket: WebSocket):
                 elif message_type == "quit_lobby":
                     await handle_quit_lobby(websocket, data, connection)
                     print("Player quit lobby.")
+                elif message_type == "destroy_lobby":
+                    await handle_destroy_lobby(websocket, data, connection)
+                    print("lobby destroyed.")
                 else:
                     await websocket.send_json({"status": "error", "message": "Unknown message_type."})
             except Exception as e:

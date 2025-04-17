@@ -70,13 +70,6 @@ visible = false
 position = Vector2(550, 233)
 texture = ExtResource("1_wcnsn")
 
-[node name="CreatorName" type="Label" parent="HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("3_cp4tu")
-theme_override_font_sizes/font_size = 36
-text = "John"
-
 [node name="LobbyName" type="Label" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -85,8 +78,20 @@ theme_override_fonts/font = ExtResource("3_cp4tu")
 theme_override_font_sizes/font_size = 36
 text = "Lobby 1"
 
-[node name="NumberofPlayerName" type="Label" parent="HBoxContainer"]
+[node name="CreatorName" type="Label" parent="HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_cp4tu")
+theme_override_font_sizes/font_size = 36
+text = "John"
+
+[node name="NumberofPlayer" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_5nvou")
+theme_override_fonts/font = ExtResource("3_cp4tu")
+theme_override_font_sizes/font_size = 36
+text = "Lobby 1"
 
 [node name="Button" type="Button" parent="HBoxContainer"]
 custom_minimum_size = Vector2(100, 0)

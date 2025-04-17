@@ -60,10 +60,16 @@ func _add_player(_id_peer) -> int:
 	return count_players # id tab is 0 but id is 1
 
 # PRECOND : Lobby must not be empty
-func _remove_player(player_id) -> bool:
-	clients_peer.erase(player_id)
-	players.erase(player_id)
-	return true # to fix
+func _remove_player(_id_peer) -> bool:
+	var index = clients_peer.find(_id_peer)
+	if index == -1:
+		print("Player with peer ID", _id_peer, "not found in clients.")
+		return false
+	
+	clients_peer.remove_at(index)
+	players.remove_at(index)
+	print("Removed player with peer ID", _id_peer, "at index", index)
+	return true
 
 func display_session_status():
 	print("==========================================================================")

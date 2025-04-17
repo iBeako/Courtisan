@@ -5,7 +5,7 @@ signal error_card_played(message)
 @onready var menu_principal = preload("res://Scene/menu_principal.tscn")
 @onready var signin_page = preload("res://Scene/login.tscn")
 @onready var waiting = preload("res://Scene/Waiting.tscn")
-
+@onready var join = preload("res://Scene/Join_game.tscn")
 enum family {
 	butterfly = 0,
 	frog = 1,
@@ -174,8 +174,12 @@ func process_message(data:Dictionary):
 		print("account created")
 		get_tree().change_scene_to_packed(signin_page)
 	if in_game == false:
-		if data["message_type"] == "all lobby":
-			print("...")
+		if data["message_type"] == "find_lobby":
+			get_tree().change_scene_to_packed(join)
+			var join_scene = get_tree().current_scene
+			if join_scene.has_method("print_lobby") and data.has("lobbies"):
+				join_scene.print_lobby(data["lobbies"])
+			
 		elif data["message_type"] == "join_lobby":
 			id_lobby = data["id_lobby"]
 			id = data["id_player"]
