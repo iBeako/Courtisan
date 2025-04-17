@@ -102,7 +102,8 @@ func createLobby(message: Dictionary,peer_id:int):
 		var forclient = {
 			"message_type":"join_lobby",
 			"id_lobby":return_message,
-			"id_player":ind_player_in_session
+			"id_player":ind_player_in_session,
+			"pseudo":clients[peer_id]["pseudo"]
 		}
 		return forclient
 		

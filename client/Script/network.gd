@@ -176,8 +176,9 @@ func process_message(data:Dictionary):
 	if in_game == false:
 		if data["message_type"] == "find_lobby":
 			get_tree().change_scene_to_packed(join)
-			while get_tree().current_scene == null:
-				await get_tree().process_frame
+			#while get_tree().current_scene == null:
+			#	await get_tree().process_frame
+			await get_tree().process_frame
 			var join_scene = get_tree().current_scene
 			if join_scene.has_method("print_lobby") and data.has("lobbies"):
 				join_scene.print_lobby(data["lobbies"])
@@ -186,6 +187,10 @@ func process_message(data:Dictionary):
 			id_lobby = data["id_lobby"]
 			id = data["id_player"]
 			get_tree().change_scene_to_packed(waiting)
+			await get_tree().process_frame
+			var waiting_scene = get_tree().current_scene
+			if waiting_scene.has_method("instantiate_waiting_scene") and data.has("pseudo"):
+				waiting_scene.instantiate_waiting_scene(data["pseudo"])
 		elif data["message_type"] == "start_game":
 			in_game = true
 			get_tree().change_scene_to_packed(game)
