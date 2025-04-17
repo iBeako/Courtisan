@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://le7iea2g3100"]
+[gd_scene load_steps=20 format=3 uid="uid://le7iea2g3100"]
 
 [ext_resource type="Script" path="res://Script/create_lobby.gd" id="1_orjtt"]
 [ext_resource type="Texture2D" uid="uid://moika2rm8x7n" path="res://Assets/background.png" id="1_ue0mc"]
@@ -8,7 +8,10 @@
 [ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/general.tres" id="6_3qbd0"]
 [ext_resource type="Script" path="res://Scene/check_box.gd" id="6_or0mc"]
 [ext_resource type="FontFile" uid="uid://dim3hkmopleo2" path="res://Assets/Mighty Souly.otf" id="7_ilo26"]
+[ext_resource type="Texture2D" uid="uid://d1bk1ehnrxcjx" path="res://Assets/Group 71.png" id="7_lmqr3"]
+[ext_resource type="Texture2D" uid="uid://cpn0qkn2kea8u" path="res://Assets/Group 73.png" id="8_a8r7y"]
 [ext_resource type="Texture2D" uid="uid://c1qg8h3mbysvt" path="res://Assets/Cadenas.png" id="8_dpr78"]
+[ext_resource type="Texture2D" uid="uid://bvw71cww5lpri" path="res://Assets/Group 75.png" id="9_ha57e"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p5cjq"]
 bg_color = Color(0.0156863, 0.156863, 0.2, 1)
@@ -140,7 +143,7 @@ theme = SubResource("Theme_g5otf")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_64qtd")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_64qtd")
 button_group = SubResource("ButtonGroup_ylqyn")
-icon = ExtResource("4_nmmst")
+icon = ExtResource("7_lmqr3")
 script = ExtResource("6_or0mc")
 value = 4
 
@@ -150,7 +153,7 @@ theme = SubResource("Theme_g5otf")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_64qtd")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_64qtd")
 button_group = SubResource("ButtonGroup_ylqyn")
-icon = ExtResource("4_nmmst")
+icon = ExtResource("8_a8r7y")
 script = ExtResource("6_or0mc")
 value = 3
 
@@ -160,7 +163,7 @@ theme = SubResource("Theme_g5otf")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_64qtd")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_64qtd")
 button_group = SubResource("ButtonGroup_ylqyn")
-icon = ExtResource("4_nmmst")
+icon = ExtResource("9_ha57e")
 script = ExtResource("6_or0mc")
 value = 2
 
