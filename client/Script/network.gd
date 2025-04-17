@@ -176,7 +176,8 @@ func process_message(data:Dictionary):
 	if in_game == false:
 		if data["message_type"] == "find_lobby":
 			get_tree().change_scene_to_packed(join)
-			await get_tree().process_frame
+			while get_tree().current_scene == null:
+				await get_tree().process_frame
 			var join_scene = get_tree().current_scene
 			if join_scene.has_method("print_lobby") and data.has("lobbies"):
 				join_scene.print_lobby(data["lobbies"])
