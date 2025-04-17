@@ -6,16 +6,18 @@ extends PanelContainer
 func _ready() -> void:
 	modulate.a = 0.0
 	scale = Vector2(0,0)
-	show_msg("he")
+	show_msg("Showing text")
 
 
 func show_msg(msg : String) -> void:
 	$MarginContainer/Label.text = msg
-	pivot_offset = size/2
-	print(size, pivot_offset)
+	#pivot_offset = size/2
+
 	fade_in()
-	await get_tree().create_timer(1.5).timeout
+
 	
+	await get_tree().create_timer(1.5).timeout
+
 	fade_out()
 
 func fade_in():
@@ -30,3 +32,8 @@ func fade_out():
 	await tween.finished
 	queue_free()
 	
+
+
+func _on_resized() -> void:
+	pivot_offset = size/2
+	print(size)
