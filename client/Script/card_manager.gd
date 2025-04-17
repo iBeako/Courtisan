@@ -1,6 +1,6 @@
 extends Node2D
 
-signal card_played
+
 
 const CARD_SCENE_PATH = "res://Scene/card.tscn"
 
@@ -107,7 +107,6 @@ func end_drag():
 				
 			#card_zone_found.add_card(card_is_dragged)
 			remove_child(card_is_dragged)
-			card_played.emit() #for labels update
 			
 			if card_is_dragged.card_type == Global.CardType.SPY:
 				card_is_dragged.hide_card()
@@ -144,4 +143,5 @@ func check_zone() -> PlayZone:
 func _on_child_entered_tree(node: Card) -> void:
 	node.card_pressed.connect(start_drag)
 
+	
 	

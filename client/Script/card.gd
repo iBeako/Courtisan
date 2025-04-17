@@ -72,7 +72,6 @@ var back_texture = load("res://Assets/"+Global.cards_theme+"/back.png")
 
 # Ready function: runs when the node is added to the scene
 func _ready() -> void:
-	print("nouvelle caer")
 	sprite = $TextureRect  # Get the TextureRect node
 	apply_card_texture()  # Apply the texture when the card is initialized
 	var anim_player = $AnimationPlayer

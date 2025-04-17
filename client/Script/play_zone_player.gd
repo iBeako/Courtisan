@@ -4,13 +4,13 @@ var id_player : int = -1
 var name_player : String = ""
 var id_image : int = 0
 
-@onready var card_manager_reference = get_node("../CardManager")
+@onready var message_manager_reference = get_node("../MessageManager")
 
 
 # Called when the node enters the scene tree
 func _ready() -> void:
 	super._ready()
-	card_manager_reference.card_played.connect(self.update_labels)
+	message_manager_reference.card_played.connect(self.update_labels)
 	$VBoxContainer.rotation = -self.rotation
 
 
@@ -60,6 +60,11 @@ func update_labels(values : Dictionary = {}) -> Dictionary:
 			break
 		# Calculate the final score based on Grace and Disgrace values
 		var score_famille : int = dict_grace[node_name] - dict_disgrace[node_name]
+		if score_famille > 0:
+			score_famille = 1
+		elif score_famille < 0:
+			score_famille = -1
+		print(node_name,score_famille)
 		values[node_name] = nd.update_count_label(score_famille)
 	
 	return values

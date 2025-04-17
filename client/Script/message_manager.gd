@@ -3,7 +3,7 @@ class_name MessageManager
 
 signal message_sent(message)
 
-signal card_played()
+signal card_played
 
 const CARD_SCENE_PATH = "res://Scene/card.tscn"
 
@@ -90,6 +90,7 @@ func add_card_to_zone(card_color : String, card_type : int, area : int, id_playe
 		_:
 			return
 	zone.add_card(new_card)
+	card_played.emit() #for labels update
 
 
 func _send_message(message: Dictionary):
