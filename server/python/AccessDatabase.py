@@ -81,7 +81,7 @@ def insert_account(data: dict, connection):
 def get_account(login: str, connection, mode: int):
     cursor = connection.cursor()
     if mode == 0:
-        query = "SELECT pseudo, password_hash, salt, pic_profile FROM users WHERE email = :email is_active = 0"
+        query = "SELECT pseudo, password_hash, salt, pic_profile, username FROM users WHERE email = :email AND is_active = 0"
         cursor.execute(query, email=login)
     else:
         query = "SELECT pseudo, password_hash, salt, pic_profile, username FROM users WHERE username = :username AND is_active = 0"
