@@ -8,11 +8,11 @@ extends Control
 
 # Configuration manuelle des pivots (exemple pour Play)
 func _ready():
-	$Control/VBoxContainer/Play.pivot_offset = Vector2(300, 50)
-	$Control/VBoxContainer/Join.pivot_offset = Vector2(300, 50)
-	$Control/VBoxContainer/Button.pivot_offset = Vector2(300, 50)
-	$Control/VBoxContainer/Rule.pivot_offset = Vector2(300, 50)
-	$Control/VBoxContainer/QuitButton.pivot_offset = Vector2(300, 50)
+	$VBoxContainer/Play.pivot_offset = Vector2(300, 50)
+	$VBoxContainer/Join.pivot_offset = Vector2(300, 50)
+	$VBoxContainer/Button.pivot_offset = Vector2(300, 50)
+	$VBoxContainer/Rule.pivot_offset = Vector2(300, 50)
+	$VBoxContainer/QuitButton.pivot_offset = Vector2(300, 50)
 
 # Fonction d'animation réutilisable
 func animate_button(button_path: String, target_scale: Vector2):
@@ -23,38 +23,38 @@ func animate_button(button_path: String, target_scale: Vector2):
 
 # Handlers pour Play
 func _on_play_mouse_entered():
-	animate_button("Control/VBoxContainer/Play", Vector2(1.1, 1.1))
+	animate_button("VBoxContainer/Play", Vector2(1.1, 1.1))
 
 func _on_play_mouse_exited():
-	animate_button("Control/VBoxContainer/Play", Vector2(1, 1))
+	animate_button("VBoxContainer/Play", Vector2(1, 1))
 
 # Handlers pour Join
 func _on_join_mouse_entered():
-	animate_button("Control/VBoxContainer/Join", Vector2(1.1, 1.1))
+	animate_button("VBoxContainer/Join", Vector2(1.1, 1.1))
 
 func _on_join_mouse_exited():
-	animate_button("Control/VBoxContainer/Join", Vector2(1, 1))
+	animate_button("VBoxContainer/Join", Vector2(1, 1))
 
 # Handlers pour Button
 func _on_button_mouse_entered():
-	animate_button("Control/VBoxContainer/Button", Vector2(1.1, 1.1))
+	animate_button("VBoxContainer/Button", Vector2(1.1, 1.1))
 
 func _on_button_mouse_exited():
-	animate_button("Control/VBoxContainer/Button", Vector2(1, 1))
+	animate_button("VBoxContainer/Button", Vector2(1, 1))
 
 # Handlers pour Rule
 func _on_rule_mouse_entered():
-	animate_button("Control/VBoxContainer/Rule", Vector2(1.1, 1.1))
+	animate_button("VBoxContainer/Rule", Vector2(1.1, 1.1))
 
 func _on_rule_mouse_exited():
-	animate_button("Control/VBoxContainer/Rule", Vector2(1, 1))
+	animate_button("VBoxContainer/Rule", Vector2(1, 1))
 
 # Handlers pour QuitButton
 func _on_quit_button_mouse_entered():
-	animate_button("Control/VBoxContainer/QuitButton", Vector2(1.1, 1.1))
+	animate_button("VBoxContainer/QuitButton", Vector2(1.1, 1.1))
 
 func _on_quit_button_mouse_exited():
-	animate_button("Control/VBoxContainer/QuitButton", Vector2(1, 1))
+	animate_button("VBoxContainer/QuitButton", Vector2(1, 1))
 
 # Gestion des clics (conservée comme avant)
 func _on_start_button_button_down():

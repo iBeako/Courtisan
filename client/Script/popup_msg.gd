@@ -1,7 +1,6 @@
 extends PanelContainer
 
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	modulate.a = 0.0
@@ -11,11 +10,8 @@ func _ready() -> void:
 
 func show_msg(msg : String) -> void:
 	$MarginContainer/Label.text = msg
-	#pivot_offset = size/2
-
 	fade_in()
 
-	
 	await get_tree().create_timer(1.5).timeout
 
 	fade_out()

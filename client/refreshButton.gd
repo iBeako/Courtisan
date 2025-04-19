@@ -1,10 +1,11 @@
 extends Control
 
-@onready var button = $Refresh
+
+@onready var button = $Panel/MarginContainer/VBoxContainer/HBoxContainer2/Refresh
 @onready var vbox = $ScrollContainer/VBoxContainer
 @onready var menu = preload("res://Scene/menu_principal.tscn")
 @onready var line_lobby_scene = preload("res://Scene/LigneLobby.tscn")
-@onready var arrow = $TextureButton
+@onready var arrow = $Panel/MarginContainer/VBoxContainer/HBoxContainer2/TextureButton
 var lobby_count = 0  # Compteur pour incrémenter les labels
 var lobby_label
 var creator_label
