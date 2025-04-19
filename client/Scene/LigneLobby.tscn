@@ -100,3 +100,5 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_wp1xw")
 theme_override_styles/normal_mirrored = SubResource("StyleBoxFlat_3aggp")
 theme_override_styles/normal = SubResource("StyleBoxFlat_3aggp")
 text = "Enter"
+
+[connection signal="pressed" from="HBoxContainer/Button" to="." method="_on_button_pressed"]

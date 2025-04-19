@@ -15,7 +15,7 @@ func set_lobby_data(lobby_name: String,creator_name:String,number_of_player:Stri
 	else:
 		print("Labels not found!", lobby_label, creator_label, number_of_player)
 
-func _on_join_pressed():
+func _on_button_pressed() -> void:
 	var message := {
 		"message_type": "join_lobby",
 		"id_lobby": game_id,
