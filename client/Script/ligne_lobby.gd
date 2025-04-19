@@ -1,9 +1,9 @@
-extends Control
+extends MarginContainer
 
-@onready var lobby_label = get_node("HBoxContainer/MarginContainer/LobbyName")
-@onready var creator_label = get_node("HBoxContainer/MarginContainer2/CreatorName")
-@onready var nb_of_player_label = get_node("HBoxContainer/MarginContainer3/NumberofPlayer")
-@onready var join_button = get_node("HBoxContainer/Button")
+@onready var lobby_label = $HBoxContainer/LobbyName
+@onready var creator_label = $HBoxContainer/CreatorName
+@onready var nb_of_player_label = $HBoxContainer/NumberofPlayer
+@onready var join_button = $HBoxContainer/Button
 var game_id: int = -1
 
 func set_lobby_data(lobby_name: String,creator_name:String,number_of_player:String,id_lobby:int):
@@ -13,7 +13,7 @@ func set_lobby_data(lobby_name: String,creator_name:String,number_of_player:Stri
 		creator_label.text = creator_name
 		nb_of_player_label.text = number_of_player
 	else:
-		print("Labels not found!")
+		print("Labels not found!", lobby_label, creator_label, number_of_player)
 
 func _on_join_pressed():
 	var message := {

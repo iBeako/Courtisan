@@ -1,7 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://dkvpku1e6uddl"]
+[gd_scene load_steps=9 format=3 uid="uid://dkvpku1e6uddl"]
 
-[ext_resource type="Script" path="res://Script/LigneLobby.gd" id="1_n6fkm"]
-[ext_resource type="Texture2D" uid="uid://dgcdevknlk732" path="res://Assets/Join_Game.png" id="1_wcnsn"]
+[ext_resource type="Script" path="res://Script/ligne_lobby.gd" id="1_eth8g"]
 [ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/general.tres" id="2_5nvou"]
 [ext_resource type="FontFile" uid="uid://dim3hkmopleo2" path="res://Assets/Mighty Souly.otf" id="3_cp4tu"]
 
@@ -50,25 +49,16 @@ corner_radius_bottom_left = 50
 expand_margin_left = 15.0
 expand_margin_right = 22.0
 
-[node name="Control" type="Control"]
-layout_mode = 3
-anchors_preset = 10
-anchor_right = 1.0
-grow_horizontal = 2
-script = ExtResource("1_n6fkm")
+[node name="MarginContainer" type="MarginContainer"]
+offset_bottom = 44.0
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_right = 25
+script = ExtResource("1_eth8g")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 0
-offset_left = 145.0
-offset_top = 1.0
-offset_right = 1040.0
-offset_bottom = 80.0
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 156
-
-[node name="JoinGame" type="Sprite2D" parent="HBoxContainer"]
-visible = false
-position = Vector2(786, 534)
-texture = ExtResource("1_wcnsn")
 
 [node name="LobbyName" type="Label" parent="HBoxContainer"]
 layout_mode = 2
@@ -86,7 +76,6 @@ theme_override_font_sizes/font_size = 36
 text = "John"
 
 [node name="NumberofPlayer" type="Label" parent="HBoxContainer"]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_5nvou")
