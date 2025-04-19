@@ -28,7 +28,7 @@ var can_play: Array[int] = [1, 1, 1]
 @onready var input_manager_reference: Node = $"../inputManager"
 @onready var player_hand_reference: PlayerHand = $"../PlayerHand"
 @onready var message_manager_reference: MessageManager = $"../MessageManager"
-@onready var change_theme_reference: OptionButton = $"../CanvasLayer/PauseMenu/Panel/MarginContainer/VBoxContainer/Sound/HBoxContainer/LinkButton"
+@onready var change_theme_reference: OptionButton = $"../CanvasLayer/PauseMenu/Panel/MarginContainer/VBoxContainer/Sound/HBoxContainer/OptionButton"
 
 
 func _ready() -> void:

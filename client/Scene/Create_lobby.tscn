@@ -215,6 +215,9 @@ theme_override_constants/margin_right = 390
 layout_mode = 2
 theme_override_fonts/font = ExtResource("7_ilo26")
 theme_override_font_sizes/font_size = 34
+theme_override_styles/focus = SubResource("StyleBoxFlat_dleh7")
+theme_override_styles/hover = SubResource("StyleBoxFlat_dleh7")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_dleh7")
 theme_override_styles/normal = SubResource("StyleBoxFlat_dleh7")
 text = "Create a room"
 
