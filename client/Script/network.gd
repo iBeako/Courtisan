@@ -163,7 +163,6 @@ func send_message_to_everyone(data : Dictionary):
 			print("error send_message_to_peer")
 			
 func process_message(data:Dictionary):
-	print(data)
 	if data["message_type"] == "connexion":
 		username = data["username"]
 		pseudo = data["pseudo"]
@@ -175,10 +174,12 @@ func process_message(data:Dictionary):
 		get_tree().change_scene_to_packed(signin_page)
 	if in_game == false:
 		if data["message_type"] == "find_lobby":
-			get_tree().change_scene_to_packed(join)
-			#while get_tree().current_scene == null:
-			#	await get_tree().process_frame
-			await get_tree().process_frame
+			var current_scene = get_tree().current_scene
+			if current_scene == null or current_scene.scene_file_path != join.resource_path:
+				get_tree().change_scene_to_packed(join)
+				await get_tree().process_frame
+				while get_tree().current_scene == null:
+					await get_tree().process_frame
 			var join_scene = get_tree().current_scene
 			if join_scene.has_method("print_lobby") and data.has("lobbies"):
 				join_scene.print_lobby(data["lobbies"])
