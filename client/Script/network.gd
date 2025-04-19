@@ -163,8 +163,9 @@ func send_message_to_everyone(data : Dictionary):
 			print("error send_message_to_peer")
 			
 func process_message(data:Dictionary):
-	print(data)
-	if data["message_type"] == "connexion":
+	if data["message_type"] == "error":
+			process_error(data)
+	elif data["message_type"] == "connexion":
 		username = data["username"]
 		pseudo = data["pseudo"]
 		my_profil_pic = data["pic_profile"]
@@ -175,10 +176,12 @@ func process_message(data:Dictionary):
 		get_tree().change_scene_to_packed(signin_page)
 	if in_game == false:
 		if data["message_type"] == "find_lobby":
-			get_tree().change_scene_to_packed(join)
-			#while get_tree().current_scene == null:
-			#	await get_tree().process_frame
-			await get_tree().process_frame
+			var current_scene = get_tree().current_scene
+			if current_scene == null or current_scene.scene_file_path != join.resource_path:
+				get_tree().change_scene_to_packed(join)
+				await get_tree().process_frame
+				while get_tree().current_scene == null:
+					await get_tree().process_frame
 			var join_scene = get_tree().current_scene
 			if join_scene.has_method("print_lobby") and data.has("lobbies"):
 				join_scene.print_lobby(data["lobbies"])
@@ -207,8 +210,6 @@ func process_message(data:Dictionary):
 			process_card_played(data)
 		elif data["message_type"] == "message":
 			put_message_in_chat(data)	
-		elif data["message_type"] == "error":
-			process_error(data)
 		elif data["message_type"] == "player_turn":
 			print("player turn : ", data)
 			deck_reference.number_of_cards = data["number_of_cards"]
@@ -320,9 +321,11 @@ func _play_card( type_card, family, area, id_domain: int = -1):
 	send_message_to_server(message)
 
 func process_error(data:Dictionary):
+	var popup_scene = load("res://Scene/popup_msg.tscn")
+	var popup_instance = popup_scene.instantiate()
 	
-	if data["error_type"] == "unconnected":
-		print("error on password or login, retry")
-	if data["error_type"] == "card_played":
-		print("card can not be played")
-		emit_signal("error_card_played", data)
+	var root = get_tree().current_scene
+	root.add_child(popup_instance)
+	
+	var msg = data.get("error_type", "An unknown error occurred.")
+	popup_instance.show_msg(msg)

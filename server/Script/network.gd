@@ -312,7 +312,7 @@ func insert_Account(data:Dictionary,peer_id:int):
 		else:
 			var message = {
 				"type_of_message":"error",
-				"type_of_error":"account not created"
+				"type_of_error":return_data["message"]
 			}
 			send_message_to_peer.rpc_id(peer_id,message)
 	else:
