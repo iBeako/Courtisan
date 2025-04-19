@@ -46,4 +46,4 @@ func _on_refresh_pressed():
 
 func _on_texture_button_pressed() -> void:
 	print("click on texture button")
-	get_tree().change_scene_to_packed(menu)
+	get_tree().change_scene_to_file("res://Scene/menu_principal.tscn")

@@ -1,11 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://57g2yl4fsfpt"]
+[gd_scene load_steps=7 format=3 uid="uid://57g2yl4fsfpt"]
 
 [ext_resource type="Texture2D" uid="uid://moika2rm8x7n" path="res://Assets/background.png" id="1_hb6bk"]
 [ext_resource type="Script" path="res://refreshButton.gd" id="2_aetqh"]
 [ext_resource type="Texture2D" uid="uid://dgcdevknlk732" path="res://Assets/Join_Game.png" id="3_rdqvy"]
 [ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/general.tres" id="4_3q36x"]
 [ext_resource type="Texture2D" uid="uid://dp7rxbav2clb2" path="res://Assets/arrow-small-left 2.svg" id="5_sprdu"]
-[ext_resource type="Texture2D" uid="uid://dc4tm6ehl4x4x" path="res://Assets/arrow-small-left.svg" id="6_ngygm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mv0a1"]
 bg_color = Color(0.0156863, 0.156863, 0.2, 1)
@@ -114,13 +113,8 @@ offset_left = 390.0
 offset_top = 71.0
 offset_right = 524.0
 offset_bottom = 205.0
-mouse_filter = 2
 action_mode = 0
 texture_normal = ExtResource("5_sprdu")
-texture_pressed = ExtResource("5_sprdu")
-texture_hover = ExtResource("6_ngygm")
-texture_disabled = ExtResource("6_ngygm")
-texture_focused = ExtResource("5_sprdu")
 
 [connection signal="pressed" from="Control/Refresh" to="Control" method="_on_refresh_pressed"]
 [connection signal="pressed" from="Control/TextureButton" to="Control" method="_on_texture_button_pressed"]
