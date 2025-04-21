@@ -14,16 +14,16 @@ func process_message_not_ingame(data: Dictionary,sender_id:int):
 			Network.send_message_to_peer.rpc_id(sender_id,message)
 		elif data["message_type"] == "join_lobby":
 			var message = await Network.joinLobby(data,sender_id)
-			Network.send_message_to_lobby(message,data["id_lobby"])
+			Network.send_message_to_lobby(data["id_lobby"],message)
 		
 		elif data["message_type"] == "quit_lobby":
 			if Network.session[data["id_lobby"]].creator == data["username"]:
 				var message = await Network.destroyLobby(data,sender_id)
-				Network.send_message_to_lobby(message,data["id_lobby"])
+				Network.send_message_to_lobby(data["id_lobby"],message)
 				Network.session.erase(data["id_lobby"])
 			else:
 				var message = await Network.quitLobby(data,sender_id)
-				Network.send_message_to_lobby(message,data["id_lobby"])
+				Network.send_message_to_lobby(data["id_lobby"],message)
 				
 		elif data["message_type"] == "start_lobby":
 			if Network.session[data["id_lobby"]].creator == data["username"]:
@@ -38,7 +38,7 @@ func process_message_not_ingame(data: Dictionary,sender_id:int):
 						"message_type": "error",
 						"error": "game not started"
 					}
-				Network.send_message_to_lobby(message,data["id_lobby"])
+				Network.send_message_to_lobby(data["id_lobby"],message)
 		elif data["message_type"] == "change_profil":
 			Database.sendDatabase(data)
 			var message = await Database.getDatabase()
