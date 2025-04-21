@@ -8,7 +8,7 @@ var game_id: int = -1
 
 func set_lobby_data(lobby_name: String,creator_name:String,number_of_player:String,id_lobby:int):
 	game_id = id_lobby
-	if lobby_label and creator_label and number_of_player:  # Vérifie que les labels existent
+	if lobby_label and creator_label and nb_of_player_label:  # Vérifie que les labels existent
 		lobby_label.text = lobby_name
 		creator_label.text = creator_name
 		nb_of_player_label.text = number_of_player

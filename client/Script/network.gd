@@ -101,15 +101,18 @@ var turn_player: int
 var id_lobby: int = -1
 var in_game = false
 
-
 var deck_reference
 var message_manager
 var taskbar_reference 
 
+var peer_id: int
 var pseudo: String
 var id: int
 var username: String
 var my_profil_pic: int
+var clients
+
+var all_player_info = []
 
 func _ready():
 	var client_trusted_cas = load("res://certificates/certificate.crt")
@@ -169,42 +172,58 @@ func process_message(data:Dictionary):
 		username = data["username"]
 		pseudo = data["pseudo"]
 		my_profil_pic = data["pic_profile"]
+		peer_id = data["peer_id"]
 		print("has been logged")
 		get_tree().change_scene_to_packed(menu_principal)
+		
 	elif data["message_type"] == "account_created":
 		print("account created")
 		get_tree().change_scene_to_packed(signin_page)
+		var popup_scene = load("res://Scene/popup_msg.tscn")
+		var popup_instance = popup_scene.instantiate()
+		var root = get_tree().current_scene
+		root.add_child(popup_instance)
+		popup_instance.show_msg("account created")
+		
 	if in_game == false:
 		if data["message_type"] == "find_lobby":
 			var current_scene = get_tree().current_scene
 			if current_scene == null or current_scene.scene_file_path != join.resource_path:
 				get_tree().change_scene_to_packed(join)
-				await get_tree().process_frame
 				while get_tree().current_scene == null:
 					await get_tree().process_frame
-			var join_scene = get_tree().current_scene
-			if join_scene.has_method("print_lobby") and data.has("lobbies"):
-				join_scene.print_lobby(data["lobbies"])
+			#var join_scene = get_tree().current_scene
+			if current_scene.has_method("print_lobby") and data.has("lobbies"):
+				current_scene.print_lobby(data["lobbies"])
 			
 		elif data["message_type"] == "join_lobby":
 			id_lobby = data["id_lobby"]
-			id = data["id_player"]
+			clients = data["clients"]
 			get_tree().change_scene_to_packed(waiting)
-			await get_tree().process_frame
-			var waiting_scene = get_tree().current_scene
-			if waiting_scene.has_method("instantiate_waiting_scene") and data.has("pseudo"):
-				waiting_scene.instantiate_waiting_scene(data["pseudo"])
+			while get_tree().current_scene == null:
+				await get_tree().process_frame
+			var current_scene = get_tree().current_scene	
+			if current_scene.has_method("instantiate_waiting_scene"):
+				for i in clients.size():
+					current_scene.instantiate_waiting_scene(clients[i][1])
+				
 		elif data["message_type"] == "start_game":
 			in_game = true
 			get_tree().change_scene_to_packed(game)
 			if_start_game()
+			
 		elif data["message_type"]  == "change_profil":
 			my_profil_pic = data["pic_profile"]	
 			pseudo = data["pseudo"]	
-		elif data["message_type"] == "quit_game":
+			
+		elif data["message_type"] == "before_start":
+			all_player_info = data["clients"]
+				
+		elif data["message_type"] == "quit_lobby":
 			in_game = false
 			id_lobby = -1
 			if_end_game()
+			
 	elif in_game == true and id_lobby > 0:
 		if data["message_type"] == "card_played":
 			process_card_played(data)
