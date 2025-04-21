@@ -116,8 +116,8 @@ func createLobby(message: Dictionary,peer_id:int):
 			var forclient = {
 				"message_type":"join_lobby",
 				"id_lobby":return_message,
+				"clients":session[return_message].clients_peer
 				#"id_player":ind_player_in_session,
-				"pseudo":clients[peer_id]["pseudo"]
 			}
 			return forclient
 		else:
@@ -160,7 +160,9 @@ func joinLobby(message: Dictionary,peer_id:int):
 			clients[peer_id]["session_id"] = message["id_lobby"]
 			#clients[peer_id]["ind_player_in_session"] = ind_player_in_session
 			
-			return  {"type_of_message":"join_lobby","clients":session[message["id_lobby"]].clients_peer}
+			return  {"type_of_message":"join_lobby",
+			"id_lobby":message["id_lobby"],
+			"clients":session[message["id_lobby"]].clients_peer}
 		else:
 			return {"type_of_message":"error","error":"lobby_not_found"}
 	else:
