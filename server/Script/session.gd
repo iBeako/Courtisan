@@ -5,6 +5,7 @@ extends Node
 var status = false # if a session has started or not yet
 var session_id : int # if several session is running
 var player_max : int
+var creator: String
 
 var clients_peer = [] # table of all [clients_peer, pseudo and picture]
 var players = [] # size of player_max
