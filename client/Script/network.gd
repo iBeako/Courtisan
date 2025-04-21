@@ -110,9 +110,7 @@ var pseudo: String
 var id: int
 var username: String
 var my_profil_pic: int
-var clients
-
-var all_player_info = []
+var clients = []
 
 func _ready():
 	var client_trusted_cas = load("res://certificates/certificate.crt")
@@ -217,7 +215,7 @@ func process_message(data:Dictionary):
 			pseudo = data["pseudo"]	
 			
 		elif data["message_type"] == "before_start":
-			all_player_info = data["clients"]
+			clients = data["clients"]
 				
 		elif data["message_type"] == "quit_lobby":
 			in_game = false
