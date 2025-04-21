@@ -38,7 +38,7 @@ func process_message_not_ingame(data: Dictionary,sender_id:int):
 		elif data["message_type"] == "start_lobby":
 			if Network.session[data["id_lobby"]].creator == data["username"]:
 				var message = await Network.startLobby(data,sender_id)
-				if message.has("status") and message("status") == "success":
+				if message.has("status") and message["status"] == "success":
 					var message_before_starting = {
 						"message_type": "before_start",
 						"clients": Network.session[data["id_lobby"]].clients_peer

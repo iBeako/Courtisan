@@ -177,9 +177,11 @@ func process_message(data:Dictionary):
 	elif data["message_type"] == "account_created":
 		print("account created")
 		get_tree().change_scene_to_packed(signin_page)
+		while get_tree().current_scene == null:
+			await get_tree().process_frame
+		var root = get_tree().current_scene
 		var popup_scene = load("res://Scene/popup_msg.tscn")
 		var popup_instance = popup_scene.instantiate()
-		var root = get_tree().current_scene
 		root.add_child(popup_instance)
 		popup_instance.show_msg("account created")
 		
@@ -216,21 +218,33 @@ func process_message(data:Dictionary):
 			
 		elif data["message_type"] == "before_start":
 			clients = data["clients"]
+			for i in clients.size():
+				if clients[i][0] == peer_id:
+					id = i
 				
 		elif data["message_type"] == "quit_lobby":
-			in_game = false
-			id_lobby = -1
-			if_end_game()
+			clients = data["clients"]
+			get_tree().change_scene_to_packed(waiting)
+			while get_tree().current_scene == null:
+				await get_tree().process_frame
+			var current_scene = get_tree().current_scene	
+			if current_scene.has_method("instantiate_waiting_scene"):
+				for i in clients.size():
+					current_scene.instantiate_waiting_scene(clients[i][1])
+			########if_end_game()
 			
 	elif in_game == true and id_lobby > 0:
 		if data["message_type"] == "card_played":
 			process_card_played(data)
+			
 		elif data["message_type"] == "message":
 			put_message_in_chat(data)	
+			
 		elif data["message_type"] == "player_turn":
 			print("player turn : ", data)
 			deck_reference.number_of_cards = data["number_of_cards"]
 			turn_player = data["id_player"]
+			
 		elif data["message_type"] == "hand":
 			hand.clear()
 			var cards = [
@@ -244,9 +258,11 @@ func process_message(data:Dictionary):
 				
 			print("CLIENT : As player ",id,", I received hand : ", hand)
 			deck_reference.draw_cards(hand)
+			
 		elif data["message_type"] == "mission":
 			print("white mission : ", white_missions[data["white_mission"]])
 			print("blue mission : ", blue_missions[data["blue_mission"]])
+			
 		elif data["message_type"] == "final_score":
 			print("Final scores : ", data)
 			#get_tree().change_scene_to_packed(menu_principal)
