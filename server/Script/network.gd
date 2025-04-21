@@ -107,7 +107,7 @@ func createLobby(message: Dictionary,peer_id:int):
 		print(return_message)
 		if return_message != null:
 			var new_session = load("res://Script/session.gd").new()
-			new_session.init(return_message, message["number_of_player"], message["name"], clients[peer_id]["pseudo"])
+			new_session.init(return_message, message["number_of_player"], message["name"], clients[peer_id]["username"])
 			session[return_message] = new_session
 			var ind_player_in_session = session[return_message]._add_player(peer_id)
 			clients[peer_id]["session_id"] = return_message
