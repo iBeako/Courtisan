@@ -73,7 +73,7 @@ func _on_peer_disconnected(peer_id: int):
 			mes["message_type"] = "quit_lobby"
 		Database.sendDatabase(mes)
 		var return_message = await Database.getDatabase()
-		
+		print(return_message)
 	if _id["status"] == "in_game":
 		_id["status"] = "replaced_by_ai"
 		#ai not work for now
