@@ -67,7 +67,7 @@ func _on_peer_disconnected(peer_id: int):
 			"id_lobby":clients[peer_id]["session_id"],
 			"id_player":clients[peer_id]["id_client_in_game"]
 		}
-		if clients[peer_id]["username"] == session[clients[peer_id]["session_id"]]:
+		if clients[peer_id]["username"] == session[clients[peer_id]["session_id"]].creator:
 			mes["message_type"] = "destroy_lobby"
 		else:
 			mes["message_type"] = "quit_lobby"
@@ -251,7 +251,7 @@ func send_message_to_server(data: Dictionary):
 		if  clients[sender_id] != null and clients[sender_id]["status"] == "connected":
 			print("Client %d sent a %s", [data["username"], data["message_type"]])
 			print(" ", data)
-			if clients[sender_id]["session_id"] == -1:
+			if session[clients[sender_id]["session_id"]].status == false:
 				ProcessMessage.process_message_not_ingame(data,sender_id)
 			else:
 				ProcessMessage.process_message_ingame(data,sender_id)
