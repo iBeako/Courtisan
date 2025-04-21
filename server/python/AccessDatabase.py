@@ -210,7 +210,7 @@ async def handle_join_lobby(websocket, data, connection):
     password = data.get("password")
 
     cursor = connection.cursor()
-    cursor.execute("SELECT password, num_players FROM games WHERE game_id = :id AND status = 'open'", id=id_lobby)
+    cursor.execute("SELECT password, num_players FROM games WHERE game_id = :id AND status = 'active'", id=id_lobby)
     game = cursor.fetchone()
     if not game:
         await websocket.send_json({"status": "error", "message": "Game not found or not open."})
