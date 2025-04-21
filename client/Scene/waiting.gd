@@ -11,9 +11,7 @@ func instantiate_waiting_scene(text: String) -> void:
 	# -----------------------------------------------------------------------------
 	# Ajout dans le conteneur cible
 	var target_container = get_node_or_null("PanelContainer/MarginContainer/VBoxContainer/VBoxContainer")
-	if target_container:
-		target_container.add_child(new_scene)
-	print_tree_pretty()
+
 	target_container.add_child(new_scene)
 
 func _on_arrow_2_pressed() -> void:
