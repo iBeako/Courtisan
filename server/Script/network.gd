@@ -65,7 +65,7 @@ func _on_peer_disconnected(peer_id: int):
 		var mes = {
 			"message_type":"quit_lobby",
 			"id_lobby":clients[peer_id]["session_id"],
-			"id_player":clients[peer_id]["id_client_in_game"]
+			"id_player":clients[peer_id]["username"]
 		}
 		if clients[peer_id]["username"] == session[clients[peer_id]["session_id"]].creator:
 			mes["message_type"] = "destroy_lobby"
@@ -191,9 +191,9 @@ func destroyLobby(message: Dictionary,peer_id:int):
 			var id_lobby = return_message["id_lobby"]
 			if session.has(id_lobby):
 				for peer_cl in session[id_lobby].client_peer:
-					if clients.has(peer_cl):
-						clients[peer_cl]["session_id"] = -1
-						clients[peer_cl]["id_client_in_game"] = -1
+					if clients.has(peer_cl[0]):
+						clients[peer_cl[0]]["session_id"] = -1
+						clients[peer_cl[0]]["id_client_in_game"] = -1
 				print("Lobby", id_lobby, "destroyed by peer", peer_id)
 				return return_message
 			else:
@@ -249,9 +249,10 @@ func send_message_to_server(data: Dictionary):
 	if data != null and data.has("message_type"):
 		var sender_id = multiplayer.get_remote_sender_id()
 		if  clients[sender_id] != null and clients[sender_id]["status"] == "connected":
+			var session_id = clients[sender_id]["session_id"]
 			print("Client %d sent a %s", [data["username"], data["message_type"]])
 			print(" ", data)
-			if session[clients[sender_id]["session_id"]].status == false:
+			if session_id != -1 and session.has(session_id) and session[session_id].status == false:
 				ProcessMessage.process_message_not_ingame(data,sender_id)
 			else:
 				ProcessMessage.process_message_ingame(data,sender_id)
@@ -302,8 +303,9 @@ func login(data: Dictionary,peer_id:int):
 		else:
 			clients[peer_id] = clients[last_peer_id]
 			clients[peer_id]["peer_id"]= peer_id
-			var id_ingame = clients[peer_id]["id_client_in_game"]
-			session[clients[peer_id]["session_id"]].client_peer[id_ingame] = peer_id
+			for i in session[clients[peer_id]["session_id"]].clients_peer.size():
+				if session[clients[peer_id]["session_id"]].clients_peer[i][0] == last_peer_id:
+					session[clients[peer_id]["session_id"]].client_peer[i][0] = peer_id
 			clients[peer_id]["status"] = "in_game"
 		#session[clients[peer_id]["id_lobby"]].client.replace
 			

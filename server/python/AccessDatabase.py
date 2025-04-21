@@ -241,9 +241,9 @@ async def handle_start_lobby(websocket, data, connection):
 
 async def handle_quit_lobby(websocket, data, connection):
     id_lobby = data.get("id_lobby")
-    id_player = data.get("id_player")
+    username = data.get("username")
     cursor = connection.cursor()
-    cursor.execute("DELETE FROM game_players WHERE game_id = :gid AND peer_id = :pid", gid=id_lobby, pid=id_player)
+    cursor.execute("DELETE FROM game_players WHERE game_id = :gid AND username = :username", gid=id_lobby, username=username)
     connection.commit()
     cursor.close()
     await websocket.send_json({"status": "success", "message": "Player removed from lobby."})
