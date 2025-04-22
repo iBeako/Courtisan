@@ -24,5 +24,3 @@ enum PlayZoneType {PLAYER, ENEMY, FAVOR, DISFAVOR}
 const profile_pictures : Array = ["res://Assets/profile/1.png","res://Assets/profile/2.png","res://Assets/profile/3.png","res://Assets/profile/4.png","res://Assets/profile/5.png","res://Assets/profile/6.png","res://Assets/profile/7.png"]
 
 var cards_theme : String = "cards_new"
-
-var pp : int = 0

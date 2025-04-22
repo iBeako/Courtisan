@@ -58,7 +58,7 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_h21q4")
 [node name="Button" type="TextureButton" parent="PanelContainer2"]
 custom_minimum_size = Vector2(67, 67)
 layout_mode = 2
-size_flags_horizontal = 8
+size_flags_horizontal = 4
 size_flags_vertical = 4
 texture_normal = ExtResource("3_jw88e")
 ignore_texture_size = true

@@ -12,7 +12,7 @@ var pseudo: String
 var btn_func = [change_to_sound, change_to_profile, change_to_privacy]
 
 func _ready() -> void:
-	for i in tab_container.get_tab_count():
+	for i in tab_container.get_tab_count(): #initialise des boutons pour les différentes tabs des parametres
 		var btn : Button = Button.new()
 		var btn_theme = preload("res://Assets/Themes/main_menu_buttons_blank.tres")
 		btn.text = tab_container.get_tab_title(i)
@@ -28,7 +28,12 @@ func _ready() -> void:
 		button.id=p
 		button.pressed.connect(change_pp)
 		$PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Profile/GridContainer.add_child(button)
-
+	
+	$PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Profile/VBoxContainer/PanelContainer/CurrentPP.texture = load(Global.profile_pictures[Network.my_profil_pic])
+	$PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Profile/VBoxContainer/NameEdit.text = Network.pseudo
+	
+	
+	
 func change_to_sound():
 	tab_container.current_tab=0
 
@@ -54,6 +59,9 @@ func _on_texture_button_pressed() -> void:
 	}
 	print(message)
 	Network.send_message_to_server.rpc_id(1,message)
+	Network.pseudo = pseudo
+	Network.my_profil_pic = pic_image
+	
 	get_tree().change_scene_to_packed(menu)
 
 func _on_text_edit_text_submitted(new_text: String) -> void:
@@ -65,7 +73,9 @@ func _on_text_edit_text_submitted(new_text: String) -> void:
 
 func _on_btn_change_pswrd_pressed() -> void:
 	print("pressed")
-
+	#TODO logique
 
 func _on_btn_change_mail_pressed() -> void:
 	print("pressed2")
+	#TODO logique
+	

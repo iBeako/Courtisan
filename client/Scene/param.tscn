@@ -157,7 +157,7 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_fxy5b")
 theme_override_styles/tab_selected = SubResource("StyleBoxEmpty_huk2d")
 theme_override_styles/tab_hovered = SubResource("StyleBoxEmpty_th0gr")
 theme_override_styles/tab_unselected = SubResource("StyleBoxEmpty_dr8ea")
-current_tab = 2
+current_tab = 1
 tabs_visible = false
 
 [node name="Global" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer" instance=ExtResource("6_hp66s")]
@@ -165,7 +165,6 @@ visible = false
 layout_mode = 2
 
 [node name="Profile" type="HBoxContainer" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer"]
-visible = false
 layout_mode = 2
 theme_override_constants/separation = 60
 metadata/_tab_index = 1
@@ -203,6 +202,7 @@ theme_override_constants/v_separation = 40
 columns = 4
 
 [node name="Privacy" type="HBoxContainer" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 100
 metadata/_tab_index = 2

@@ -19,12 +19,14 @@ func _ready() -> void:
 			"online" : false
 		}
 		]
-	)
+	) # TODO
 	initial_position = position
-	position.x += 414 #size.x - $PanelContainer2.size.x
+	position.x += 414 #size.x - $PanelContainer2.size.x	
 	closed_position = position
-	print(size.x)
-
+	
+	$PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Label.text = Network.pseudo
+	$PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/PanelContainer/TextureRect.texture = load(Global.profile_pictures[Network.my_profil_pic])
+	
 
 
 func initialize(friends : Array) -> void:
