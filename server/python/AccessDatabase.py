@@ -242,7 +242,7 @@ async def handle_join_lobby(websocket, data, connection):
         connection.commit()
     cursor.close()
     print("joined the lobby")
-    await websocket.send_json({"status": "success", "message": "Joined lobby."})
+    await websocket.send_json({"status": "success", "id_lobby":id_lobby,"message": "Joined lobby."})
 
 async def handle_start_lobby(websocket, data, connection):
     id_lobby = data.get("id_lobby")
@@ -250,7 +250,7 @@ async def handle_start_lobby(websocket, data, connection):
     cursor.execute("UPDATE games SET status = 'closed' WHERE game_id = :id", id=id_lobby)
     connection.commit()
     cursor.close()
-    await websocket.send_json({"status": "success", "message": "Game started."})
+    await websocket.send_json({"status": "success","id_lobby":id_lobby, "message": "Game started."})
 
 async def handle_quit_lobby(websocket, data, connection):
     id_lobby = data.get("id_lobby")
@@ -271,7 +271,7 @@ async def handle_quit_lobby(websocket, data, connection):
         cursor.execute("UPDATE games SET status = 'active' WHERE game_id = :id", id=id_lobby)
         connection.commit()
     cursor.close()
-    await websocket.send_json({"status": "success", "message": "Player removed from lobby."})
+    await websocket.send_json({"status": "success","id_lobby":id_lobby, "message": "Player removed from lobby."})
 
 async def handle_destroy_lobby(websocket, data, connection):
     id_lobby = data.get("id_lobby")
