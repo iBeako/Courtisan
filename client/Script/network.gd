@@ -222,8 +222,11 @@ func process_message(data:Dictionary):
 					id = i
 			in_game = true
 			get_tree().change_scene_to_packed(game)
-			if_start_game()	
-			
+			while get_tree().current_scene == null:
+				await get_tree().process_frame
+			var current_scene = get_tree().current_scene
+			if_start_game(current_scene)	
+			send_message_to_server.rpc_id(1,{"message_type":"starting","id_lobby":id_lobby,"username":username})
 		elif data["message_type"] == "quit_lobby":
 			clients = data["clients"]
 			get_tree().change_scene_to_packed(waiting)
@@ -244,7 +247,7 @@ func process_message(data:Dictionary):
 			
 		elif data["message_type"] == "player_turn":
 			print("player turn : ", data)
-			deck_reference.number_of_cards = data["number_of_cards"]
+			deck_reference.update_card_count(data["number_of_cards"])
 			turn_player = data["id_player"]
 			
 		elif data["message_type"] == "hand":
@@ -285,10 +288,11 @@ func change_profile_picture(login:String,picture_id:int):
 	var message = Account.changePic(login,picture_id)
 	send_message_to_server.rpc_id(1,message)
 	
-func if_start_game():
-	message_manager = $"/root/Main/MessageManager"
-	deck_reference = $"/root/Main/Deck"
-	taskbar_reference = $"/root/Main/Taskbar"
+func if_start_game(current_scene):
+	message_manager = current_scene.get_node("MessageManager")
+	deck_reference = current_scene.get_node("Deck")
+	taskbar_reference = current_scene.get_node("Taskbar")
+	print("get node done")
 
 func if_end_game():
 	message_manager.clear()

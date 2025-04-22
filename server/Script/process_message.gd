@@ -32,19 +32,14 @@ func process_message_not_ingame(data: Dictionary,sender_id:int):
 			if Network.session[data["id_lobby"]].creator == data["username"]:
 				var message = await Network.startLobby(data,sender_id)
 				print(message)
-				var message_before_starting
-				if message.has("message_type") and message["message_type"] == "player_turn":
-					message_before_starting = {
-						"message_type": "before_start",
-						"clients": Network.session[data["id_lobby"]].clients_peer
-					}
+				if message.has("message_type") and message["message_type"] == "before_start":
+					Network.send_message_to_lobby(data["id_lobby"],message)
 				else:
-					message_before_starting = {
+					var	message_before_starting = {
 						"message_type": "error",
 						"error": "game not started"
 					}
-				await Network.send_message_to_lobby(data["id_lobby"],message_before_starting)
-				Network.send_message_to_lobby(data["id_lobby"],message)
+					Network.send_message_to_lobby(data["id_lobby"],message_before_starting)
 			else:
 				var message = {
 						"message_type":"error",
@@ -68,6 +63,11 @@ func process_message_ingame(data : Dictionary,sender_id:int):
 	if data["message_type"] == "error":
 		print("Error from client: ", data["error_type"])
 		process_error(data)
+	elif data["message_type"] == "starting":
+		var id_lobby = data["id_lobby"]
+		var turn = {"message_type":"player_turn","id_player":Network.session[id_lobby].current_player_id,"number_of_cards":Network.session[id_lobby].card_stack._get_card_number()}
+		print("turn :" ,turn["id_player"])
+		Network.send_message_to_lobby(id_lobby,turn)
 	#action message
 	elif data["message_type"] == "card_played":
 		if validate_card_played(data["id_lobby"],sender_id,data):
