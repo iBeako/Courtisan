@@ -287,6 +287,7 @@ func send_message_to_everyone(data : Dictionary):
 
 func send_message_to_lobby(id_lobby:int,data:Dictionary):
 	for client_data in session[id_lobby].client_peer:
+		print(client_data)
 		var peer_id = client_data[0]
 		send_message_to_peer.rpc_id(peer_id,data)
 

@@ -261,7 +261,7 @@ async def handle_destroy_lobby(websocket, data, connection):
     cursor.execute("DELETE FROM games WHERE game_id = :gid", gid=id_lobby)
     connection.commit()
     cursor.close()
-    await websocket.send_json({"status": "success", "message": "game removed."})
+    await websocket.send_json({"status": "success", "id_lobby":id_lobby,"message": "game removed."})
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):

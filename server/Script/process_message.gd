@@ -17,14 +17,6 @@ func process_message_not_ingame(data: Dictionary,sender_id:int):
 			Network.send_message_to_lobby(data["id_lobby"],message)
 		
 		elif data["message_type"] == "quit_lobby":
-			print("id lobby :", data["id_lobby"])
-			print("username :",data["username"])
-			print("type de id lobby :", typeof(data["id_lobby"]))
-			if Network.session.has(data["id_lobby"]):
-				print(Network.session[data["id_lobby"]].name)
-			else:
-				print("Lobby ID not found in session dict.")
-			print(Network.session[data["id_lobby"]].creator)
 			if Network.session[data["id_lobby"]].creator == data["username"]:
 				var message = await Network.destroyLobby(data,sender_id)
 				Network.send_message_to_lobby(data["id_lobby"],message)
