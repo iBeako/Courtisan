@@ -5,8 +5,9 @@ extends Node
 var status = false # if a session has started or not yet
 var session_id : int # if several session is running
 var player_max : int
+var creator: String
 
-var clients_peer = [] # table of all clients_peer
+var clients_peer = [] # table of all [clients_peer, pseudo and picture]
 var players = [] # size of player_max
 var queen_table = [
 	[[], []], # PAPILLON
@@ -55,13 +56,19 @@ func _add_player(_id_peer) -> int:
 		[[], [], []], # current cards in hands
 		[] # nineth element is missions
 	] )
-	clients_peer.append(_id_peer)
+	clients_peer.append([_id_peer,Network.clients[_id_peer]["pseudo"],Network.clients[_id_peer]["pic_profile"]])
 	print("Client '", _id_peer, "' registered as Player '", count_players, "' in session ", session_id)
 	return count_players # id tab is 0 but id is 1
 
+func find_peer_index(clients_peer: Array, id_peer: int) -> int:
+	for i in clients_peer.size():
+		if clients_peer[i][0] == id_peer:
+			return i
+	return -1 # not found
+	
 # PRECOND : Lobby must not be empty
 func _remove_player(_id_peer) -> bool:
-	var index = clients_peer.find(_id_peer)
+	var index = find_peer_index(clients_peer, _id_peer)
 	if index == -1:
 		print("Player with peer ID", _id_peer, "not found in clients.")
 		return false
@@ -246,7 +253,7 @@ func place_card(_id_player: int, _area: int, _card_type: int, _family: String, _
 			var stat = get_stat()
 			Network.send_message_to_lobby(session_id,stat)
 		print("SERVER : Move to next player")
-		var sender_id = clients_peer[current_player_id]
+		var sender_id = clients_peer[current_player_id][0]
 		send_three_cards_to_a_player(sender_id)
 		display_session_status()
 		var turn = {"message_type":"player_turn","id_player":current_player_id,"number_of_cards":card_stack._get_card_number()}
@@ -445,16 +452,21 @@ func get_final_score() -> Dictionary:
 	return data_dict
 		
 func send_three_cards_to_each_player():
-	for peer_id in clients_peer:
+	for client_data in clients_peer:
+		var peer_id = client_data[0]
 		send_three_cards_to_a_player(peer_id)
 	
 func send_three_cards_to_a_player(peer_id):
-	var cards_as_dict = distribute_hand_cards(clients_peer.find(peer_id))
-	Network.send_message_to_peer.rpc_id(peer_id,cards_as_dict)
+	var index = find_peer_index(clients_peer, peer_id)
+	if index != -1:
+		var cards_as_dict = distribute_hand_cards(index)
+		Network.send_message_to_peer.rpc_id(peer_id,cards_as_dict)
 
 func _send_mission_to_a_player(peer_id):
-	var mission_as_dict = distribute_missions(clients_peer.find(peer_id))
-	Network.send_message_to_peer.rpc_id(peer_id,mission_as_dict)
+	var index = find_peer_index(clients_peer, peer_id)
+	if index != -1:
+		var mission_as_dict = distribute_missions(index)
+		Network.send_message_to_peer.rpc_id(peer_id,mission_as_dict)
 		
 
 func check_turn(peer_id) -> void :

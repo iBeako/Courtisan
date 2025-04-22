@@ -123,13 +123,12 @@ async def handle_change_user_status(websocket, data, connection):
     )
     connection.commit()
     cursor.close()
-    print("before if")
     if is_active:
         await websocket.send_json({"status": "success", "message": f" {username} is now active."})
-        print("after sending active")
+        print("{username} active")
     else:
         await websocket.send_json({"status": "success", "message": f" {username} is now inactive."})
-        print("after sending inactive")
+        print("{username}  inactive")
 
 async def handle_change_profil(websocket, data, connection):
     username = data.get("username")
@@ -198,9 +197,9 @@ async def handle_create_lobby(websocket, data, connection):
     connection.commit()
     cursor.execute("SELECT game_id FROM games WHERE name = :name AND game_date = to_date(:game_date, 'YYYY-MM-DD')", name=name, game_date=date_str)
     game_id = cursor.fetchone()[0]
-    cursor.execute("SELECT user_id FROM users WHERE username = :username", username=username)
+    cursor.execute("SELECT user_id FROM users WHERE username = :uname", uname=username)
     user_id  = cursor.fetchone()[0]
-    cursor.execute("INSERT INTO game_players (game_id, user_id) VALUES (:gid, :pid)", gid=game_id, pid=user_id)
+    cursor.execute("INSERT INTO game_players (user_id,game_id) VALUES (:pid, :gid)",pid=user_id, gid=game_id)
     connection.commit()
     cursor.close()
     await websocket.send_json({"status": "success", "game_id": game_id})
@@ -208,9 +207,10 @@ async def handle_create_lobby(websocket, data, connection):
 async def handle_join_lobby(websocket, data, connection):
     id_lobby = data.get("id_lobby")
     password = data.get("password")
+    username = data.get("username")
 
     cursor = connection.cursor()
-    cursor.execute("SELECT password, num_players FROM games WHERE game_id = :id AND status = 'open'", id=id_lobby)
+    cursor.execute("SELECT password, num_players FROM games WHERE game_id = :id AND status = 'active'", id=id_lobby)
     game = cursor.fetchone()
     if not game:
         await websocket.send_json({"status": "error", "message": "Game not found or not open."})
@@ -223,7 +223,10 @@ async def handle_join_lobby(websocket, data, connection):
     if count >= game[1]:
         await websocket.send_json({"status": "error", "message": "Lobby is full."})
         return
-    cursor.execute("INSERT INTO game_players (game_id, peer_id) VALUES (:gid, :pid)", gid=id_lobby, pid=data.get("id_player"))
+    cursor.execute(cursor.execute("""
+        INSERT INTO game_players (user_id,game_id)
+        VALUES ((SELECT user_id FROM users WHERE username = :username),:gid)
+        """,username=username, gid=id_lobby))
     connection.commit()
     if count + 1 == game[1]:
         cursor.execute("UPDATE games SET status = 'full' WHERE game_id = :id", id=id_lobby)
@@ -241,9 +244,13 @@ async def handle_start_lobby(websocket, data, connection):
 
 async def handle_quit_lobby(websocket, data, connection):
     id_lobby = data.get("id_lobby")
-    id_player = data.get("id_player")
+    username = data.get("username")
     cursor = connection.cursor()
-    cursor.execute("DELETE FROM game_players WHERE game_id = :gid AND peer_id = :pid", gid=id_lobby, pid=id_player)
+    cursor.execute("""
+        DELETE FROM game_players 
+        WHERE game_id = :gid 
+        AND user_id IN (SELECT user_id FROM users WHERE username = :username)
+    """, gid=id_lobby, username=username)
     connection.commit()
     cursor.close()
     await websocket.send_json({"status": "success", "message": "Player removed from lobby."})
@@ -251,7 +258,7 @@ async def handle_quit_lobby(websocket, data, connection):
 async def handle_destroy_lobby(websocket, data, connection):
     id_lobby = data.get("id_lobby")
     cursor = connection.cursor()
-    cursor.execute("DELETE FROM game WHERE game_id = :gid", gid=id_lobby)
+    cursor.execute("DELETE FROM games WHERE game_id = :gid", gid=id_lobby)
     connection.commit()
     cursor.close()
     await websocket.send_json({"status": "success", "message": "game removed."})
@@ -264,7 +271,6 @@ async def websocket_endpoint(websocket: WebSocket):
     try:
         while True:
             data = await websocket.receive_json()
-            print(f"Received: {data}")
             message_type = data.get("message_type")
 
             try:

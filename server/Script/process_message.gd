@@ -14,31 +14,39 @@ func process_message_not_ingame(data: Dictionary,sender_id:int):
 			Network.send_message_to_peer.rpc_id(sender_id,message)
 		elif data["message_type"] == "join_lobby":
 			var message = await Network.joinLobby(data,sender_id)
-			Network.send_message_to_lobby(message,data["id_lobby"])
-			var session_peers = Network.session[data["id_lobby"]].client_peer
-
-			for peer_id in session_peers:
-				if peer_id != sender_id:
-					var client_info = Network.clients[peer_id]
-					var all_clients_message = {
-						"message_type": "join_lobby",
-						"id_lobby": data["id_lobby"],
-						"id_player": client_info["id_player"],
-						"pseudo": client_info["pseudo"]
-					}
-					Network.send_message_to_peer.rpc_id(sender_id, all_clients_message)
+			Network.send_message_to_lobby(data["id_lobby"],message)
+		
 		elif data["message_type"] == "quit_lobby":
-			if Network.session[data["id_lobby"]]["creator"] == data["username"]:
+			print("id lobby :", data["id_lobby"])
+			print("username :",data["username"])
+			print("type de id lobby :", typeof(data["id_lobby"]))
+			if Network.session.has(data["id_lobby"]):
+				print(Network.session[data["id_lobby"]].name)
+			else:
+				print("Lobby ID not found in session dict.")
+			print(Network.session[data["id_lobby"]].creator)
+			if Network.session[data["id_lobby"]].creator == data["username"]:
 				var message = await Network.destroyLobby(data,sender_id)
-				Network.send_message_to_lobby(message,data["id_lobby"])
+				Network.send_message_to_lobby(data["id_lobby"],message)
 				Network.session.erase(data["id_lobby"])
 			else:
 				var message = await Network.quitLobby(data,sender_id)
-				Network.send_message_to_peer.rpc_id(sender_id,message)
+				Network.send_message_to_lobby(data["id_lobby"],message)
+				
 		elif data["message_type"] == "start_lobby":
-			if Network.session[data["id_lobby"]]["creator"] == data["username"]:
+			if Network.session[data["id_lobby"]].creator == data["username"]:
 				var message = await Network.startLobby(data,sender_id)
-				Network.send_message_to_lobby(message,data["id_lobby"])
+				if message.has("status") and message["status"] == "success":
+					var message_before_starting = {
+						"message_type": "before_start",
+						"clients": Network.session[data["id_lobby"]].clients_peer
+					}
+				else:
+					var message_before_starting = {
+						"message_type": "error",
+						"error": "game not started"
+					}
+				Network.send_message_to_lobby(data["id_lobby"],message)
 		elif data["message_type"] == "change_profil":
 			Database.sendDatabase(data)
 			var message = await Database.getDatabase()

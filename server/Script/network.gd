@@ -52,7 +52,28 @@ func _exit_tree():
 func _on_peer_disconnected(peer_id: int):
 	var _id = clients[peer_id]
 	var username = _id["username"]
-	print("Player ", _id, " has disconnected")
+	if _id["username"] != "not_connected":
+		var message_to_database = {
+			"message_type" = "change_status",
+			"username" = username,
+			"is_active" = 0
+		}
+		Database.sendDatabase(message_to_database)
+		var return_message = await Database.getDatabase()
+		print(return_message)
+	if _id["status"] == "connected" and _id["session_id"] != -1:
+		var mes = {
+			"message_type":"quit_lobby",
+			"id_lobby":clients[peer_id]["session_id"],
+			"id_player":clients[peer_id]["username"]
+		}
+		if clients[peer_id]["username"] == session[clients[peer_id]["session_id"]].creator:
+			mes["message_type"] = "destroy_lobby"
+		else:
+			mes["message_type"] = "quit_lobby"
+		Database.sendDatabase(mes)
+		var return_message = await Database.getDatabase()
+		print(return_message)
 	if _id["status"] == "in_game":
 		_id["status"] = "replaced_by_ai"
 		#ai not work for now
@@ -64,14 +85,6 @@ func _on_peer_disconnected(peer_id: int):
 	else:
 		clients.erase(peer_id)
 		number_of_client -= 1
-	var message_to_database = {
-		"message_type" = "change_status",
-		"username" = username,
-		"is_active" = 0
-	}
-	Database.sendDatabase(message_to_database)
-	var return_message = await Database.getDatabase()
-	print(return_message)
 
 func _on_peer_connected(peer_id: int):
 	print("New client connected with id: %d" % peer_id)
@@ -89,26 +102,32 @@ func _on_peer_connected(peer_id: int):
 	number_of_client += 1
 
 func createLobby(message: Dictionary,peer_id:int):
-	var return_message = await addLobbyDatabase(message)
-	print(return_message)
-	if return_message != null:
-		var new_session = load("res://Script/session.gd").new()
-		new_session.init(return_message, message["number_of_player"], message["name"], clients[peer_id]["pseudo"])
-		session[return_message] = new_session
-		var ind_player_in_session = session[return_message]._add_player(peer_id)
-		clients[peer_id]["session_id"] = return_message
-		clients[peer_id]["id_client_in_game"] = ind_player_in_session
-		number_of_session += 1
-		var forclient = {
-			"message_type":"join_lobby",
-			"id_lobby":return_message,
-			"id_player":ind_player_in_session,
-			"pseudo":clients[peer_id]["pseudo"]
-		}
-		return forclient
-		
+	if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
+		var return_message = await addLobbyDatabase(message)
+		print("id lobby :",return_message)
+		print("type de id lobby :",typeof(return_message))
+		if return_message != null:
+			return_message = int(return_message)
+			var new_session = load("res://Script/session.gd").new()
+			print(clients[peer_id]["username"])
+			new_session.init(return_message, message["number_of_player"], message["name"], clients[peer_id]["username"])
+			session[return_message] = new_session
+			var ind_player_in_session = session[return_message]._add_player(peer_id)
+			clients[peer_id]["session_id"] = return_message
+			#clients[peer_id]["id_client_in_game"] = ind_player_in_session
+			number_of_session += 1
+			print(session[return_message].creator)
+			var forclient = {
+				"message_type":"join_lobby",
+				"id_lobby":return_message,
+				"clients":session[return_message].clients_peer
+				#"id_player":ind_player_in_session,
+			}
+			return forclient
+		else:
+			return {"type_of_message": "error", "error": "no lobby not created"}
 	else:
-		print("error, lobby not created error database")
+		return {"type_of_message": "error", "error": "database_not_connected"}
 
 # trouve tous les lobbys ouvert du jeu
 func findLobby(message):
@@ -124,9 +143,10 @@ func findLobby(message):
 					allLobby["lobbies"].remove_at(i)
 				return allLobby["lobbies"]
 		else:
-			print("no lobby found")
+			print("error return find")
+			return {"type_of_message": "error", "error": "no lobby found"}
 	else:
-		print("no connection to database")
+		return {"type_of_message": "error", "error": "database_not_connected"}
 
 func addLobbyDatabase(message: Dictionary):
 	if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
@@ -140,14 +160,19 @@ func joinLobby(message: Dictionary,peer_id:int):
 		Database.sendDatabase(message)
 		var return_message = await Database.getDatabase()
 		if(return_message != null  and return_message.has("id_lobby")):
-			var ind_player_in_session = session[message["id_lobby"]]._add_player(peer_id)
+			#var ind_player_in_session = session[message["id_lobby"]]._add_player(peer_id)
+			session[message["id_lobby"]]._add_player(peer_id)
 			clients[peer_id]["session_id"] = message["id_lobby"]
-			clients[peer_id]["id_client_in_game"] = ind_player_in_session
-			return return_message
+			#clients[peer_id]["ind_player_in_session"] = ind_player_in_session
+			
+			return  {"type_of_message":"join_lobby",
+			"id_lobby":message["id_lobby"],
+			"clients":session[message["id_lobby"]].clients_peer}
 		else:
-			return {"type_of_message":"error","error":"lobby_not_found"}
-			
-			
+			return {"type_of_message":"error","error":return_message["message"]}
+	else:
+		return {"type_of_message": "error", "error": "database_not_connected"}
+
 func quitLobby(message: Dictionary,peer_id:int):
 	if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
 		Database.sendDatabase(message)
@@ -156,10 +181,12 @@ func quitLobby(message: Dictionary,peer_id:int):
 			session[message["id_lobby"]]._remove_player(peer_id)
 			clients[peer_id]["session_id"] = -1
 			clients[peer_id]["id_client_in_game"] = -1
-			return return_message
+			return {"type_of_message":"quit_lobby","clients":session[message["id_lobby"]].clients_peer}
 		else:
 			return {"type_of_message":"error","error":"lobby_not_found"}
-			
+	else:
+		return {"type_of_message": "error", "error": "database_not_connected"}
+
 func destroyLobby(message: Dictionary,peer_id:int):
 	if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
 		message["message_type"] = "destroy_lobby"
@@ -169,9 +196,9 @@ func destroyLobby(message: Dictionary,peer_id:int):
 			var id_lobby = return_message["id_lobby"]
 			if session.has(id_lobby):
 				for peer_cl in session[id_lobby].client_peer:
-					if clients.has(peer_cl):
-						clients[peer_cl]["session_id"] = -1
-						clients[peer_cl]["id_client_in_game"] = -1
+					if clients.has(peer_cl[0]):
+						clients[peer_cl[0]]["session_id"] = -1
+						clients[peer_cl[0]]["id_client_in_game"] = -1
 				print("Lobby", id_lobby, "destroyed by peer", peer_id)
 				return return_message
 			else:
@@ -180,25 +207,29 @@ func destroyLobby(message: Dictionary,peer_id:int):
 			return {"type_of_message": "error", "error": "lobby_not_found"}
 	else:
 		return {"type_of_message": "error", "error": "database_not_connected"}
-		
+
 func startLobby(message:Dictionary,peer_id:int):
-	var id_lobby = message["id_lobby"]
-	if session[id_lobby].check_game_start():
-		var start_lobby_message_database = {
-			"type_of_message":"start_game",
-			"id_lobby":id_lobby
-		}
-		Database.sendDatabase(start_lobby_message_database)
-		var return_message = await Database.getDatabase()
-		session[id_lobby].load_game()
-		 # load game of the session
-		for client in clients:
-			if client["id_lobby"] == id_lobby:
-				client["status"] = "in_game"
-		var turn = {"message_type":"player_turn","id_player":session[id_lobby].current_player_id,"number_of_cards":session[id_lobby].card_stack._get_card_number()}
-		print("turn :" ,turn["id_player"])
-		return turn
-				
+	if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
+		var id_lobby = message["id_lobby"]
+		if session[id_lobby].check_game_start():
+			var start_lobby_message_database = {
+				"type_of_message":"start_game",
+				"id_lobby":id_lobby
+			}
+			Database.sendDatabase(start_lobby_message_database)
+			var return_message = await Database.getDatabase()
+			if return_message["status"] == "success":
+				session[id_lobby].load_game()
+			 # load game of the session
+				for client in clients:
+					if client["id_lobby"] == id_lobby:
+						client["status"] = "in_game"
+				var turn = {"message_type":"player_turn","id_player":session[id_lobby].current_player_id,"number_of_cards":session[id_lobby].card_stack._get_card_number()}
+				print("turn :" ,turn["id_player"])
+				return turn
+	else:
+		return {"type_of_message": "error", "error": "database_not_connected"}
+
 ## between server and database		
 func connect_to_database():
 	await get_tree().create_timer(2.0).timeout
@@ -223,9 +254,10 @@ func send_message_to_server(data: Dictionary):
 	if data != null and data.has("message_type"):
 		var sender_id = multiplayer.get_remote_sender_id()
 		if  clients[sender_id] != null and clients[sender_id]["status"] == "connected":
+			var session_id = clients[sender_id]["session_id"]
 			print("Client %d sent a %s", [data["username"], data["message_type"]])
 			print(" ", data)
-			if clients[sender_id]["session_id"] == -1:
+			if session_id == -1 or (session.has(session_id) and session[session_id].status == false):
 				ProcessMessage.process_message_not_ingame(data,sender_id)
 			else:
 				ProcessMessage.process_message_ingame(data,sender_id)
@@ -254,8 +286,9 @@ func send_message_to_everyone(data : Dictionary):
 	print(" ", data)
 
 func send_message_to_lobby(id_lobby:int,data:Dictionary):
-	for peer_id in session[id_lobby].client_peer:
-		send_message_to_peer.rpc_id(peer_id,id_lobby,data)
+	for client_data in session[id_lobby].client_peer:
+		var peer_id = client_data[0]
+		send_message_to_peer.rpc_id(peer_id,data)
 
 func login(data: Dictionary,peer_id:int):
 	var log = await validate_login(data)
@@ -264,7 +297,8 @@ func login(data: Dictionary,peer_id:int):
 			"message_type" = "connexion",
 			"username" = log["username"],
 			"pseudo" = log["pseudo"],
-			"pic_profile" = log["pic_profile"]
+			"pic_profile" = log["pic_profile"],
+			"peer_id" = peer_id
 		}
 		var last_peer_id = search_peer_id_by_username(log["username"])
 		if last_peer_id == -1 or clients[last_peer_id]["status"] != "replaced_by_ai":
@@ -275,6 +309,10 @@ func login(data: Dictionary,peer_id:int):
 		else:
 			clients[peer_id] = clients[last_peer_id]
 			clients[peer_id]["peer_id"]= peer_id
+			for i in session[clients[peer_id]["session_id"]].clients_peer.size():
+				if session[clients[peer_id]["session_id"]].clients_peer[i][0] == last_peer_id:
+					session[clients[peer_id]["session_id"]].client_peer[i][0] = peer_id
+			clients[peer_id]["status"] = "in_game"
 		#session[clients[peer_id]["id_lobby"]].client.replace
 			
 			clients.erase(last_peer_id)
