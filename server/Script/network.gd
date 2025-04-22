@@ -192,6 +192,7 @@ func destroyLobby(message: Dictionary,peer_id:int):
 		message["message_type"] = "destroy_lobby"
 		Database.sendDatabase(message)
 		var return_message = await Database.getDatabase()
+		print("return message : ", return_message)
 		if return_message != null and return_message.has("id_lobby"):
 			var id_lobby = int(return_message["id_lobby"])
 			if session.has(id_lobby):
