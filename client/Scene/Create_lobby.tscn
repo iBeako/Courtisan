@@ -68,7 +68,7 @@ corner_radius_bottom_left = 15
 expand_margin_top = 21.0
 expand_margin_bottom = 19.0
 
-[node name="Control" type="Control"]
+[node name="Control2" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

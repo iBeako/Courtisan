@@ -223,6 +223,7 @@ func startLobby(message:Dictionary,peer_id:int):
 				session[id_lobby].load_game()
 			 # load game of the session
 				for client in clients:
+					print("client : ",client)
 					if client["session_id"] == id_lobby:
 						client["status"] = "in_game"
 				var turn = {"message_type":"player_turn","id_player":session[id_lobby].current_player_id,"number_of_cards":session[id_lobby].card_stack._get_card_number()}
