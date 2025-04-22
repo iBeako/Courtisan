@@ -123,13 +123,12 @@ async def handle_change_user_status(websocket, data, connection):
     )
     connection.commit()
     cursor.close()
-    print("before if")
     if is_active:
         await websocket.send_json({"status": "success", "message": f" {username} is now active."})
-        print("after sending active")
+        print("{username} active")
     else:
         await websocket.send_json({"status": "success", "message": f" {username} is now inactive."})
-        print("after sending inactive")
+        print("{username}  inactive")
 
 async def handle_change_profil(websocket, data, connection):
     username = data.get("username")
@@ -200,7 +199,7 @@ async def handle_create_lobby(websocket, data, connection):
     game_id = cursor.fetchone()[0]
     cursor.execute("SELECT user_id FROM users WHERE username = :username", username=username)
     user_id  = cursor.fetchone()[0]
-    cursor.execute("INSERT INTO game_players (game_id, user_id) VALUES (:pid, :gid)",pid=user_id, gid=game_id)
+    cursor.execute("INSERT INTO game_players (user_id,game_id) VALUES (:pid, :gid)",pid=user_id, gid=game_id)
     connection.commit()
     cursor.close()
     await websocket.send_json({"status": "success", "game_id": game_id})
@@ -271,7 +270,6 @@ async def websocket_endpoint(websocket: WebSocket):
     try:
         while True:
             data = await websocket.receive_json()
-            print(f"Received: {data}")
             message_type = data.get("message_type")
 
             try:
