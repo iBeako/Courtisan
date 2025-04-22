@@ -14,7 +14,9 @@ func process_message_not_ingame(data: Dictionary,sender_id:int):
 			Network.send_message_to_peer.rpc_id(sender_id,message)
 		elif data["message_type"] == "join_lobby":
 			var message = await Network.joinLobby(data,sender_id)
-			Network.send_message_to_lobby(data["id_lobby"],message)
+			print(message)
+			
+			Network.send_message_to_lobby(message["id_lobby"],message)
 		
 		elif data["message_type"] == "quit_lobby":
 			if Network.session[data["id_lobby"]].creator == data["username"]:

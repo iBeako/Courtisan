@@ -164,7 +164,7 @@ func joinLobby(message: Dictionary,peer_id:int):
 			session[message["id_lobby"]]._add_player(peer_id)
 			clients[peer_id]["session_id"] = message["id_lobby"]
 			#clients[peer_id]["ind_player_in_session"] = ind_player_in_session
-			
+			print("worked")
 			return  {"type_of_message":"join_lobby",
 			"id_lobby":message["id_lobby"],
 			"clients":session[message["id_lobby"]].clients_peer}
@@ -196,7 +196,7 @@ func destroyLobby(message: Dictionary,peer_id:int):
 		if return_message != null and return_message.has("id_lobby"):
 			var id_lobby = int(return_message["id_lobby"])
 			if session.has(id_lobby):
-				for peer_cl in session[id_lobby].client_peer:
+				for peer_cl in session[id_lobby].clients_peer:
 					if clients.has(peer_cl[0]):
 						clients[peer_cl[0]]["session_id"] = -1
 						clients[peer_cl[0]]["id_client_in_game"] = -1
@@ -287,10 +287,13 @@ func send_message_to_everyone(data : Dictionary):
 	print(" ", data)
 
 func send_message_to_lobby(id_lobby:int,data:Dictionary):
-	for client_data in session[id_lobby].client_peer:
-		print(client_data)
-		var peer_id = client_data[0]
-		send_message_to_peer.rpc_id(peer_id,data)
+	if session[id_lobby].clients_peer != null:
+		for client_data in session[id_lobby].clients_peer:
+			print(client_data)
+			var peer_id = client_data[0]
+			send_message_to_peer.rpc_id(peer_id,data)
+	else:
+		print("clients peer null")
 
 func login(data: Dictionary,peer_id:int):
 	var log = await validate_login(data)
@@ -313,7 +316,7 @@ func login(data: Dictionary,peer_id:int):
 			clients[peer_id]["peer_id"]= peer_id
 			for i in session[clients[peer_id]["session_id"]].clients_peer.size():
 				if session[clients[peer_id]["session_id"]].clients_peer[i][0] == last_peer_id:
-					session[clients[peer_id]["session_id"]].client_peer[i][0] = peer_id
+					session[clients[peer_id]["session_id"]].clients_peer[i][0] = peer_id
 			clients[peer_id]["status"] = "in_game"
 		#session[clients[peer_id]["id_lobby"]].client.replace
 			
