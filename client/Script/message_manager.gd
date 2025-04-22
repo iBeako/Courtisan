@@ -7,10 +7,10 @@ signal card_played
 
 const CARD_SCENE_PATH = "res://Scene/card.tscn"
 
-func send_card_played(player: int, card_type: int, family: String, area: int, id_player_domain: int = -1):
+func send_card_played(player_id: int, card_type: int, family: String, area: int, id_player_domain: int = -1):
 	var message = {
 		"message_type": "card_played",
-		"player": player,
+		"player": player_id,
 		"card_type": card_type,
 		"family": family,
 		"area": area,
