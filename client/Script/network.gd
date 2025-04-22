@@ -111,6 +111,7 @@ var id: int
 var username: String
 var my_profil_pic: int
 var clients = []
+var zone_player: Array[int] = []
 
 func _ready():
 	var client_trusted_cas = load("res://certificates/certificate.crt")
@@ -220,6 +221,9 @@ func process_message(data:Dictionary):
 			for i in clients.size():
 				if clients[i][0] == peer_id:
 					id = i
+					print(id)
+			zone_player = get_rotated_indices(clients,id)
+			print(zone_player)
 			in_game = true
 			get_tree().change_scene_to_packed(game)
 			while get_tree().current_scene == null:
@@ -227,6 +231,7 @@ func process_message(data:Dictionary):
 			var current_scene = get_tree().current_scene
 			if_start_game(current_scene)	
 			send_message_to_server.rpc_id(1,{"message_type":"starting","id_lobby":id_lobby,"username":username})
+		
 		elif data["message_type"] == "quit_lobby":
 			clients = data["clients"]
 			get_tree().change_scene_to_packed(waiting)
@@ -274,7 +279,14 @@ func process_message(data:Dictionary):
 			#get_tree().change_scene_to_packed(menu_principal)
 		else:
 			print("invalid message")
+
+
+func get_rotated_indices(clients: Array, id: int) -> Array[int]:	
+	var rotated :  Array[int]= []
+	for i in clients.size():
+		rotated.append((id + i) % clients.size())
 		
+	return rotated	
 	
 func on_create_Account(login:String,email:String,password:String):
 	var message = Account.createAccount(login,email,password)
@@ -307,17 +319,19 @@ func process_card_played(data:Dictionary):
 		if data["area"] == 0:
 			data["area"] = 1
 		elif data["area"] == 1:
-			data["area"] = 0
+			if data["id_player_domain"] == id:
+				data["area"] = 0
 	var writting_message = "CLIENT - Player %d" % id + " : player %d "  % data["player"] + " has put %s" % data["card_type"] + " %s" % data["family"]+ " in %s" % data["area"]
 	taskbar_reference.print_action("Le joueur %d a placé un %s %s dans %s" % [data["player"] + 1, card_types[data["card_type"]], data["family"] if data["card_type"] != Global.CardType.SPY else "", zone[data["area"]]])
-	
 	if data.has("position"):
 		if data["position"] > 0:
 			writting_message = writting_message + " in the light"
 			writting_message = writting_message + data["id_adversary"]
 	print(writting_message)
-	message_manager.add_card_to_zone(data["family"],data["card_type"],data["area"])
-	
+	if data.has("id_player_domain"):
+		message_manager.add_card_to_zone(data["family"],data["card_type"],data["area"],data["id_player_domain"])
+	else:
+		message_manager.add_card_to_zone(data["family"],data["card_type"],data["area"])
 	if data["player"] != id:
 		#message_manager.add_card_to_zone(data["family"],data["card_type"],data["area"])
 		

@@ -226,6 +226,9 @@ func startLobby(message:Dictionary,peer_id:int):
 					print("client : ",client)
 					if clients[client]["session_id"] == id_lobby:
 						clients[client]["status"] = "in_game"
+						for i in session[id_lobby].clients_peer.size():
+							if session[id_lobby].clients_peer[i][0] == client:
+								clients[client]["id_client_in_game"] = i
 				return {"message_type":"before_start","clients":session[id_lobby].clients_peer}
 			else:
 				{"message_type": "error", "error": "error in starting lobby"}

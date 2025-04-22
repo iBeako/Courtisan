@@ -40,7 +40,7 @@ func _ready() -> void:
 	#				var slot = zone.get_node(slot_name)
 	#				# Initialize the card count for this slot
 	#				slot_card_counts[zone_name + "/" + slot_name] = 0 
-	zones=create_zones([0,-1])
+	zones=create_zones(Network.zone_player)
 
 func create_zones(id_players : Array[int]) -> Array:
 	if id_players.size() < 2: return []
@@ -54,7 +54,7 @@ func create_zones(id_players : Array[int]) -> Array:
 		var zone : PlayZone = zone_scene.instantiate()
 		zone.position = Vector2(z.x, z.y)
 		zone.rotation_degrees = z.rotate
-		zone.update_player(id_players[i], "nametest", 0)
+		zone.update_player(id_players[i], Network.clients[id_players[i]][1],  Network.clients[id_players[i]][2])
 		zone.Play_ZoneType = Global.PlayZoneType.ENEMY
 		zone.scale = Vector2(0.8, 0.8)
 		add_child(zone)
