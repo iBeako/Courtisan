@@ -225,7 +225,7 @@ async def handle_join_lobby(websocket, data, connection):
     cursor.execute(cursor.execute("""
         INSERT INTO game_players (user_id,game_id)
         VALUES ((SELECT user_id FROM users WHERE username = :username),:gid)
-        """, gid=game_id, username=username))
+        """,username=username, gid=id_lobby))
     connection.commit()
     if count + 1 == game[1]:
         cursor.execute("UPDATE games SET status = 'full' WHERE game_id = :id", id=id_lobby)
