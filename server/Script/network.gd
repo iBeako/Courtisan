@@ -164,7 +164,7 @@ func joinLobby(message: Dictionary,peer_id:int):
 			"id_lobby":message["id_lobby"],
 			"clients":session[message["id_lobby"]].clients_peer}
 		else:
-			return {"type_of_message":"error","error":"lobby_not_found"}
+			return {"type_of_message":"error","error":return_message["message"]}
 	else:
 		return {"type_of_message": "error", "error": "database_not_connected"}
 

@@ -200,7 +200,7 @@ async def handle_create_lobby(websocket, data, connection):
     game_id = cursor.fetchone()[0]
     cursor.execute("SELECT user_id FROM users WHERE username = :username", username=username)
     user_id  = cursor.fetchone()[0]
-    cursor.execute("INSERT INTO game_players (game_id, user_id) VALUES (:gid, :pid)", gid=game_id, pid=user_id)
+    cursor.execute("INSERT INTO game_players (game_id, user_id) VALUES (:pid, :gid)",pid=user_id, gid=game_id)
     connection.commit()
     cursor.close()
     await websocket.send_json({"status": "success", "game_id": game_id})
@@ -223,7 +223,10 @@ async def handle_join_lobby(websocket, data, connection):
     if count >= game[1]:
         await websocket.send_json({"status": "error", "message": "Lobby is full."})
         return
-    cursor.execute("INSERT INTO game_players (game_id, peer_id) VALUES (:gid, :pid)", gid=id_lobby, pid=data.get("id_player"))
+    cursor.execute(cursor.execute("""
+        INSERT INTO game_players (user_id,game_id)
+        VALUES ((SELECT user_id FROM users WHERE username = :username),:gid)
+        """, gid=game_id, username=username))
     connection.commit()
     if count + 1 == game[1]:
         cursor.execute("UPDATE games SET status = 'full' WHERE game_id = :id", id=id_lobby)
@@ -243,7 +246,11 @@ async def handle_quit_lobby(websocket, data, connection):
     id_lobby = data.get("id_lobby")
     username = data.get("username")
     cursor = connection.cursor()
-    cursor.execute("DELETE FROM game_players WHERE game_id = :gid AND username = :username", gid=id_lobby, username=username)
+    cursor.execute("""
+        DELETE FROM game_players 
+        WHERE game_id = :gid 
+        AND user_id IN (SELECT user_id FROM users WHERE username = :username)
+    """, gid=id_lobby, username=username)
     connection.commit()
     cursor.close()
     await websocket.send_json({"status": "success", "message": "Player removed from lobby."})
