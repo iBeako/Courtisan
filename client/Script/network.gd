@@ -265,6 +265,7 @@ func process_message(data:Dictionary):
 			
 		elif data["message_type"] == "final_score":
 			print("Final scores : ", data)
+			get_tree().change_scene_to_file("res://Scene/fin_partie.tscn")
 			#get_tree().change_scene_to_packed(menu_principal)
 		else:
 			print("invalid message")

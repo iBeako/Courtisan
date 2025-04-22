@@ -1,8 +1,7 @@
-[gd_scene load_steps=20 format=3 uid="uid://le7iea2g3100"]
+[gd_scene load_steps=19 format=3 uid="uid://le7iea2g3100"]
 
 [ext_resource type="Script" path="res://Script/create_lobby.gd" id="1_orjtt"]
 [ext_resource type="Texture2D" uid="uid://moika2rm8x7n" path="res://Assets/background.png" id="1_ue0mc"]
-[ext_resource type="Texture2D" uid="uid://daai2wt26jgdt" path="res://Assets/Create_Game.png" id="2_5wem8"]
 [ext_resource type="Texture2D" uid="uid://dp7rxbav2clb2" path="res://Assets/arrow-small-left 2.svg" id="3_6v3v5"]
 [ext_resource type="Texture2D" uid="uid://bqy42sdw7lweo" path="res://Assets/Group 69.png" id="4_nmmst"]
 [ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/general.tres" id="6_3qbd0"]
@@ -116,11 +115,6 @@ layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 108
 theme_override_constants/margin_top = 130
-
-[node name="CreateGame" type="Sprite2D" parent="PanelContainer/VBoxContainer/MarginContainer"]
-visible = false
-position = Vector2(590, 391)
-texture = ExtResource("2_5wem8")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
