@@ -197,7 +197,7 @@ async def handle_create_lobby(websocket, data, connection):
     connection.commit()
     cursor.execute("SELECT game_id FROM games WHERE name = :name AND game_date = to_date(:game_date, 'YYYY-MM-DD')", name=name, game_date=date_str)
     game_id = cursor.fetchone()[0]
-    cursor.execute("SELECT user_id FROM users WHERE username = :username", username=username)
+    cursor.execute("SELECT user_id FROM users WHERE username = :uname", uname=username)
     user_id  = cursor.fetchone()[0]
     cursor.execute("INSERT INTO game_players (user_id,game_id) VALUES (:pid, :gid)",pid=user_id, gid=game_id)
     connection.commit()
@@ -207,6 +207,7 @@ async def handle_create_lobby(websocket, data, connection):
 async def handle_join_lobby(websocket, data, connection):
     id_lobby = data.get("id_lobby")
     password = data.get("password")
+    username = data.get("username")
 
     cursor = connection.cursor()
     cursor.execute("SELECT password, num_players FROM games WHERE game_id = :id AND status = 'active'", id=id_lobby)
