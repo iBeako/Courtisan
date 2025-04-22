@@ -214,7 +214,7 @@ func startLobby(message:Dictionary,peer_id:int):
 		var id_lobby = message["id_lobby"]
 		if session[id_lobby].check_game_start():
 			var start_lobby_message_database = {
-				"message_type":"start_game",
+				"message_type":"start_lobby",
 				"id_lobby":id_lobby
 			}
 			Database.sendDatabase(start_lobby_message_database)
