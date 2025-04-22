@@ -31,7 +31,9 @@ func send_action(player: int, id_card: int, family: String, area: String, card_k
 		"id_card": id_card, # -1 if no card to remove
 		"family": family, # if a spy change into "Spy" in purpus to do not revele the family
 		"area": area,
-		"target_family": family
+		"target_family": family,
+		"username":Network.username,
+		"id_lobby":Network.id_lobby
 	}
 	_send_message(message)
 
@@ -54,7 +56,9 @@ func send_player_message(player: int, message_id: int):
 	var message = {
 		"message_type": "message",
 		"player": player,
-		"message": message_id
+		"message": message_id,
+		"username":Network.username,
+		"id_lobby":Network.id_lobby
 	}
 	_send_message(message)
 

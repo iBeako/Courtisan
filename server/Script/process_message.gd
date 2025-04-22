@@ -63,11 +63,13 @@ func process_message_ingame(data : Dictionary,sender_id:int):
 	if data["message_type"] == "error":
 		print("Error from client: ", data["error_type"])
 		process_error(data)
+		
 	elif data["message_type"] == "starting":
 		var id_lobby = data["id_lobby"]
 		var turn = {"message_type":"player_turn","id_player":Network.session[id_lobby].current_player_id,"number_of_cards":Network.session[id_lobby].card_stack._get_card_number()}
 		print("turn :" ,turn["id_player"])
 		Network.send_message_to_lobby(id_lobby,turn)
+		
 	#action message
 	elif data["message_type"] == "card_played":
 		if validate_card_played(data["id_lobby"],sender_id,data):
@@ -158,7 +160,7 @@ func validate_card_played(id_lobby:int,sender_id :int,message: Dictionary) -> bo
 			elif message["area"] == 0:
 				Network.session[id_lobby].place_card(message["player"], message["area"], message["card_type"], message["family"])
 			elif message["area"] == 1:
-				Network.session[id_lobby].place_card(message["player"], message["area"], message["card_type"], message["family"])#, 0, message["id_player_domain"])
+				Network.session[id_lobby].place_card(message["player"], message["area"], message["card_type"], message["family"],message["id_player_domain"])#, 0, message["id_player_domain"])
 	return true	
 
 func validate_action(message: Dictionary) -> bool:
