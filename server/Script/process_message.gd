@@ -101,10 +101,10 @@ func process_message_ingame(data : Dictionary,sender_id:int):
 	else:
 		print("invalid message")
 		
-	if sender_id == 1 : # if AI sent message
-		Network.session[data["id_lobby"]].check_turn(data["player"])
-	else :
-		Network.session[data["id_lobby"]].check_turn(sender_id)
+	#if sender_id == 1 : # if AI sent message
+	#	Network.session[data["id_lobby"]].check_turn(data["player"])
+	#else :
+	#	Network.session[data["id_lobby"]].check_turn(sender_id)
 		
 	
 
