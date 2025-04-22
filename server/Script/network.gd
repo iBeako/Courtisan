@@ -104,7 +104,8 @@ func _on_peer_connected(peer_id: int):
 func createLobby(message: Dictionary,peer_id:int):
 	if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
 		var return_message = await addLobbyDatabase(message)
-		print(return_message)
+		print("id lobby :",return_message)
+		print("type de id lobby :",typeof(return_message))
 		if return_message != null:
 			var new_session = load("res://Script/session.gd").new()
 			print(clients[peer_id]["username"])
@@ -141,6 +142,7 @@ func findLobby(message):
 					allLobby["lobbies"].remove_at(i)
 				return allLobby["lobbies"]
 		else:
+			print("error return find")
 			return {"type_of_message": "error", "error": "no lobby found"}
 	else:
 		return {"type_of_message": "error", "error": "database_not_connected"}
