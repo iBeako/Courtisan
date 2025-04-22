@@ -13,7 +13,9 @@ func send_card_played(player: int, card_type: int, family: String, area: int, id
 		"player": player,
 		"card_type": card_type,
 		"family": family,
-		"area": area
+		"area": area,
+		"username":Network.username,
+		"id_lobby":Network.id_lobby
 	}
 
 	if area == 1: # cas ou joue chez un joueur

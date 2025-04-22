@@ -137,7 +137,7 @@ func load_game() -> bool :
 	card_stack.generate_card()
 	card_stack._set_card_stack()
 	card_stack.print_stack_state()
-	send_three_cards_to_each_player()
+	#send_three_cards_to_each_player()
 	return true
 	
 func distribute_hand_cards(player_id:int) -> Dictionary:

@@ -51,7 +51,7 @@ func _process(delta: float) -> void:
 
 # Function to start dragging a card
 func start_drag(card : Card):
-	if not get_parent().client.id == get_parent().client.turn_player:
+	if not Network.id == Network.turn_player:
 		print("It's not your turn, you cannot drag a card.")
 		return
 	card_is_dragged = card
@@ -81,7 +81,7 @@ func end_drag():
 		# Determine the play area and position
 		var area = card_zone_found.Play_ZoneType
 		#print("Zone type: " + str(area))
-		var player_id = get_parent().client.turn_player
+		var player_id = Network.turn_player
 		
 		# Determine which play zone the card was placed in
 		var id_can_play : int
