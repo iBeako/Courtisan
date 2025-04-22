@@ -14,19 +14,14 @@ func process_message_not_ingame(data: Dictionary,sender_id:int):
 			Network.send_message_to_peer.rpc_id(sender_id,message)
 		elif data["message_type"] == "join_lobby":
 			var message = await Network.joinLobby(data,sender_id)
-			Network.send_message_to_lobby(data["id_lobby"],message)
+			print(message)
+			
+			Network.send_message_to_lobby(message["id_lobby"],message)
 		
 		elif data["message_type"] == "quit_lobby":
-			print("id lobby :", data["id_lobby"])
-			print("username :",data["username"])
-			print("type de id lobby :", typeof(data["id_lobby"]))
-			if Network.session.has(data["id_lobby"]):
-				print(Network.session[data["id_lobby"]].name)
-			else:
-				print("Lobby ID not found in session dict.")
-			print(Network.session[data["id_lobby"]].creator)
 			if Network.session[data["id_lobby"]].creator == data["username"]:
 				var message = await Network.destroyLobby(data,sender_id)
+				print(message)
 				Network.send_message_to_lobby(data["id_lobby"],message)
 				Network.session.erase(data["id_lobby"])
 			else:
@@ -36,17 +31,26 @@ func process_message_not_ingame(data: Dictionary,sender_id:int):
 		elif data["message_type"] == "start_lobby":
 			if Network.session[data["id_lobby"]].creator == data["username"]:
 				var message = await Network.startLobby(data,sender_id)
-				if message.has("status") and message["status"] == "success":
-					var message_before_starting = {
+				print(message)
+				var message_before_starting
+				if message.has("message_type") and message["message_type"] == "player_turn":
+					message_before_starting = {
 						"message_type": "before_start",
 						"clients": Network.session[data["id_lobby"]].clients_peer
 					}
 				else:
-					var message_before_starting = {
+					message_before_starting = {
 						"message_type": "error",
 						"error": "game not started"
 					}
+				Network.send_message_to_lobby(data["id_lobby"],message_before_starting)
 				Network.send_message_to_lobby(data["id_lobby"],message)
+			else:
+				var message = {
+						"message_type":"error",
+						"error_type":"not the creator"
+				}
+				Network.send_message_to_peer.rpc_id(sender_id,message)
 		elif data["message_type"] == "change_profil":
 			Database.sendDatabase(data)
 			var message = await Database.getDatabase()

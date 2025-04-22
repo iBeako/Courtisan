@@ -151,6 +151,8 @@ func send_message_to_peer(data: Dictionary):
 			process_message(data)
 		else:
 			print("error send_message_to_peer")
+	else:
+		print("problem")
 
 @rpc("authority")
 func send_message_to_everyone(data : Dictionary):
@@ -161,7 +163,7 @@ func send_message_to_everyone(data : Dictionary):
 			print(" ", data)
 			process_message(data)
 		else:
-			print("error send_message_to_peer")
+			print("error send_message_to_everyone")
 			
 func process_message(data:Dictionary):
 	if data["message_type"] == "error":
@@ -194,7 +196,10 @@ func process_message(data:Dictionary):
 					await get_tree().process_frame
 			#var join_scene = get_tree().current_scene
 			if current_scene.has_method("print_lobby") and data.has("lobbies"):
-				current_scene.print_lobby(data["lobbies"])
+				if data["lobbies"] != null:
+					current_scene.print_lobby(data["lobbies"])
+				else:
+					process_error({"error_type":"no lobby exist"})
 			
 		elif data["message_type"] == "join_lobby":
 			id_lobby = data["id_lobby"]
@@ -206,12 +211,6 @@ func process_message(data:Dictionary):
 			if current_scene.has_method("instantiate_waiting_scene"):
 				for i in clients.size():
 					current_scene.instantiate_waiting_scene(clients[i][1])
-				
-		elif data["message_type"] == "start_game":
-			in_game = true
-			get_tree().change_scene_to_packed(game)
-			if_start_game()
-			
 		elif data["message_type"]  == "change_profil":
 			my_profil_pic = data["pic_profile"]	
 			pseudo = data["pseudo"]	
@@ -221,7 +220,10 @@ func process_message(data:Dictionary):
 			for i in clients.size():
 				if clients[i][0] == peer_id:
 					id = i
-				
+			in_game = true
+			get_tree().change_scene_to_packed(game)
+			if_start_game()	
+			
 		elif data["message_type"] == "quit_lobby":
 			clients = data["clients"]
 			get_tree().change_scene_to_packed(waiting)
