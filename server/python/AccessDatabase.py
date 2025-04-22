@@ -247,7 +247,7 @@ async def handle_join_lobby(websocket, data, connection):
 async def handle_start_lobby(websocket, data, connection):
     id_lobby = data.get("id_lobby")
     cursor = connection.cursor()
-    cursor.execute("UPDATE games SET status = 'closed' WHERE game_id = :id", id=id_lobby)
+    cursor.execute("UPDATE games SET status = 'closed' WHERE game_id = :id AND status != 'closed'", id=id_lobby)
     connection.commit()
     cursor.close()
     await websocket.send_json({"status": "success","id_lobby":id_lobby, "message": "Game started."})

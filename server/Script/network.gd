@@ -228,6 +228,8 @@ func startLobby(message:Dictionary,peer_id:int):
 				var turn = {"message_type":"player_turn","id_player":session[id_lobby].current_player_id,"number_of_cards":session[id_lobby].card_stack._get_card_number()}
 				print("turn :" ,turn["id_player"])
 				return turn
+			else:
+				{"message_type": "error", "error": "error in starting lobby"}
 	else:
 		return {"message_type": "error", "error": "database_not_connected"}
 
