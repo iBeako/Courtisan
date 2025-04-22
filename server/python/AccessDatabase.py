@@ -223,10 +223,19 @@ async def handle_join_lobby(websocket, data, connection):
     if count >= game[1]:
         await websocket.send_json({"status": "error", "message": "Lobby is full."})
         return
+    cursor.execute("""
+        SELECT COUNT(*) FROM game_players
+        WHERE game_id = :gid AND user_id = (SELECT user_id FROM users WHERE username = :uname)
+        """, gid=id_lobby, uname=username)
+    already_in_lobby = cursor.fetchone()[0]
+    if already_in_lobby > 0:
+        await websocket.send_json({"status": "error", "message": "User already in lobby."})
+        cursor.close()
+        return
     cursor.execute(cursor.execute("""
         INSERT INTO game_players (user_id,game_id)
-        VALUES ((SELECT user_id FROM users WHERE username = :username),:gid)
-        """,username=username, gid=id_lobby))
+        VALUES ((SELECT user_id FROM users WHERE username = :uname),:gid)
+        """,uname=username, gid=id_lobby))
     connection.commit()
     if count + 1 == game[1]:
         cursor.execute("UPDATE games SET status = 'full' WHERE game_id = :id", id=id_lobby)
