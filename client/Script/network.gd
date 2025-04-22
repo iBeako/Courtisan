@@ -211,12 +211,6 @@ func process_message(data:Dictionary):
 			if current_scene.has_method("instantiate_waiting_scene"):
 				for i in clients.size():
 					current_scene.instantiate_waiting_scene(clients[i][1])
-				
-		elif data["message_type"] == "start_game":
-			in_game = true
-			get_tree().change_scene_to_packed(game)
-			if_start_game()
-			
 		elif data["message_type"]  == "change_profil":
 			my_profil_pic = data["pic_profile"]	
 			pseudo = data["pseudo"]	
@@ -226,7 +220,10 @@ func process_message(data:Dictionary):
 			for i in clients.size():
 				if clients[i][0] == peer_id:
 					id = i
-				
+			in_game = true
+			get_tree().change_scene_to_packed(game)
+			if_start_game()	
+			
 		elif data["message_type"] == "quit_lobby":
 			clients = data["clients"]
 			get_tree().change_scene_to_packed(waiting)
