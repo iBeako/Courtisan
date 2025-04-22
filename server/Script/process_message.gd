@@ -19,6 +19,7 @@ func process_message_not_ingame(data: Dictionary,sender_id:int):
 		elif data["message_type"] == "quit_lobby":
 			if Network.session[data["id_lobby"]].creator == data["username"]:
 				var message = await Network.destroyLobby(data,sender_id)
+				print(message)
 				Network.send_message_to_lobby(data["id_lobby"],message)
 				Network.session.erase(data["id_lobby"])
 			else:

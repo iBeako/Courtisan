@@ -272,7 +272,7 @@ async def websocket_endpoint(websocket: WebSocket):
         while True:
             data = await websocket.receive_json()
             message_type = data.get("message_type")
-
+            print(data)
             try:
                 if message_type == "createAccount":
                     await handle_create_account(websocket, data, connection)
