@@ -18,6 +18,7 @@ func process_message_not_ingame(data: Dictionary,sender_id:int):
 		
 		elif data["message_type"] == "quit_lobby":
 			print(data["id_lobby"])
+			print(Network.session[data["id_lobby"]].name)
 			print(Network.session[data["id_lobby"]].creator)
 			print(data["username"])
 			if Network.session[data["id_lobby"]].creator == data["username"]:
