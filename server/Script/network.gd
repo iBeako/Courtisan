@@ -125,9 +125,9 @@ func createLobby(message: Dictionary,peer_id:int):
 			}
 			return forclient
 		else:
-			return {"type_of_message": "error", "error": "no lobby not created"}
+			return {"message_type": "error", "error": "no lobby not created"}
 	else:
-		return {"type_of_message": "error", "error": "database_not_connected"}
+		return {"message_type": "error", "error": "database_not_connected"}
 
 # trouve tous les lobbys ouvert du jeu
 func findLobby(message):
@@ -144,9 +144,9 @@ func findLobby(message):
 				return allLobby["lobbies"]
 		else:
 			print("error return find")
-			return {"type_of_message": "error", "error": "no lobby found"}
+			return {"message_type": "error", "error": "no lobby found"}
 	else:
-		return {"type_of_message": "error", "error": "database_not_connected"}
+		return {"message_type": "error", "error": "database_not_connected"}
 
 func addLobbyDatabase(message: Dictionary):
 	if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
@@ -165,13 +165,13 @@ func joinLobby(message: Dictionary,peer_id:int):
 			clients[peer_id]["session_id"] = message["id_lobby"]
 			#clients[peer_id]["ind_player_in_session"] = ind_player_in_session
 			print("worked")
-			return  {"type_of_message":"join_lobby",
+			return  {"message_type":"join_lobby",
 			"id_lobby":message["id_lobby"],
 			"clients":session[message["id_lobby"]].clients_peer}
 		else:
-			return {"type_of_message":"error","error":return_message["message"]}
+			return {"message_type":"error","error":return_message["message"]}
 	else:
-		return {"type_of_message": "error", "error": "database_not_connected"}
+		return {"message_type": "error", "error": "database_not_connected"}
 
 func quitLobby(message: Dictionary,peer_id:int):
 	if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
@@ -181,11 +181,11 @@ func quitLobby(message: Dictionary,peer_id:int):
 			session[message["id_lobby"]]._remove_player(peer_id)
 			clients[peer_id]["session_id"] = -1
 			clients[peer_id]["id_client_in_game"] = -1
-			return {"type_of_message":"quit_lobby","clients":session[message["id_lobby"]].clients_peer}
+			return {"message_type":"quit_lobby","clients":session[message["id_lobby"]].clients_peer}
 		else:
-			return {"type_of_message":"error","error":"lobby_not_found"}
+			return {"message_type":"error","error":"lobby_not_found"}
 	else:
-		return {"type_of_message": "error", "error": "database_not_connected"}
+		return {"message_type": "error", "error": "database_not_connected"}
 
 func destroyLobby(message: Dictionary,peer_id:int):
 	if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
@@ -203,18 +203,18 @@ func destroyLobby(message: Dictionary,peer_id:int):
 				print("Lobby", id_lobby, "destroyed by peer", peer_id)
 				return return_message
 			else:
-				return {"type_of_message": "error", "error": "lobby_not_in_session_map"}
+				return {"message_type": "error", "error": "lobby_not_in_session_map"}
 		else:
-			return {"type_of_message": "error", "error": "lobby_not_found"}
+			return {"message_type": "error", "error": "lobby_not_found"}
 	else:
-		return {"type_of_message": "error", "error": "database_not_connected"}
+		return {"message_type": "error", "error": "database_not_connected"}
 
 func startLobby(message:Dictionary,peer_id:int):
 	if db_peer.get_ready_state() == WebSocketPeer.STATE_OPEN:
 		var id_lobby = message["id_lobby"]
 		if session[id_lobby].check_game_start():
 			var start_lobby_message_database = {
-				"type_of_message":"start_game",
+				"message_type":"start_game",
 				"id_lobby":id_lobby
 			}
 			Database.sendDatabase(start_lobby_message_database)
@@ -229,7 +229,7 @@ func startLobby(message:Dictionary,peer_id:int):
 				print("turn :" ,turn["id_player"])
 				return turn
 	else:
-		return {"type_of_message": "error", "error": "database_not_connected"}
+		return {"message_type": "error", "error": "database_not_connected"}
 
 ## between server and database		
 func connect_to_database():
@@ -356,13 +356,13 @@ func insert_Account(data:Dictionary,peer_id:int):
 			send_message_to_peer.rpc_id(peer_id,return_data)
 		else:
 			var message = {
-				"type_of_message":"error",
+				"message_type":"error",
 				"type_of_error":return_data["message"]
 			}
 			send_message_to_peer.rpc_id(peer_id,message)
 	else:
 		var message = {
-			"type_of_message":"error",
+			"message_type":"error",
 			"type_of_error":"error in message received"
 		}
 		print(message)

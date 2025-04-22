@@ -151,6 +151,8 @@ func send_message_to_peer(data: Dictionary):
 			process_message(data)
 		else:
 			print("error send_message_to_peer")
+	else:
+		print("problem")
 
 @rpc("authority")
 func send_message_to_everyone(data : Dictionary):
@@ -194,7 +196,10 @@ func process_message(data:Dictionary):
 					await get_tree().process_frame
 			#var join_scene = get_tree().current_scene
 			if current_scene.has_method("print_lobby") and data.has("lobbies"):
-				current_scene.print_lobby(data["lobbies"])
+				if data["lobbies"] != null:
+					current_scene.print_lobby(data["lobbies"])
+				else:
+					process_error({"error_type":"no lobby exist"})
 			
 		elif data["message_type"] == "join_lobby":
 			id_lobby = data["id_lobby"]
