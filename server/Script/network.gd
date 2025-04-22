@@ -281,8 +281,9 @@ func send_message_to_everyone(data : Dictionary):
 	print(" ", data)
 
 func send_message_to_lobby(id_lobby:int,data:Dictionary):
-	for peer_id in session[id_lobby].client_peer:
-		send_message_to_peer.rpc_id(peer_id[0],id_lobby,data)
+	for client_data in session[id_lobby].client_peer:
+		var peer_id = client_data[0]
+		send_message_to_peer.rpc_id(peer_id,data)
 
 func login(data: Dictionary,peer_id:int):
 	var log = await validate_login(data)
