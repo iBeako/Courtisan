@@ -107,6 +107,7 @@ func createLobby(message: Dictionary,peer_id:int):
 		print("id lobby :",return_message)
 		print("type de id lobby :",typeof(return_message))
 		if return_message != null:
+			return_message = int(return_message)
 			var new_session = load("res://Script/session.gd").new()
 			print(clients[peer_id]["username"])
 			new_session.init(return_message, message["number_of_player"], message["name"], clients[peer_id]["username"])
