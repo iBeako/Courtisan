@@ -161,7 +161,7 @@ func send_message_to_everyone(data : Dictionary):
 			print(" ", data)
 			process_message(data)
 		else:
-			print("error send_message_to_peer")
+			print("error send_message_to_everyone")
 			
 func process_message(data:Dictionary):
 	if data["message_type"] == "error":
