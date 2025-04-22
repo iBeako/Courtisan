@@ -238,9 +238,10 @@ async def handle_join_lobby(websocket, data, connection):
         """,uname=username, gid=id_lobby)
     connection.commit()
     if count + 1 == game[1]:
-        cursor.execute("UPDATE games SET status = 'full' WHERE game_id = :id", id=id_lobby)
+        cursor.execute("UPDATE games SET status = 'close' WHERE game_id = :id", id=id_lobby)
         connection.commit()
     cursor.close()
+    print("joined the lobby")
     await websocket.send_json({"status": "success", "message": "Joined lobby."})
 
 async def handle_start_lobby(websocket, data, connection):
