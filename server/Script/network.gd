@@ -220,7 +220,6 @@ func startLobby(message:Dictionary,peer_id:int):
 			Database.sendDatabase(start_lobby_message_database)
 			var return_message = await Database.getDatabase()
 			if return_message["status"] == "success":
-				session[id_lobby].load_game()
 			 # load game of the session
 				for client in clients:
 					print("client : ",client)
