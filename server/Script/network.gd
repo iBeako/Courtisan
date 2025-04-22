@@ -226,7 +226,7 @@ func startLobby(message:Dictionary,peer_id:int):
 					print("client : ",client)
 					if clients[client]["session_id"] == id_lobby:
 						clients[client]["status"] = "in_game"
-				return {"message_type":"before_start","clients":session[id_lobby].clients_peer}
+				return {"message_type":"unconnectedunconnected","clients":session[id_lobby].clients_peer}
 			else:
 				{"message_type": "error", "error": "error in starting lobby"}
 	else:
@@ -255,7 +255,7 @@ func send_message_to_server(data: Dictionary):
 	print(data)
 	if data != null and data.has("message_type"):
 		var sender_id = multiplayer.get_remote_sender_id()
-		if  clients[sender_id] != null and clients[sender_id]["status"] == "connected":
+		if  clients[sender_id] != null and clients[sender_id]["status"] == "connected" or clients[sender_id]["status"] == "in_game":
 			var session_id = clients[sender_id]["session_id"]
 			print("Client %d sent a %s", [data["username"], data["message_type"]])
 			print(" ", data)
