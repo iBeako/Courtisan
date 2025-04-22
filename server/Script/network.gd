@@ -136,7 +136,7 @@ func findLobby(message):
 		var allLobby = await Database.getDatabase()
 		if allLobby != null :
 			for i in range(allLobby["lobbies"].size() - 1, -1, -1):
-				var game_id = allLobby["lobbies"][i]["game_id"]
+				var game_id = int(allLobby["lobbies"][i]["game_id"])
 				if session.has(game_id):
 					allLobby["lobbies"][i]["creator"] = session[game_id]["creator"]
 				else:
