@@ -43,7 +43,7 @@ func process_message_not_ingame(data: Dictionary,sender_id:int):
 						"message_type": "error",
 						"error": "game not started"
 					}
-				Network.send_message_to_lobby(data["id_lobby"],message_before_starting)
+				await Network.send_message_to_lobby(data["id_lobby"],message_before_starting)
 				Network.send_message_to_lobby(data["id_lobby"],message)
 			else:
 				var message = {
