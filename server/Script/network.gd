@@ -107,12 +107,14 @@ func createLobby(message: Dictionary,peer_id:int):
 		print(return_message)
 		if return_message != null:
 			var new_session = load("res://Script/session.gd").new()
+			print(clients[peer_id]["username"])
 			new_session.init(return_message, message["number_of_player"], message["name"], clients[peer_id]["username"])
 			session[return_message] = new_session
 			var ind_player_in_session = session[return_message]._add_player(peer_id)
 			clients[peer_id]["session_id"] = return_message
 			#clients[peer_id]["id_client_in_game"] = ind_player_in_session
 			number_of_session += 1
+			print(session[return_message].creator)
 			var forclient = {
 				"message_type":"join_lobby",
 				"id_lobby":return_message,
