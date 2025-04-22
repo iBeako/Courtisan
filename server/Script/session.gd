@@ -476,7 +476,7 @@ func check_turn(peer_id) -> void :
 		Network.send_message_to_lobby(session_id,scores)
 	elif check_next_player(Network.clients[peer_id]["id_client_in_game"]) :
 		send_three_cards_to_a_player(peer_id)
-		var turn = {"message_type":"player_turn","id_player":current_player_id}
+		var turn = {"message_type":"player_turn","id_player":current_player_id,"number_of_cards":card_stack._get_card_number()}
 		print("turn :" ,turn["id_player"])
 		Network.send_message_to_lobby(session_id,turn)
 
