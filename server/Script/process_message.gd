@@ -76,6 +76,14 @@ func process_message_ingame(data : Dictionary,sender_id:int):
 	elif data["message_type"] == "card_played":
 		if validate_card_played(data["id_lobby"],sender_id,data):
 			Network.send_message_to_lobby(data["id_lobby"],data)
+			if Network.session[data["id_lobby"]].current_player_id != data["player"]:
+				var turn = {
+					"message_type":"player_turn",
+					"id_player":Network.session[data["id_lobby"]].current_player_id,
+					"number_of_cards":Network.session[data["id_lobby"]].card_stack._get_card_number()
+				}
+				print("turn :" ,turn["id_player"])
+				Network.send_message_to_lobby(data["id_lobby"],turn)
 		else:
 			var error_card_played = {
 				"message_type" = "error",
