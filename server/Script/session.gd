@@ -459,6 +459,7 @@ func send_three_cards_to_a_player(peer_id):
 	var index = find_peer_index(clients_peer, peer_id)
 	if index != -1:
 		var cards_as_dict = distribute_hand_cards(index)
+		print("card :", cards_as_dict, "to : ", peer_id, index )
 		Network.send_message_to_peer.rpc_id(peer_id,cards_as_dict)
 
 func _send_mission_to_a_player(peer_id):

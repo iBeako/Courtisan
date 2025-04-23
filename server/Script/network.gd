@@ -292,10 +292,8 @@ func send_message_to_everyone(data : Dictionary):
 func send_message_to_lobby(id_lobby:int,data:Dictionary):
 	print("send message to lobby")
 	if session[id_lobby].clients_peer != null:
-		for client_data in session[id_lobby].clients_peer:
-			
+		for client_data in session[id_lobby].clients_peer:			
 			var peer_id = int(client_data[0])
-			print("peer id : ",peer_id)
 			send_message_to_peer.rpc_id(peer_id,data)
 	else:
 		print("clients peer null")
