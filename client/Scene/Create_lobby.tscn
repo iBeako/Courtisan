@@ -1,0 +1,228 @@
+[gd_scene load_steps=19 format=3 uid="uid://le7iea2g3100"]
+
+[ext_resource type="Script" path="res://Script/create_lobby.gd" id="1_orjtt"]
+[ext_resource type="Texture2D" uid="uid://moika2rm8x7n" path="res://Assets/background.png" id="1_ue0mc"]
+[ext_resource type="Texture2D" uid="uid://dp7rxbav2clb2" path="res://Assets/arrow-small-left 2.svg" id="3_6v3v5"]
+[ext_resource type="Texture2D" uid="uid://bqy42sdw7lweo" path="res://Assets/Group 69.png" id="4_nmmst"]
+[ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/general.tres" id="6_3qbd0"]
+[ext_resource type="Script" path="res://Scene/check_box.gd" id="6_or0mc"]
+[ext_resource type="FontFile" uid="uid://dim3hkmopleo2" path="res://Assets/Mighty Souly.otf" id="7_ilo26"]
+[ext_resource type="Texture2D" uid="uid://d1bk1ehnrxcjx" path="res://Assets/Group 71.png" id="7_lmqr3"]
+[ext_resource type="Texture2D" uid="uid://cpn0qkn2kea8u" path="res://Assets/Group 73.png" id="8_a8r7y"]
+[ext_resource type="Texture2D" uid="uid://c1qg8h3mbysvt" path="res://Assets/Cadenas.png" id="8_dpr78"]
+[ext_resource type="Texture2D" uid="uid://bvw71cww5lpri" path="res://Assets/Group 75.png" id="9_ha57e"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p5cjq"]
+bg_color = Color(0.0156863, 0.156863, 0.2, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.741176, 0.592157, 0.12549, 1)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3pcdy"]
+
+[sub_resource type="Theme" id="Theme_g5otf"]
+CheckBox/icons/radio_checked = null
+CheckBox/styles/disabled = SubResource("StyleBoxEmpty_3pcdy")
+CheckBox/styles/disabled_mirrored = SubResource("StyleBoxEmpty_3pcdy")
+CheckBox/styles/focus = SubResource("StyleBoxEmpty_3pcdy")
+CheckBox/styles/hover = SubResource("StyleBoxEmpty_3pcdy")
+CheckBox/styles/hover_mirrored = SubResource("StyleBoxEmpty_3pcdy")
+CheckBox/styles/hover_pressed = SubResource("StyleBoxEmpty_3pcdy")
+CheckBox/styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_3pcdy")
+CheckBox/styles/normal = SubResource("StyleBoxEmpty_3pcdy")
+CheckBox/styles/normal_mirrored = SubResource("StyleBoxEmpty_3pcdy")
+CheckBox/styles/pressed = SubResource("StyleBoxEmpty_3pcdy")
+CheckBox/styles/pressed_mirrored = SubResource("StyleBoxEmpty_3pcdy")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_64qtd"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_ylqyn"]
+allow_unpress = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v75c0"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_left = 20.0
+expand_margin_top = 15.0
+expand_margin_bottom = 15.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dleh7"]
+bg_color = Color(0.00784314, 0.45098, 0.329412, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.741176, 0.592157, 0.12549, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_top = 21.0
+expand_margin_bottom = 19.0
+
+[node name="Control2" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_orjtt")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_ue0mc")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 360.0
+offset_top = 139.0
+offset_right = -359.0
+offset_bottom = -142.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_p5cjq")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="arrow" type="TextureButton" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+texture_normal = ExtResource("3_6v3v5")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 108
+theme_override_constants/margin_top = 130
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 125
+
+[node name="CheckBox" type="CheckBox" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_g5otf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_64qtd")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_64qtd")
+button_pressed = true
+button_group = SubResource("ButtonGroup_ylqyn")
+icon = ExtResource("4_nmmst")
+script = ExtResource("6_or0mc")
+value = 5
+
+[node name="CheckBox2" type="CheckBox" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_g5otf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_64qtd")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_64qtd")
+button_group = SubResource("ButtonGroup_ylqyn")
+icon = ExtResource("7_lmqr3")
+script = ExtResource("6_or0mc")
+value = 4
+
+[node name="CheckBox3" type="CheckBox" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_g5otf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_64qtd")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_64qtd")
+button_group = SubResource("ButtonGroup_ylqyn")
+icon = ExtResource("8_a8r7y")
+script = ExtResource("6_or0mc")
+value = 3
+
+[node name="CheckBox4" type="CheckBox" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_g5otf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_64qtd")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_64qtd")
+button_group = SubResource("ButtonGroup_ylqyn")
+icon = ExtResource("9_ha57e")
+script = ExtResource("6_or0mc")
+value = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 60
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+theme_override_constants/separation = 40
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("6_3qbd0")
+text = "Room name"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 340
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 340
+
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/MarginContainer2/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("6_3qbd0")
+theme_override_styles/normal = SubResource("StyleBoxFlat_v75c0")
+placeholder_text = "Lobby number one"
+
+[node name="MarginContainer3" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 370
+theme_override_constants/margin_top = 69
+
+[node name="CheckBox" type="CheckBox" parent="PanelContainer/VBoxContainer/MarginContainer3"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_ilo26")
+theme_override_font_sizes/font_size = 33
+text = "Password"
+icon = ExtResource("8_dpr78")
+
+[node name="MarginContainer4" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 390
+theme_override_constants/margin_top = 89
+theme_override_constants/margin_right = 390
+
+[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer4"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_ilo26")
+theme_override_font_sizes/font_size = 34
+theme_override_styles/focus = SubResource("StyleBoxFlat_dleh7")
+theme_override_styles/hover = SubResource("StyleBoxFlat_dleh7")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_dleh7")
+theme_override_styles/normal = SubResource("StyleBoxFlat_dleh7")
+text = "Create a room"
+
+[connection signal="button_down" from="PanelContainer/MarginContainer/arrow" to="." method="_on_arrow_button_down"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/CheckBox" to="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/CheckBox" method="_on_pressed"]
+[connection signal="radio_pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/CheckBox" to="." method="_on_check_box_radio_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/CheckBox2" to="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/CheckBox2" method="_on_pressed"]
+[connection signal="radio_pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/CheckBox2" to="." method="_on_check_box_radio_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/CheckBox3" to="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/CheckBox3" method="_on_pressed"]
+[connection signal="radio_pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/CheckBox3" to="." method="_on_check_box_radio_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/CheckBox4" to="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/CheckBox4" method="_on_pressed"]
+[connection signal="radio_pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/CheckBox4" to="." method="_on_check_box_radio_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer4/Button" to="." method="_on_button_pressed"]

@@ -1,0 +1,73 @@
+server:
+
+clients = { 
+	peer_id: {
+		"peer_id":peer_id,
+		"status":"status", #"unconnected","connected","ingame"
+		"id_lobby":-1 #-1 : pas de lobby associé pour le moment sinon id du lobby
+		"id_ingame":-1 #-1 : pas de lobby associé pour le moment
+sinon id in game
+	}
+}
+
+session = {
+	id_session: 
+		session_id
+		player_max
+		name
+		players # carte des players
+		clients_peer # peer_id des clients
+		current_player_id # id du joueur actuel
+		card_stack # pioche
+}
+
+db_peer: WebSocketPeer = WebSocketPeer.new()
+db_url: String = "ws://pdocker:12345/ws"
+
+var peer: WebSocketMultiplayerPeer = WebSocketMultiplayerPeer.new()
+var port: int = 10001
+
+var tls_cert: X509Certificate
+var tls_key: CryptoKey
+var server_tls_options
+
+
+
+#envoie message au serveur
+func send_message_to_server(message: Dictionary) -> void
+
+#envoie message à une seul client
+func send_message_to_peer(message: Dictionary) -> void
+
+#envoie message à tous le monde (en cas d'erreur server ou arret server)
+func send_message_to_everyone(message: Dictionary) -> void
+
+#boucle qui envoie message à tous les client dans le lobby
+func send_message_to_lobby(id_lobby:int,message: Dictionary) ->void
+#pre send_message_to_lobby : session[id_lobby] != null
+
+
+func connect_to_database()
+
+process_message.gd ? = autoload
+func process_message_for_client_unconnected(message,sender_id) -> void
+	
+func process_message_for_client_not_ingame(message,sender_id) -> void
+
+func process_message_for_client_ingame(message,sender_id) -> void
+
+func validate_message(message:Dictionary)
+
+func validate_card_played(
+
+database.gd ? = autoload
+#insert dans database l'action
+func insertDatabase(message:Dictionary,action:String) -> void
+
+#recupere depuis database l'action
+func getDatabase(message:Dictionary,action:String) -> Dictionary
+
+login.gd  ? (add password.gd in)
+func login(message:Dictionary,peer_id:int) -> void
+
+

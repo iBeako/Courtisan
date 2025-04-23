@@ -1,0 +1,62 @@
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://daf482hdxg6di"]
+
+[ext_resource type="FontFile" uid="uid://dim3hkmopleo2" path="res://Assets/Mighty Souly.otf" id="1_dmi7i"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_um2r0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_styfg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_it2dp"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.4, 0.0235294, 0.109804, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.247059, 0.0235294, 0.0588235, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[resource]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 30
+Button/fonts/font = ExtResource("1_dmi7i")
+Button/styles/disabled = SubResource("StyleBoxEmpty_um2r0")
+Button/styles/focus = SubResource("StyleBoxEmpty_um2r0")
+Button/styles/hover = SubResource("StyleBoxEmpty_um2r0")
+Button/styles/normal = SubResource("StyleBoxEmpty_um2r0")
+Button/styles/pressed = SubResource("StyleBoxEmpty_um2r0")
+Label/colors/font_color = Color(1, 1, 1, 1)
+Label/colors/font_outline_color = Color(0, 0, 0, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0)
+Label/constants/line_spacing = 3
+Label/constants/outline_size = 0
+Label/constants/shadow_offset_x = 1
+Label/constants/shadow_offset_y = 1
+Label/constants/shadow_outline_size = 1
+Label/font_sizes/font_size = 24
+Label/fonts/font = ExtResource("1_dmi7i")
+Label/styles/normal = SubResource("StyleBoxEmpty_styfg")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_it2dp")

@@ -1,0 +1,316 @@
+[gd_scene load_steps=23 format=3 uid="uid://bw1vf4q3v1shj"]
+
+[ext_resource type="Script" path="res://Script/param.gd" id="1_5hj5w"]
+[ext_resource type="Texture2D" uid="uid://moika2rm8x7n" path="res://Assets/background.png" id="2_w1ci7"]
+[ext_resource type="Texture2D" uid="uid://dp7rxbav2clb2" path="res://Assets/arrow-small-left 2.svg" id="3_nhjh7"]
+[ext_resource type="FontFile" uid="uid://dim3hkmopleo2" path="res://Assets/Mighty Souly.otf" id="4_clmdb"]
+[ext_resource type="Theme" uid="uid://cx2oobyhw0tvn" path="res://Assets/Themes/main_menu_buttons_blank.tres" id="4_rh3wl"]
+[ext_resource type="PackedScene" uid="uid://ds7n7yxtp1klb" path="res://Scene/param_glob.tscn" id="6_hp66s"]
+[ext_resource type="Texture2D" uid="uid://c2ernukex2t6p" path="res://Assets/icon.svg" id="7_v0t7n"]
+[ext_resource type="PackedScene" uid="uid://c3oiwppnr4cxt" path="res://Scene/input_sign_password.tscn" id="8_5p7ug"]
+[ext_resource type="PackedScene" uid="uid://d053ssckadw1i" path="res://Scene/input_sign.tscn" id="9_m7gvb"]
+[ext_resource type="Texture2D" uid="uid://dydwgqc1d7h2k" path="res://Assets/envelope.svg" id="10_7f4xv"]
+[ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/general.tres" id="11_6s2e1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_065ae"]
+bg_color = Color(0.0156863, 0.156863, 0.2, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.741176, 0.592157, 0.12549, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aplyx"]
+bg_color = Color(0.0431373, 0.431373, 0.45098, 1)
+border_width_right = 4
+border_color = Color(0.741176, 0.592157, 0.12549, 1)
+corner_radius_top_left = 20
+corner_radius_bottom_left = 20
+anti_aliasing = false
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6kefx"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_04ox2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_b0rwf"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_51yu5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fxy5b"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_huk2d"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_th0gr"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dr8ea"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_20igs"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.741176, 0.592157, 0.12549, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="Param" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5hj5w")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_w1ci7")
+expand_mode = 1
+
+[node name="PanelContainer2" type="PanelContainer" parent="."]
+layout_mode = 2
+offset_left = 326.5
+offset_top = 244.5
+offset_right = 1606.5
+offset_bottom = 904.5
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_065ae")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer2"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_aplyx")
+
+[node name="Tabs" type="VBoxContainer" parent="PanelContainer2/HBoxContainer/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="TextureButton" type="TextureButton" parent="PanelContainer2/HBoxContainer/PanelContainer/Tabs"]
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+action_mode = 0
+texture_normal = ExtResource("3_nhjh7")
+stretch_mode = 3
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer2/HBoxContainer/PanelContainer/Tabs"]
+layout_mode = 2
+theme_override_constants/separation = 70
+theme_override_styles/separator = SubResource("StyleBoxEmpty_6kefx")
+
+[node name="Button" type="Button" parent="PanelContainer2/HBoxContainer/PanelContainer/Tabs"]
+layout_mode = 2
+size_flags_vertical = 10
+theme = ExtResource("4_rh3wl")
+theme_override_colors/font_color = Color(0.4, 0.0235294, 0.109804, 1)
+text = "LOG OUT"
+
+[node name="HSeparator2" type="HSeparator" parent="PanelContainer2/HBoxContainer/PanelContainer/Tabs"]
+layout_mode = 2
+theme_override_constants/separation = 40
+theme_override_styles/separator = SubResource("StyleBoxEmpty_6kefx")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="PanelContainer2/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.741176, 0.0117647, 1)
+theme_override_fonts/font = ExtResource("4_clmdb")
+theme_override_font_sizes/font_size = 80
+text = "SETTINGS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer2/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+
+[node name="TabContainer" type="TabContainer" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme_override_styles/tab_focus = SubResource("StyleBoxEmpty_04ox2")
+theme_override_styles/tab_disabled = SubResource("StyleBoxEmpty_b0rwf")
+theme_override_styles/tabbar_background = SubResource("StyleBoxEmpty_51yu5")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_fxy5b")
+theme_override_styles/tab_selected = SubResource("StyleBoxEmpty_huk2d")
+theme_override_styles/tab_hovered = SubResource("StyleBoxEmpty_th0gr")
+theme_override_styles/tab_unselected = SubResource("StyleBoxEmpty_dr8ea")
+current_tab = 1
+tabs_visible = false
+
+[node name="Global" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer" instance=ExtResource("6_hp66s")]
+visible = false
+layout_mode = 2
+
+[node name="Profile" type="HBoxContainer" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer"]
+layout_mode = 2
+theme_override_constants/separation = 60
+metadata/_tab_index = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Profile"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 30
+
+[node name="NameEdit" type="LineEdit" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Profile/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_clmdb")
+theme_override_font_sizes/font_size = 40
+text = "Name"
+placeholder_text = "Name"
+alignment = 1
+flat = true
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Profile/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_20igs")
+
+[node name="CurrentPP" type="TextureRect" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Profile/VBoxContainer/PanelContainer"]
+layout_mode = 2
+texture = ExtResource("7_v0t7n")
+expand_mode = 4
+
+[node name="GridContainer" type="GridContainer" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Profile"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.3
+theme_override_constants/h_separation = 30
+theme_override_constants/v_separation = 40
+columns = 4
+
+[node name="Privacy" type="HBoxContainer" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 100
+metadata/_tab_index = 2
+
+[node name="UpdatePassword" type="VBoxContainer" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Privacy"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 30
+
+[node name="Label" type="Label" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Privacy/UpdatePassword"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.741176, 0.0117647, 1)
+theme_override_fonts/font = ExtResource("4_clmdb")
+theme_override_font_sizes/font_size = 30
+text = "UPDATE PASSWORD"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Privacy/UpdatePassword"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Privacy/UpdatePassword/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_clmdb")
+theme_override_font_sizes/font_size = 20
+text = "Current password"
+
+[node name="PanelContainer" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Privacy/UpdatePassword/VBoxContainer" instance=ExtResource("8_5p7ug")]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Privacy/UpdatePassword"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Privacy/UpdatePassword/VBoxContainer2"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_clmdb")
+theme_override_font_sizes/font_size = 20
+text = "NEW PASSWORD
+"
+
+[node name="PanelContainer" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Privacy/UpdatePassword/VBoxContainer2" instance=ExtResource("8_5p7ug")]
+layout_mode = 2
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Privacy/UpdatePassword"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Privacy/UpdatePassword/VBoxContainer3"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_clmdb")
+theme_override_font_sizes/font_size = 20
+text = "CONFIRM NEW PASSWORD"
+
+[node name="PanelContainer" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Privacy/UpdatePassword/VBoxContainer3" instance=ExtResource("8_5p7ug")]
+layout_mode = 2
+
+[node name="BtnChangePswrd" type="Button" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Privacy/UpdatePassword"]
+layout_mode = 2
+theme = ExtResource("11_6s2e1")
+text = "CONFIRM"
+
+[node name="VSeparator" type="VSeparator" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Privacy"]
+layout_mode = 2
+
+[node name="UpdateMail" type="VBoxContainer" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Privacy"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 30
+
+[node name="Label" type="Label" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Privacy/UpdateMail"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.741176, 0.0117647, 1)
+theme_override_fonts/font = ExtResource("4_clmdb")
+theme_override_font_sizes/font_size = 30
+text = "UPDATE EMAIL"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Privacy/UpdateMail"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Privacy/UpdateMail/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_clmdb")
+theme_override_font_sizes/font_size = 20
+text = "Current email"
+
+[node name="PanelContainer" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Privacy/UpdateMail/VBoxContainer" instance=ExtResource("9_m7gvb")]
+layout_mode = 2
+
+[node name="TextureRect" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Privacy/UpdateMail/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer" index="0"]
+texture = ExtResource("10_7f4xv")
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Privacy/UpdateMail"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Privacy/UpdateMail/VBoxContainer2"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_clmdb")
+theme_override_font_sizes/font_size = 20
+text = "Current password"
+
+[node name="PanelContainer" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Privacy/UpdateMail/VBoxContainer2" instance=ExtResource("8_5p7ug")]
+layout_mode = 2
+
+[node name="BtnChangeMail" type="Button" parent="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Privacy/UpdateMail"]
+layout_mode = 2
+theme = ExtResource("11_6s2e1")
+text = "CONFIRM"
+
+[connection signal="pressed" from="PanelContainer2/HBoxContainer/PanelContainer/Tabs/TextureButton" to="." method="_on_texture_button_pressed"]
+[connection signal="text_submitted" from="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Profile/VBoxContainer/NameEdit" to="." method="_on_text_edit_text_submitted"]
+[connection signal="pressed" from="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Privacy/UpdatePassword/BtnChangePswrd" to="." method="_on_btn_change_pswrd_pressed"]
+[connection signal="pressed" from="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Privacy/UpdateMail/BtnChangeMail" to="." method="_on_btn_change_mail_pressed"]
+
+[editable path="PanelContainer2/HBoxContainer/VBoxContainer/MarginContainer/TabContainer/Privacy/UpdateMail/VBoxContainer/PanelContainer"]

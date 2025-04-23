@@ -1,0 +1,72 @@
+[gd_scene load_steps=4 format=3 uid="uid://cooeuakj4esak"]
+
+[ext_resource type="Texture2D" uid="uid://fsvql5ugcv4e" path="res://Assets/profile/1.png" id="1_jl3te"]
+[ext_resource type="Theme" uid="uid://bvpsfycrmjdq0" path="res://Assets/Themes/general.tres" id="1_vpbdr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lhqms"]
+bg_color = Color(0.00916662, 0.114295, 0.148761, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[node name="FinPartieLigne" type="PanelContainer"]
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -35.0
+offset_bottom = 35.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_vpbdr")
+theme_override_styles/panel = SubResource("StyleBoxFlat_lhqms")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Place" type="Label" parent="HBoxContainer/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_vpbdr")
+theme_override_font_sizes/font_size = 28
+text = "1er"
+horizontal_alignment = 1
+
+[node name="Name" type="Label" parent="HBoxContainer/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_vpbdr")
+theme_override_font_sizes/font_size = 28
+text = "Nom"
+horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+texture = ExtResource("1_jl3te")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="Score" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_vpbdr")
+theme_override_font_sizes/font_size = 50
+text = "100"
+horizontal_alignment = 1
