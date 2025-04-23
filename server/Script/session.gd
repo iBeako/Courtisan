@@ -125,20 +125,19 @@ func check_status() -> bool:
 	
 func check_game_start() -> bool :
 	if clients_peer.size() == player_max :
-		status = true
 		return true
 	return false
 	
-func load_game() -> bool :
-	print("==========================================================================")
-	print("==========================================================================")
-	print("Game start")
-	
-	card_stack.generate_card()
-	card_stack._set_card_stack()
-	card_stack.print_stack_state()
-	send_three_cards_to_each_player()
-	return true
+func load_game() :
+	if status == false:
+		print("==========================================================================")
+		print("==========================================================================")
+		print("Game start")
+		status = true
+		card_stack.generate_card()
+		card_stack._set_card_stack()
+		card_stack.print_stack_state()
+		send_three_cards_to_each_player()
 	
 func distribute_hand_cards(player_id:int) -> Dictionary:
 	var cards_as_dict = {}
