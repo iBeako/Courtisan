@@ -59,12 +59,14 @@ layout_mode = 2
 
 [node name="LineEdit" parent="Email/MarginContainer/HBoxContainer" index="2"]
 placeholder_text = "E-MAIL"
+select_all_on_focus = true
 
 [node name="Password" parent="." instance=ExtResource("3_ep1yl")]
 layout_mode = 2
 
 [node name="LineEdit" parent="Password/MarginContainer/HBoxContainer" index="2"]
 placeholder_text = "Password"
+select_all_on_focus = true
 
 [node name="Forgot" type="Button" parent="."]
 layout_mode = 2

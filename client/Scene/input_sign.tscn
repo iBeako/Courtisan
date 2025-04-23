@@ -44,3 +44,4 @@ theme_override_styles/separator = SubResource("StyleBoxEmpty_uves2")
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_4m5to")
+select_all_on_focus = true

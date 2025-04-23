@@ -25,6 +25,7 @@ layout_mode = 2
 
 [node name="LineEdit" parent="Username/MarginContainer/HBoxContainer" index="2"]
 placeholder_text = "USERNAME"
+select_all_on_focus = true
 
 [node name="Email" parent="." instance=ExtResource("2_syrqm")]
 layout_mode = 2
@@ -34,18 +35,21 @@ texture = ExtResource("3_1odxc")
 
 [node name="LineEdit" parent="Email/MarginContainer/HBoxContainer" index="2"]
 placeholder_text = "EMAIL"
+select_all_on_focus = true
 
 [node name="Password" parent="." instance=ExtResource("4_erawd")]
 layout_mode = 2
 
 [node name="LineEdit" parent="Password/MarginContainer/HBoxContainer" index="2"]
 placeholder_text = "Password"
+select_all_on_focus = true
 
 [node name="Password2" parent="." instance=ExtResource("4_erawd")]
 layout_mode = 2
 
 [node name="LineEdit" parent="Password2/MarginContainer/HBoxContainer" index="2"]
 placeholder_text = "CONFIRM PASSWORD"
+select_all_on_focus = true
 
 [node name="SignUP" type="Button" parent="."]
 layout_mode = 2

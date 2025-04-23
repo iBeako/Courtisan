@@ -101,7 +101,7 @@ var turn_player: int
 var id_lobby: int = -1
 var in_game = false
 
-var deck_reference
+var deck_reference := preload("res://Scene/deck.tscn")
 var message_manager
 var taskbar_reference 
 
