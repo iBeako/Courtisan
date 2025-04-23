@@ -46,6 +46,14 @@ func process_message_not_ingame(data: Dictionary,sender_id:int):
 						"error_type":"not the creator"
 				}
 				Network.send_message_to_peer.rpc_id(sender_id,message)
+				
+		elif data["message_type"] == "starting":
+			var id_lobby = data["id_lobby"]
+			Network.session[id_lobby].load_game()
+			var turn = {"message_type":"player_turn","id_player":Network.session[id_lobby].current_player_id,"number_of_cards":Network.session[id_lobby].card_stack._get_card_number()}
+			print("turn :" ,turn["id_player"])
+			Network.send_message_to_lobby(id_lobby,turn)
+		
 		elif data["message_type"] == "change_profil":
 			Database.sendDatabase(data)
 			var message = await Database.getDatabase()
@@ -63,13 +71,6 @@ func process_message_ingame(data : Dictionary,sender_id:int):
 	if data["message_type"] == "error":
 		print("Error from client: ", data["error_type"])
 		process_error(data)
-		
-	elif data["message_type"] == "starting":
-		var id_lobby = data["id_lobby"]
-		Network.session[id_lobby].load_game()
-		var turn = {"message_type":"player_turn","id_player":Network.session[id_lobby].current_player_id,"number_of_cards":Network.session[id_lobby].card_stack._get_card_number()}
-		print("turn :" ,turn["id_player"])
-		Network.send_message_to_lobby(id_lobby,turn)
 		
 	#action message
 	elif data["message_type"] == "card_played":
