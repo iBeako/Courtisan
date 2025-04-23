@@ -1,6 +1,4 @@
 extends Node
-var load_game_mutex := Mutex.new()
-
 
 func process_message_not_ingame(data: Dictionary,sender_id:int):
 	if data.has("message_type"):
@@ -68,9 +66,7 @@ func process_message_ingame(data : Dictionary,sender_id:int):
 		
 	elif data["message_type"] == "starting":
 		var id_lobby = data["id_lobby"]
-		if load_game_mutex.try_lock():
-			Network.session[id_lobby].load_game()
-			load_game_mutex.unlock()
+		Network.session[id_lobby].load_game()
 		var turn = {"message_type":"player_turn","id_player":Network.session[id_lobby].current_player_id,"number_of_cards":Network.session[id_lobby].card_stack._get_card_number()}
 		print("turn :" ,turn["id_player"])
 		Network.send_message_to_lobby(id_lobby,turn)
