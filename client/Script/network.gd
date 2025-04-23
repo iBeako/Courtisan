@@ -6,6 +6,7 @@ signal error_card_played(message)
 @onready var signin_page = preload("res://Scene/login.tscn")
 @onready var waiting = preload("res://Scene/Waiting.tscn")
 @onready var join = preload("res://Scene/Join_game.tscn")
+@onready var deck = preload("res://Scene/deck.tscn")
 enum family {
 	butterfly = 0,
 	frog = 1,
@@ -101,7 +102,7 @@ var turn_player: int
 var id_lobby: int = -1
 var in_game = false
 
-var deck_reference := preload("res://Scene/deck.tscn")
+var deck_reference
 var message_manager
 var taskbar_reference 
 
