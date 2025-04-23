@@ -318,6 +318,7 @@ func process_card_played(data:Dictionary):
 	if data["player"] != id:
 		if data["area"] == 0:
 			data["area"] = 1
+			data["id_player_domain"] = data["player"]
 		elif data["area"] == 1:
 			if data["id_player_domain"] == id:
 				data["area"] = 0
