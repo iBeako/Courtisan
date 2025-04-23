@@ -451,8 +451,8 @@ func get_final_score() -> Dictionary:
 	return data_dict
 		
 func send_three_cards_to_each_player():
-	for client_data in clients_peer:
-		var peer_id = client_data[0]
+	for i in clients_peer.size():
+		var peer_id = clients_peer[i][0]
 		send_three_cards_to_a_player(peer_id)
 	
 func send_three_cards_to_a_player(peer_id):
