@@ -16,11 +16,12 @@ func _ready() -> void:
 	check_move()
 	
 func check_move() :
-	if session.check_status() :
-		if check_turn() :
-			print("<<<<<<<<<<<<<<<<<<")
-			play()
-			print(">>>>>>>>>>>>>>>>>>")
+	pass
+	#if session.check_status() :
+	#	if check_turn() :
+	# 		print("<<<<<<<<<<<<<<<<<<")
+	#		play()
+	#		print(">>>>>>>>>>>>>>>>>>")
 	
 func check_turn() :
 	if session.check_player_turn(id_player) :
