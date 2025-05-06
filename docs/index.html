@@ -95,7 +95,22 @@ body {
 
 		<script src="index.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":214362672,"index.wasm":35376909},"focusCanvas":true,"gdextensionLibs":[]};
+const GODOT_CONFIG = {
+  "args": [],
+  "canvasResizePolicy": 2,
+  "ensureCrossOriginIsolationHeaders": true,
+  "executable": "index",
+  "experimentalVK": false,
+  "fileSizes": {
+    "index.pck": 214362672,
+    "index.wasm": 35376909
+  },
+  "fileMap": {
+    "index.pck": "https://github.com/iBeako/Courtisan/releases/download/untagged-b2a9c81f83d49e34603c/index.pck"
+  },
+  "focusCanvas": true,
+  "gdextensionLibs": []
+};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 
